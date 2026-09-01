@@ -4,5 +4,5 @@
 window.PlamontSupabaseConfig = {
     url: "https://ntoadouzyjjgyhoihhap.supabase.co",
     anonKey: "sb_publishable_xGuKcW5CQDuUV4HYP2UbxA_uE6J0f7R",
-    bucket: "REPORT_FOTOS"
+    bucket: "report_fotos"
 };
