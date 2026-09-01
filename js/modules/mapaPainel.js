@@ -674,42 +674,119 @@ const MapaPainel = {
 
         return fotos.map((foto, indice) => `
             <button type="button" class="mapa-painel-foto-thumb" onclick="MapaPainel.visualizarFoto('${chave.replace(/'/g, "\\'")}', ${indice})" title="Visualizar foto ${indice + 1}">
-                <img src="${foto.url}" alt="Foto ${indice + 1} da atividade">
+                <img src="${foto.url}" alt="Foto ${indice + 1} da atividade" loading="lazy">
                 <span class="mapa-painel-foto-thumb-numero">${indice + 1}</span>
             </button>
         `).join("");
 
     },
 
-    visualizarFoto(chave, indice) {
+    async baixarFoto(chave, indice) {
 
         const fotos = this.fotosCapturadas.get(chave) || [];
         const foto = fotos[indice];
 
-        if (!foto) return;
+        if (!foto?.url) return;
+
+        try {
+            const resposta = await fetch(foto.url, { cache: "no-store" });
+            if (!resposta.ok) throw new Error(`HTTP ${resposta.status}`);
+
+            const blob = await resposta.blob();
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            const nomeBase = String(foto.nome || `foto-${indice + 1}.jpg`)
+                .replace(/[^a-zA-Z0-9._-]+/g, "-")
+                .replace(/-+/g, "-")
+                .replace(/^-|-$/g, "") || `foto-${indice + 1}`;
+
+            link.href = url;
+            link.download = nomeBase.toLowerCase().endsWith(".jpg") || nomeBase.toLowerCase().endsWith(".jpeg")
+                ? nomeBase
+                : `${nomeBase}.jpg`;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        } catch (erro) {
+            console.error("Erro ao baixar foto:", erro);
+            // Fallback útil para URLs públicas quando o navegador bloquear o download via fetch.
+            const link = document.createElement("a");
+            link.href = foto.url;
+            link.target = "_blank";
+            link.rel = "noopener";
+            link.click();
+        }
+
+    },
+
+    visualizarFoto(chave, indice) {
+
+        const fotos = this.fotosCapturadas.get(chave) || [];
+        if (!fotos.length) return;
+
+        let indiceAtual = Math.max(0, Math.min(indice, fotos.length - 1));
 
         const overlay = document.createElement("div");
         overlay.className = "mapa-painel-foto-overlay";
         overlay.innerHTML = `
             <button type="button" class="mapa-painel-foto-fechar" aria-label="Fechar foto">✕</button>
-            <div class="mapa-painel-foto-modal">
-                <img src="${foto.url}" alt="Foto da atividade">
+            <button type="button" class="mapa-painel-foto-nav anterior" aria-label="Foto anterior" ${fotos.length < 2 ? "hidden" : ""}>‹</button>
+            <div class="mapa-painel-foto-modal" role="dialog" aria-modal="true" aria-label="Visualização das fotos">
+                <div class="mapa-painel-foto-imagem-wrap">
+                    <img class="mapa-painel-foto-imagem" src="" alt="Foto da atividade">
+                </div>
                 <div class="mapa-painel-foto-modal-acoes">
-                    <span>Foto ${indice + 1} de ${fotos.length}</span>
-                    <button type="button" class="mapa-painel-foto-apagar">🗑️ Apagar foto</button>
+                    <span class="mapa-painel-foto-contador"></span>
+                    <div class="mapa-painel-foto-acoes-modal">
+                        <button type="button" class="mapa-painel-foto-baixar">Baixar foto</button>
+                        <button type="button" class="mapa-painel-foto-apagar">Excluir foto</button>
+                    </div>
                 </div>
             </div>
+            <button type="button" class="mapa-painel-foto-nav proxima" aria-label="Próxima foto" ${fotos.length < 2 ? "hidden" : ""}>›</button>
         `;
 
+        const imagem = overlay.querySelector(".mapa-painel-foto-imagem");
+        const contador = overlay.querySelector(".mapa-painel-foto-contador");
+        const anterior = overlay.querySelector(".mapa-painel-foto-nav.anterior");
+        const proxima = overlay.querySelector(".mapa-painel-foto-nav.proxima");
         const fechar = () => overlay.remove();
+
+        const atualizarVisualizacao = () => {
+            const fotoAtual = fotos[indiceAtual];
+            if (!fotoAtual) return;
+            imagem.src = fotoAtual.url;
+            imagem.alt = `Foto ${indiceAtual + 1} da atividade`;
+            contador.textContent = `Foto ${indiceAtual + 1} de ${fotos.length}`;
+            anterior.disabled = indiceAtual === 0;
+            proxima.disabled = indiceAtual === fotos.length - 1;
+        };
+
+        const mudarFoto = direcao => {
+            if (fotos.length < 2) return;
+            const novoIndice = indiceAtual + direcao;
+            if (novoIndice < 0 || novoIndice >= fotos.length) return;
+            indiceAtual = novoIndice;
+            atualizarVisualizacao();
+        };
+
         overlay.querySelector(".mapa-painel-foto-fechar").addEventListener("click", fechar);
         overlay.addEventListener("click", evento => {
             if (evento.target === overlay) fechar();
         });
+        anterior.addEventListener("click", () => mudarFoto(-1));
+        proxima.addEventListener("click", () => mudarFoto(1));
+
+        overlay.querySelector(".mapa-painel-foto-baixar").addEventListener("click", () => {
+            this.baixarFoto(chave, indiceAtual);
+        });
 
         overlay.querySelector(".mapa-painel-foto-apagar").addEventListener("click", async () => {
 
-            if (!confirm("Apagar esta foto? Essa ação não poderá ser desfeita.")) return;
+            if (!confirm("Excluir esta foto permanentemente?")) return;
+
+            const foto = fotos[indiceAtual];
 
             try {
 
@@ -722,9 +799,9 @@ const MapaPainel = {
                     }
                 }
 
-                if (foto.url) URL.revokeObjectURL(foto.url);
+                if (foto.url && foto.url.startsWith("blob:")) URL.revokeObjectURL(foto.url);
 
-                fotos.splice(indice, 1);
+                fotos.splice(indiceAtual, 1);
                 this.fotosCapturadas.set(chave, fotos);
 
                 document.querySelectorAll(`[data-fotos-om="${CSS.escape(chave)}"]`).forEach(atividade => {
@@ -734,15 +811,55 @@ const MapaPainel = {
                     this.atualizarBotaoFoto(botao, chave);
                 });
 
-                fechar();
+                if (!fotos.length) {
+                    fechar();
+                    return;
+                }
+
+                indiceAtual = Math.min(indiceAtual, fotos.length - 1);
+                atualizarVisualizacao();
 
             } catch (erro) {
                 console.error("Erro ao apagar foto:", erro);
-                alert("Não foi possível apagar a foto. Tente novamente.");
+                alert("Não foi possível excluir a foto. Tente novamente.");
             }
 
         });
 
+        const imagemWrap = overlay.querySelector(".mapa-painel-foto-imagem-wrap");
+        let toqueX = null;
+
+        imagemWrap.addEventListener("touchstart", evento => {
+            toqueX = evento.changedTouches?.[0]?.clientX ?? null;
+        }, { passive: true });
+
+        imagemWrap.addEventListener("touchend", evento => {
+            if (toqueX === null) return;
+            const fimX = evento.changedTouches?.[0]?.clientX ?? toqueX;
+            const deslocamento = fimX - toqueX;
+            toqueX = null;
+            if (Math.abs(deslocamento) < 45) return;
+            mudarFoto(deslocamento < 0 ? 1 : -1);
+        }, { passive: true });
+
+        const teclado = evento => {
+            if (!document.body.contains(overlay)) return;
+            if (evento.key === "Escape") fechar();
+            if (evento.key === "ArrowLeft") mudarFoto(-1);
+            if (evento.key === "ArrowRight") mudarFoto(1);
+        };
+
+        document.addEventListener("keydown", teclado);
+        const removerTeclado = () => document.removeEventListener("keydown", teclado);
+        const observer = new MutationObserver(() => {
+            if (!document.body.contains(overlay)) {
+                removerTeclado();
+                observer.disconnect();
+            }
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        atualizarVisualizacao();
         document.body.appendChild(overlay);
 
     },
