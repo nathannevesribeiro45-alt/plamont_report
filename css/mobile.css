@@ -1,0 +1,1637 @@
+/* ======================================================
+   MOBILE
+   Reports - Responsividade
+====================================================== */
+/* Esconde todos os componentes exclusivos do mobile */
+
+.mobile-topbar{
+
+    display: none;
+
+}
+
+@media (max-width: 768px) {
+    
+
+
+    .mobile-topbar{
+
+    display: flex;
+
+}
+
+    /* ==================================================
+       TOPBAR
+    ================================================== */
+
+    .mobile-topbar{
+
+    position: sticky;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 64px;
+
+    box-sizing: border-box;
+
+    background: var(--primary);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 18px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,.15);
+
+    z-index: 999;
+
+}
+
+    .mobile-menu-btn{
+
+        width: 42px;
+        height: 42px;
+
+        border: none;
+        background: transparent;
+
+        color: white;
+
+        font-size: 28px;
+
+        cursor: pointer;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        transition: .25s;
+
+    }
+
+    .mobile-menu-btn:hover{
+
+        opacity: .85;
+
+    }
+
+    .mobile-logo-container{
+
+        flex: 1;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .mobile-logo{
+
+        height: 34px;
+        width: auto;
+
+        user-select: none;
+
+    }
+
+    .mobile-actions{
+
+        width: 42px;
+        height: 42px;
+
+    }
+
+
+/* ==================================================
+   SIDEBAR
+================================================== */
+
+.sidebar{
+
+    transform: translateX(-100%);
+    transition: transform .35s ease;
+
+}
+
+.sidebar.aberta{
+
+    transform: translateX(0);
+
+}
+
+/* ==================================================
+   BOTÃO DA SIDEBAR (DESKTOP)
+================================================== */
+
+.sidebar-toggle{
+
+    display: none;
+
+}
+
+/* ==================================================
+   CABEÇALHO
+================================================== */
+
+#dashboard .cabecalho{
+
+    display:grid;
+
+    grid-template-columns:1fr auto;
+
+    align-items:center;
+
+    gap:16px;
+
+    margin:22px 0 32px;
+    
+    margin-top:4px;
+
+    margin-bottom:4px;
+
+}
+
+#dashboard .cabecalho-info{
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+
+}
+
+#dashboard .cabecalho h1{
+
+    margin:0;
+
+    font-size:1.35rem;
+
+    font-weight:700;
+
+    line-height:1.15;
+
+    color:#0b2856;
+
+    letter-spacing:-0.3px;
+
+}
+
+#dashboard .subtitulo{
+
+    display:none;
+
+}
+
+#dashboard .data-card{
+
+    width:155px;
+
+    min-width:155px;
+
+    padding:10px 12px;
+
+    border-radius:20px;
+
+    background:#fff;
+
+    box-sizing:border-box;
+
+}
+
+.calendar-row{
+
+    display:grid;
+
+    grid-template-columns:18px 1fr;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+#dashboard .data-card{
+
+    width:155px;
+
+    padding:12px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+#dashboard .calendar-row{
+
+    display:grid;
+
+    grid-template-columns:16px 1fr;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-size:.78rem;
+
+    line-height:1.2;
+
+}
+
+#dashboard .calendar-row .icon{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:.9rem;
+
+}
+
+
+
+/* ==================================================
+   BANNER MOBILE
+================================================== */
+
+#dashboard #banner-status .status-info{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:10px;
+
+}
+
+#dashboard #banner-status .status-icon{
+
+    width:50px;
+
+    height:50px;
+
+    margin-top:3px;
+
+    flex-shrink:0;
+
+
+}
+
+#dashboard #banner-status .status-icon span{
+
+    width:42px;
+
+    height:42px;
+
+    font-size:1.3rem;
+
+}
+
+#dashboard #banner-status .status-label{
+
+    font-size:.60rem;
+
+}
+
+#dashboard #banner-status .status-titulo{
+
+    font-size:1.05rem;
+
+    font-weight:700;
+
+    margin:2px 0 5px;
+
+    line-height:1.2;
+
+}
+
+#dashboard #banner-status .status-mensagem{
+
+    font-size:.68rem;
+
+    line-height:1.45;
+
+}
+
+#dashboard #banner-status .status-ilustracao{
+
+    position:absolute;
+
+    right:-18px;
+
+    bottom:-8px;
+
+    width:180px;
+
+    height:auto;
+
+}
+
+#dashboard #banner-status .status-ilustracao img{
+
+    width:100%;
+
+    height:auto;
+
+    opacity:.18;
+
+}
+
+#dashboard #banner-status .status-footer{
+
+    margin-top:12px;
+
+    padding-top:14px;
+
+    gap:8px;
+
+    font-size:.75rem;
+
+}
+
+#dashboard #banner-status .status-footer .status-item:nth-child(2){
+
+    display:none;
+
+}
+
+/* ==================================================
+   KPI MOBILE
+================================================== */
+
+#dashboard .dashboard-kpis{
+
+    display:flex;
+
+    gap:12px;
+
+    overflow-x:auto;
+
+    overflow-y:hidden;
+
+    padding:4px 2px 10px;
+
+    margin-top:12px;
+
+    scroll-snap-type:x proximity;
+
+    -webkit-overflow-scrolling:touch;
+
+}
+
+/* Esconde a barra de rolagem */
+
+#dashboard .dashboard-kpis::-webkit-scrollbar{
+
+    display:none;
+
+}
+
+#dashboard .dashboard-kpis{
+
+    scrollbar-width:none;
+
+}
+
+/* Cards */
+
+#dashboard .kpi-card{
+
+    flex:0 0 115px;
+
+    min-width:115px;
+
+    min-height:120px;
+
+    padding:12px;
+
+    border-radius:18px;
+
+    border-top:3px solid var(--primary);
+
+    box-shadow:0 6px 18px rgba(0,0,0,.08);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:flex-start;
+
+    gap:4px;
+
+    scroll-snap-align:start;
+
+}
+
+#dashboard .kpi-card:hover{
+
+    transform:none;
+
+}
+
+#dashboard .kpi-icon{
+
+    font-size:1.4rem;
+
+    margin-bottom:6px;
+
+}
+
+#dashboard .kpi-title{
+
+    font-size:.78rem;
+
+    color:var(--text-light);
+
+}
+
+#dashboard .kpi-value{
+
+    margin:2px 0;
+
+    font-size:2rem;
+
+    line-height:1;
+
+    color:var(--primary);
+
+    font-weight:700;
+
+}
+
+#dashboard .kpi-subtitle{
+
+    font-size:.72rem;
+
+    line-height:1.2;
+
+    color:var(--text-light);
+
+}
+
+/* ==================================================
+   CONTRATOS MOBILE
+================================================== */
+
+#dashboard .dashboard-contracts{
+
+    display:grid;
+
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+
+    gap:10px;
+
+    margin-top:6px;
+
+    width:100%;
+
+}
+
+#dashboard .contract-card{
+
+    min-width:0;
+
+    padding:12px;
+
+    border-radius:18px;
+
+    border:0;
+
+    box-shadow:0 6px 18px rgba(0,0,0,.08);
+
+    transition:none;
+
+}
+
+#dashboard .contract-card:hover{
+
+    transform:none;
+
+}
+
+#dashboard .contract-header{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    justify-content:flex-start;
+
+    gap:8px;
+
+    margin-bottom:10px;
+
+}
+
+#dashboard .contract-header h3{
+
+    margin:0;
+
+    font-size:1rem;
+
+    line-height:1.2;
+
+}
+
+#dashboard .contract-status{
+
+    margin-left:auto;
+
+    padding:4px 8px;
+
+    font-size:.60rem;
+
+    border-radius:999px;
+
+    white-space:nowrap;
+
+}
+
+#dashboard .contract-stats{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,minmax(0,1fr));
+
+    gap:8px;
+
+}
+
+#dashboard .stat{
+
+    min-width:0;
+
+    padding:10px;
+
+    border-radius:12px;
+
+}
+
+#dashboard .stat strong{
+
+    display:block;
+
+    font-size:1.35rem;
+
+    color:var(--primary);
+
+    line-height:1;
+
+    margin-bottom:4px;
+
+}
+
+#dashboard .stat span{
+
+    display:block;
+
+    font-size:.68rem;
+
+    line-height:1.2;
+
+}
+
+
+/* ==================================================
+   CONTRATOS - ABAS MOBILE
+================================================== */
+
+
+
+    .tabs-wrapper{
+
+        width:100%;
+
+        overflow-x:auto;
+
+        overflow-y:hidden;
+
+        -webkit-overflow-scrolling:touch;
+
+        scrollbar-width:none;
+
+    }
+
+    .tabs-wrapper::-webkit-scrollbar{
+
+        display:none;
+
+    }
+
+    .tabs{
+
+        display:flex;
+
+        flex-wrap:nowrap;
+
+        width:max-content;
+
+        min-width:100%;
+
+        padding:6px;
+
+        gap:8px;
+
+        margin:16px 0 20px;
+
+        border-radius:16px;
+
+    }
+
+    .tab-btn{
+
+        flex:0 0 auto;
+
+        padding:10px 18px;
+
+        min-height:42px;
+
+        font-size:.85rem;
+
+        border-radius:10px;
+
+    }
+
+
+
+/* ==================================================
+   CONTRATOS - PAINÉIS MOBILE
+================================================== */
+
+    .painel-grid{
+
+        display:grid;
+
+        grid-template-columns:repeat(2,1fr);
+
+        gap:12px;
+
+        margin-top:16px;
+
+    }
+
+    .painel-card{
+
+        min-width:0;
+
+    }
+
+    .painel-header{
+
+        padding:10px 12px;
+
+        font-size:.82rem;
+
+    }
+
+    .painel-lista{
+
+        padding:10px 12px;
+
+    }
+
+    .painel-item{
+
+        padding:8px 0;
+
+    }
+
+    .painel-item span:first-child{
+
+        font-size:.72rem;
+
+    }
+
+    .painel-valor{
+
+        min-width:24px;
+
+        padding:2px 8px;
+
+        font-size:.72rem;
+
+    }
+
+    .painel-total{
+
+        margin-top:14px;
+
+        padding:12px;
+
+        font-size:.82rem;
+
+    }
+
+
+
+
+/* ==================================================
+   PADRÃO DOS TÍTULOS DOS CONTRATOS
+================================================== */
+
+.bloco-header h2{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-size:1.25rem;
+
+    font-weight:700;
+
+    line-height:1.2;
+
+}
+
+.bloco-header h2 svg{
+
+    width:20px;
+
+    height:20px;
+
+    flex-shrink:0;
+
+}
+
+/* ==================================================
+   CONTRATOS - ÍCONES DOS TÍTULOS
+================================================== */
+
+.bloco-header h2{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+.bloco-header h2 svg{
+
+    width:20px;
+
+    height:20px;
+
+    min-width:20px;
+
+    min-height:20px;
+
+    flex-shrink:0;
+
+    stroke-width:2.2;
+
+}
+
+/* ==================================================
+   AUSÊNCIAS + MOBILIZAÇÃO
+================================================== */
+
+.grid-secoes{
+
+    display:grid;
+
+    grid-template-columns:minmax(0,1fr);
+
+    gap:18px;
+
+    margin:18px 0;
+
+    align-items:start;
+
+}
+
+.grid-secoes > .bloco{
+
+    min-width:0;
+
+    width:100%;
+
+}
+
+.grid-secoes > .bloco + .bloco{
+
+    margin-top:0;
+
+}
+
+.grid-secoes .bloco-header h2{
+
+    font-size:1.25rem;
+
+    line-height:1.2;
+
+}
+
+.grid-secoes .bloco-header svg{
+
+    width:18px;
+
+    height:18px;
+
+}
+
+.grid-secoes .bloco-content{
+
+    margin-top:16px;
+
+}
+
+.grid-secoes .lista-card{
+
+    padding:10px 12px;
+
+}
+
+.grid-secoes .lista-item{
+
+    padding:8px 0;
+
+}
+
+.grid-secoes .lista-label{
+
+    font-size:.72rem;
+
+}
+
+.grid-secoes .lista-valor{
+
+    min-width:24px;
+
+    padding:2px 8px;
+
+    font-size:.72rem;
+
+}
+
+/* ==================================================
+   RECURSOS MOBILE
+================================================== */
+
+.card-recursos{
+
+    padding:18px;
+
+}
+
+.card-recursos .recursos-grid{
+
+    grid-template-columns:minmax(0,1fr);
+
+    gap:14px;
+
+    margin-top:16px;
+
+}
+
+.card-recursos .recurso-card{
+
+    border:1px solid #d8e2ee;
+
+    border-radius:16px;
+
+    background:#fff;
+
+    box-shadow:0 3px 10px rgba(15,23,42,.05);
+
+    transform:none;
+
+}
+
+.card-recursos .recurso-card:hover{
+
+    transform:none;
+
+    border-color:#d8e2ee;
+
+    box-shadow:0 3px 10px rgba(15,23,42,.05);
+
+}
+
+.card-recursos .recurso-header{
+
+    min-height:88px;
+
+    padding:14px;
+
+    gap:12px;
+
+    background:#fff;
+
+    border-bottom:0;
+
+    cursor:pointer;
+
+}
+
+.card-recursos .recurso-header::after{
+
+    display:none;
+
+}
+
+.card-recursos .recurso-header::before{
+
+    display:none;
+
+}
+
+.card-recursos .recurso-header:focus-visible{
+
+    outline:3px solid rgba(21,101,192,.28);
+
+    outline-offset:-3px;
+
+}
+
+.card-recursos .recurso-card.aberto .recurso-header{
+
+    border-bottom:1px solid #d8e2ee;
+
+}
+
+.card-recursos .recurso-card.aberto .recurso-header::before{
+
+    display:block;
+
+    height:4px;
+
+}
+
+.card-recursos .recurso-icone{
+
+    width:52px;
+
+    height:52px;
+
+    font-size:1.85rem;
+
+}
+
+.card-recursos .recurso-titulo{
+
+    flex:1;
+
+    min-width:0;
+
+    gap:5px;
+
+}
+
+.card-recursos .recurso-nome{
+
+    font-size:1.15rem;
+
+    color:#14213d;
+
+}
+
+.card-recursos .recurso-quantidade{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    width:max-content;
+
+    margin-top:0;
+
+    padding:4px 10px;
+
+    border:1px solid #d6e6ff;
+
+    border-radius:999px;
+
+    background:#edf5ff;
+
+    color:#0b57b7;
+
+    font-size:.75rem;
+
+    font-weight:700;
+
+    letter-spacing:0;
+
+}
+
+.card-recursos .recurso-toggle{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    width:32px;
+
+    height:32px;
+
+    flex-shrink:0;
+
+    color:#0a5acb;
+
+    font-size:1.25rem;
+
+    font-weight:700;
+
+    transition:transform .25s ease;
+
+}
+
+.card-recursos .recurso-card.aberto .recurso-toggle{
+
+    transform:rotate(180deg);
+
+}
+
+.card-recursos .recurso-info{
+
+    max-height:0;
+
+    padding:0;
+
+    overflow:hidden;
+
+    opacity:0;
+
+    transition:
+        max-height .35s ease,
+        padding .35s ease,
+        opacity .2s ease;
+
+}
+
+.card-recursos .recurso-card.aberto .recurso-info{
+
+    max-height:1400px;
+
+    padding:12px;
+
+    opacity:1;
+
+}
+
+.card-recursos .recurso-linha{
+
+    display:grid;
+
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:12px;
+
+    border:1px solid #d8e2ee;
+
+    border-radius:12px;
+
+    background:#fff;
+
+}
+
+.card-recursos .recurso-linha + .recurso-linha{
+
+    margin-top:12px;
+
+}
+
+.card-recursos .recurso-placa{
+
+    position:static;
+
+    display:flex;
+
+    align-items:center;
+
+    min-width:0;
+
+    gap:8px;
+
+    width:auto;
+
+    padding:0;
+
+    border:0;
+
+    border-radius:0;
+
+    background:none;
+
+    color:#172033;
+
+    font-size:.9rem;
+
+    letter-spacing:0;
+
+    box-shadow:none;
+
+}
+
+.card-recursos .recurso-placa::before,
+.card-recursos .recurso-placa::after{
+
+    display:none;
+
+}
+
+.card-recursos .recurso-linha-icone{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    width:38px;
+
+    height:38px;
+
+    flex-shrink:0;
+
+    border:1px solid #d3e2f4;
+
+    border-radius:50%;
+
+    background:#eef6ff;
+
+    font-size:1.15rem;
+
+}
+
+.card-recursos .recurso-ponto{
+
+    width:7px;
+
+    height:7px;
+
+    flex-shrink:0;
+
+    border-radius:50%;
+
+    background:#0a6cff;
+
+}
+
+.card-recursos .recurso-placa-texto{
+
+    min-width:0;
+
+    font-weight:700;
+
+    line-height:1.3;
+
+    overflow-wrap:anywhere;
+
+}
+
+.card-recursos .recurso-operador{
+
+    display:flex;
+
+    align-items:center;
+
+    min-width:0;
+
+    gap:8px;
+
+    padding-left:12px;
+
+    border-left:1px solid #d8e2ee;
+
+    color:#172033;
+
+    font-size:.72rem;
+
+}
+
+.card-recursos .recurso-operador-icone{
+
+    flex-shrink:0;
+
+    font-size:1.15rem;
+
+}
+
+.card-recursos .recurso-operador-dados{
+
+    display:flex;
+
+    flex-direction:column;
+
+    min-width:0;
+
+    gap:2px;
+
+}
+
+.card-recursos .recurso-operador-nome{
+    
+    font-size:.72rem;
+
+    font-weight:600;
+
+    line-height:1.2;
+
+    overflow-wrap:anywhere;
+
+}
+
+.card-recursos .recurso-operador-contato{
+
+    color:#62718a;
+
+    font-size:.72rem;
+
+    line-height:1.2;
+
+}
+
+.card-recursos > .painel-total{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    margin-top:18px;
+
+    padding:14px;
+
+    border-left-color:#0a6cff;
+
+    background:#eef6ff;
+
+    color:#0b57b7;
+
+    font-size:.95rem;
+
+    font-weight:700;
+
+}
+
+.card-recursos > .painel-total::before{
+
+    content:"📋";
+
+    font-size:1.25rem;
+
+}
+
+/* ==================================================
+   ATIVIDADES DO DIA MOBILE
+================================================== */
+
+.card-atividades{
+
+    padding:18px;
+
+}
+
+.card-atividades .atividades-lista{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+    margin-top:16px;
+
+}
+
+.card-atividades .atividade-card{
+
+    overflow:hidden;
+
+    border:1px solid #d8e2ee;
+
+    border-radius:18px;
+
+    background:#fff;
+
+    box-shadow:0 4px 14px rgba(15,23,42,.06);
+
+}
+
+.card-atividades .atividade-cabecalho{
+
+    padding:16px 18px;
+
+    background:linear-gradient(180deg,#184a78 0%,#1c4f7f 100%);
+
+    color:#fff;
+
+}
+
+.card-atividades .atividade-lider{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:12px;
+
+    margin-bottom:10px;
+
+}
+
+.card-atividades .atividade-lider h3{
+
+    margin:0;
+
+    font-size:1.05rem;
+
+    line-height:1.2;
+
+}
+
+.card-atividades .atividade-total{
+
+    padding:4px 12px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.18);
+
+    font-size:.72rem;
+
+    font-weight:700;
+
+}
+
+.card-atividades .atividade-telefone,
+
+.card-atividades .atividade-equipe,
+
+.card-atividades .atividade-tecnico{
+
+    margin:4px 0 0;
+
+    font-size:.74rem;
+
+    line-height:1.25;
+
+}
+
+.card-atividades .atividade-oms{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    padding:14px;
+
+    background:#f7f9fc;
+
+}
+
+.card-atividades .atividade-om{
+
+    padding:16px;
+
+    border:1px solid #d8e2ee;
+
+    border-radius:14px;
+
+    background:#fff;
+
+}
+
+.card-atividades .om-topo{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin-bottom:10px;
+
+}
+
+.card-atividades .om-numero{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    font-size:.82rem;
+
+    font-weight:700;
+
+    color:#17325c;
+
+    white-space:nowrap;
+
+}
+
+.card-atividades .om-status{
+
+    padding:4px 10px;
+
+    border-radius:999px;
+
+    font-size:.68rem;
+
+    font-weight:700;
+
+    white-space:nowrap;
+
+}
+
+.card-atividades .om-descricao{
+
+    font-size:.78rem;
+
+    line-height:1.45;
+
+    color:#445469;
+
+}
+
+.card-atividades .om-documentos{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+    margin-top:12px;
+
+    padding-top:10px;
+
+    border-top:1px dashed #e1e8f0;
+
+}
+
+.card-atividades .om-documento{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:5px;
+
+    font-size:.76rem;
+
+    font-weight:700;
+
+    text-decoration:none;
+
+    white-space:nowrap;
+
+}
+
+.card-atividades .om-documento-icone{
+
+    font-size:.85rem;
+
+    line-height:1;
+
+}
+
+.card-atividades .om-documento-disponivel{
+
+    color:#17325c;
+
+}
+
+.card-atividades .om-documento-indisponivel{
+
+    color:#9aa7b8;
+
+}
+
+/* ======================================
+   OBSERVAÇÕES - MOBILE
+====================================== */
+
+.atividade-observacoes{
+
+    margin-top:18px;
+
+}
+
+.observacoes-header{
+
+    padding:14px 16px;
+
+}
+
+.observacoes-titulo{
+
+    gap:8px;
+
+    font-size:18px;
+
+}
+
+.observacoes-body{
+
+    padding:16px;
+
+}
+
+.observacoes-body li{
+
+    padding-left:18px;
+
+    margin-bottom:10px;
+
+    font-size:14px;
+
+    line-height:1.5;
+
+}
+
+}
+
+/* Sobrescreve a grade compacta acima: cada recurso vira um cartão vertical. */
+@media (max-width: 768px) {
+    .card-recursos .recurso-linha{
+        display:flex;
+        flex-direction:column;
+        align-items:stretch;
+        gap:14px;
+        padding:15px;
+        border:1px solid #d8e2ee;
+        border-radius:12px;
+    }
+
+    .card-recursos .recurso-identificacao{
+        display:grid;
+        grid-template-columns:38px minmax(0, 1fr);
+        align-items:center;
+        gap:10px;
+        width:100%;
+    }
+
+    .card-recursos .recurso-linha-icone{
+        width:38px;
+        height:38px;
+        flex-basis:38px;
+        border-radius:50%;
+        font-size:18px;
+    }
+
+    .card-recursos .recurso-placa-texto{
+        font-size:15px;
+        line-height:1.3;
+    }
+
+    .card-recursos .recurso-status{
+        grid-column:2;
+        grid-row:2;
+        justify-self:start;
+        margin:0;
+        padding:5px 8px;
+        font-size:10px;
+    }
+
+    .card-recursos .recurso-status-ponto{
+        width:8px;
+        height:8px;
+    }
+
+    .card-recursos .recurso-operador{
+        display:flex;
+        align-items:flex-start;
+        min-width:0;
+        padding:11px 0 0;
+        border-top:1px solid #e4eaf1;
+        border-left:0;
+        font-size:14px;
+    }
+
+    .card-recursos .recurso-operador-nome{
+        font-size:14px;
+        line-height:1.35;
+    }
+
+    .card-recursos .recurso-operador-contato{
+        font-size:13px;
+        line-height:1.35;
+    }
+}

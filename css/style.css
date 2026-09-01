@@ -1,0 +1,216 @@
+/* ==========================================================
+   VARIÁVEIS GLOBAIS
+   ========================================================== */
+
+:root{
+
+    --primary:#0B3B63;
+    --primary-hover:#13558B;
+    --primary-light:#EAF3FF;
+
+    --sidebar:#011B3F;
+
+    --background:#EEF3F8;
+    --surface:#FFFFFF;
+
+    --text:#2C3E50;
+    --text-light:#6B7280;
+
+    --success:#2ECC71;
+    --warning:#F1C40F;
+    --danger:#E74C3C;
+
+    --radius-sm:10px;
+    --radius-md:16px;
+    --radius-lg:20px;
+
+    --shadow-sm:0 2px 8px rgba(0,0,0,.06);
+    --shadow-md:0 8px 20px rgba(0,0,0,.08);
+    --shadow-lg:0 15px 35px rgba(0,0,0,.12);
+
+    --transition:.25s ease;
+
+}
+
+
+/* ==========================================================
+   RESET
+   ========================================================== */
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+
+}
+
+
+/* ==========================================================
+   BODY
+   ========================================================== */
+
+body{
+
+    background:var(--background);
+    color:var(--text);
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+}
+
+
+/* ==========================================================
+   CONTEÚDO
+   ========================================================== */
+
+.conteudo{
+
+    position:relative;
+
+    margin-left:var(--sidebar-collapse-width);
+
+    width:calc(100% - var(--sidebar-collapse-width));
+
+    min-height:100vh;
+
+    padding:28px;
+
+    transition:none;
+
+}
+
+
+/* ==========================================================
+   SIDEBAR RECOLHIDA
+   ========================================================== */
+
+body.sidebar-recolhida .conteudo{
+
+    margin-left:var(--sidebar-collapse-width);
+
+    width:calc(100% - var(--sidebar-collapse-width));
+
+}
+
+
+/* ==========================================================
+   PÁGINAS
+   ========================================================== */
+
+.pagina{
+
+    display:none;
+
+}
+
+.pagina.ativa{
+
+    display:block;
+
+}
+
+
+/* ==========================================================
+   RESPONSIVO GLOBAL
+   ========================================================== */
+
+@media(max-width:900px){
+
+    .conteudo{
+
+        margin-left:0;
+        width:100%;
+
+        padding:20px;
+
+    }
+
+    body{
+
+        flex-direction:column;
+
+    }
+
+}
+
+/* ==========================================
+   Destaque da Busca
+========================================== */
+
+.busca-destaque{
+
+    position: relative;
+    z-index: 2;
+
+    animation: buscaPulse 2.2s cubic-bezier(.22,.61,.36,1);
+
+}
+
+@keyframes buscaPulse{
+
+    0%,100%{
+
+        transform: scale(1);
+        box-shadow:none;
+        filter:none;
+
+    }
+
+    15%{
+
+        transform:scale(1.015);
+
+        box-shadow:
+            0 0 0 3px rgba(11,59,99,.28),
+            0 12px 28px rgba(11,59,99,.18);
+
+        filter:brightness(1.02);
+
+    }
+
+    30%{
+
+        transform:scale(1);
+        box-shadow:none;
+        filter:none;
+
+    }
+
+    45%{
+
+        transform:scale(1.015);
+
+        box-shadow:
+            0 0 0 3px rgba(11,59,99,.28),
+            0 12px 28px rgba(11,59,99,.18);
+
+        filter:brightness(1.02);
+
+    }
+
+    60%{
+
+        transform:scale(1);
+        box-shadow:none;
+        filter:none;
+
+    }
+
+    75%{
+
+        transform:scale(1.015);
+
+        box-shadow:
+            0 0 0 3px rgba(11,59,99,.28),
+            0 12px 28px rgba(11,59,99,.18);
+
+        filter:brightness(1.02);
+
+    }
+
+}
+

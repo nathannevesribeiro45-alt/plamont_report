@@ -1,0 +1,817 @@
+:root{
+
+    --sidebar-width:260px;
+    --sidebar-collapse-width:72px;
+
+    --sidebar-bg:#041E42;
+
+    --sidebar-hover:#0B3A73;
+
+    --sidebar-active:#0F5EA8;
+
+    --sidebar-text:#FFFFFF;
+
+    --sidebar-border:rgba(255,255,255,.08);
+
+    --transition:.25s ease;
+
+}
+
+/* ==========================================================
+   SIDEBAR
+   ========================================================== */
+
+.sidebar{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:var(--sidebar-width);
+    height:100vh;
+
+    display:flex;
+    flex-direction:column;
+
+    background:var(--sidebar-bg);
+
+    overflow:visible;
+
+    z-index:1000;
+
+    transform:translateX(0);
+
+    transition:
+        transform .35s cubic-bezier(.4,0,.2,1),
+        width .35s cubic-bezier(.4,0,.2,1);
+
+}
+
+
+/* ==========================================================
+   HEADER
+   ========================================================== */
+
+.sidebar-header{
+
+    position:relative;
+
+    height:82px;
+
+    display:flex;
+    align-items:center;
+
+    padding:14px 18px;
+
+    border-bottom:1px solid var(--sidebar-border);
+
+}
+
+.sidebar-header::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:12px;
+    right:12px;
+    bottom:0;
+
+    height:1px;
+
+    background:rgba(255,255,255,.08);
+
+}
+
+
+/* ==========================================================
+   LOGO
+   ========================================================== */
+
+.sidebar-logo{
+
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+
+    width:100%;
+    height:100%;
+
+    gap:12px;
+
+    transition:all .35s cubic-bezier(.4,0,.2,1);
+
+}
+
+.sidebar-logo img{
+
+    width:72px;
+    height:auto;
+
+    object-fit:contain;
+
+    flex-shrink:0;
+
+    transition:transform .35s cubic-bezier(.4,0,.2,1);
+
+}
+
+
+/* ==========================================================
+   BOTÃO
+   ========================================================== */
+
+.sidebar-toggle{
+    
+
+    position:absolute;
+
+    right: -17px;
+    top:calc(50% + 40px);
+
+    transform:translateY(-50%);
+
+    width:34px;
+    height:34px;
+
+    border:1px solid rgba(4,30,66,.08);
+    
+    box-shadow:
+        0 6px 18px rgba(0,0,0,.15);
+
+    border-radius:50%;
+
+    cursor:pointer;
+    transition:all .25s ease;
+    background:#FFF;
+
+    color:#041E42;
+
+
+}
+
+.sidebar-toggle:hover{
+
+    transform:translateY(-50%) scale(1.08);
+
+    box-shadow:
+        0 8px 22px rgba(0,0,0,.22);
+
+          background:#1e4f93;
+
+    color:#FFF;
+
+}
+
+
+
+
+/* ==========================================================
+   MENU
+   ========================================================== */
+
+.sidebar-menu{
+
+    flex:1;
+
+    display:flex;
+    flex-direction:column;
+
+    padding:24px 12px 12px;
+
+    overflow-y:auto;
+
+}
+
+
+/* Scroll */
+
+.sidebar-menu::-webkit-scrollbar{
+
+    width:6px;
+
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb{
+
+    border-radius:20px;
+
+}
+
+/* ==========================================
+   IDENTIDADE
+========================================== */
+
+.sidebar-brand{
+
+    display:flex;
+    flex-direction:column;
+
+    justify-content:center;
+
+    white-space:nowrap;
+
+    transition:
+        opacity .25s ease,
+        transform .25s ease,
+        width .25s ease;
+
+}
+
+.brand-title{
+
+    color:#FFF;
+
+    font-size:17px;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+    line-height:1;
+
+}
+
+.brand-subtitle{
+
+    margin-top:4px;
+
+    color:rgba(255,255,255,.65);
+
+    font-size:12px;
+
+    font-weight:500;
+
+    letter-spacing:3px;
+
+    text-transform:uppercase;
+
+}
+
+
+/* ==========================================================
+   RESPONSIVO
+   ========================================================== */
+
+@media (max-width:900px){
+
+    .sidebar{
+
+        transform:translateX(-100%);
+
+    }
+
+    .sidebar.aberta{
+
+        transform:translateX(0);
+
+    }
+
+}
+
+.sidebar.recolhida{
+
+    width:var(--sidebar-collapse-width);
+
+}
+
+
+.sidebar .menu-btn{
+
+    transition:
+        padding .35s cubic-bezier(.4,0,.2,1),
+        justify-content .35s cubic-bezier(.4,0,.2,1);
+
+}
+
+.submenu-btn{
+    transition:
+        background .25s ease,
+        transform .25s ease;
+}
+
+.submenu-btn::before{
+    content:"";
+    position:absolute;
+    left:18px;
+    top:50%;
+    transform:translateY(-50%);
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:rgba(255,255,255,.75);
+    transition:all .25s ease;
+}
+
+.submenu-btn:hover{
+    background:#1E5D96;
+    transform:translateX(4px);
+}
+
+.submenu-btn:hover::before{
+    width:8px;
+    height:8px;
+    background:#6EB8FF;
+}
+
+/* ==========================================================
+   SIDEBAR RECOLHIDA
+   Layout, logo, ícones, toggle e submenu
+   ========================================================== */
+
+
+
+.sidebar.recolhida .sidebar-toggle{
+
+    transform:translateY(-50%) rotate(180deg);
+
+}
+
+
+.sidebar.recolhida .sidebar-logo{
+
+    justify-content:center;
+    transform:translateX(6px);
+
+}
+
+.sidebar.recolhida .sidebar-brand{
+
+    width:0;
+
+    opacity:0;
+
+    overflow:hidden;
+
+    transform:translateX(-10px);
+
+    pointer-events:none;
+
+}
+
+.sidebar.recolhida .sidebar-logo img{
+
+    transform:none;
+
+}
+
+/* Dashboard e contratos */
+
+.sidebar.recolhida .menu-btn{
+
+    padding:0;
+
+    gap:0;
+
+    justify-content:center;
+
+}
+
+/* Ícones */
+
+.sidebar.recolhida .menu-icon,
+.sidebar.recolhida .icone{
+
+    margin-right:0;
+
+}
+
+/* Textos */
+
+.menu-texto,
+.menu-title,
+.seta{
+
+    transition:
+        opacity .20s ease,
+        transform .20s ease;
+
+}
+
+.sidebar.recolhida .menu-texto{
+
+    width:0;
+
+    flex:0 0 0;
+
+    overflow:hidden;
+
+    opacity:0;
+
+    transform:translateX(-10px);
+
+}
+
+.sidebar.recolhida .menu-title{
+
+    flex:0 0 0;
+
+    width:0;
+
+}
+.sidebar.recolhida .seta{
+
+    opacity:0;
+
+    transform:translateX(-10px);
+
+    pointer-events:none;
+
+}
+
+.sidebar.recolhida .seta{
+
+    width:0;
+    flex:0 0 0;
+    margin:0;
+    overflow:hidden;
+
+}
+
+/* Impede abrir submenu quando recolhida.
+   Depois faremos a expansão automática. */
+
+.sidebar.recolhida .submenu{
+   
+    display:none;
+}
+/* ==========================================================
+   MENU E SUBMENU
+   ========================================================== */
+
+.menu-btn{
+    width:100%;
+    min-height:52px;
+    margin-bottom:6px;
+    padding:0 16px;
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:10px;border:none;
+    border-radius:12px;
+    background:#13558b;
+    color:#fff;
+    font-size:15px;
+    font-weight:600;cursor:pointer;transition:.25s
+}
+
+.menu-btn:hover{
+    background:#1A6AA8;
+    transform:translateX(5px)
+}
+
+.menu-btn.ativo{
+    background:linear-gradient(90deg,#2479ff,#1b63d4)
+}
+
+.menu-item{
+    margin-bottom:1px
+}
+
+.submenu{
+    display:flex;
+    flex-direction:column;
+    gap: 7px;
+    max-height:0;
+    opacity:0;
+    overflow:hidden;
+    transform:translateY(-8px);
+    transition:max-height .35s ease,opacity .25s ease,transform .25s ease}
+
+.submenu.aberto{
+    max-height:800px;
+    opacity:1;
+    transform:translateY(0);
+    margin-top:8px;
+    margin-bottom:10px
+}
+
+.submenu-btn{
+    position:relative;
+    width:calc(100% - 18px);
+    height:40px;
+    padding:0 14px 0 36px;
+    border:none;
+    border-radius:10px;
+    background:#184A78;color:#fff
+}
+
+.menu-icon,.icone{
+    width:24px;
+    height:24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0
+}
+
+.menu-icon img,.icone img{
+    width:20px;
+    height:20px;
+    display:block;
+    filter: brightness(0) invert(1);
+}
+
+.menu-title{
+    flex:1;
+    min-width:0;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis
+}
+
+.seta{display:
+    flex;
+    align-items:center;
+    justify-content:center;
+    width:22px}
+
+.seta.aberta{transform:rotate(90deg)}
+
+
+/* ==========================================================
+   OVERLAY
+   ========================================================== */
+
+.sidebar-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.30);
+
+    backdrop-filter:blur(2px);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:
+        opacity .25s ease,
+        visibility .25s ease;
+
+    z-index:999;
+
+}
+
+.sidebar-overlay.ativo{
+
+    opacity:1;
+
+    visibility:visible;
+
+}
+/* ==========================================================
+   BUSCA DA SIDEBAR
+   ========================================================== */
+
+.sidebar-search{
+    position:relative;
+    padding:14px 12px 4px;
+}
+
+/* ---------- Campo expandido (sidebar aberta) ---------- */
+
+.search-input-wrap{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    height:44px;
+    padding:0 12px;
+
+    background:rgba(255,255,255,.08);
+    border:1px solid var(--sidebar-border);
+    border-radius:12px;
+
+    transition:var(--transition);
+}
+
+.search-input-wrap:focus-within{
+    background:rgba(255,255,255,.14);
+    border-color:rgba(255,255,255,.25);
+}
+
+.search-input-icone{
+    flex-shrink:0;
+    font-size:14px;
+    opacity:.7;
+}
+
+.search-input{
+    flex:1;
+    min-width:0;
+
+    border:none;
+    outline:none;
+    background:transparent;
+
+    color:var(--sidebar-text);
+    font-size:14px;
+    font-family:inherit;
+}
+
+.search-input::placeholder{
+    color:rgba(255,255,255,.5);
+}
+
+/* ---------- Botão-ícone (sidebar recolhida) ---------- */
+
+.search-icon-btn{
+    display:none;
+
+    width:100%;
+    height:44px;
+
+    align-items:center;
+    justify-content:center;
+
+    border:none;
+    border-radius:12px;
+
+    background:rgba(255,255,255,.08);
+    color:var(--sidebar-text);
+
+    font-size:16px;
+    cursor:pointer;
+
+    transition:var(--transition);
+}
+
+.search-icon-btn:hover{
+    background:rgba(255,255,255,.16);
+}
+
+.sidebar.recolhida .search-input-wrap{
+    display:none;
+}
+
+.sidebar.recolhida .search-icon-btn{
+    display:flex;
+}
+
+/* ---------- Dropdown de resultados ---------- */
+
+.search-resultados{
+    display:none;
+
+    position:absolute;
+    top:calc(100% - 2px);
+    left:12px;
+    right:12px;
+
+    max-height:360px;
+    overflow-y:auto;
+
+    background:#FFFFFF;
+    border-radius:12px;
+    box-shadow:0 12px 32px rgba(0,0,0,.28);
+
+    padding:6px;
+    z-index:60;
+}
+
+.search-resultados.aberto{
+    display:block;
+}
+
+.search-resultado-item{
+    width:100%;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    padding:9px 10px;
+
+    border:none;
+    background:transparent;
+    border-radius:8px;
+
+    text-align:left;
+    cursor:pointer;
+
+    transition:background .15s ease;
+}
+
+.search-resultado-item:hover,
+.search-resultado-item.selecionado{
+    background:var(--primary-light, #EAF3FF);
+}
+
+.search-resultado-icone{
+    flex-shrink:0;
+    font-size:16px;
+    width:22px;
+    text-align:center;
+}
+
+.search-resultado-texto{
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+
+.search-resultado-texto strong{
+    font-size:13.5px;
+    font-weight:600;
+    color:#1F2937;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.search-resultado-texto small{
+    font-size:11.5px;
+    color:#6B7280;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.search-resultado-texto mark{
+    background:#FFE066;
+    color:inherit;
+    border-radius:2px;
+    padding:0 1px;
+}
+
+.search-vazio{
+    padding:14px 10px;
+    font-size:13px;
+    color:#6B7280;
+    text-align:center;
+}
+
+/* Scroll do dropdown */
+.search-resultados::-webkit-scrollbar{
+    width:6px;
+}
+.search-resultados::-webkit-scrollbar-thumb{
+    background:#D9E4EF;
+    border-radius:20px;
+}
+
+/* Some junto com o texto do menu quando a sidebar recolhe */
+.sidebar.recolhida .sidebar-search{
+    
+    padding:14px 8px 4px;
+}
+
+/* ==========================================================
+   GRUPO CONTRATOS
+========================================================== */
+
+.contratos-lista{
+
+    padding-left:16px;
+    padding-top:4px;
+
+    gap:6px;
+
+}
+
+.contratos-lista .menu-item{
+
+    margin:0;
+
+}
+
+.contratos-lista .menu-btn{
+
+    min-height:42px;
+
+    margin-bottom:0;
+
+    padding:0 14px;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    background:#184A78;
+
+}
+
+.contratos-lista .menu-btn:hover{
+
+    transform:translateX(3px);
+
+}
+
+.contratos-lista .menu-icon img{
+
+    width:18px;
+    height:18px;
+
+}
+
+.contratos-lista .seta{
+
+    width:18px;
+
+}

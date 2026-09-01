@@ -1,0 +1,392 @@
+/* ==========================================
+   PLAMONT REPORT CENTER
+   Splash Screen
+========================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+}
+
+/* ==========================================
+   SPLASH SCREEN
+========================================== */
+
+.splash-screen{
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:linear-gradient(180deg,#011B3F 0%,#032B58 55%,#021C3C 100%);
+
+    z-index:9999;
+}
+
+.splash-container{
+
+    width:90%;
+    max-width:360px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+    padding:40px;
+}
+
+/* ==========================================
+   LOGO
+========================================== */
+
+.splash-logo{
+
+    width:320px;
+    max-width:80%;
+
+    margin-bottom:60px;
+
+    opacity:0;
+
+    transform:scale(.95);
+
+    filter:drop-shadow(0 0 18px rgba(255,255,255,.08));
+
+    animation:logoFade .8s ease forwards, floating 4s ease-in-out infinite;
+    animation-delay:0s,.8s;
+}
+
+/* ==========================================
+   TÍTULO
+========================================== */
+
+.splash-title{
+
+    color:#FFFFFF;
+
+    font-size:2.2rem;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+    margin-bottom:10px;
+
+    line-height:1.3;
+
+    text-shadow:0 2px 10px rgba(0,0,0,.25);
+
+    opacity:0;
+
+    animation:textFade .8s ease forwards;
+
+    animation-delay:.35s;
+}
+
+
+.splash-contracts{
+    color:#D9E3F0;
+    font-size:1.15rem;
+    font-weight:600;
+    line-height:1.8;
+    letter-spacing:.6px;
+    margin-bottom:28px;
+    opacity:0;
+    animation:textFade .8s ease forwards;
+    animation-delay:.45s;
+}
+
+/* ==========================================
+   SUBTÍTULO
+========================================== */
+
+.splash-subtitle{
+
+    color:#C9D6E8;
+
+    font-size:1rem;
+
+    font-weight:400;
+
+    letter-spacing:.8px;
+
+    margin-bottom:70px;
+
+    opacity:0;
+
+    animation:textFade .8s ease forwards;
+
+    animation-delay:.55s;
+}
+
+/* ==========================================
+   LOADING
+========================================== */
+
+.splash-loading{
+
+    width:100%;
+    max-width:380px;
+
+    opacity:0;
+
+    animation:textFade .8s ease forwards;
+
+    animation-delay:.8s;
+}
+
+/* ==========================================
+   BARRA
+========================================== */
+
+.loading-bar{
+
+    width:100%;
+    height:10px;
+
+    background:#173B63;
+
+    border-radius:50px;
+
+    overflow:hidden;
+}
+
+.loading-fill{
+
+    width:0%;
+
+    height:100%;
+
+    border-radius:50px;
+
+    background:linear-gradient(
+        90deg,
+        #2DA8FF,
+        #62C5FF
+    );
+}
+
+/* ==========================================
+   TEXTO
+========================================== */
+
+.loading-text{
+
+    display:block;
+
+    margin-top:18px;
+
+    color:#7FB3FF;
+
+    font-size:1rem;
+
+    font-weight:500;
+
+    letter-spacing:.3px;
+
+    text-shadow:0 1px 5px rgba(0,0,0,.3);
+}
+
+/* ==========================================
+   ANIMAÇÕES
+========================================== */
+
+@keyframes logoFade{
+
+    from{
+
+        opacity:0;
+        transform:scale(.95);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:scale(1);
+
+    }
+
+}
+
+@keyframes textFade{
+
+    from{
+
+        opacity:0;
+        transform:translateY(12px);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ==========================================
+   RESPONSIVO
+========================================== */
+
+@media(max-width:768px){
+
+    .splash-logo{
+
+        width:190px;
+
+    }
+
+    .splash-title{
+
+        font-size:1.6rem;
+
+    }
+
+    .splash-subtitle{
+
+        font-size:1rem;
+
+    }
+
+    .splash-loading{
+
+        max-width:300px;
+
+    }
+
+
+    .splash-contracts{
+        font-size:1.05rem;
+        line-height:1.7;
+        margin-bottom:22px;
+    }
+
+    .splash-logo{
+        margin-bottom:40px;
+    }
+
+}
+
+@keyframes floating{
+
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-4px);}
+    100%{transform:translateY(0);}
+
+}
+
+
+/* ==========================================================
+   SPLASH VISUAL v1.1 - Refinamentos
+   ========================================================== */
+.splash-screen::before{
+content:"";position:absolute;inset:0;pointer-events:none;
+background:
+repeating-linear-gradient(135deg,rgba(255,255,255,.018) 0 1px,transparent 1px 120px),
+repeating-linear-gradient(45deg,rgba(255,255,255,.012) 0 1px,transparent 1px 160px);
+opacity:.55}
+.splash-screen::after{
+content:"";position:absolute;inset:0;pointer-events:none;
+background:radial-gradient(circle at center,transparent 35%,rgba(0,0,0,.10) 70%,rgba(0,0,0,.28) 100%)}
+.splash-container{position:relative}
+.splash-container::before{
+content:"";position:absolute;width:320px;height:320px;left:50%;top:115px;
+transform:translate(-50%,-50%);border-radius:50%;
+background:radial-gradient(circle,rgba(90,180,255,.18) 0%,rgba(90,180,255,.08) 35%,rgba(90,180,255,0) 72%);
+filter:blur(18px);z-index:0}
+.splash-container>*{position:relative;z-index:1}
+.splash-logo{margin-bottom:80px}
+.splash-title{margin-bottom:18px}
+.splash-contracts{margin-bottom:34px}
+.splash-subtitle{margin-bottom:82px}
+.loading-bar{
+border:1px solid rgba(255,255,255,.08);
+box-shadow:inset 0 2px 6px rgba(0,0,0,.30),0 0 10px rgba(45,168,255,.06)}
+.loading-fill{
+box-shadow:inset 0 1px 2px rgba(255,255,255,.30),0 0 8px rgba(45,168,255,.35)}
+@media(max-width:768px){
+.splash-container::before{width:220px;height:220px;top:95px}
+.splash-logo{margin-bottom:55px}
+.splash-subtitle{margin-bottom:60px}
+}
+
+
+
+/* ==========================================================
+   SPLASH VISUAL v1.2 - Acabamentos
+   ========================================================== */
+
+/* Blueprint mais técnico e discreto */
+.splash-screen::before{
+    background:
+      radial-gradient(circle at 18% 22%, rgba(255,255,255,.03) 0 2px, transparent 2px),
+      radial-gradient(circle at 78% 68%, rgba(255,255,255,.025) 0 2px, transparent 2px),
+      repeating-linear-gradient(0deg,
+        transparent 0 38px,
+        rgba(255,255,255,.012) 38px 39px),
+      repeating-linear-gradient(90deg,
+        transparent 0 38px,
+        rgba(255,255,255,.012) 38px 39px);
+    opacity:.45;
+}
+
+/* Halo mais natural */
+.splash-container::before{
+    width:360px;
+    height:360px;
+    top:120px;
+    background:radial-gradient(circle,
+        rgba(120,195,255,.16) 0%,
+        rgba(120,195,255,.08) 38%,
+        rgba(120,195,255,0) 74%);
+    filter:blur(28px);
+}
+
+/* Tipografia e espaçamento */
+.splash-title{
+    letter-spacing:.8px;
+    margin-bottom:20px;
+}
+.splash-contracts{
+    letter-spacing:1px;
+    margin-bottom:38px;
+}
+.splash-subtitle{
+    color:#d6dfeb;
+    margin-bottom:86px;
+}
+
+/* Barra refinada */
+.loading-bar{
+    height:12px;
+    background:#15385f;
+    border:1px solid rgba(255,255,255,.10);
+}
+.loading-fill{
+    background:linear-gradient(90deg,#2DA8FF,#78D2FF);
+}
+
+.loading-text{
+    transition:opacity .35s ease;
+}
+
+@media(max-width:768px){
+  .splash-container::before{
+    width:250px;
+    height:250px;
+    top:100px;
+  }
+}

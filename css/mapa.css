@@ -1,0 +1,1088 @@
+/* ==========================================================
+   MAPA DE ATIVIDADES — VISÃO AÉREA
+   Estrutura pensada para evoluir com dados
+   geográficos reais (lat/lng) por frente/OM.
+   ========================================================== */
+
+#mapa .cabecalho{
+    margin-bottom:18px;
+}
+
+/* ==========================================================
+   ÁREA DO MAPA
+   ========================================================== */
+
+.mapa-area{
+
+    position:relative;
+
+    width:100%;
+    height:calc(100vh - 250px);
+    min-height:520px;
+
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+
+    box-shadow:var(--shadow-md);
+    background:#dfe7ee;
+
+}
+
+.mapa-canvas{
+
+    position:absolute;
+    inset:0;
+
+    width:100%;
+    height:100%;
+    z-index:1;
+
+}
+
+/* Ajustes finos do Leaflet para combinar com o resto do app */
+
+.mapa-canvas .leaflet-control-attribution{
+
+    font-size:10px;
+    background:rgba(255,255,255,.75);
+    border-radius:6px 0 0 0;
+
+}
+
+.mapa-canvas .leaflet-control-zoom{
+    display:none; /* usamos os controles custom */
+}
+
+/* ==========================================================
+   MARCADORES
+   ========================================================== */
+
+.mapa-marker-wrap{
+
+    position:relative;
+
+    width:34px;
+    height:34px;
+
+}
+
+.mapa-marker{
+
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:34px;
+    height:34px;
+
+    border-radius:50% 50% 50% 0;
+    transform:rotate(-45deg);
+
+    background:var(--text-light);
+    border:3px solid #fff;
+
+    box-shadow:var(--shadow-sm);
+
+    cursor:pointer;
+    transition:transform var(--transition);
+
+}
+
+.mapa-marker svg,
+.mapa-marker span{
+    transform:rotate(45deg);
+}
+
+.mapa-marker:hover{
+    transform:rotate(-45deg) scale(1.12);
+}
+
+.mapa-marker.selecionado{
+
+    transform:rotate(-45deg) scale(1.18);
+    box-shadow:0 0 0 4px rgb(184, 184, 190), var(--shadow-md);
+}
+
+.mapa-marker-icone{
+
+    width:16px;
+    height:16px;
+
+    color:#fff;
+
+}
+
+.mapa-marker.status-concluida{ background:var(--success); }
+.mapa-marker.status-andamento{ background:#F2A70B; }
+.mapa-marker.status-atrasada{ background:var(--danger); }
+.mapa-marker.status-planejada{ background:#3B82F6; }
+
+/* Rótulo (label) ao lado do pino */
+
+.mapa-marker-label{
+
+    position:absolute;
+    top:38px;
+    left:50%;
+    transform:translateX(-50%);
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:3px;
+
+    white-space:nowrap;
+    pointer-events:none;
+
+}
+
+.mapa-marker-label strong{
+
+    background:#fff;
+    color:var(--text);
+
+    font-size:11px;
+    font-weight:700;
+
+    padding:2px 8px;
+    border-radius:8px;
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+.mapa-marker-tag{
+
+    font-size:9px;
+    font-weight:700;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+
+    color:#fff;
+    padding:1px 7px;
+    border-radius:6px;
+
+}
+
+.mapa-marker-tag.status-concluida{ background:var(--success); }
+.mapa-marker-tag.status-andamento{ background:#F2A70B; }
+.mapa-marker-tag.status-atrasada{ background:var(--danger); }
+.mapa-marker-tag.status-planejada{ background:#3B82F6; }
+
+/* ==========================================================
+   CONTROLES CUSTOM (zoom / localizar / camadas)
+   ========================================================== */
+
+.mapa-controles{
+
+    position:absolute;
+    top:16px;
+    left:16px;
+    z-index:500;
+
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+
+}
+
+.mapa-controle-btn{
+
+    width:38px;
+    height:38px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#fff;
+    color:var(--text);
+
+    border:none;
+    border-radius:var(--radius-sm);
+
+    font-size:18px;
+    font-weight:600;
+    line-height:1;
+
+    box-shadow:var(--shadow-sm);
+    cursor:pointer;
+
+    transition:background var(--transition), transform var(--transition);
+
+}
+
+.mapa-controle-btn:hover{
+    background:var(--primary-light);
+    color:var(--primary);
+}
+
+.mapa-controle-btn:active{
+    transform:scale(.94);
+}
+
+.mapa-controle-btn[data-acao="camadas"]{
+    margin-top:6px;
+}
+
+/* ==========================================================
+   LEGENDA
+   ========================================================== */
+
+.mapa-legenda{
+
+    position:absolute;
+    left:16px;
+    bottom:16px;
+    z-index:500;
+
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+
+    background:#fff;
+    padding:10px 14px;
+    border-radius:var(--radius-md);
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+.mapa-legenda-item{
+
+    display:flex;
+    align-items:center;
+    gap:7px;
+
+    border:none;
+    background:transparent;
+
+    font-size:13px;
+    font-weight:600;
+    color:var(--text);
+
+    padding:4px 6px;
+    border-radius:8px;
+
+    cursor:pointer;
+    opacity:1;
+
+    transition:opacity var(--transition), background var(--transition);
+
+}
+
+.mapa-legenda-item:hover{
+    background:var(--background);
+}
+
+.mapa-legenda-item.inativo{
+    opacity:.4;
+}
+
+.mapa-legenda-dot{
+
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    flex-shrink:0;
+
+}
+
+.mapa-legenda-dot.status-concluida{ background:var(--success); }
+.mapa-legenda-dot.status-andamento{ background:#F2A70B; }
+.mapa-legenda-dot.status-atrasada{ background:var(--danger); }
+.mapa-legenda-dot.status-planejada{ background:#3B82F6; }
+
+/* ==========================================================
+   PAINEL LATERAL DE DETALHES
+   ========================================================== */
+
+.mapa-painel{
+
+    position:absolute;
+    top:0;
+    right:0;
+    bottom:0;
+    z-index:600;
+
+    width:360px;
+    max-width:88%;
+
+    background:var(--surface);
+
+    box-shadow:-8px 0 24px rgba(0,0,0,.12);
+
+    transform:translateX(100%);
+    transition:transform var(--transition);
+
+    overflow-y:auto;
+
+}
+
+.mapa-painel.aberto{
+    transform:translateX(0);
+}
+
+.mapa-painel-fechar{
+
+    position:absolute;
+    top:14px;
+    right:14px;
+    z-index:2;
+
+    width:30px;
+    height:30px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border:none;
+    border-radius:50%;
+
+    background:var(--background);
+    color:var(--text-light);
+
+    font-size:14px;
+    cursor:pointer;
+
+    transition:background var(--transition), color var(--transition);
+
+}
+
+.mapa-painel-fechar:hover{
+    background:var(--danger);
+    color:#fff;
+}
+
+.mapa-painel-conteudo{
+    padding:22px 20px 32px;
+}
+
+/* Cabeçalho do painel */
+
+.mapa-painel-topo{
+
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
+
+    padding-right:28px;
+
+    margin-bottom:16px;
+
+}
+
+.mapa-painel-titulo{
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+}
+
+.mapa-painel-pino{
+
+    width:34px;
+    height:34px;
+    flex-shrink:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+    color:#fff;
+
+}
+
+.mapa-painel-pino svg{
+    width:16px;
+    height:16px;
+}
+
+.mapa-painel-pino.status-concluida{ background:var(--success); }
+.mapa-painel-pino.status-andamento{ background:#F2A70B; }
+.mapa-painel-pino.status-atrasada{ background:var(--danger); }
+.mapa-painel-pino.status-planejada{ background:#3B82F6; }
+
+.mapa-painel-titulo h2{
+    font-size:17px;
+    color:var(--text);
+}
+
+.mapa-painel-titulo .mapa-painel-categoria{
+    font-size:12.5px;
+    color:var(--text-light);
+    margin-top:2px;
+}
+
+.mapa-painel-badge{
+
+    flex-shrink:0;
+
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+
+    color:#fff;
+    padding:4px 10px;
+    border-radius:20px;
+    white-space:nowrap;
+
+}
+
+.mapa-painel-badge.status-concluida{ background:var(--success); }
+.mapa-painel-badge.status-andamento{ background:#F2A70B; }
+.mapa-painel-badge.status-atrasada{ background:var(--danger); }
+.mapa-painel-badge.status-planejada{ background:#3B82F6; }
+
+.mapa-painel-local{
+
+    font-size:13px;
+    color:var(--text-light);
+    margin:2px 0 18px;
+
+}
+
+/* Blocos de seção */
+
+.mapa-painel-secao{
+
+    padding:14px 0;
+    border-top:1px solid #EDF1F5;
+
+}
+
+.mapa-painel-secao:first-of-type{
+    border-top:1px solid #EDF1F5;
+}
+
+.mapa-painel-secao-titulo{
+
+    display:flex;
+    align-items:center;
+    gap:7px;
+
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+
+    color:var(--text-light);
+
+    margin-bottom:10px;
+
+}
+
+/* ==========================================================
+   LÍDERES DA FRENTE — CARROSSEL/SLIDER
+   Um marcador = uma frente = N líderes.
+   Cada líder ocupa um slide próprio; nome, telefone,
+   equipe e OMs nunca se misturam entre líderes.
+   ========================================================== */
+
+.mapa-painel-secao-lideres{
+    padding-bottom:6px;
+}
+
+.mapa-painel-lideres-titulo{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+}
+
+.mapa-painel-lideres-contador{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0;
+    text-transform:none;
+    color:var(--text-light);
+    background:var(--background);
+    border-radius:20px;
+    padding:2px 9px;
+    flex-shrink:0;
+}
+
+.mapa-painel-carrossel-wrap{
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.mapa-painel-carrossel-wrap.unico{
+    gap:0;
+}
+
+/* Área que rola — cada slide ocupa 100% da largura
+   do card, então nunca fica comprimido nem mostra
+   dois líderes lado a lado. */
+.mapa-painel-carrossel{
+    flex:1;
+    min-width:0;
+
+    overflow-x:auto;
+    overflow-y:hidden;
+
+    scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;
+    -webkit-overflow-scrolling:touch;
+
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+.mapa-painel-carrossel::-webkit-scrollbar{
+    display:none;
+}
+
+.mapa-painel-carrossel-track{
+    display:flex;
+}
+
+.mapa-painel-lider-slide{
+    flex:0 0 100%;
+    width:100%;
+    min-width:0;
+    box-sizing:border-box;
+
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+}
+
+/* Espaçamento entre os blocos (equipe / OMs)
+   dentro do slide de um mesmo líder. */
+.mapa-painel-lider-bloco{
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px dashed #E3E8EE;
+}
+
+/* Setas de navegação (desktop) */
+.mapa-painel-seta{
+
+    flex-shrink:0;
+
+    width:28px;
+    height:28px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border:none;
+    border-radius:50%;
+
+    background:var(--background);
+    color:var(--text);
+
+    font-size:18px;
+    line-height:1;
+    cursor:pointer;
+
+    transition:background var(--transition), color var(--transition);
+
+}
+
+.mapa-painel-seta:hover{
+    background:var(--primary);
+    color:#fff;
+}
+
+/* Indicadores discretos (● ○) */
+.mapa-painel-dots{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+
+    margin-top:10px;
+}
+
+.mapa-painel-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+
+    background:#D6DEE7;
+    cursor:pointer;
+
+    transition:background var(--transition), width var(--transition);
+}
+
+.mapa-painel-dot.ativo{
+    width:16px;
+    border-radius:4px;
+    background:var(--primary);
+}
+
+/* Líder responsável */
+
+.mapa-painel-lider-nome{
+    font-size:14.5px;
+    font-weight:600;
+    color:var(--text);
+}
+
+.mapa-painel-lider-linha{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+
+    margin-top:4px;
+
+}
+
+.mapa-painel-telefone{
+    font-size:13px;
+    color:var(--text-light);
+}
+
+.mapa-painel-whats{
+
+    width:30px;
+    height:30px;
+    flex-shrink:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+    background:#25D366;
+    color:#fff;
+
+    text-decoration:none;
+
+    transition:transform var(--transition);
+
+}
+
+.mapa-painel-whats svg{
+    width:15px;
+    height:15px;
+}
+
+.mapa-painel-whats:hover{
+    transform:scale(1.08);
+}
+
+/* Listas chave/valor (equipe / equipamentos) */
+
+.mapa-painel-lista{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.mapa-painel-lista-linha{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+
+    font-size:13.5px;
+    color:var(--text);
+
+}
+
+.mapa-painel-lista-linha.total{
+
+    padding-top:8px;
+    margin-top:2px;
+    border-top:1px dashed #E3E8EE;
+
+    font-weight:700;
+    color:var(--primary);
+
+}
+
+.mapa-painel-status-dot{
+
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+
+    font-size:12.5px;
+    font-weight:600;
+
+}
+
+.mapa-painel-status-dot::before{
+
+    content:"";
+
+    width:8px;
+    height:8px;
+    border-radius:50%;
+
+    background:var(--text-light);
+
+}
+
+.mapa-painel-status-dot.operante{ color:var(--success); }
+.mapa-painel-status-dot.operante::before{ background:var(--success); }
+
+.mapa-painel-status-dot.preventiva{ color:#F2A70B; }
+.mapa-painel-status-dot.preventiva::before{ background:#F2A70B; }
+
+.mapa-painel-status-dot.parada{ color:var(--danger); }
+.mapa-painel-status-dot.parada::before{ background:var(--danger); }
+
+/* Atividades da Frente (lista de OMs do marcador) */
+
+.mapa-painel-atividades{
+    display:flex;
+    flex-direction:column;
+}
+
+.mapa-painel-atividade{
+
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+
+    padding:10px 0;
+    border-top:1px dashed #E3E8EE;
+
+}
+
+.mapa-painel-atividade:first-child{
+    border-top:none;
+    padding-top:0;
+}
+
+.mapa-painel-atividade-dot{
+
+    flex-shrink:0;
+    margin-top:5px;
+
+    width:9px;
+    height:9px;
+    border-radius:50%;
+
+}
+
+.mapa-painel-atividade-dot.status-concluida{ background:var(--success); }
+.mapa-painel-atividade-dot.status-andamento{ background:#F2A70B; }
+.mapa-painel-atividade-dot.status-atrasada{ background:var(--danger); }
+.mapa-painel-atividade-dot.status-planejada{ background:#3B82F6; }
+
+.mapa-painel-atividade-texto{
+    min-width:0;
+}
+
+.mapa-painel-atividade-numero{
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--text);
+}
+
+.mapa-painel-atividade-descricao{
+    margin-top:2px;
+    font-size:13px;
+    line-height:1.45;
+    color:var(--text-light);
+}
+
+/* Observações */
+
+.mapa-painel-obs{
+    font-size:13.5px;
+    line-height:1.55;
+    color:var(--text);
+}
+
+.mapa-painel-obs.vazio{
+    color:var(--text-light);
+    font-style:italic;
+}
+
+/* Anexos */
+
+.mapa-painel-anexos{
+
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+
+}
+
+.mapa-painel-anexo{
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    padding:9px 14px;
+    border-radius:var(--radius-sm);
+    border:1px solid #E3E8EE;
+
+    background:var(--background);
+    color:var(--text);
+
+    font-size:13px;
+    font-weight:600;
+
+    cursor:default;
+    opacity:.65;
+    text-decoration:none;
+
+}
+
+.mapa-painel-anexo.disponivel{
+    cursor:pointer;
+    opacity:1;
+    transition:background var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+.mapa-painel-anexo.disponivel:hover{
+    background:var(--surface);
+    border-color:#CBD5E1;
+    transform:translateY(-1px);
+}
+
+.mapa-painel-anexo svg{
+    width:15px;
+    height:15px;
+    flex-shrink:0;
+}
+
+.mapa-painel-anexo.pdf svg{ color:var(--danger); }
+.mapa-painel-anexo.fotos svg{ color:var(--primary); }
+
+
+/* Fotos das atividades */
+.mapa-painel-foto-acoes{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:8px;
+}
+
+.mapa-painel-btn-foto{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:7px 10px;
+    border:1px solid #E3E8EE;
+    border-radius:8px;
+    background:var(--background);
+    color:var(--primary);
+    font-size:12.5px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+.mapa-painel-btn-foto:hover{
+    background:var(--surface);
+    border-color:#CBD5E1;
+    transform:translateY(-1px);
+}
+
+.mapa-painel-input-foto{
+    display:none;
+}
+
+.mapa-painel-fotos{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:8px;
+}
+
+.mapa-painel-foto-thumb{
+    width:64px;
+    height:64px;
+    padding:0;
+    border:1px solid #E3E8EE;
+    border-radius:8px;
+    overflow:hidden;
+    background:var(--background);
+    cursor:pointer;
+}
+
+.mapa-painel-foto-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.mapa-painel-foto-overlay{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:rgba(0,0,0,.82);
+}
+
+.mapa-painel-foto-overlay img{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+    border-radius:10px;
+}
+
+.mapa-painel-foto-fechar{
+    position:absolute;
+    top:16px;
+    right:16px;
+    width:38px;
+    height:38px;
+    border:0;
+    border-radius:50%;
+    background:rgba(255,255,255,.14);
+    color:#fff;
+    font-size:18px;
+    cursor:pointer;
+}
+
+/* ==========================================================
+   ESTADO VAZIO
+   ========================================================== */
+
+.mapa-vazio{
+
+    position:absolute;
+    inset:0;
+    z-index:400;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+
+    background:var(--surface);
+    text-align:center;
+
+}
+
+.mapa-vazio h3{
+    color:var(--text);
+}
+
+.mapa-vazio p{
+    color:var(--text-light);
+    font-size:14px;
+}
+
+/* ==========================================================
+   RESPONSIVO
+   ========================================================== */
+
+@media(max-width:900px){
+
+    .mapa-area{
+        height:calc(100vh - 220px);
+        min-height:460px;
+        border-radius:var(--radius-md);
+    }
+
+    .mapa-painel{
+        width:100%;
+        max-width:100%;
+    }
+
+    .mapa-legenda{
+        right:16px;
+        justify-content:center;
+    }
+
+}
+
+/* Controle de limite e gerenciamento das fotos */
+.mapa-painel-btn-foto:disabled,
+.mapa-painel-btn-foto.limite{
+    cursor:not-allowed;
+    opacity:.65;
+    transform:none;
+}
+
+.mapa-painel-foto-thumb{
+    position:relative;
+}
+
+.mapa-painel-foto-thumb-numero{
+    position:absolute;
+    right:4px;
+    bottom:4px;
+    min-width:18px;
+    height:18px;
+    padding:0 4px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:999px;
+    background:rgba(0,0,0,.65);
+    color:#fff;
+    font-size:10px;
+    font-weight:700;
+}
+
+.mapa-painel-foto-modal{
+    max-width:min(900px, 100%);
+    max-height:calc(100vh - 48px);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+}
+
+.mapa-painel-foto-modal img{
+    max-width:100%;
+    max-height:calc(100vh - 130px);
+    object-fit:contain;
+    border-radius:10px;
+}
+
+.mapa-painel-foto-modal-acoes{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    color:#fff;
+    font-size:13px;
+}
+
+.mapa-painel-foto-apagar{
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:8px;
+    padding:8px 12px;
+    background:rgba(255,255,255,.1);
+    color:#fff;
+    font-size:12.5px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.mapa-painel-foto-apagar:hover{
+    background:rgba(255,255,255,.18);
+}
+
+@media (max-width:600px){
+    .mapa-painel-foto-modal-acoes{
+        flex-direction:column;
+        align-items:stretch;
+        text-align:center;
+    }
+
+    .mapa-painel-foto-apagar{
+        width:100%;
+    }
+}

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<!--Style CSS-->
+<link href="css/style.css" rel="stylesheet"/>
+<!-- Sidebar V4 -->
+<link href="css/sidebarv4.css" rel="stylesheet"/>
+<link href="css/dashboard.css" rel="stylesheet"/>
+<link href="css/contratos.css" rel="stylesheet"/>
+<link href="css/mapa.css" rel="stylesheet"/>
+
+
+<!-- ====================================================== -->
+<!--                    SPLASH SCREEN                       -->
+<!-- ====================================================== -->
+<link href="splash/splashstyle.css?v=1.2" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Leaflet (mapa de visão aérea) -->
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>.efetivo-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.efetivo-coluna{background:#f7f9fc;border:1px solid #dbe5f0;border-radius:10px;padding:12px}.efetivo-coluna h3{margin:0 0 10px;color:#0b4f8a}.efetivo-total{margin-top:12px;padding-top:10px;border-top:1px solid #dbe5f0;font-weight:700}@media(max-width:768px){.efetivo-grid{grid-template-columns:1fr}}</style></link></link></link></head>
+<body>
+<div class="splash-screen">
+<div class="splash-container">
+<img alt="Plamont Engenharia" class="splash-logo" src="logo_horplamont_V2.png"/>
+<h1 class="splash-title">Reports</h1>
+<p class="splash-contracts">OS 440 • OS 441<br/>OS 442 • OS 450</p>
+<p class="splash-subtitle">Programação Diária de Contratos</p>
+<div class="splash-loading">
+<div class="loading-bar">
+<div class="loading-fill"></div>
+</div>
+<span class="loading-text">Inicializando....</span>
+</div>
+</div>
+</div>
+
+<!-- ====================================================== -->
+<!--                    MOBILE TOPBAR                       -->
+<!-- ====================================================== -->
+
+<header class="mobile-topbar">
+
+    <!-- Botão Menu -->
+    <button
+        class="mobile-menu-btn"
+        id="mobile-menu-btn"
+        type="button"
+        aria-label="Abrir menu">
+
+        ☰
+
+    </button>
+
+    <!-- Logo -->
+    <div class="mobile-logo-container">
+
+        <img
+            src="logo_plamont.png"
+            alt="Plamont Engenharia"
+            class="mobile-logo">
+
+    </div>
+
+    <!-- Espaço para manter a logo centralizada -->
+    <div class="mobile-actions">
+
+        <!-- Futuramente:
+             Perfil
+             Notificações
+             Configurações
+        -->
+
+    </div>
+
+</header>
+<!-- ====================================================== -->
+<!--                    SIDEBAR                      -->
+<!-- ====================================================== -->
+<aside class="sidebar" id="sidebar">
+
+<!-- ====================================================== -->
+<!--                   SIDEBAR HEADER                       -->
+<!-- ====================================================== -->
+<header class="sidebar-header">
+<div class="sidebar-logo">
+<img alt="Plamont Engenharia" src="logo_plamont.png"/>
+<div class="sidebar-brand">
+<span class="brand-title">
+            PLAMONT
+        </span>
+<span class="brand-subtitle">
+            Engenharia
+        </span>
+</div>
+</div>
+<button aria-label="Recolher menu" class="sidebar-toggle" id="sidebar-toggle" type="button">
+            ☰
+        </button>
+</header>
+<!-- ====================================================== -->
+<!--                    SIDEBAR BUSCA                       -->
+<!-- ====================================================== -->
+<div class="sidebar-search" id="sidebar-search">
+<button aria-label="Pesquisar" class="search-icon-btn" id="sidebar-search-icon" type="button">
+            🔍
+        </button>
+<div class="search-input-wrap">
+<span class="search-input-icone">🔍</span>
+<input autocomplete="off" class="search-input" id="sidebar-search-input" placeholder="Pesquisar OM, recurso, contrato..." type="text"/>
+</div>
+<div class="search-resultados" id="sidebar-search-resultados"></div>
+</div>
+<!-- ====================================================== -->
+<!--                    SIDEBAR MENU                        -->
+<!-- ====================================================== -->
+<nav class="sidebar-menu" id="sidebar-menu">
+<!-- A navegação será criada dinamicamente pelo sidebar.js -->
+</nav>
+</aside>
+<main class="conteudo">
+<!-- ====================================================== -->
+<!--                      DASHBOARD                         -->
+<!-- ====================================================== -->
+<section class="pagina ativa" id="dashboard">
+<!-- ====================================================== -->
+<!--                     HEADER                             -->
+<!-- ====================================================== -->
+<header class="cabecalho">
+
+    <div class="cabecalho-info">
+
+        <h1> Programação Diária</h1>
+
+        <p class="subtitulo">
+            Relatório Diário de Mão de Obra, Recursos e Atividades
+        </p>
+
+    </div>
+
+    <div class="data-card">
+
+    <div class="calendar-row">
+        <span class="icon">📅</span>
+        <span>31/08/2026</span>
+    </div>
+
+    <div class="calendar-row">
+        <span class="icon">👷</span>
+        <span>Dia A</span>
+    </div>
+
+    <div class="calendar-row">
+        <span class="icon">🕒</span>
+        <span>07:00 às 19:00</span>
+    </div>
+
+</div>
+
+</div>
+</header>
+
+<!-- ====================================================== -->
+<!--                     BANNER                             -->
+<!-- ====================================================== -->
+
+<section id="banner-status" class="status-banner">
+
+    <div class="status-info">
+
+        <div class="status-icon">
+            <span id="status-icone">✔</span>
+        </div>
+
+        <div class="status-texto">
+
+            <span class="status-label">
+                STATUS DA OPERAÇÃO
+            </span>
+
+            <h2 id="status-titulo" class="status-titulo">
+                Operação Normal
+            </h2>
+
+            <p id="status-mensagem-1" class="status-mensagem">
+                Todas as operações estão dentro da normalidade.
+            </p>
+
+            <p id="status-mensagem-2" class="status-mensagem">
+                Nenhuma ocorrência crítica registrada neste turno.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="status-ilustracao">
+
+        <img
+        src="assets/icons/banner_industrial.png"
+        alt="Ilustração Industrial">
+
+    </div>
+
+    <div class="status-footer">
+
+        <div class="status-item">
+            🕒 Última atualização:
+            <strong id="status-atualizacao">
+                10/08/2026 às 07:00
+            </strong>
+        </div>
+
+        <div class="status-item">
+            👷 Turno:
+            <strong id="status-turno">
+                Dia A
+            </strong>
+
+            <span id="status-horario">
+                (07:00 às 19:00)
+            </span>
+        </div>
+
+        <div class="status-item">
+            📋 Relatório consolidado
+        </div>
+
+    </div>
+
+</section>
+ 
+<!-- ====================================================== -->
+<!--                     KPI GRID                           -->
+<!-- ====================================================== -->
+<section class="dashboard-kpis">
+<article class="kpi-card">
+<div class="kpi-icon">👥</div>
+<div class="kpi-info">
+<span class="kpi-title">Efetivo</span>
+<h2 class="kpi-value">204</h2>
+<span class="kpi-subtitle">Colaboradores</span>
+</div>
+</article>
+<article class="kpi-card">
+<div class="kpi-icon">❌</div>
+<div class="kpi-info">
+<span class="kpi-title">Ausências</span>
+<h2 class="kpi-value">5</h2>
+<span class="kpi-subtitle">Registradas</span>
+</div>
+</article>
+<article class="kpi-card">
+<div class="kpi-icon">📋</div>
+<div class="kpi-info">
+<span class="kpi-title">OM's</span>
+<h2 class="kpi-value">26</h2>
+<span class="kpi-subtitle">Programadas</span>
+</div>
+</article>
+<article class="kpi-card">
+<div class="kpi-icon">🚚</div>
+<div class="kpi-info">
+<span class="kpi-title">Recursos</span>
+<h2 class="kpi-value">22</h2>
+<span class="kpi-subtitle">Disponíveis</span>
+</div>
+</article>
+<article class="kpi-card">
+<div class="kpi-icon">🏗️</div>
+<div class="kpi-info">
+<span class="kpi-title">Contratos</span>
+<h2 class="kpi-value">4</h2>
+<span class="kpi-subtitle">Ativos</span>
+</div>
+</article>
+</section>
+<!-- ====================================================== -->
+<!--                 CONTRACT GRID                          -->
+<!-- ====================================================== -->
+<section class="dashboard-contracts">
+<article class="contract-card">
+<header class="contract-header">
+<h3>🏗 OS 440</h3>
+<span class="contract-status status-normal">
+                    Operação Normal
+                </span>
+</header>
+<div class="contract-stats">
+<div class="stat">
+<strong>81</strong>
+<span>Colaboradores</span>
+</div>
+<div class="stat">
+<strong>5</strong>
+<span>OM's</span>
+</div>
+<div class="stat">
+<strong>1</strong>
+<span>Ausências</span>
+</div>
+<div class="stat">
+<strong>7</strong>
+<span>Recursos</span>
+</div>
+</div>
+</article>
+<article class="contract-card">
+<header class="contract-header">
+<h3>🏗 OS 441</h3>
+<span class="contract-status status-normal">
+                    Operação Normal
+                </span>
+</header>
+<div class="contract-stats">
+<div class="stat">
+<strong>49</strong>
+<span>Colaboradores</span>
+</div>
+<div class="stat">
+<strong>3</strong>
+<span>OM's</span>
+</div>
+<div class="stat">
+<strong>4</strong>
+<span>Ausências</span>
+</div>
+<div class="stat">
+<strong>4</strong>
+<span>Recursos</span>
+</div>
+</div>
+</article>
+<article class="contract-card">
+<header class="contract-header">
+<h3>🏗 OS 442</h3>
+<span class="contract-status status-normal">
+                    Operação Normal
+                </span>
+</header>
+<div class="contract-stats">
+<div class="stat">
+<strong>25</strong>
+<span>Colaboradores</span>
+</div>
+<div class="stat">
+<strong>16</strong>
+<span>OM's</span>
+</div>
+<div class="stat">
+<strong>0</strong>
+<span>Ausências</span>
+</div>
+<div class="stat">
+<strong>2</strong>
+<span>Recursos</span>
+</div>
+</div>
+</article>
+<article class="contract-card">
+<header class="contract-header">
+<h3>🏗 OS 450</h3>
+<span class="contract-status status-normal">
+                    Operação Normal
+                </span>
+</header>
+<div class="contract-stats">
+<div class="stat">
+<strong>49</strong>
+<span>Colaboradores</span>
+</div>
+<div class="stat">
+<strong>2</strong>
+<span>OM's</span>
+</div>
+<div class="stat">
+<strong>0</strong>
+<span>Ausências</span>
+</div>
+<div class="stat">
+<strong>9</strong>
+<span>Recursos</span>
+</div>
+</div>
+</article>
+</section>
+</section>
+<!-- ====================================================== -->
+<!--                   MAPA DE ATIVIDADES                   -->
+<!-- ====================================================== -->
+<section class="pagina" id="mapa">
+<header class="cabecalho">
+<div class="cabecalho-info">
+<h1>🗺️ Mapa de Atividades</h1>
+<p class="subtitulo">
+            Acompanhamento consolidado das atividades do dia por contrato
+        </p>
+</div>
+</header>
+<!-- Navegação por contrato -->
+<nav class="tabs" id="mapa-tabs"></nav>
+<!-- Área do mapa (visão aérea) -->
+<div class="mapa-area" id="mapa-area">
+<!-- Mapa em si -->
+<div class="mapa-canvas" id="mapa-canvas"></div>
+<!-- Controles customizados (zoom / localizar / camadas) -->
+<div class="mapa-controles" id="mapa-controles">
+<button class="mapa-controle-btn" data-acao="zoom-in" title="Aproximar" type="button">+</button>
+<button class="mapa-controle-btn" data-acao="zoom-out" title="Afastar" type="button">−</button>
+<button class="mapa-controle-btn" data-acao="localizar" title="Centralizar" type="button">
+<svg fill="none" height="18" viewbox="0 0 24 24" width="18"><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path><circle cx="12" cy="12" r="6" stroke="currentColor" stroke-width="2"></circle><circle cx="12" cy="12" fill="currentColor" r="2"></circle></svg>
+</button>
+<button class="mapa-controle-btn" data-acao="camadas" title="Camadas do mapa" type="button">
+<svg fill="none" height="18" viewbox="0 0 24 24" width="18"><path d="M12 2 2 7l10 5 10-5-10-5Z" stroke="currentColor" stroke-linejoin="round" stroke-width="2"></path><path d="m2 17 10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<!-- Legenda de status (rodapé do mapa) -->
+<div class="mapa-legenda" id="mapa-legenda">
+<!-- Preenchida via js/modules/mapa.js -->
+</div>
+<!-- Painel lateral de detalhes (aberto ao clicar em um marcador) -->
+<aside class="mapa-painel" id="mapa-painel">
+<button class="mapa-painel-fechar" id="mapa-painel-fechar" title="Fechar" type="button">✕</button>
+<div class="mapa-painel-conteudo" id="mapa-painel-conteudo">
+<!-- Preenchida via js/modules/mapa.js -->
+</div>
+</aside>
+<!-- Estado vazio (sem contratos carregados) -->
+<div class="mapa-vazio" id="mapa-vazio" style="display:none;">
+<h3>Nenhum contrato disponível</h3>
+<p>Os dados dos contratos ainda estão carregando.</p>
+</div>
+</div>
+</section>
+<!-- ====================================================== -->
+<!--                      OS 440                        -->
+<!-- ====================================================== -->
+<section class="pagina" id="os440">
+<!-- Cabeçalho -->
+<header class="cabecalho" id="os440-header">
+<div>
+<h1 id="os440-titulo"></h1>
+<p class="subtitulo" id="os440-subtitulo"></p>
+</div>
+<div class="calendar-card" id="os440-data-card"><div class="calendar-top" id="os440-data"></div><div class="calendar-body"><span class="calendar-label">TURNO</span><span class="calendar-shift" id="os440-turno"></span><span class="calendar-time" id="os440-horario"></span></div></div>
+</header>
+<!-- Navegação das abas -->
+<nav class="tabs" id="os440-tabs"></nav>
+<!-- Conteúdo renderizado -->
+<main id="os440-content">
+<!-- Conteúdo gerado pelo JavaScript -->
+</main>
+</section>
+<!-- ====================================================== -->
+<!--                      OS 441                         -->
+<!-- ====================================================== -->
+<section class="pagina" id="os441">
+<!-- Cabeçalho -->
+<header class="cabecalho" id="os441-header">
+<div>
+<h1 id="os441-titulo"></h1>
+<p class="subtitulo" id="os441-subtitulo"></p>
+</div>
+<div class="calendar-card" id="os441-data-card"><div class="calendar-top" id="os441-data"></div><div class="calendar-body"><span class="calendar-label">TURNO</span><span class="calendar-shift" id="os441-turno"></span><span class="calendar-time" id="os441-horario"></span></div></div>
+</header>
+<!-- Navegação das abas -->
+<nav class="tabs" id="os441-tabs"></nav>
+<!-- Conteúdo renderizado -->
+<main id="os441-content">
+<!-- Conteúdo gerado pelo JavaScript -->
+</main>
+</section>
+<!-- ====================================================== -->
+<!--                      OS 442                        -->
+<!-- ====================================================== -->
+<section class="pagina" id="os442">
+<!-- Cabeçalho -->
+<header class="cabecalho" id="os442-header">
+<div>
+<h1 id="os442-titulo"></h1>
+<p class="subtitulo" id="os442-subtitulo"></p>
+</div>
+<div class="calendar-card" id="os442-data-card"><div class="calendar-top" id="os442-data"></div><div class="calendar-body"><span class="calendar-label">TURNO</span><span class="calendar-shift" id="os442-turno"></span><span class="calendar-time" id="os442-horario"></span></div></div>
+</header>
+<!-- Navegação das abas -->
+<nav class="tabs" id="os442-tabs"></nav>
+<!-- Conteúdo renderizado -->
+<main id="os442-content">
+<!-- Conteúdo gerado pelo JavaScript -->
+</main>
+</section>
+<!-- ====================================================== -->
+<!--                    OS 450                     -->
+<!-- ====================================================== -->
+<section class="pagina" id="os450">
+<!-- Cabeçalho -->
+<header class="cabecalho" id="os450-header">
+<div>
+<h1 id="os450-titulo"></h1>
+<p class="subtitulo" id="os450-subtitulo"></p>
+</div>
+<div class="calendar-card" id="os450-data-card"><div class="calendar-top" id="os450-data"></div><div class="calendar-body"><span class="calendar-label">TURNO</span><span class="calendar-shift" id="os450-turno"></span><span class="calendar-time" id="os450-horario"></span></div></div>
+</header>
+<!-- Navegação das abas -->
+<nav class="tabs" id="os450-tabs"></nav>
+<!-- Conteúdo renderizado -->
+<main id="os450-content">
+<!-- Conteúdo gerado pelo JavaScript -->
+</main>
+</section>
+</main>
+<script src="js/core/navegacao.js"></script>
+<script src="js/core/utills.js"></script>
+<script src="js/core/splash.js"></script>
+<script src="js/core/supabaseConfig.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/core/fotosStorage.js"></script>
+<script src="js/modules/dashboard.js"></script>
+<link href="css/banner.css" rel="stylesheet"/>
+<link rel="stylesheet" href="css/mobile.css">
+<script src="js/core/header.js"></script>
+<script src="js/modules/qlp.js"></script>
+<script src="js/modules/histograma.js"></script>
+<script src="js/modules/ausencias.js"></script>
+<script src="js/modules/mobilizacao.js"></script>
+<script src="js/modules/recursos.js"></script>
+<script src="js/modules/icons.js"></script>
+<script src="js/modules/atividades.js"></script>
+<!-- Leaflet (mapa de visão aérea) -->
+<script crossorigin="" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/modules/mapaPainel.js"></script>
+<script src="js/modules/mapa.js"></script>
+<script src="js/modules/sidebar.js"></script>
+<script src="js/modules/busca.js"></script>
+<script src="js/modules/abas.js"></script>
+<script src="js/core/render.js"></script>
+<script src="js/core/script.js"></script>
+<div id="sidebar-overlay" class="sidebar-overlay"></div>
+</body>
+</html>

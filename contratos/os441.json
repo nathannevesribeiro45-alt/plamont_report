@@ -1,0 +1,206 @@
+{
+  "id": "os441",
+  "nome": "Contrato OS 441",
+  "data": "28/08/2026",
+  "turno": "Dia B",
+  "horario": "07:00 às 19:00",
+  "abas": [
+    {
+      "id": "desgaste",
+      "nome": "Desgaste",
+      "obsevaçoes":[],
+      "icone": "assets/icons/desgaste.svg",
+
+      "qlp": {
+        "direto": {
+          "Caldeireiro": 3,
+          "Mecanico": 11,
+          "Soldador": 3,
+          "Montador": 8,
+          "Eletricista": 0,
+          "Pintor": 0
+        },
+        "indireto": {
+          "Supervisor Montagem": 1,
+          "Encarregado Montagem": 0,
+          "Mestre Montagem": 3,
+          "Mestre Andaime": 1,
+          "Mestre Eletrica": 0
+        }
+      },
+
+      "histograma": {
+        "direto": {
+          "Caldeireiro": 3,
+          "Mecanico": 14,
+          "Soldador": 3,
+          "Montador": 8,
+          "Eletricista": 1,
+          "Pintor": 0
+        },
+        "indireto": {
+          "Supervisor Montagem": 1,
+          "Encarregado Montagem": 0,
+          "Mestre Montagem": 3,
+          "Mestre Andaime": 1
+        }
+      },
+
+      "ausencias": {
+     "Mecânico":3,
+     "Montador de andaime":1
+      },
+
+      "mobilizacao": {
+        "Mecanico": 0,
+        "Eletricista": 0
+      },
+
+      "recursos": [
+        {
+          "tipo": "Munck",
+          "placa": "SGC-7H66",
+          "operador": "",
+          "contato":"",
+          "status": "disponivel"
+        },
+         {
+          "tipo": "Munck",
+          "placa": "RQP-8G78",
+          "operador":"",
+          "contato":"",
+          "status": "Disponivel"
+        },
+       
+        {
+          "tipo": "Pick-up",
+          "placa": "SFU-0A35",
+          "operador": "Hilgles",
+          "contato":"98 98537-4937",
+          "status": "Disponivel"
+        },
+        {
+          "tipo": "Pick-up",
+          "placa": " SFT-9H25",
+          "operador": "Carlos",
+          "contato":"98 98124-4272",
+          "status": "disponivel"
+        }
+      
+      ],
+
+      "atividades": [
+        {
+        "lider": "Iego",
+          "telefone": "98 8506-6056",
+          "tecnicoSeguranca": "",
+          "equipe": "3 Mecânicos + 1 Caldeireiro + 1 Soldador + 3 Montadores",
+          "oms": [
+            {
+              "frente":"TR-314K-08",
+              "latitude":"-2,5656125",
+              "longitude":"-44,3757638",
+              "numero": " 202406210678",
+              "descricao": "TROCAR CHUTE DESC (TR-314K-08)",
+              "arquivoPdf":"",
+              "status": "Em andamento"
+            }
+           
+          ]
+        },
+        {
+          "lider": "Alexandre",
+          "telefone": "98 99228‑6538",
+          "tecnicoSeguranca": "",
+          "equipe": "3 Mecânicos + 1 soldador + 1 caldeireiro + 2 Montadores",
+          "oms": [
+            
+            {
+              "numero": "202604533635",
+              "frente":"TR-313K-14",
+              "latitude":"-2,5656863",
+              "longitude":"-44,3455210",
+              "arquivoPdf":"",
+              "descricao": "MP NA BANCADA/CHUTE TR-31106P/1314 (TR-313K-14)",
+              "status": "Em andamento"
+            }
+           
+           
+          ]
+        },
+        {
+          "lider": "Elias",
+          "telefone": "98 98210-6618",
+          "tecnicoSeguranca": "",
+          "equipe": "5 Mecânicos + 1 Caldeireiro + 1 soldador + 3 Montadores",
+          "oms": [
+            {
+              "numero":"202502919106",
+              "frente":"TR-313K-65",
+              "latitude":"-2,5614936",
+              "longitude":"-44,3578603",
+              "descricao":"TROCAR 150 ROLOS DE CARGA NO TR-1365 (TR-313K-65) ",
+              "status":"Em andamento"
+          }
+          ]
+        }
+      ]
+     
+    },
+   
+
+    {
+      "id": "cond.seguras",
+      "nome": "Cond.seguras",
+      "icone": "assets/icons/condseguras.svg",
+
+      "qlp": {
+        "direto": {
+          "Caldeireiro": 4,
+          "Mecanico": 2,
+          "Soldador": 3,
+          "Montador": 2,
+          "Eletricista": 0,
+          "Pintor": 0
+        },
+        "indireto": {
+          "Supervisor Montagem": 1,
+          "Encarregado Montagem": 0,
+          "Mestre Montagem": 2,
+          "Mestre Andaime": 0,
+          "Mestre Eletrica": 0
+        }
+      },
+      "histograma": {
+        "direto": {
+          "Caldeireiro": 3,
+          "Mecanico": 3,
+          "Soldador": 3,
+          "Montador": 2
+        },
+        "indireto": {
+          "Supervisor Montagem": 1,
+          "Encarregado Montagem": 0,
+          "Mestre Montagem": 2,
+          "Mestre Andaime": 0
+        }
+      },
+      "ausencias": {
+        "Mecânico":1 
+      },
+      "mobilizacao": {},
+      "recursos": [],
+
+      "atividades": [
+        {
+          "lider": "Julio/Erickson",
+          "telefone": "98 8506-6125/98 9609-7660",
+          "tecnicoSeguranca": "",
+          "equipe": "2 Mecânicos + 4 Caldeireiros + 4 Soldadores + 2 Montadores + 1 pintor",
+          "oms": []
+
+        }
+      ]
+    }
+  ]
+}
