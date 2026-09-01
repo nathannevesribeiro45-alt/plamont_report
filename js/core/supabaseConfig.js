@@ -3,6 +3,6 @@
 // Nunca coloque aqui a service_role key.
 window.PlamontSupabaseConfig = {
     url: "https://ntoadouzyjjgyhoihhap.supabase.co",
-    anonKey: "FjKO1AWMZw4JOiKN",
+    anonKey: "sb_publishable_xGuKcW5CQDuUV4HYP2UbxA_uE6J0f7R",
     bucket: "REPORT_FOTOS"
 };
