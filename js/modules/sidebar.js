@@ -118,6 +118,8 @@ if (this.mobileToggle) {
 
         this.renderMapa();
 
+        this.renderCurvaS();
+
         this.renderContratos();
 
     },
@@ -184,6 +186,44 @@ if (this.mobileToggle) {
 
             if (typeof Mapa !== "undefined") {
                 Mapa.render();
+            }
+
+            this.fecharSidebar();
+
+        });
+
+        this.menu.appendChild(item);
+
+    },
+
+    // ==========================
+    // Grandes Paradas — Curva S
+    // ==========================
+
+    renderCurvaS() {
+
+        const item = document.createElement("button");
+
+        item.className = "menu-btn";
+        item.dataset.pagina = "curvaS";
+
+        item.innerHTML = `
+            <span class="icone">
+                <img src="assets/icons/curvas.svg" alt="Grandes Paradas — Curva S">
+            </span>
+
+            <span class="menu-texto">
+                <strong>Grandes Paradas</strong>
+                <small>Curva S</small>
+            </span>
+        `;
+
+        item.addEventListener("click", () => {
+
+            abrirPagina("curvaS", item);
+
+            if (typeof CurvaS !== "undefined") {
+                CurvaS.render();
             }
 
             this.fecharSidebar();

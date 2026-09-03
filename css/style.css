@@ -214,3 +214,393 @@ body.sidebar-recolhida .conteudo{
 
 }
 
+
+
+/* ==========================================================
+   AUTENTICAÇÃO — FASE 1
+   ========================================================== */
+
+.plamont-auth-area{
+    position:fixed;
+    top:18px;
+    right:22px;
+    z-index:1200;
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+}
+
+.plamont-auth-btn{
+    min-height:42px;
+    padding:0 16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    border:1px solid #dbe5f0;
+    border-radius:11px;
+    background:#fff;
+    color:#073765;
+    box-shadow:0 5px 18px rgba(4,30,66,.12);
+    font:600 14px/1 inherit;
+    cursor:pointer;
+    transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.plamont-auth-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 8px 22px rgba(4,30,66,.17);
+    background:#f7faff;
+}
+
+.plamont-auth-btn.autenticado{
+    background:#073765;
+    border-color:#073765;
+    color:#fff;
+}
+
+.plamont-auth-icon{
+    width:20px;
+    height:20px;
+    display:grid;
+    place-items:center;
+    font-size:19px;
+    line-height:1;
+}
+
+.plamont-user-menu{
+    min-width:230px;
+    padding:10px;
+    border:1px solid #dbe5f0;
+    border-radius:12px;
+    background:#fff;
+    box-shadow:0 12px 30px rgba(4,30,66,.16);
+}
+
+.plamont-user-menu[hidden],
+.plamont-login-overlay[hidden]{
+    display:none;
+}
+
+.plamont-user-info{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+    padding:5px 7px 9px;
+}
+
+.plamont-user-info strong{
+    color:#16324f;
+    font-size:13px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.plamont-user-info span{
+    color:#718096;
+    font-size:11px;
+}
+
+.plamont-user-menu > button{
+    width:100%;
+    min-height:38px;
+    border:0;
+    border-radius:8px;
+    background:#eef4fa;
+    color:#073765;
+    font:600 13px/1 inherit;
+    cursor:pointer;
+}
+
+.plamont-user-menu > button:hover{
+    background:#e2edf8;
+}
+
+.plamont-login-overlay{
+    position:fixed;
+    inset:0;
+    z-index:3000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(2,18,36,.58);
+    backdrop-filter:blur(4px);
+}
+
+.plamont-login-modal{
+    position:relative;
+    width:min(100%, 410px);
+    padding:30px;
+    border:1px solid #e0e8f0;
+    border-radius:18px;
+    background:#fff;
+    box-shadow:0 24px 70px rgba(0,0,0,.28);
+}
+
+.plamont-login-close{
+    position:absolute;
+    top:12px;
+    right:12px;
+    width:36px;
+    height:36px;
+    border:0;
+    border-radius:9px;
+    background:#f2f5f8;
+    color:#52677d;
+    font-size:24px;
+    line-height:1;
+    cursor:pointer;
+}
+
+.plamont-login-close:hover{
+    background:#e8eef4;
+    color:#173b5e;
+}
+
+.plamont-login-header{
+    text-align:center;
+    margin-bottom:24px;
+}
+
+.plamont-login-header img{
+    width:82px;
+    height:auto;
+    margin-bottom:13px;
+}
+
+.plamont-login-header h2{
+    margin:0;
+    color:#073765;
+    font-size:21px;
+}
+
+.plamont-login-header p{
+    margin:7px 0 0;
+    color:#6b7d90;
+    font-size:13px;
+    line-height:1.5;
+}
+
+#plamont-login-form{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+#plamont-login-form label{
+    margin-top:7px;
+    color:#314b63;
+    font-size:13px;
+    font-weight:600;
+}
+
+#plamont-login-form input{
+    width:100%;
+    min-height:44px;
+    box-sizing:border-box;
+    padding:0 13px;
+    border:1px solid #cfdbe7;
+    border-radius:10px;
+    outline:none;
+    background:#fbfdff;
+    color:#17324b;
+    font:400 14px/1 inherit;
+}
+
+#plamont-login-form input:focus{
+    border-color:#2774b9;
+    box-shadow:0 0 0 3px rgba(39,116,185,.12);
+}
+
+#plamont-login-submit{
+    min-height:46px;
+    margin-top:15px;
+    border:0;
+    border-radius:10px;
+    background:#073765;
+    color:#fff;
+    font:700 14px/1 inherit;
+    cursor:pointer;
+    transition:background .2s ease, opacity .2s ease;
+}
+
+#plamont-login-submit:hover{
+    background:#0b4f8a;
+}
+
+#plamont-login-submit:disabled{
+    opacity:.65;
+    cursor:wait;
+}
+
+.plamont-login-error{
+    margin-top:9px;
+    padding:10px 12px;
+    border:1px solid #f2caca;
+    border-radius:9px;
+    background:#fff5f5;
+    color:#a52b2b;
+    font-size:12.5px;
+    line-height:1.45;
+}
+
+.mapa-painel-btn-foto.camera-bloqueada{
+    background:#eef3f8;
+    border-color:#d8e2ec;
+    color:#52677d;
+}
+
+.mapa-painel-btn-foto.camera-bloqueada:hover{
+    background:#e5edf5;
+    color:#073765;
+}
+
+@media (max-width:900px){
+    .plamont-auth-area{
+        top:12px;
+        right:12px;
+    }
+
+    .plamont-auth-btn{
+        min-height:40px;
+        padding:0 12px;
+    }
+
+    .plamont-auth-btn > span:last-child{
+        display:none;
+    }
+
+    .plamont-user-menu{
+        position:absolute;
+        top:48px;
+        right:0;
+    }
+
+    .plamont-login-modal{
+        padding:26px 22px;
+        border-radius:15px;
+    }
+}
+
+/* ==========================================================
+   AUTENTICAÇÃO — CONTA NA SIDEBAR (DESKTOP)
+   Somente para telas de PC. O layout mobile permanece intacto.
+   ========================================================== */
+
+@media (min-width: 901px){
+
+    .plamont-auth-area{
+        position:fixed;
+        left:12px;
+        right:auto;
+        top:auto;
+        bottom:14px;
+        width:236px;
+        z-index:1200;
+
+        display:flex;
+        flex-direction:column-reverse;
+        align-items:stretch;
+        gap:8px;
+
+        transition:
+            width .35s cubic-bezier(.4,0,.2,1),
+            left .35s cubic-bezier(.4,0,.2,1);
+    }
+
+    .plamont-auth-btn{
+        width:100%;
+        min-height:52px;
+        justify-content:flex-start;
+        padding:0 12px;
+        border-color:rgba(255,255,255,.16);
+        border-radius:11px;
+        background:rgba(255,255,255,.05);
+        color:#fff;
+        box-shadow:none;
+        text-align:left;
+    }
+
+    .plamont-auth-btn:hover{
+        transform:none;
+        background:rgba(255,255,255,.10);
+        box-shadow:none;
+    }
+
+    .plamont-auth-btn.autenticado{
+        background:rgba(255,255,255,.08);
+        border-color:rgba(255,255,255,.16);
+        color:#fff;
+    }
+
+    .plamont-auth-icon{
+        flex:0 0 32px;
+        width:32px;
+        height:32px;
+        border:1px solid rgba(255,255,255,.20);
+        border-radius:8px;
+        background:rgba(255,255,255,.04);
+        color:#fff;
+        font-size:18px;
+    }
+
+    .plamont-auth-btn > span:last-child{
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+    }
+
+    .plamont-user-menu{
+        width:100%;
+        min-width:0;
+        box-sizing:border-box;
+        margin:0;
+        padding:10px;
+        border-color:#dbe5f0;
+        box-shadow:0 12px 30px rgba(4,30,66,.18);
+    }
+
+    .plamont-user-menu > button{
+        min-height:40px;
+    }
+
+    /* Quando a sidebar estiver recolhida, a conta vira apenas um ícone. */
+    body.sidebar-recolhida .plamont-auth-area{
+        left:10px;
+        width:52px;
+    }
+
+    body.sidebar-recolhida .plamont-auth-btn{
+        justify-content:center;
+        padding:0;
+        gap:0;
+    }
+
+    body.sidebar-recolhida .plamont-auth-btn > span:last-child{
+        display:none;
+    }
+
+    body.sidebar-recolhida .plamont-auth-icon{
+        flex-basis:32px;
+    }
+
+    body.sidebar-recolhida .plamont-user-menu{
+        display:none !important;
+    }
+
+    /* Linha divisória visual acima da área da conta. */
+    .plamont-auth-area::before{
+        content:"";
+        position:absolute;
+        left:0;
+        right:0;
+        top:-10px;
+        height:1px;
+        background:rgba(255,255,255,.10);
+        pointer-events:none;
+    }
+
+}
+

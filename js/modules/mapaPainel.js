@@ -178,8 +178,8 @@ const MapaPainel = {
                                             <div class="mapa-painel-atividade-descricao">${om.descricao || ""}</div>
 
                                             <div class="mapa-painel-foto-acoes">
-                                                <button type="button" class="mapa-painel-btn-foto" onclick="MapaPainel.abrirCamera(this)" title="Tirar foto desta atividade">
-                                                    <span aria-hidden="true">📷</span> Tirar foto
+                                                <button type="button" class="mapa-painel-btn-foto camera-bloqueada" onclick="MapaPainel.abrirCamera(this)" title="Entre para utilizar a câmera">
+                                                    <span aria-hidden="true">📷</span> <span class="camera-btn-texto">Entrar para tirar foto</span>
                                                 </button>
                                                 <input class="mapa-painel-input-foto" type="file" accept="image/*" capture="environment" data-chave-foto="${this.chaveFoto(om, lider, contexto)}" onchange="MapaPainel.receberFoto(this)" aria-label="Tirar foto da OM ${om.numero || ""}">
                                             </div>
@@ -519,18 +519,27 @@ const MapaPainel = {
         const limite = this.LIMITE_FOTOS_POR_OM;
         const atingiuLimite = quantidade >= limite;
 
+        const autenticado = Boolean(window.PlamontAuth?.estaAutenticado());
         botao.disabled = atingiuLimite;
         botao.classList.toggle("limite", atingiuLimite);
+        botao.classList.toggle("camera-bloqueada", !autenticado && !atingiuLimite);
         botao.innerHTML = atingiuLimite
             ? `<span aria-hidden="true">✓</span> Limite atingido (${limite}/${limite})`
-            : `<span aria-hidden="true">📷</span> Tirar foto (${quantidade}/${limite})`;
+            : `<span aria-hidden="true">📷</span> <span class="camera-btn-texto">${autenticado ? `Tirar foto (${quantidade}/${limite})` : "Entrar para tirar foto"}</span>`;
         botao.title = atingiuLimite
             ? `Limite de ${limite} fotos atingido para esta atividade`
-            : "Tirar foto desta atividade";
+            : autenticado
+                ? "Tirar foto desta atividade"
+                : "Entre para utilizar a câmera";
 
     },
 
     abrirCamera(botao) {
+
+        if (!window.PlamontAuth?.estaAutenticado()) {
+            window.PlamontAuth?.abrirLogin();
+            return;
+        }
 
         const atividade = botao.closest(".mapa-painel-atividade");
         const input = atividade?.querySelector(".mapa-painel-input-foto");

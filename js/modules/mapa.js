@@ -534,6 +534,14 @@ const Mapa = {
         // persistidos terminam de ser carregados.
         MapaPainel.hidratarFotos(conteudo);
 
+        // O painel pode ser renderizado depois da sessão ter sido
+        // recuperada; sincroniza os controles da câmera com o estado atual.
+        if (window.PlamontAuth?.atualizarAcessoCamera) {
+            window.PlamontAuth.atualizarAcessoCamera(
+                window.PlamontAuth.estaAutenticado()
+            );
+        }
+
     },
 
     // ======================================

@@ -11,6 +11,7 @@
 <link href="css/dashboard.css" rel="stylesheet"/>
 <link href="css/contratos.css" rel="stylesheet"/>
 <link href="css/mapa.css" rel="stylesheet"/>
+<link href="css/curvaS.css" rel="stylesheet"/>
 
 
 <!-- ====================================================== -->
@@ -77,6 +78,43 @@
     </div>
 
 </header>
+
+<!-- ====================================================== -->
+<!--                    AUTENTICAÇÃO                         -->
+<!-- ====================================================== -->
+<div id="plamont-auth-area" class="plamont-auth-area">
+    <button id="plamont-auth-open" class="plamont-auth-btn" type="button" aria-label="Entrar no sistema">
+        <span class="plamont-auth-icon" aria-hidden="true">↪</span>
+        <span>Entrar</span>
+    </button>
+    <div id="plamont-user-menu" class="plamont-user-menu" hidden>
+        <div class="plamont-user-info">
+            <strong id="plamont-user-email"></strong>
+            <span>Usuário autenticado</span>
+        </div>
+        <button id="plamont-auth-logout" type="button">Sair</button>
+    </div>
+</div>
+
+<div id="plamont-login-modal" class="plamont-login-overlay" hidden>
+    <div class="plamont-login-modal" role="dialog" aria-modal="true" aria-labelledby="plamont-login-title">
+        <button id="plamont-login-close" class="plamont-login-close" type="button" aria-label="Fechar">×</button>
+        <div class="plamont-login-header">
+            <img src="logo_plamont.png" alt="Plamont Engenharia">
+            <h2 id="plamont-login-title">Acesso ao sistema</h2>
+            <p>Entre para utilizar as ferramentas autorizadas.</p>
+        </div>
+        <form id="plamont-login-form" novalidate>
+            <label for="plamont-login-email">E-mail</label>
+            <input id="plamont-login-email" type="email" autocomplete="email" required placeholder="seu@email.com">
+            <label for="plamont-login-password">Senha</label>
+            <input id="plamont-login-password" type="password" autocomplete="current-password" required placeholder="Sua senha">
+            <div id="plamont-login-error" class="plamont-login-error" role="alert" hidden></div>
+            <button id="plamont-login-submit" type="submit">Entrar</button>
+        </form>
+    </div>
+</div>
+
 <!-- ====================================================== -->
 <!--                    SIDEBAR                      -->
 <!-- ====================================================== -->
@@ -436,6 +474,145 @@
 </div>
 </section>
 <!-- ====================================================== -->
+<!--         GRANDES PARADAS — CURVA S                      -->
+<!-- ====================================================== -->
+<section class="pagina" id="curvaS">
+
+    <header class="cabecalho curvaS-header">
+        <div class="cabecalho-info">
+            <h1>
+                <img
+                    src="assets/icons/curvas.svg"
+                    alt=""
+                    width="26"
+                    height="26"
+                    style="filter:brightness(0) saturate(100%) invert(14%) sepia(52%) saturate(1352%) hue-rotate(180deg);vertical-align:-5px;">
+                Curva S
+            </h1>
+
+            <p class="subtitulo" id="curvaS-subtitulo">
+                Acompanhamento Físico do Progresso — Grandes Paradas
+            </p>
+
+            <div class="curvaS-seletor" id="curvaS-seletor"></div>
+        </div>
+
+        <div
+            class="curvaS-parada-card"
+            id="curvaS-parada-card"
+            aria-label="Informações da grande parada">
+
+            <div class="curvaS-parada-identificacao">
+                <span class="curvaS-parada-etiqueta">
+                    GRANDE PARADA
+                </span>
+
+                <strong id="curvaS-parada-nome">—</strong>
+            </div>
+
+            <div
+                class="curvaS-parada-divisor"
+                aria-hidden="true">
+            </div>
+
+            <div class="curvaS-parada-status">
+                <span class="curvaS-parada-status-label">
+                    Data do status
+                </span>
+
+                <strong id="curvaS-parada-data">—</strong>
+
+                <span
+                    class="curvaS-parada-periodo"
+                    id="curvaS-parada-periodo">
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <section class="curvaS-kpis" id="curvaS-kpis"></section>
+
+    <div class="curvaS-layout" id="curvaS-layout">
+
+        <section class="bloco curvaS-grafico-bloco">
+            <div class="bloco-header">
+                <h2>Curva S — Previsto x Realizado</h2>
+            </div>
+
+            <div class="bloco-content">
+                <div
+                    class="curvaS-chart"
+                    id="curvaS-chart">
+                </div>
+            </div>
+        </section>
+
+        <aside class="curvaS-coluna">
+
+            <section class="bloco">
+                <div class="bloco-header">
+                    <h2>Legenda</h2>
+                </div>
+
+                <div
+                    class="bloco-content"
+                    id="curvaS-legenda">
+                </div>
+            </section>
+
+            <section class="bloco">
+                <div class="bloco-header">
+                    <h2>Interpretação</h2>
+                </div>
+
+                <div
+                    class="bloco-content"
+                    id="curvaS-interpretacao">
+                </div>
+            </section>
+
+            <section class="bloco">
+                <div class="bloco-header">
+                    <h2>Próximos Marcos</h2>
+                </div>
+
+                <div
+                    class="bloco-content"
+                    id="curvaS-marcos">
+                </div>
+            </section>
+
+            <section class="bloco">
+                <div class="bloco-header">
+                    <h2>Observações</h2>
+                </div>
+
+                <div
+                    class="bloco-content"
+                    id="curvaS-observacoes">
+                </div>
+            </section>
+
+        </aside>
+    </div>
+
+    <section class="bloco curvaS-resumo-bloco">
+        <div class="bloco-header">
+            <h2 id="curvaS-resumo-titulo">
+                Resumo do Turno Atual
+            </h2>
+        </div>
+
+        <div class="bloco-content">
+            <div
+                class="curvaS-resumo-turno"
+                id="curvaS-resumo-turno">
+            </div>
+        </div>
+    </section>
+
+</section>
+<!-- ====================================================== -->
 <!--                      OS 440                        -->
 <!-- ====================================================== -->
 <section class="pagina" id="os440">
@@ -517,6 +694,7 @@
 <script src="js/core/splash.js"></script>
 <script src="js/core/supabaseConfig.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/core/auth.js"></script>
 <script src="js/core/fotosStorage.js"></script>
 <script src="js/modules/dashboard.js"></script>
 <link href="css/banner.css" rel="stylesheet"/>
@@ -533,6 +711,7 @@
 <script crossorigin="" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="js/modules/mapaPainel.js"></script>
 <script src="js/modules/mapa.js"></script>
+<script src="js/modules/curvaS.js"></script>
 <script src="js/modules/sidebar.js"></script>
 <script src="js/modules/busca.js"></script>
 <script src="js/modules/abas.js"></script>
