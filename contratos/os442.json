@@ -1,8 +1,8 @@
 {
   "id": "os442",
   "nome": "Contrato OS 442",
-  "data": "25/08/2026",
-  "turno": "Dia B",
+  "data": "03/09/2026",
+  "turno": "Dia A",
   "horario": "07:00 às 19:00",
   "abas": [
     {
@@ -57,13 +57,14 @@
           "equipe": "04 Eletricistas + 01 Soldador + 1 caldereiro",
           "oms": [
             {
-    "numero": "202604563894",
-    "frente": "CN-05",
-    "latitude": "-2,5594112",
-    "longitude": "-44,3792181",
-    "descricao": "REPOR INFRA E SUPOR. BOTO. TRANSL.CN05 (CN-05)",
+    "numero": "202604570588",
+    "frente": "RP-04",
+    "latitude":"",
+    "longitude":"",
+    "descricao": "FIXAR SUPORTE DA SIRENE 01 PROXIMO AO M1",
     "status": "Em andamento"
   }
+            
           ]
         }
       ]
@@ -77,7 +78,7 @@
       "qlp": {
         "direto": {
           "Caldeireiro": 1,
-          "Mecanico": 6,
+          "Mecanico": 4,
           "Soldador": 1,
           "Montador": 3,
           "Eletricista": 6,
@@ -109,7 +110,9 @@
         }
       },
 
-      "ausencias": {},
+      "ausencias": {
+        "Mecanico":2
+      },
 
       "mobilizacao": {
         "Mecanico": 0,
@@ -119,14 +122,15 @@
       "recursos": [
         {
           "tipo": "munck",
-          "placa": "RBB-1B72",
-          "operador": "José Carlos",
+          "placa": "RBD-3I45",
+          "operador": "Fernando",
+          "telefone":"98 8406-7236",
           "status": "disponivel"
         },
           {
           "tipo": "Pick-up",
           "placa": "SFT-9J87",
-          "operador": "Rilgles",
+          "operador": "Patrick",
           "telefone":"",
           "status": "disponivel"
         }
@@ -134,132 +138,61 @@
 
       "atividades": [
         {
-          "lider": "Elivanildo",
-          "telefone": "98 97015-5139",
+          "lider": "Jefferson",
+          "telefone": "98 98162-8039",
           "tecnicoSeguranca": "",
-          "equipe": "6 Mecânicos + 6 Eletricistas + 1 caldeireiro + 1 soldador + 3 Montadores",
+          "equipe": "4 Mecânicos + 6 Eletricistas + 1 caldeireiro + 1 soldador + 3 Montadores",
           "oms": [
 
              {
-    "om": "202603834483",
-    "frente":"EX-311K-04",
-    "latitude":"-2,5657468",
-    "longitude":"-44,3458998",
-    "descricao": "MCM-MPV ELE 16S EXTRATOR SUC EX-311K-04",
-    "status":"Em andamento"
+    "numero": "202604619202",
+    "frente": "Oficina Subconjunto",
+    "latitude": "-2,5594727",
+    "longitude": "-44,3622277",
+    "descricao": "UTI _ MONTAGEM E DESMONTAGEM DE ANDAIME",
+    "status": "Em andamento"
+  },
+        {
+    "numero": "202604612674",
+    "frente": "Oficina Subconjunto",
+    "latitude": "-2,5594727",
+    "longitude": "-44,3622277",
+    "descricao": "RETIRAR E REALIZAR REPARO DO TRUCK/RODA",
+    "status": "Em andamento"
+  },
+        {
+    "numero": "202603835906",
+    "frente": "EX-311K-04",
+    "latitude": "-2,5657468",
+    "longitude": "-44,3458998",
+    "descricao": "MONTAR/DESMONTAR ANDAIME EX-311K-04",
+    "status": "Em andamento"
   },
   {
-    "om": "202603834485",
-     "frente":"EX-311K-04",
-    "latitude":"-2,5657468",
-    "longitude":"-44,3458998",
-    "descricao": "MCM-MPV MEC 16S EXTRATOR EX-311K-04",
-    "status":"Em andamento"
+    "numero": "202604617167",
+    "frente": "TR-313K-61",
+    "latitude": "-2,5621947",
+    "longitude": "-44,3465427",
+    "descricao": "SUBSTITUIR PAINEL NO GC 1361",
+    "status": "Em andamento"
+  },
+   {
+    "numero": "202302593049",
+    "frente": "Pórtico 2",
+    "latitude": "-2,5686316",
+    "longitude": "-44,3452532",
+    "descricao": "A17- SUBS CABO AÇO E MOITÃO AUX COM DESG",
+    "status": "Em andamento"
   },
   {
-    "om": "202603834609",
-     "frente":"EX-311K-04",
-    "latitude":"-2,5657468",
-    "longitude":"-44,3458998",
-    "descricao": "MCM-MPV LUB 16S TROCA ÓLEO EX-311K-04",
-    "status":"Em andamento"
-  },
-  {
-    "om": "202604355062",
-     "frente":"TR-313K-04",
-    "latitude":"-2,5657118",
-    "longitude":"-44,3577896",
-    "descricao": "MCM-MPV ELE 08S ESTICAMENTO TR1304",
-    "status":"Em andamento"
-  },
-  {
-    "om": "202604251313",
-     "frente":"TR-313K-04",
-   "latitude":"-2,5657118",
-    "longitude":"-44,3577896",
-    "descricao": "MCM-MPV UTL 24S CABO AÇO GUINCHO TR1304",
-    "status":"Em andamento"
-  },
-  {
-    "om": "202604357024",
-     "frente":"TR-313K-04",
-    "latitude":"-2,5657118",
-    "longitude":"-44,3577896",
-    "descricao": "MCM-MPV MEC UTL 08S GUINCHO TR1304",
-    "status":"Em andamento"
-  },
-  {
-    "om": "202601461070",
-     "frente":"",
-    "latitude":"",
-    "longitude":"",
-    "descricao": "RECUPERAR/REFORÇAR DUTO INSUFLADOR V01",
-    "status":"Em andamento"
-  },
-  {
-    "om": "202604323773",
-     "frente":"TR-313K-12",
-    "latitude":"-2,5659464",
-    "longitude":"-44,3590292",
-    "descricao": "MCM-MPV ELE 08S ESTICAMENTO TR1312",
-    "status":"Em andamento"
-  },
-  {
-    "om": "202604241830",
-     "frente":"TR-313K-12",
-    "latitude":"-2,5659464",
-    "longitude":"-44,3590292",
-    "descricao": "MCM-LUB UTL 16S CABO CONT/PESO TR1312",
-    "status":"Em andamento"
-  },
-  {
-    "om": "202604486779",
-     "frente":"",
-    "latitude":"",
-    "longitude":"",
-    "descricao": "TE 1365 - NORMALIZAR SIST. ELETROMECANIC",
-    "status":"Em andamento"
-  },
-  {
-    "om": "202603914051",
-     "frente":"",
-    "latitude":"",
-    "longitude":"",
-    "descricao": "GC-1525 Empeno Suporte guias do moitão",
-    "status":"Em andamento"
-  },
-  {
-    "om": "202604356027",
-     "frente":"TR-313K-56",
-    "latitude":"-2,5647984",
-    "longitude":"-44,3456709",
-    "descricao": "MCM-MPV ELE 08S ESTICAMENTO TR1356",
-    "status":"Em andamento"
-  },
-  {
-    "om": "202604461079",
-     "frente":"EX-313K-65",
-    "latitude":"-2,5614885",
-    "longitude":"-44,3589145",
-    "descricao": "MCM-MPV ELE 16S EXTRATOR EX-313K-65",
-    "status":"Em andamento"
-  },
-  {
-    "om": "202604461163",
-     "frente":"EX-315K-25",
-    "latitude":"-2,5617310",
-    "longitude":"-44,3603043",
-    "descricao": "MCM-MPV ELE 16S EXTRATOR EX-315K-25",
-    "status":"Em andamento"
-  },
-  {
-    "om": "202603835906",
-     "frente":"TR-311K-04",
-    "latitude":"-2,5659963",
-    "longitude":"-44,3459540",
-    "descricao": "MONTAGEM E DESMONTAGEM DE ANDAIME (TR-311K-04)",
-    "status":"Em andamento"
+    "numero": "202603588627",
+    "frente": "Ponte 206",
+    "latitude": "",
+    "longitude": "",
+    "descricao": "MP ELMEC PONTE ROLANTE PR-311K-206",
+    "status": "Em andamento"
   }
+
           ]
 }
       ]

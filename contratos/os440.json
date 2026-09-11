@@ -1,7 +1,7 @@
 {
   "id": "os440",
   "nome": "Contrato OS 440",
-  "data": "31/08/2026",
+  "data": "03/09/2026",
   "turno": "Dia A",
   "horario": "07:00 às 19:00",
   "abas": [
@@ -10,16 +10,18 @@
       "icone":"assets/icons/integridade.svg",
       "qlp": {
         "direto": {
-          "Caldeireiro": 3,
-          "Mecanico": 10,
-          "Soldador": 4,
-          "Eletricista": 0,
+          "Caldeireiro": 7,
+          "Mecanico": 16,
+          "Soldador": 7,
+          "Eletricista": 2, 
+          "Ajudante de elétrica": 1,
+          "Ajudante de montagem": 1,
           "Montador": 10   
         },
         "indireto": {
           "Supervisor Montagem": 1,
           "Encarregado Montagem": 1,
-          "Mestre Montagem": 2,
+          "Mestre Montagem": 4,
           "Mestre Andaime": 1
         }
       },
@@ -39,7 +41,10 @@
           "Mestre Andaime": 1
         }
       },
-      "ausencias": {},
+      "ausencias": {
+        "Mecanico":1,
+        "Ajudante de montagem":1
+      },
       "mobilizacao": {},
       "recursos": [
           {
@@ -47,7 +52,7 @@
           "placa": "SGA-3I26",
           "operador": "",
           "contato": "",
-          "status":"Disponivel"
+          "status":"[Preventiva]"
         },
         {
           "tipo": "Munck",
@@ -61,11 +66,11 @@
           "placa": "SGA-3I14",
           "operador": "",
           "contato": "",
-          "status":"Disponivel"
+          "status":"Manutencao"
         },
         {
           "tipo": "Munck",
-          "placa": "ROV-7A11 (EM APOIO Á OS-450)",
+          "placa": "ROV-7A11",
           "operador": "",
           "contato": "",
           "status":"Disponivel"
@@ -81,14 +86,14 @@
          {
           "tipo": "Pick-up",
           "placa": "QRJ-2G50",
-          "operador": "",
+          "operador": "Antonio",
           "contato": "",
           "status":"Disponivel"
         },
         {
           "tipo": "Pick-up",
           "placa": "SFU-0A29",
-          "operador": "",
+          "operador": "Paulo",
           "contato": "",
           "status":"Disponivel"
         },
@@ -96,7 +101,7 @@
           {
           "tipo": "Pick-up",
           "placa": "SFU-0A01",
-          "operador": "",
+          "operador": "Genilon",
           "contato": "",
           "status":"Disponivel"
         },
@@ -128,25 +133,39 @@
       "atividades": [
            {  
         "lider":"Augusto Campos",
-        "telefone":"98 93300-5461",
+        "telefone":"98 8508-9007",
         "equipe":"5 mecânicos + 3 soldadores + 2 caldereiros + 1 ajudante eletr.",
         "oms":[
           {
-              "frente":"TR-313k-60",
-              "numero":"202505707438",
-              "descricao":"PE1.0_SUBS. CALHA E SUSTENT. TR1360 (TR-313K-60)",
-              "latitude":"-2,5627915",
-              "longitude":"-44,3459477",
+              "numero": "202604621461",
+              "frente":"TR-315K-04",
+              "latitude":"-2,5607764",
+              "longitude":"-44,3632393",
+              "descricao":"RECUPERAR CHADAVIGA DEAPOIODA BASES (TR-315K-04)",
               "status":"Em andamento",
-              "arquivoPdf":"om's/contrato 440 oms/Integridade/TR1360 OM 202505707438 PE1.0_SUBS. CALHA E SUSTENT. TR1360.pdf"
+              "arquivoPdf":"om's/contrato 440 oms/Integridade/RECUPERAR CHA DA VIGA DE APOIO DA  BASES TR1504.pdf"
             }
-          
-
-
           ]
 
         },
 
+        {
+          "lider":"Cleyton",
+          "telefone":"98 93300-5461",
+          "equipe":"3 mecânicos + 3 caldeireiro + 2 soldador + 1 eletricista",
+        
+        "oms":[
+          {
+              "numero": "202604032281",
+              "frente":"VV-01",
+              "latitude":"-2,5681063",
+              "longitude":"-44,3457358",
+              "descricao":"RECUP ESTRU PAREDE INT TREMONHA (VV-01)",
+              "arquivoPdf":"",
+              "status":"Em andamento"
+            }
+          ]
+        },
         {
           "lider":"Gutemberg",
           "telefone":"98 8177-7618",
@@ -155,12 +174,30 @@
         "oms":[
           {
               "numero": "202604530078",
-              "frente":"RP-04",
+              "frente":"RP-313K-04",
               "latitude":"-2,5614274",
               "longitude":"-44,3549536",
-              "descricao":"RECUPERAR ESTRUTURAL DA LONGARINA DA LAN (RP-04)",
+              "descricao":"RECUPERAR ESTRUTURAL DA LONGARINA DA LAN.(RP-04)",
               "arquivoPdf":"om's/contrato 440 oms/Integridade/longarina rp04.pdf",
-              "status":"Em andamento"
+              "status":"Em andamento",
+              "observacoes":"Equipe atuando na remoção de sucata e desmobilização."
+            }
+          ]
+        },
+         {
+          "lider":"Fagner",
+          "telefone":"98 8542-9199",
+          "equipe":"5 mecânicos + 2 soldadores + 2 caldereiros + 2 eletricista",
+        
+        "oms":[
+            {
+              "numero": "202604621461",
+              "frente":"TR-315K-04",
+              "latitude":"-2,5607764",
+              "longitude":"-44,3632393",
+              "descricao":"RECUPERAR CHADAVIGA DEAPOIODA BASES (TR-315K-04)",
+              "status":"Em andamento",
+              "arquivoPdf":"om's/contrato 440 oms/Integridade/RECUPERAR CHA DA VIGA DE APOIO DA  BASES TR1504.pdf"
             }
           ]
         }
@@ -169,7 +206,9 @@
       ,
       
       "nome":"Integridade",
-      "observacoes": []
+      "observacoes": [
+        "Equipe do Gutemberg atuará somente no sucateamento e desmobilização."
+      ]
      
     },
     
@@ -178,18 +217,18 @@
       "icone":"assets/icons/pier3.svg",
       "qlp": {
         "direto": {
-          "Caldeireiro": 4,
-          "Mecanico": 6,
-          "Soldador": 3,
-          "Montador": 12,
-          "Eletricista": 2,
-          "Ajudante de elétrica":1
+          "Caldeireiro": 6,
+          "Mecanico": 11,
+          "Soldador": 5,
+          "Montador": 24,
+          "Eletricista": 4,
+          "Ajudante de montagem":2
         },
         "indireto": {
           "Supervisor Montagem": 1,
           "Encarregado Montagem": 1,
-          "Mestre Montagem": 2,
-          "Mestre Andaime": 1
+          "Mestre Montagem": 3,
+          "Mestre Andaime": 2
         }
       },
       "histograma": {
@@ -197,7 +236,7 @@
           "Caldeireiro": 4,
           "Mecanico": 12,
           "Soldador": 3,
-          "Montador": 12,
+          "Montador": 24,
           "Eletricista": 0,
           "Pintor": 0
         },
@@ -209,7 +248,9 @@
         }
       },
       "ausencias": {
-        "Mecanico":1
+        "Mecâico": 1,
+        "justificadas":1,
+        "naoJustificadas":0
       },
       "mobilizacao": {},
       "recursos": [
@@ -240,77 +281,13 @@
             }
           ]
         },
-        
-        {
-        
-        "oms":[
-          {
-              "numero": "202304283800",
-              "frente":"CT-07",
-              "latitude":"",
-              "longitude":"",
-              "descricao":"SUBS.PARAF.EX.03.FIL.C E D.ELE.21",
-              "status":"Planejada"
-            }
-          ]
-        },
-
-        {
-        
-        "oms":[
-          {
-              "numero": "202304283754",
-              "frente":"CT-07",
-              "latitude":"",
-              "longitude":"",
-              "descricao":"SUBS.PAR.EIX03.FILA B E C EL.9300",
-              "status":"Planejada"
-            }
-          ]
-        },
-
-        {
-        
-        "oms":[
-          {
-              "numero": "202304388279",
-              "frente":"CT-07",
-              "latitude":"",
-              "longitude":"",
-              "descricao":"SUBSTITUIR  PARAFUSOS EIXO 02/03 FILA D ELEVAÇÃO 21.250",
-              "status":"Planejada"
-            }
-          ]
-        },
-
-         {
-        
-        "oms":[
-          {
-              "numero": "202304371560",
-              "frente":"CT-07",
-              "latitude":"",
-              "longitude":"",
-              "descricao":"SUBSTITUIR PARAFUSOS SUSTENTAÇÃO CHUTE REJEITE MATERIAIS",
-              "status":""
-            }
-          ]
-        },
-
+  
         {
           "lider":"João Batista",
           "telefone":"98 8887-8415",
           "equipe":"3 mecânicos + 2 soldadores + 2 caldereiros + 1 eletricista",
         
         "oms":[
-          {
-              "numero": "202504874297",
-              "frente":"TR-325K-16",
-              "latitude":"-2,5642594",
-              "longitude":"-44,3770363",
-              "descricao":"PE1.2_SUBST. DOIS DUTOS COM CORROSÃO (TR-2516)",
-              "status":"Em andamento"
-            },
             {
               "numero": "202501965981",
               "frente":"TR-325K-16",
@@ -321,26 +298,28 @@
             }
           ]
         },
-
-
         {
+          "lider":"Rogério",
+          "telefone":"98 9965-3798",
+          "equipe":"3 mecânicos + 1 soldadores + 1 caldereiros + 1 eletricista + 1 ajudante de mont.",
         
         "oms":[
-          {
-              "numero": "202302108119",
+            {
+              "numero": "202300985625",
               "frente":"CN-325K-03",
-              "latitude":"-2,5593266",
-              "longitude":"-44,3793507",
-              "descricao":"SUBSTITUIR  DE ELEMENTO  DE FIXAÇÃO UN16/18 CN",
-              "status":""
+              "latitude":"-2,5595650",
+              "longitude":"-44,3794031",
+              "descricao":"SUBS ELM FIX BAS CAMI ROL LAN MOV (CN-325K-03)",
+              "status":"Em andamento"
             }
           ]
         }
+
+
+      
       ],
       "nome": "Pier 3",
-      "observacoes":[
-        "Atividade dos dutos no tr-2516 aguardando somente pintura."
-      ]
+      "observacoes":[]
      
     },
     {

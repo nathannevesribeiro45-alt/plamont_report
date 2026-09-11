@@ -1,8 +1,8 @@
 {
   "id": "os441",
   "nome": "Contrato OS 441",
-  "data": "28/08/2026",
-  "turno": "Dia B",
+  "data": "03/09/2026",
+  "turno": "Dia A",
   "horario": "07:00 às 19:00",
   "abas": [
     {
@@ -14,7 +14,7 @@
       "qlp": {
         "direto": {
           "Caldeireiro": 3,
-          "Mecanico": 11,
+          "Mecanico": 14,
           "Soldador": 3,
           "Montador": 8,
           "Eletricista": 0,
@@ -47,14 +47,12 @@
       },
 
       "ausencias": {
-     "Mecânico":3,
-     "Montador de andaime":1
+     "Montador de andaime":1,
+     "justificadas": 1,
+     "naoJustificadas":1
       },
 
-      "mobilizacao": {
-        "Mecanico": 0,
-        "Eletricista": 0
-      },
+      "mobilizacao": {},
 
       "recursos": [
         {
@@ -63,6 +61,13 @@
           "operador": "",
           "contato":"",
           "status": "disponivel"
+        },
+        {
+          "tipo": "Munck",
+          "placa": "RBB-1B72",
+          "operador": "",
+          "contato":"",
+          "status": "preventiva"
         },
          {
           "tipo": "Munck",
@@ -82,9 +87,9 @@
         {
           "tipo": "Pick-up",
           "placa": " SFT-9H25",
-          "operador": "Carlos",
+          "operador": "Paulo",
           "contato":"98 98124-4272",
-          "status": "disponivel"
+          "status": "preventiva"
         }
       
       ],
@@ -94,38 +99,35 @@
         "lider": "Iego",
           "telefone": "98 8506-6056",
           "tecnicoSeguranca": "",
-          "equipe": "3 Mecânicos + 1 Caldeireiro + 1 Soldador + 3 Montadores",
+          "equipe": "5 Mecânicos + 1 Caldeireiro + 1 Soldador + 2 Montadores",
           "oms": [
             {
-              "frente":"TR-314K-08",
-              "latitude":"-2,5656125",
-              "longitude":"-44,3757638",
-              "numero": " 202406210678",
-              "descricao": "TROCAR CHUTE DESC (TR-314K-08)",
+              "frente":"TR-314K-02",
+              "latitude":"-2,5650965",
+              "longitude":"-44,3757921",
+              "numero": "202505334074",
+              "descricao": "CHUTE_TROCCHAPAGUIAEMPCHUTREC1505 (TR-314K-02)",
               "arquivoPdf":"",
               "status": "Em andamento"
             }
-           
           ]
         },
         {
           "lider": "Alexandre",
           "telefone": "98 99228‑6538",
           "tecnicoSeguranca": "",
-          "equipe": "3 Mecânicos + 1 soldador + 1 caldeireiro + 2 Montadores",
+          "equipe": "4 Mecânicos + 1 soldador + 1 caldeireiro + 3 Montadores",
           "oms": [
             
             {
-              "numero": "202604533635",
-              "frente":"TR-313K-14",
-              "latitude":"-2,5656863",
-              "longitude":"-44,3455210",
+              "numero": "202405731956",
+              "frente":"EP-313K-04",
+              "latitude":"-2,5621946",
+              "longitude":"-44,3519514",
               "arquivoPdf":"",
-              "descricao": "MP NA BANCADA/CHUTE TR-31106P/1314 (TR-313K-14)",
+              "descricao": "TROCAR 02 CAV AA DE RETORNO EM V LANÇA BAL 04 CAV 03 E 08 (EP-313K-04/ TR-313K-64)",
               "status": "Em andamento"
             }
-           
-           
           ]
         },
         {
@@ -135,11 +137,11 @@
           "equipe": "5 Mecânicos + 1 Caldeireiro + 1 soldador + 3 Montadores",
           "oms": [
             {
-              "numero":"202502919106",
-              "frente":"TR-313K-65",
-              "latitude":"-2,5614936",
-              "longitude":"-44,3578603",
-              "descricao":"TROCAR 150 ROLOS DE CARGA NO TR-1365 (TR-313K-65) ",
+              "numero":"202604532887 ",
+              "frente":"RP-313K-04",
+              "latitude":"-2,5614274",
+              "longitude":"-44,3549536",
+              "descricao":"NIVELAR CAVALETES DA MESA DE TRANSIÇÃO (RP-313K-04) ",
               "status":"Em andamento"
           }
           ]
@@ -158,13 +160,13 @@
         "direto": {
           "Caldeireiro": 4,
           "Mecanico": 2,
-          "Soldador": 3,
+          "Soldador": 4,
           "Montador": 2,
           "Eletricista": 0,
-          "Pintor": 0
+          "Pintor": 1
         },
         "indireto": {
-          "Supervisor Montagem": 1,
+          "Supervisor Montagem": 0,
           "Encarregado Montagem": 0,
           "Mestre Montagem": 2,
           "Mestre Andaime": 0,
@@ -193,7 +195,7 @@
 
       "atividades": [
         {
-          "lider": "Julio/Erickson",
+          "lider": "Julio/Eickson",
           "telefone": "98 8506-6125/98 9609-7660",
           "tecnicoSeguranca": "",
           "equipe": "2 Mecânicos + 4 Caldeireiros + 4 Soldadores + 2 Montadores + 1 pintor",
