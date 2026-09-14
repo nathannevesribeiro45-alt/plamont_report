@@ -2,21 +2,6 @@
 // CURVA S.JS
 // Página "Grandes Paradas — Curva S"
 // Acompanhamento físico do progresso (Previsto x Realizado)
-//
-// Observações de arquitetura:
-// - Módulo independente. NÃO reutiliza dados de QLP/Recursos/OMs.
-// - Os dados de Grandes Paradas são organizados por contrato, seguindo
-//   a mesma filosofia dos JSONs de contrato já usados pelo projeto
-//   (contratos/os440.json, os441.json, ...): cada contrato possui seu
-//   próprio arquivo em grandes-paradas/<idContrato>.json.
-// - A lista de contratos (id + nome) é obtida de Dashboard.contratos,
-//   já carregado pelo script.js — não há necessidade de repetir essa
-//   lista aqui nem de criar if/else por contrato: o próprio id do
-//   contrato é usado para montar o caminho do JSON.
-// - Preparado para, no futuro, trocar a fonte de dados por Supabase
-//   sem precisar reconstruir o componente (ver CurvaS.carregarDados).
-// - Preparado para futuras permissões "curva_s:view" / "curva_s:edit"
-//   (ainda não implementadas — página é somente visualização).
 // ======================================
 
 const CurvaS = {
@@ -160,23 +145,25 @@ const CurvaS = {
     // ======================================
     // Estado vazio (sem grandes paradas cadastradas)
     // ======================================
-    renderVazio() {
+   renderVazio() {
 
-        const kpis = document.getElementById("curvaS-kpis");
-        const layout = document.getElementById("curvaS-layout");
+    const kpis = document.getElementById("curvaS-kpis");
+    const chart = document.getElementById("curvaS-chart");
 
-        if (kpis) kpis.innerHTML = "";
+    if (kpis) {
+        kpis.innerHTML = "";
+    }
 
-        if (layout) {
-            layout.innerHTML = `
-                <div class="curvaS-vazio">
-                    <h3>Nenhuma grande parada cadastrada</h3>
-                    <p>Assim que uma grande parada for cadastrada, o acompanhamento da Curva S aparecerá aqui.</p>
-                </div>
-            `;
-        }
+    if (chart) {
+        chart.innerHTML = `
+            <div class="curvaS-vazio">
+                <h3>Nenhuma grande parada cadastrada</h3>
+                <p>Assim que uma grande parada for cadastrada, o acompanhamento da Curva S aparecerá aqui.</p>
+            </div>
+        `;
+    }
 
-    },
+},
 
     // ======================================
     // Abas de navegação por contrato
