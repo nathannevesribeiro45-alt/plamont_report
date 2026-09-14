@@ -1,7 +1,7 @@
 {
     "_aviso": "DADOS DE TESTE — valores de status, progresso, atividades e marcos refletem o repasse real via WhatsApp (02/09/2026). Pontos intermediários da curva de PREVISTO fora da data de status e dos marcos (25/08, 06/09, 13/09) são ilustrativos, apenas para dar forma ao traçado, e devem ser substituídos assim que o cronograma linha a linha estiver disponível.",
 
-    "dadosDeTeste": true,
+    "dadosDeTeste": false,
 
     "horasPorDiaUtil": 12,
 

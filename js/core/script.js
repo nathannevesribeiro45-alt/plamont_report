@@ -48,7 +48,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         "os440.json",
         "os441.json",
         "os442.json",
-        "os450.json"
+        "os450.json",
+        "os456.json"
     ];
 
     // Carrega todos os contratos

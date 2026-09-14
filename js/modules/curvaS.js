@@ -5,7 +5,14 @@
 //
 // Observações de arquitetura:
 // - Módulo independente. NÃO reutiliza dados de QLP/Recursos/OMs.
-// - Dados carregados de contratos/curvaS.json (estrutura local/JSON).
+// - Os dados de Grandes Paradas são organizados por contrato, seguindo
+//   a mesma filosofia dos JSONs de contrato já usados pelo projeto
+//   (contratos/os440.json, os441.json, ...): cada contrato possui seu
+//   próprio arquivo em grandes-paradas/<idContrato>.json.
+// - A lista de contratos (id + nome) é obtida de Dashboard.contratos,
+//   já carregado pelo script.js — não há necessidade de repetir essa
+//   lista aqui nem de criar if/else por contrato: o próprio id do
+//   contrato é usado para montar o caminho do JSON.
 // - Preparado para, no futuro, trocar a fonte de dados por Supabase
 //   sem precisar reconstruir o componente (ver CurvaS.carregarDados).
 // - Preparado para futuras permissões "curva_s:view" / "curva_s:edit"
@@ -14,63 +21,104 @@
 
 const CurvaS = {
 
-    dados: null,
+    // Cache dos dados já carregados, por id de contrato (ex.: "os440").
+    dadosPorContrato: {},
+
+    // Promessas de carregamento em andamento, por id de contrato
+    // (evita requisições duplicadas caso o usuário troque de aba rápido).
+    carregandoPorContrato: {},
+
+    // Id do contrato atualmente selecionado na página (ex.: "os450").
+    contratoAtual: null,
+
+    // Indica se as abas de contrato já foram montadas no DOM.
+    abasContratoMontadas: false,
+
     paradaAtual: null,
-    carregando: null,
     modalAberto: null,
     aoTeclaEscModal: null,
 
     // ======================================
-    // Carregamento dos dados
+    // Carregamento dos dados de um contrato
     // ======================================
-    // Ponto único de acesso aos dados da Curva S. Futuramente, basta
-    // trocar o corpo desta função por uma consulta ao Supabase mantendo
-    // o mesmo formato de retorno.
+    // Ponto único de acesso aos dados da Curva S de um contrato.
+    // Futuramente, basta trocar o corpo desta função por uma consulta
+    // ao Supabase mantendo o mesmo formato de retorno.
     // ======================================
-    async carregarDados() {
+    async carregarDados(contratoId) {
 
-        if (this.dados) return this.dados;
+        if (this.dadosPorContrato[contratoId]) {
+            return this.dadosPorContrato[contratoId];
+        }
 
-        if (this.carregando) return this.carregando;
+        if (this.carregandoPorContrato[contratoId]) {
+            return this.carregandoPorContrato[contratoId];
+        }
 
-        this.carregando = (async () => {
+        this.carregandoPorContrato[contratoId] = (async () => {
 
             try {
 
-                const resposta = await fetch("contratos/curvaS.json");
+                const resposta = await fetch(`grandes-paradas/${contratoId}.json`);
 
                 if (!resposta.ok) {
-                    throw new Error("Erro ao carregar curvaS.json");
+                    throw new Error(`Erro ao carregar grandes-paradas/${contratoId}.json`);
                 }
 
-                this.dados = await resposta.json();
+                this.dadosPorContrato[contratoId] = await resposta.json();
 
             } catch (erro) {
 
-                console.error("CurvaS: falha ao carregar dados.", erro);
+                console.error("CurvaS: falha ao carregar dados do contrato.", contratoId, erro);
 
-                this.dados = { dadosDeTeste: true, horasPorDiaUtil: 12, paradas: [] };
+                this.dadosPorContrato[contratoId] = { dadosDeTeste: true, horasPorDiaUtil: 12, paradas: [] };
 
             }
 
-            return this.dados;
+            return this.dadosPorContrato[contratoId];
 
         })();
 
-        return this.carregando;
+        return this.carregandoPorContrato[contratoId];
 
     },
 
     // ======================================
     // Renderização principal da página
     // ======================================
-    async render() {
+    // Se "contratoId" não for informado, mantém o contrato já
+    // selecionado ou usa o primeiro contrato disponível.
+    // ======================================
+    async render(contratoId) {
 
         const pagina = document.getElementById("curvaS");
 
         if (!pagina) return;
 
-        const dados = await this.carregarDados();
+        const contratos = (typeof Dashboard !== "undefined" && Dashboard.contratos) || {};
+        const idsContratos = Object.keys(contratos);
+
+        const novoContrato = contratoId || this.contratoAtual || idsContratos[0] || null;
+
+        // Trocou de contrato: descarta a parada anteriormente
+        // selecionada para não exibir dados do contrato anterior.
+        if (novoContrato !== this.contratoAtual) {
+            this.paradaAtual = null;
+        }
+
+        this.contratoAtual = novoContrato;
+
+        this.montarAbasContrato(contratos);
+        this.atualizarAbaContratoAtiva();
+
+        if (!this.contratoAtual) {
+            this.renderSeletor([]);
+            this.renderBadgeTeste(false);
+            this.renderVazio();
+            return;
+        }
+
+        const dados = await this.carregarDados(this.contratoAtual);
 
         const paradas = dados.paradas || [];
 
@@ -127,6 +175,109 @@ const CurvaS = {
                 </div>
             `;
         }
+
+    },
+
+    // ======================================
+    // Abas de navegação por contrato
+    // ======================================
+    // Segue exatamente o mesmo padrão visual/comportamental das abas
+    // já usadas dentro das páginas de contrato (ver js/modules/abas.js
+    // e css/contratos.css: classes .tabs / .tab-btn / .tab-slider).
+    // As abas são montadas uma única vez a partir de Dashboard.contratos
+    // e apenas reutilizadas nas trocas seguintes, preservando a
+    // animação do slider.
+    // ======================================
+    montarAbasContrato(contratos) {
+
+        const container = document.getElementById("curvaS-contratos-tabs");
+
+        if (!container) return;
+
+        const ids = Object.keys(contratos || {});
+
+        if (!ids.length) {
+            container.innerHTML = "";
+            this.abasContratoMontadas = false;
+            return;
+        }
+
+        const idsJaMontados = Array.from(container.querySelectorAll(".tab-btn"))
+            .map(botao => botao.dataset.id)
+            .join(",");
+
+        // Já montado com o mesmo conjunto de contratos: não recria o DOM
+        // (evita perder a transição do slider a cada troca de aba).
+        if (this.abasContratoMontadas && idsJaMontados === ids.join(",")) {
+            return;
+        }
+
+        container.innerHTML = "";
+
+        const slider = document.createElement("div");
+        slider.className = "tab-slider";
+        container.appendChild(slider);
+
+        ids.forEach(id => {
+
+            const contrato = contratos[id] || {};
+
+            const botao = document.createElement("button");
+
+            botao.className = "tab-btn";
+            botao.dataset.id = id;
+
+            const rotulo = (contrato.nome || id).replace("Contrato ", "");
+
+            botao.innerHTML = `<span class="tab-text">${rotulo}</span>`;
+
+            // A troca de contrato usa o próprio id do contrato para montar
+            // o caminho do JSON (grandes-paradas/<id>.json), sem qualquer
+            // if/else específico por contrato.
+            botao.addEventListener("click", () => {
+
+                if (this.contratoAtual === id) return;
+
+                this.render(id);
+
+            });
+
+            container.appendChild(botao);
+
+        });
+
+        this.abasContratoMontadas = true;
+
+    },
+
+    // ======================================
+    // Atualiza a aba de contrato ativa (e o slider)
+    // ======================================
+    atualizarAbaContratoAtiva() {
+
+        const container = document.getElementById("curvaS-contratos-tabs");
+
+        if (!container) return;
+
+        const slider = container.querySelector(".tab-slider");
+        const botoes = container.querySelectorAll(".tab-btn");
+
+        botoes.forEach(botao => {
+
+            const ativa = botao.dataset.id === this.contratoAtual;
+
+            botao.classList.toggle("ativa", ativa);
+
+            if (ativa && slider) {
+
+                slider.style.width = `${botao.offsetWidth}px`;
+                slider.style.height = `${botao.offsetHeight}px`;
+                slider.style.left = `${botao.offsetLeft}px`;
+                slider.style.top = `${botao.offsetTop}px`;
+
+            }
+
+        });
 
     },
 

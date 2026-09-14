@@ -1,0 +1,57 @@
+{
+  "id": "os456",
+  "nome": "Contrato OS 456",
+  "data": "31/08/2026",
+  "turno": "Dia A",
+  "horario": "07:00 às 19:00",
+  "abas": [
+    {
+      "id": "Cobre",
+      "icone":"assets/icons/manutecao.svg",
+      "qlp": {
+        "direto": {
+          "Caldeireiro": 5,
+          "Mecanico": 12,
+          "Soldador": 5,
+          "Montador": 8,
+          "Eletricista": 8,
+          "Ajudante de mont.": 2,
+          "Pintor": 0
+        },
+        "indireto": {
+          "Supervisor Montagem": 1,
+          "Encarregado Montagem": 1,
+          "Encarregado Elétrica": 1,
+          "Mestre Montagem": 4,
+          "Mestre Andaime": 2
+        }
+      },
+      "histograma": {
+        "direto": {
+          "Caldeireiro": 5,
+          "Mecanico": 12,
+          "Soldador": 7,
+          "Montador": 7,
+          "Eletricista": 7,
+          "Pintor": 0
+        },
+        "indireto": {
+          "Supervisor Montagem": 1,
+          "Encarregado Montagem": 2,
+          "Encarregado Elétrica": 1,
+          "Mestre Montagem": 2,
+          "Mestre Andaime": 2
+        }
+      },
+      "ausencias": {},
+      "mobilizacao": {},
+
+      "recursos": [],
+      "atividades": [],
+       "observacoes": [],
+      "nome": "Cobre"
+    }
+    
+  ]
+  
+}
