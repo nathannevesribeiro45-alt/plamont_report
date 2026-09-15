@@ -53,6 +53,12 @@ function renderDashboard() {
 
 function renderBanner() {
 
+    const iconesStatus = {
+        normal: `<svg class="icon-svg" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>`,
+        alerta: `<svg class="icon-svg" aria-hidden="true" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/></svg>`,
+        critico: `<svg class="icon-svg" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6m0-6 6 6"/></svg>`
+    };
+
     // ==========================================
     // ELEMENTOS
     // ==========================================
@@ -112,7 +118,7 @@ function renderBanner() {
 
             banner.classList.add("status-normal");
 
-            icone.textContent = "✔";
+            icone.innerHTML = iconesStatus.normal;
 
             break;
 
@@ -121,7 +127,7 @@ function renderBanner() {
 
             banner.classList.add("status-alerta");
 
-            icone.textContent = "⚠";
+            icone.innerHTML = iconesStatus.alerta;
 
             break;
 
@@ -130,7 +136,7 @@ function renderBanner() {
 
             banner.classList.add("status-critico");
 
-            icone.textContent = "✖";
+            icone.innerHTML = iconesStatus.critico;
 
             break;
 

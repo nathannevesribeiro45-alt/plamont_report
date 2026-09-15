@@ -34,6 +34,106 @@ body{
 
 }
 
+#dashboard .icon-svg{
+
+    width:22px;
+
+    height:22px;
+
+    fill:none;
+
+    stroke:currentColor;
+
+    stroke-width:2;
+
+    stroke-linecap:round;
+
+    stroke-linejoin:round;
+
+    flex-shrink:0;
+
+}
+
+#dashboard .icon-svg--sm{
+
+    width:18px;
+
+    height:18px;
+
+}
+
+#dashboard .calendar-row .icon{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:var(--primary);
+
+}
+
+#dashboard .calendar-row{
+
+    display:grid;
+
+    grid-template-columns:18px 1fr;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+#dashboard .status-icon .icon-svg{
+
+    width:30px;
+
+    height:30px;
+
+}
+
+#dashboard .status-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+}
+
+#dashboard .status-item .icon-svg{
+
+    width:16px;
+
+    height:16px;
+
+}
+
+#dashboard .kpi-icon{
+
+    display:flex;
+
+    align-items:center;
+
+    height:24px;
+
+    color:var(--primary);
+
+}
+
+#dashboard .contract-header h3{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:7px;
+
+}
+
 #dashboard .cabecalho{
 
     display:flex;
