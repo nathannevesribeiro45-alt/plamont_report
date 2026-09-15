@@ -1,8 +1,8 @@
 {
   "id": "os450",
   "nome": "Contrato OS 450",
-  "data": "31/08/2026",
-  "turno": "Dia A",
+  "data": "10/09/2026",
+  "turno": "Dia B",
   "horario": "07:00 às 19:00",
   "abas": [
     {
@@ -16,11 +16,12 @@
           "Montador": 8,
           "Eletricista": 8,
           "Ajudante de mont.": 2,
-          "Pintor": 0
+          "Pintor": 1
         },
         "indireto": {
           "Supervisor Montagem": 1,
-          "Encarregado Montagem": 1,
+          "Encarregado Montagem": 3,
+          "Supervisor Andaime": 1,
           "Encarregado Elétrica": 1,
           "Mestre Montagem": 4,
           "Mestre Andaime": 2
@@ -43,30 +44,34 @@
           "Mestre Andaime": 2
         }
       },
-      "ausencias": {},
+      "ausencias": {
+        "Mecânicos":2,
+        "justificadas":2,
+        "naoJustificadas":0
+      },
       "mobilizacao": {},
 
       "recursos": [
         {
           "tipo": "Munck",
-          "placa": "QRI-8D21",
-          "operador": "Gerson",
-          "contato":"98 9906-6073",
-          "status":"disponivel"
-        },
-        {
-          "tipo": "Munck",
-          "placa": "ROV-7A11",
-          "operador": "Moisés",
-          "contato":"94 99181-8671",
-          "status": "disponivel"
+          "placa": "QRD-8213",
+          "operador": "",
+          "contato":"",
+          "status": "manutencao"
         },
         {
           "tipo": "Munck",
           "placa": "QRI-7I40",
-          "operador": "",
-          "contato":"",
-          "status": "manutencao"
+          "operador": "Moisés",
+          "contato":"94 99181-8671",
+          "status": "disponivel"
+        },
+         {
+          "tipo": "Munck",
+          "placa": "QRI-8D21",
+          "operador": "Márcio",
+          "contato":"98 98805-1819",
+          "status": "disponivel"
         },
         {
           "tipo": "Pick-up",
@@ -77,7 +82,7 @@
         },
         {
           "tipo": "Pick-up",
-          "placa": "SFR-3B97",
+          "placa": "SFV-7L97",
           "operador": "Rosivaldo",
           "contato":"98 99187-8772",
           "status": "Disponivel"
@@ -92,55 +97,38 @@
         {
           "tipo": "Veículo leve",
           "placa": "SMX-6G78",
-          "operador": "Bruno",
+          "operador": "Geilson",
           "contato":"98 98850-8993",
           "status": "Operante"
         },
         {
           "tipo": "Veículo leve",
           "placa": "SMX-4110",
-          "operador": "Jobert",
+          "operador": "Alciomar",
           "contato":"98 98802-8232",
           "status": "Operante"
         },
         {
           "tipo": "Veículo leve",
           "placa": "SMX-3C99",
-          "operador": "Jesus",
+          "operador": "Oliveira",
           "contato":"98 97010-4041",
           "status": "Disponivel"
         },
         {
           "tipo": "Veículo leve",
           "placa": "SMX-6I53",
-          "operador": "Estevan",
+          "operador": "Gilmar",
           "contato":"98 98474-3782",
           "status": "Disponivel"
         }
       ],
       "atividades": [
-        {
-          "lider":"Jesse",
-          "telefone":"98 9112-7960",
-          "equipe":"1 mecânicos + 2 soldador + 2 caldeireiros",
-          "oms":[
-            {
-              "frente":"VV-01",
-              "numero":"202604032281",
-              "descricao":"RECUP ESTRU PAREDE INT TREMONHA (VV-01)",
-              "latitude":"-2,5681063",
-              "longitude":"-44,3457358",
-              "arquivoPdf":"", 
-              "status":"Em andamento"
-            }
-          ]
-
-        },
      
         {
-          "lider":"Cosmo",
-          "telefone":"98 8497-6410",
-          "equipe":"7 mecânicos + 3 soldador + 3 caldeireiro",
+          "lider":"Cosmo (Extra)",
+          "telefone":"98 8863-1678",
+          "equipe":"4 mecânicos + 2 soldador + 2 caldeireiro",
           "oms":[
             {
               "frente":"VV-01",
@@ -156,20 +144,39 @@
           ]
 
         },
-         
-         {
-          "lider":"Jadilson",
+        {
+          "lider":"Jessé",
           "telefone":"98 8817-1971",
-          "equipe":"5 mecânicos + 1 soldador + 1 caldeireiro",
+          "equipe":"5 mecânicos + 2 soldador + 1 caldeireiro + 1 pintor",
           "oms":[
-           {
-              "frente":" TR-315k-07 / TR-315k-04",
-              "numero":"202504630062",
-              "descricao":"TROCA  CHUTE COMPLETO RECEB. TR1507 / TR1504",
-              "latitude":"-2,5637659",
-              "longitude":"-44,3603730",
-              "status":"Em andamento",
-              "arquivoPdf":"om's/contrato 450 oms/OM 202504630062 - CHUTE_TROC CHUTE COMPLETO RECEB. TR1507.pdf"
+            {
+              "frente":"VV-01",
+              "numero":"202604032281",
+              "descricao":"RECUP ESTRU PAREDE INT TREMONHA (VV-01)",
+              "latitude":"-2,5681063",
+              "longitude":"-44,3457358",
+              "arquivoPdf":"", 
+              "status":"Em andamento"
+            }
+
+            
+          ]
+
+        },
+
+        {
+          "lider":"Maurício",
+          "telefone":"",
+          "equipe":"3 mecânicos + 1 soldador + 1 caldeireiro + 4 montadores",
+          "oms":[
+            {
+              "frente":"ER-01",
+              "numero":"202405911719",
+              "descricao":"TROCAR RAMPA CURVA DA ER-01 (ER-01)",
+              "latitude":"-2,5671205",
+              "longitude":"-44,3524934",
+              "arquivoPdf":"om's/contrato 450 oms/OM 202405911719 TROCAR RAMPA CURVA DA ER-01.pdf", 
+              "status":"Em andamento"
             }
 
             
