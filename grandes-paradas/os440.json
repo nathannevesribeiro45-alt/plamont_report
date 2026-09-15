@@ -1,0 +1,172 @@
+{
+  "dadosDeTeste": false,
+  "horasPorDiaUtil": 12,
+  "paradas": [
+    {
+      "id": "rp-313k-03",
+      "nome": "RP-313K-03",
+      "tipo": "Grande Parada",
+      "equipamento": "RP-313K-03",
+      "contrato": "os440",
+
+      "status": {
+        "data": "14/09/2026",
+        "hora": "16:00"
+      },
+
+      "periodo": {
+        "inicio": "07/09/2026",
+        "inicioHora": "00:00",
+        "fim": "18/09/2026",
+        "previstoFim": "18/09/2026",
+        "previstoFimHora": "23:00",
+        "realizadoFim": "18/09/2026",
+        "realizadoFimHora": "23:00"
+      },
+
+      "dataStatus": "14/09/2026",
+
+      "pontos": [
+        {
+          "data": "07/09/2026",
+          "previsto": 0,
+          "realizado": 0
+        },
+        {
+          "data": "14/09/2026",
+          "previsto": 81.62,
+          "realizado": 92.72
+        }
+      ],
+
+      "marcos": [
+        {
+          "data": "18/09/2026",
+          "previsto": 100,
+          "descricao": "Conclusão prevista"
+        }
+      ],
+
+      "turno": {
+        "realizado": {
+          "inicio": "07:00",
+          "fim": "16:00"
+        },
+        "proximo": {
+          "inicio": "16:00",
+          "fim": "07:00"
+        }
+      },
+
+      "atividades": {
+        "realizadas": [
+          {
+            "area": "AE14.4_FAB.PINOS E OLHAIS ART.CONTRAPESO",
+            "descricao": "Desmontagem de andaimes",
+            "status": "Concluído"
+          },
+          {
+            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
+            "descricao": "LP Líquido Penetrante",
+            "status": "Concluído"
+          },
+          {
+            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
+            "descricao": "Realizar cortes dos suportes da roldanas",
+            "status": "Concluído"
+          },
+          {
+            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
+            "descricao": "Limpeza mecânica",
+            "status": "Concluído"
+          }
+        ],
+
+        "proximas": [
+          {
+            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
+            "descricao": "Montagem e ajustes dos reforços da 2° travessa",
+            "status": "Em andamento"
+          },
+          {
+            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
+            "descricao": "Soldagem da 2° travessa",
+            "status": "Em andamento"
+          },
+          {
+            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
+            "descricao": "Montagem e ajustes do suporte das roldanas",
+            "status": "Em andamento"
+          },
+          {
+            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
+            "descricao": "Soldas dos suportes",
+            "status": "Em andamento"
+          },
+          {
+            "area": "Alinhar Suporte da Coluna da Mesa de Impacto do Chute da Lança",
+            "descricao": "Desmontagem do andaime",
+            "status": "Em andamento"
+          },
+          {
+            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
+            "descricao": "LP Líquido Penetrante",
+            "status": "Programado"
+          },
+          {
+            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
+            "descricao": "Retirada do estaiamento do contrapeso",
+            "status": "Programado"
+          },
+          {
+            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
+            "descricao": "Retoque de pintura",
+            "status": "Programado"
+          },
+          {
+            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
+            "descricao": "Desmontagem de andaimes suspenso e apoiado AC 1.80",
+            "status": "Programado"
+          },
+          {
+            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
+            "descricao": "Montagem e ajustes das grades de piso",
+            "status": "Programado"
+          },
+          {
+            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
+            "descricao": "Soldagem da grade de piso",
+            "status": "Programado"
+          },
+          {
+            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
+            "descricao": "Retoque de pintura",
+            "status": "Programado"
+          },
+          {
+            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
+            "descricao": "Desmontagem de isolamentos",
+            "status": "Programado"
+          },
+          {
+            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
+            "descricao": "Descida de materiais de andaimes",
+            "status": "Programado"
+          },
+          {
+            "area": "Alinhar Suporte da Coluna da Mesa de Impacto do Chute da Lança",
+            "descricao": "Desmontagem do andaime",
+            "status": "Programado"
+          },
+          {
+            "area": "Alinhar Suporte da Coluna da Mesa de Impacto do Chute da Lança",
+            "descricao": "Descida de materiais de andaime/ferramental/sucatas - Guindaste",
+            "status": "Programado"
+          }
+        ]
+      },
+
+      "observacoes": "Desvio positivo de 11,11%. Ganho informado no report: 0,00h."
+    }
+  ]
+}

@@ -132,8 +132,6 @@ const CurvaS = {
 
         this.renderLegenda();
 
-        this.renderInterpretacao(metrics);
-
         this.renderMarcos(parada, metrics);
 
         this.renderObservacoes(parada);
@@ -328,29 +326,70 @@ const CurvaS = {
 
     },
 
-    // ======================================
-    // Cabeçalho (nome da parada + data de status)
-    // ======================================
-    renderCabecalho(parada, metrics) {
+// ======================================
+// Cabeçalho (nome da parada + data de status)
+// ======================================
+renderCabecalho(parada, metrics) {
 
-        const nome = document.getElementById("curvaS-parada-nome");
-        const data = document.getElementById("curvaS-parada-data");
-        const periodo = document.getElementById("curvaS-parada-periodo");
+    const card = document.getElementById("curvaS-parada-card");
 
-        if (nome) nome.textContent = parada.nome || "—";
+    const nome = document.getElementById("curvaS-parada-nome");
+    const data = document.getElementById("curvaS-parada-data");
+    const periodo = document.getElementById("curvaS-parada-periodo");
 
-        if (data) {
-            data.textContent = parada.status?.hora
-                ? `${metrics.dataStatusFormatada} às ${parada.status.hora}h`
-                : metrics.dataStatusFormatada;
-        }
+    // Existe uma grande parada para o contrato selecionado.
+    // Portanto, o card deve ficar visível.
+    if (card) {
+        card.style.display = "flex";
+    }
 
-        if (periodo) {
-            periodo.textContent =
-                `${parada.periodo?.inicio || "—"} → ${parada.periodo?.fim || "—"}`;
-        }
+    if (nome) {
+        nome.textContent = parada.nome || "—";
+    }
 
-    },
+    if (data) {
+        data.textContent = parada.status?.hora
+            ? `${metrics.dataStatusFormatada} às ${parada.status.hora}h`
+            : metrics.dataStatusFormatada;
+    }
+
+    if (periodo) {
+        periodo.textContent =
+            `${parada.periodo?.inicio || "—"} → ${parada.periodo?.fim || "—"}`;
+    }
+
+},
+// ======================================
+// Estado vazio (sem grandes paradas cadastradas)
+// ======================================
+renderVazio() {
+
+    const kpis = document.getElementById("curvaS-kpis");
+    const chart = document.getElementById("curvaS-chart");
+    const card = document.getElementById("curvaS-parada-card");
+
+    // Limpa os KPIs
+    if (kpis) {
+        kpis.innerHTML = "";
+    }
+
+    // Esconde completamente o card da grande parada.
+    // Ele só volta a aparecer quando um contrato
+    // com uma parada cadastrada for renderizado.
+    if (card) {
+        card.style.display = "none";
+    }
+
+    if (chart) {
+        chart.innerHTML = `
+            <div class="curvaS-vazio">
+                <h3>Nenhuma grande parada cadastrada</h3>
+                <p>Assim que uma grande parada for cadastrada, o acompanhamento da Curva S aparecerá aqui.</p>
+            </div>
+        `;
+    }
+
+},
 
     // ======================================
     // KPIs
@@ -479,7 +518,7 @@ const CurvaS = {
     },
 
     // ======================================
-    // Legenda
+    // Legenda (compacta, dentro do cabeçalho do card da Curva S)
     // ======================================
     renderLegenda() {
 
@@ -488,59 +527,20 @@ const CurvaS = {
         if (!container) return;
 
         container.innerHTML = `
-            <div class="curvaS-legenda-item">
-                <span class="curvaS-legenda-cor curvaS-cor-previsto"></span>
-                <div>
-                    <strong>Previsto</strong>
-                    <small>Avanço planejado</small>
-                </div>
-            </div>
-            <div class="curvaS-legenda-item">
-                <span class="curvaS-legenda-cor curvaS-cor-realizado"></span>
-                <div>
-                    <strong>Realizado</strong>
-                    <small>Avanço executado</small>
-                </div>
-            </div>
+            <span class="curvaS-legenda-item">
+                <span class="curvaS-legenda-ponto curvaS-cor-previsto-fill"></span>
+                Previsto
+            </span>
+            <span class="curvaS-legenda-item">
+                <span class="curvaS-legenda-ponto curvaS-cor-realizado-fill"></span>
+                Realizado
+            </span>
         `;
 
     },
 
     // ======================================
-    // Interpretação (texto simples explicando o desvio)
-    // ======================================
-    renderInterpretacao(metrics) {
-
-        const container = document.getElementById("curvaS-interpretacao");
-
-        if (!container) return;
-
-        let texto;
-
-        if (metrics.desvio === null) {
-
-            texto = "Ainda não há dados suficientes para comparar o previsto com o realizado.";
-
-        } else if (Math.abs(metrics.desvio) < 1) {
-
-            texto = `O avanço realizado (${this.formatarPercentual(metrics.realizadoAtual)}) está praticamente alinhado ao planejado (${this.formatarPercentual(metrics.previstoAtual)}) na data de status.`;
-
-        } else if (metrics.desvio < 0) {
-
-            texto = `O avanço realizado (${this.formatarPercentual(metrics.realizadoAtual)}) está ${this.formatarPercentual(Math.abs(metrics.desvio))} abaixo do planejado (${this.formatarPercentual(metrics.previstoAtual)}) na data de status, indicando atraso físico na grande parada.`;
-
-        } else {
-
-            texto = `O avanço realizado (${this.formatarPercentual(metrics.realizadoAtual)}) está ${this.formatarPercentual(metrics.desvio)} acima do planejado (${this.formatarPercentual(metrics.previstoAtual)}) na data de status, indicando adiantamento físico na grande parada.`;
-
-        }
-
-        container.innerHTML = `<p>${texto}</p>`;
-
-    },
-
-    // ======================================
-    // Próximos marcos
+    // Próximos marcos (lista compacta)
     // ======================================
     renderMarcos(parada, metrics) {
 
@@ -570,15 +570,17 @@ const CurvaS = {
             const item = document.createElement("li");
 
             const ehConclusao = Number(marco.previsto) >= 100;
+            const descricao = marco.descricao || (ehConclusao ? "Conclusão prevista" : "Previsto");
 
             item.innerHTML = `
-                <span class="curvaS-marco-data">${marco.data}</span>
-                <span class="curvaS-marco-seta">→</span>
-                <span class="curvaS-marco-valor">
-                    ${this.formatarPercentual(marco.previsto)}
-                    ${ehConclusao ? "conclusão prevista" : "previsto"}
+                <span class="curvaS-marco-icone" aria-hidden="true">${Icons.calendario}</span>
+                <span class="curvaS-marco-corpo">
+                    <span class="curvaS-marco-linha1">
+                        <span class="curvaS-marco-data">${marco.data}</span>
+                        <span class="curvaS-marco-valor">${this.formatarPercentual(marco.previsto)}</span>
+                    </span>
+                    <span class="curvaS-marco-desc">${descricao}</span>
                 </span>
-                ${marco.descricao ? `<span class="curvaS-marco-desc">${marco.descricao}</span>` : ""}
             `;
 
             lista.appendChild(item);
@@ -592,19 +594,30 @@ const CurvaS = {
     },
 
     // ======================================
-    // Observações
+    // Observações — card/botão discreto que abre o texto
+    // completo em um popup. O conteúdo continua vindo
+    // integralmente dos dados existentes (parada.observacoes).
     // ======================================
     renderObservacoes(parada) {
 
-        const container = document.getElementById("curvaS-observacoes");
+        const botao = document.getElementById("curvaS-observacoes");
+        const icone = document.getElementById("curvaS-observacoes-icone");
+        const preview = document.getElementById("curvaS-observacoes-preview");
 
-        if (!container) return;
+        if (!botao) return;
+
+        if (icone && !icone.innerHTML) {
+            icone.innerHTML = Icons.info;
+        }
 
         const texto = (parada.observacoes || "").trim();
 
-        container.innerHTML = texto
-            ? `<p>${texto}</p>`
-            : `<p class="curvaS-observacoes-vazio">Nenhuma observação registrada para esta grande parada.</p>`;
+        if (preview) {
+            preview.textContent = texto || "Nenhuma observação registrada para esta grande parada.";
+            preview.classList.toggle("curvaS-observacoes-vazio", !texto);
+        }
+
+        botao.onclick = () => this.abrirModalObservacoes(parada, texto);
 
     },
 
@@ -657,9 +670,12 @@ const CurvaS = {
             card.setAttribute("aria-label", `${info.titulo} — ver detalhes`);
 
             card.innerHTML = `
-                <strong>${info.titulo}</strong>
-                <span class="curvaS-resumo-horario">${info.horario}</span>
-                <span class="curvaS-resumo-contagem">${info.contagem} ${info.contagem === 1 ? "item" : "itens"}</span>
+                <span class="curvaS-resumo-corpo">
+                    <strong>${info.titulo}</strong>
+                    <span class="curvaS-resumo-horario">${info.horario}</span>
+                    <span class="curvaS-resumo-contagem">${info.contagem} ${info.contagem === 1 ? "item" : "itens"}</span>
+                </span>
+                <span class="curvaS-resumo-seta" aria-hidden="true">${Icons.chevron}</span>
             `;
 
             card.addEventListener("click", () => this.abrirModalAtividades(parada));
@@ -769,6 +785,52 @@ const CurvaS = {
 
     },
 
+    // ======================================
+    // Modal de observações
+    // Acessado ao clicar no card/botão discreto "Observações" da
+    // coluna lateral. Mostra o texto completo vindo dos dados
+    // existentes (parada.observacoes), sem alterar seu conteúdo.
+    // ======================================
+    abrirModalObservacoes(parada, texto) {
+
+        this.fecharModalAtividades();
+
+        const overlay = document.createElement("div");
+
+        overlay.className = "curvaS-modal-overlay";
+
+        overlay.innerHTML = `
+            <div class="curvaS-modal curvaS-modal-observacoes" role="dialog" aria-modal="true" aria-label="Observações da grande parada">
+                <div class="curvaS-modal-header">
+                    <h3>Observações — ${parada.nome || "—"}</h3>
+                    <button type="button" class="curvaS-modal-fechar" aria-label="Fechar">✕</button>
+                </div>
+                <div class="curvaS-modal-body">
+                    <p class="curvaS-modal-observacoes-texto">
+                        ${texto || "Nenhuma observação registrada para esta grande parada."}
+                    </p>
+                </div>
+            </div>
+        `;
+
+        overlay.querySelector(".curvaS-modal-fechar").addEventListener("click", () => this.fecharModalAtividades());
+
+        overlay.addEventListener("click", evento => {
+            if (evento.target === overlay) this.fecharModalAtividades();
+        });
+
+        this.aoTeclaEscModal = evento => {
+            if (evento.key === "Escape") this.fecharModalAtividades();
+        };
+
+        document.addEventListener("keydown", this.aoTeclaEscModal);
+
+        document.body.appendChild(overlay);
+
+        this.modalAberto = overlay;
+
+    },
+
     // Gera os <li> de uma lista de atividades (realizadas ou próximas),
     // mostrando OM (quando existir), área e descrição.
     renderItensAtividade(itens) {
@@ -807,10 +869,21 @@ const CurvaS = {
             return;
         }
 
-        const largura = 860;
-        const altura = 400;
+        // No celular, o SVG deixa de reproduzir a proporção horizontal do
+        // desktop. A área quase quadrada privilegia a leitura das datas,
+        // linhas e valores sem alterar os dados nem os cálculos da curva.
+        const visualizacaoMobile = window.matchMedia("(max-width: 768px)").matches;
 
-        const margem = { topo: 20, direita: 24, baixo: 44, esquerda: 58 };
+        // A largura lógica acompanha a área interna disponível. Assim a
+        // versão mobile mantém cerca de 320–340px de altura útil, inclusive
+        // em telefones estreitos e tablets em orientação retrato.
+        const larguraMobile = Math.max(320, Math.min(window.innerWidth - 60, 720));
+        const largura = visualizacaoMobile ? larguraMobile : 860;
+        const altura = visualizacaoMobile ? 340 : 400;
+
+        const margem = visualizacaoMobile
+            ? { topo: 22, direita: 14, baixo: 76, esquerda: 42 }
+            : { topo: 20, direita: 24, baixo: 44, esquerda: 58 };
 
         const areaLargura = largura - margem.esquerda - margem.direita;
         const areaAltura = altura - margem.topo - margem.baixo;
@@ -903,6 +976,28 @@ const CurvaS = {
 
         };
 
+        // No layout mobile, cada valor de status ocupa uma posição própria
+        // junto ao respectivo ponto. Isso evita a sobreposição entre
+        // previsto e realizado sem criar uma segunda visualização do gráfico.
+        const rotuloStatus = (texto, cx, cy, classeTexto, serie) => {
+
+            if (!visualizacaoMobile) {
+                return pill(texto, cx, cy, classeTexto);
+            }
+
+            const larguraTexto = Math.round(texto.length * 7.2);
+            const x = Math.min(cx + 12, largura - margem.direita - larguraTexto);
+            const y = serie === "realizado"
+                ? Math.max(cy - 10, margem.topo + 12)
+                : Math.min(cy + 17, altura - margem.baixo - 8);
+
+            return `
+                <text class="curvaS-status-valor curvaS-status-valor-mobile ${classeTexto}"
+                      x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="start">${texto}</text>
+            `;
+
+        };
+
         // Linhas de grade horizontais (0/25/50/75/100%)
         let grade = "";
 
@@ -919,9 +1014,25 @@ const CurvaS = {
 
         // Rótulos do eixo X (início, data de status, fim)
         const rotulosX = [
-            { data: inicio, texto: parada.periodo.inicio },
-            { data: metrics.dataStatusObj, texto: metrics.dataStatusFormatada, status: true },
-            { data: fim, texto: parada.periodo.fim }
+            {
+                data: inicio,
+                texto: parada.periodo.inicio,
+                descricao: "Início",
+                ancora: visualizacaoMobile ? "start" : "middle"
+            },
+            {
+                data: metrics.dataStatusObj,
+                texto: metrics.dataStatusFormatada,
+                descricao: "Data do status",
+                status: true,
+                ancora: "middle"
+            },
+            {
+                data: fim,
+                texto: parada.periodo.fim,
+                descricao: "Término",
+                ancora: visualizacaoMobile ? "end" : "middle"
+            }
         ];
 
         let eixoX = "";
@@ -931,13 +1042,31 @@ const CurvaS = {
             if (!r.data) return;
 
             const x = escalaX(r.data);
+            // Em telas estreitas, o texto do status se desloca apenas alguns
+            // pixels à esquerda da linha. A marcação continua central, mas a
+            // data final ganha respiro e nunca se encosta à data de status.
+            const xTexto = visualizacaoMobile && r.status ? x - 7 : x;
 
-            eixoX += `
-                <text class="curvaS-eixo-texto ${r.status ? "curvaS-eixo-status" : ""}"
-                      x="${x}" y="${altura - margem.baixo + 22}" text-anchor="middle">
-                    ${r.texto}
-                </text>
-            `;
+            if (visualizacaoMobile) {
+
+                eixoX += `
+                    <text class="curvaS-eixo-texto ${r.status ? "curvaS-eixo-status" : ""}"
+                          x="${xTexto}" y="${altura - margem.baixo + 22}" text-anchor="${r.ancora}">
+                        <tspan x="${xTexto}" dy="0">${r.texto}</tspan>
+                        <tspan class="curvaS-eixo-descricao" x="${xTexto}" dy="16">${r.descricao}</tspan>
+                    </text>
+                `;
+
+            } else {
+
+                eixoX += `
+                    <text class="curvaS-eixo-texto ${r.status ? "curvaS-eixo-status" : ""}"
+                          x="${x}" y="${altura - margem.baixo + 22}" text-anchor="middle">
+                        ${r.texto}
+                    </text>
+                `;
+
+            }
 
         });
 
@@ -945,7 +1074,7 @@ const CurvaS = {
         const centroAreaX = margem.esquerda + areaLargura / 2;
         const centroAreaY = margem.topo + areaAltura / 2;
 
-        const titulosEixos = `
+        const titulosEixos = visualizacaoMobile ? "" : `
             <text class="curvaS-eixo-titulo" x="${centroAreaX}" y="${altura - 4}" text-anchor="middle">DATA</text>
             <text class="curvaS-eixo-titulo" x="12" y="${centroAreaY}" text-anchor="middle"
                   transform="rotate(-90 12 ${centroAreaY})">PERCENTUAL ACUMULADO (%)</text>
@@ -968,7 +1097,7 @@ const CurvaS = {
 
             rotulosStatus += `
                 <circle class="curvaS-ponto-status curvaS-cor-previsto-fill" cx="${xStatus.toFixed(1)}" cy="${y.toFixed(1)}" r="6"></circle>
-                ${pill(this.formatarPercentual(metrics.previstoAtual), xStatus, y - 24, "curvaS-status-previsto")}
+                ${rotuloStatus(this.formatarPercentual(metrics.previstoAtual), xStatus, y, "curvaS-status-previsto", "previsto")}
             `;
 
         }
@@ -979,7 +1108,7 @@ const CurvaS = {
 
             rotulosStatus += `
                 <circle class="curvaS-ponto-status curvaS-cor-realizado-fill" cx="${xStatus.toFixed(1)}" cy="${y.toFixed(1)}" r="6"></circle>
-                ${pill(this.formatarPercentual(metrics.realizadoAtual), xStatus, y + 24, "curvaS-status-realizado")}
+                ${rotuloStatus(this.formatarPercentual(metrics.realizadoAtual), xStatus, y, "curvaS-status-realizado", "realizado")}
             `;
 
         }

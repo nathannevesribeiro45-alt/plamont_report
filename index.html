@@ -540,8 +540,14 @@
     <div class="curvaS-layout" id="curvaS-layout">
 
         <section class="bloco curvaS-grafico-bloco">
-            <div class="bloco-header">
+            <div class="bloco-header curvaS-grafico-header">
                 <h2>Curva S — Previsto x Realizado</h2>
+
+                <div
+                    class="curvaS-legenda"
+                    id="curvaS-legenda"
+                    aria-label="Legenda do gráfico">
+                </div>
             </div>
 
             <div class="bloco-content">
@@ -554,29 +560,7 @@
 
         <aside class="curvaS-coluna">
 
-            <section class="bloco">
-                <div class="bloco-header">
-                    <h2>Legenda</h2>
-                </div>
-
-                <div
-                    class="bloco-content"
-                    id="curvaS-legenda">
-                </div>
-            </section>
-
-            <section class="bloco">
-                <div class="bloco-header">
-                    <h2>Interpretação</h2>
-                </div>
-
-                <div
-                    class="bloco-content"
-                    id="curvaS-interpretacao">
-                </div>
-            </section>
-
-            <section class="bloco">
+            <section class="bloco curvaS-marcos-bloco">
                 <div class="bloco-header">
                     <h2>Próximos Marcos</h2>
                 </div>
@@ -587,16 +571,23 @@
                 </div>
             </section>
 
-            <section class="bloco">
-                <div class="bloco-header">
-                    <h2>Observações</h2>
-                </div>
+            <button
+                class="curvaS-observacoes-bloco"
+                id="curvaS-observacoes"
+                type="button"
+                aria-label="Abrir observações da grande parada">
+                <span class="curvaS-observacoes-icone" id="curvaS-observacoes-icone" aria-hidden="true"></span>
 
-                <div
-                    class="bloco-content"
-                    id="curvaS-observacoes">
-                </div>
-            </section>
+                <span class="curvaS-observacoes-corpo">
+                    <span class="curvaS-observacoes-titulo">Observações</span>
+                    <span
+                        class="curvaS-observacoes-preview"
+                        id="curvaS-observacoes-preview">
+                    </span>
+                </span>
+
+                <span class="curvaS-observacoes-seta" aria-hidden="true">›</span>
+            </button>
 
         </aside>
     </div>
