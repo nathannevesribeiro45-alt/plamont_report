@@ -645,6 +645,7 @@ renderVazio() {
 
         const cards = [
             {
+                grupo: "realizadas",
                 titulo: "Principais atividades realizadas",
                 horario: turno.realizado
                     ? `${turno.realizado.inicio}h às ${turno.realizado.fim}h`
@@ -652,6 +653,7 @@ renderVazio() {
                 contagem: realizadas.length
             },
             {
+                grupo: "proximas",
                 titulo: "Principais atividades a serem realizadas",
                 horario: turno.proximo
                     ? `${turno.proximo.inicio}h às ${turno.proximo.fim}h`
@@ -678,12 +680,12 @@ renderVazio() {
                 <span class="curvaS-resumo-seta" aria-hidden="true">${Icons.chevron}</span>
             `;
 
-            card.addEventListener("click", () => this.abrirModalAtividades(parada));
+            card.addEventListener("click", () => this.abrirModalAtividades(parada, info.grupo));
 
             card.addEventListener("keydown", evento => {
                 if (evento.key === "Enter" || evento.key === " ") {
                     evento.preventDefault();
-                    this.abrirModalAtividades(parada);
+                    this.abrirModalAtividades(parada, info.grupo);
                 }
             });
 
@@ -701,7 +703,7 @@ renderVazio() {
     // mostra o desempenho macro, o modal explica o que está
     // sendo feito para chegar naquele número.
     // ======================================
-    abrirModalAtividades(parada) {
+    abrirModalAtividades(parada, grupoMobile = "realizadas") {
 
         this.fecharModalAtividades();
 
@@ -710,45 +712,63 @@ renderVazio() {
 
         const realizadas = atividades.realizadas || [];
         const proximas = atividades.proximas || [];
+        const mobile = window.matchMedia("(max-width: 768px)").matches;
+        const grupoSelecionado = grupoMobile === "proximas" ? "proximas" : "realizadas";
+        const dataStatus = parada.status?.data || parada.dataStatus || "—";
+
+        const grupos = {
+            realizadas: {
+                titulo: "Atividades realizadas",
+                tituloCurto: "Realizadas",
+                horario: turno.realizado ? `${turno.realizado.inicio}h às ${turno.realizado.fim}h` : "—",
+                itens: realizadas
+            },
+            proximas: {
+                titulo: "Atividades do próximo turno",
+                tituloCurto: "Próximo turno",
+                horario: turno.proximo ? `${turno.proximo.inicio}h às ${turno.proximo.fim}h` : "—",
+                itens: proximas
+            }
+        };
+
+        const renderSecao = grupo => {
+            const dadosGrupo = grupos[grupo];
+            const contagem = dadosGrupo.itens.length;
+
+            return `
+                <section class="curvaS-modal-secao curvaS-modal-secao-${grupo}">
+                    <div class="curvaS-modal-secao-header">
+                        <span class="curvaS-modal-dot" aria-hidden="true"></span>
+                        <div class="curvaS-modal-secao-titulos">
+                            <strong>${dadosGrupo.tituloCurto}</strong>
+                            <span class="curvaS-modal-turno-horario">${dadosGrupo.horario}</span>
+                        </div>
+                        <span class="curvaS-modal-contagem">${contagem} ${contagem === 1 ? "atividade" : "atividades"}</span>
+                    </div>
+                    <ul class="curvaS-modal-lista">
+                        ${this.renderItensAtividade(dadosGrupo.itens, grupo)}
+                    </ul>
+                </section>
+            `;
+        };
+
+        const gruposExibidos = mobile ? [grupoSelecionado] : ["realizadas", "proximas"];
+        const tituloModal = mobile
+            ? `${grupos[grupoSelecionado].titulo} — ${dataStatus}`
+            : `Atividades — ${dataStatus}`;
 
         const overlay = document.createElement("div");
 
         overlay.className = "curvaS-modal-overlay";
 
         overlay.innerHTML = `
-            <div class="curvaS-modal" role="dialog" aria-modal="true" aria-label="Atividades do turno">
+            <div class="curvaS-modal curvaS-modal--atividades ${mobile ? `curvaS-modal--contextual curvaS-modal--${grupoSelecionado}` : "curvaS-modal--comparativo"}" role="dialog" aria-modal="true" aria-label="${tituloModal}">
                 <div class="curvaS-modal-header">
-                    <h3>Atividades — ${parada.status?.data || parada.dataStatus || "—"}</h3>
+                    <h3>${tituloModal}</h3>
                     <button type="button" class="curvaS-modal-fechar" aria-label="Fechar">✕</button>
                 </div>
                 <div class="curvaS-modal-body">
-
-                    <div class="curvaS-modal-secao">
-                        <div class="curvaS-modal-secao-header curvaS-modal-secao-realizadas">
-                            <span class="curvaS-modal-dot"></span>
-                            <strong>Realizadas</strong>
-                            <span class="curvaS-modal-turno-horario">
-                                ${turno.realizado ? `${turno.realizado.inicio}h às ${turno.realizado.fim}h` : ""}
-                            </span>
-                        </div>
-                        <ul class="curvaS-modal-lista">
-                            ${this.renderItensAtividade(realizadas)}
-                        </ul>
-                    </div>
-
-                    <div class="curvaS-modal-secao">
-                        <div class="curvaS-modal-secao-header curvaS-modal-secao-proximas">
-                            <span class="curvaS-modal-dot"></span>
-                            <strong>A serem realizadas</strong>
-                            <span class="curvaS-modal-turno-horario">
-                                ${turno.proximo ? `${turno.proximo.inicio}h às ${turno.proximo.fim}h` : ""}
-                            </span>
-                        </div>
-                        <ul class="curvaS-modal-lista">
-                            ${this.renderItensAtividade(proximas)}
-                        </ul>
-                    </div>
-
+                    ${gruposExibidos.map(renderSecao).join("")}
                 </div>
             </div>
         `;
@@ -831,22 +851,22 @@ renderVazio() {
 
     },
 
-    // Gera os <li> de uma lista de atividades (realizadas ou próximas),
-    // mostrando OM (quando existir), área e descrição.
-    renderItensAtividade(itens) {
+    // Gera os <li> de uma lista de atividades, mantendo os dados originais
+    // e aplicando somente a identidade visual do grupo exibido.
+    renderItensAtividade(itens, grupo = "realizadas") {
 
         if (!itens || !itens.length) {
             return `<li class="curvaS-modal-vazio">Nenhuma atividade registrada.</li>`;
         }
 
         return itens.map(item => `
-            <li class="curvaS-modal-item">
+            <li class="curvaS-modal-item curvaS-modal-item--${grupo}">
                 <div class="curvaS-modal-item-topo">
-                    ${item.area ? `<span class="curvaS-modal-item-area">${item.area}</span>` : ""}
                     ${item.om ? `<span class="curvaS-modal-item-om">OM ${item.om}</span>` : ""}
+                    ${item.area ? `<span class="curvaS-modal-item-area">${item.area}</span>` : ""}
                 </div>
                 <p class="curvaS-modal-item-desc">${item.descricao || "—"}</p>
-                ${item.status ? `<span class="curvaS-modal-item-status">${item.status}</span>` : ""}
+                ${item.status ? `<span class="curvaS-modal-item-status curvaS-modal-item-status--${grupo}">${item.status}</span>` : ""}
             </li>
         `).join("");
 

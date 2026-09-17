@@ -1450,3 +1450,239 @@
         border-radius: 16px 16px 0 0;
     }
 }
+
+/* ==========================================================
+   MODAL DE ATIVIDADES — COMPARATIVO NO DESKTOP / CONTEXTUAL NO MOBILE
+   ========================================================== */
+
+.curvaS-modal--atividades {
+    max-width: 920px;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    box-shadow: 0 24px 64px rgba(6, 36, 68, .28);
+}
+
+.curvaS-modal--atividades .curvaS-modal-header {
+    padding: 18px 22px;
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    color: #082f58;
+}
+
+.curvaS-modal--atividades .curvaS-modal-header h3 {
+    color: #082f58;
+    font-size: 1.05rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.curvaS-modal--atividades .curvaS-modal-fechar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: #315273;
+    font-size: 1.1rem;
+}
+
+.curvaS-modal--atividades .curvaS-modal-fechar:hover,
+.curvaS-modal--atividades .curvaS-modal-fechar:focus-visible {
+    background: #edf4fb;
+    color: #082f58;
+    outline: none;
+}
+
+.curvaS-modal--atividades .curvaS-modal-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0;
+    padding: 0;
+    overflow-y: auto;
+}
+
+.curvaS-modal--atividades .curvaS-modal-secao {
+    min-width: 0;
+    padding: 18px 20px 22px;
+}
+
+.curvaS-modal--atividades .curvaS-modal-secao + .curvaS-modal-secao {
+    border-left: 1px solid #e2e8f0;
+}
+
+.curvaS-modal--atividades .curvaS-modal-secao-header {
+    display: grid;
+    grid-template-columns: 10px minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 9px;
+    margin-bottom: 14px;
+}
+
+.curvaS-modal--atividades .curvaS-modal-dot {
+    grid-row: 1 / span 2;
+    width: 10px;
+    height: 10px;
+    align-self: start;
+    margin-top: 4px;
+}
+
+.curvaS-modal--atividades .curvaS-modal-secao-realizadas .curvaS-modal-dot {
+    background: #12a05c;
+    box-shadow: 0 0 0 4px rgba(18, 160, 92, .10);
+}
+
+.curvaS-modal--atividades .curvaS-modal-secao-proximas .curvaS-modal-dot {
+    background: #1475e8;
+    box-shadow: 0 0 0 4px rgba(20, 117, 232, .10);
+}
+
+.curvaS-modal-secao-titulos {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.curvaS-modal--atividades .curvaS-modal-secao-header strong {
+    color: #082f58;
+    font-size: .92rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.curvaS-modal--atividades .curvaS-modal-turno-horario {
+    margin-left: 0;
+    color: #63758b;
+    font-size: .76rem;
+    font-weight: 500;
+    line-height: 1.25;
+}
+
+.curvaS-modal-contagem {
+    align-self: start;
+    margin-top: 1px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    font-size: .72rem;
+    font-weight: 800;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.curvaS-modal-secao-realizadas .curvaS-modal-contagem {
+    background: #dcf7e8;
+    color: #087a42;
+}
+
+.curvaS-modal-secao-proximas .curvaS-modal-contagem {
+    background: #e1efff;
+    color: #0964cc;
+}
+
+.curvaS-modal--atividades .curvaS-modal-lista {
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+.curvaS-modal--atividades .curvaS-modal-item {
+    padding: 12px 13px;
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    border-radius: 10px;
+}
+
+.curvaS-modal--atividades .curvaS-modal-item--realizadas {
+    border-left: 3px solid rgba(18, 160, 92, .35);
+}
+
+.curvaS-modal--atividades .curvaS-modal-item--proximas {
+    border-left: 3px solid rgba(20, 117, 232, .35);
+}
+
+.curvaS-modal--atividades .curvaS-modal-item-topo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    margin-bottom: 7px;
+}
+
+.curvaS-modal--atividades .curvaS-modal-item-om {
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    color: #082f58;
+    font-size: .75rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.curvaS-modal--atividades .curvaS-modal-item-area {
+    color: #61738a;
+    font-size: .69rem;
+    font-weight: 700;
+    letter-spacing: .2px;
+    line-height: 1.35;
+    text-transform: uppercase;
+}
+
+.curvaS-modal--atividades .curvaS-modal-item-desc {
+    color: #213b59;
+    font-size: .8rem;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+.curvaS-modal--atividades .curvaS-modal-item-status {
+    margin-top: 9px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: .68rem;
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.curvaS-modal--atividades .curvaS-modal-item-status--realizadas {
+    background: #dcf7e8;
+    color: #087a42;
+}
+
+.curvaS-modal--atividades .curvaS-modal-item-status--proximas {
+    background: #e1efff;
+    color: #0964cc;
+}
+
+@media (max-width: 768px) {
+    .curvaS-modal-overlay {
+        padding: 0;
+        align-items: flex-end;
+    }
+
+    .curvaS-modal--atividades {
+        max-width: 100%;
+        max-height: 88vh;
+        border-width: 1px 0 0;
+        border-radius: 18px 18px 0 0;
+    }
+
+    .curvaS-modal--atividades .curvaS-modal-header {
+        padding: 15px 18px;
+    }
+
+    .curvaS-modal--atividades .curvaS-modal-header h3 {
+        font-size: .95rem;
+    }
+
+    .curvaS-modal--atividades .curvaS-modal-body {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .curvaS-modal--atividades .curvaS-modal-secao {
+        padding: 16px 18px 20px;
+    }
+
+    .curvaS-modal--atividades .curvaS-modal-secao + .curvaS-modal-secao {
+        border-top: 1px solid #e2e8f0;
+        border-left: 0;
+    }
+}
