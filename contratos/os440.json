@@ -10,19 +10,19 @@
       "icone":"assets/icons/integridade.svg",
       "qlp": {
         "direto": {
-          "Caldeireiro": 7,
-          "Mecanico": 18,
-          "Soldador": 7,
-          "Eletricista": 4, 
+          "Caldeireiro": 9,
+          "Mecanico": 22,
+          "Soldador": 9,
+          "Eletricista": 5, 
           "Ajudante de eletricista": 1,
-          "Ajudante de montagem":1,
+          "Ajudante de montagem":2,
           "Pintor": 1,
           "Montador": 12
         },
         "indireto": {
           "Supervisor Montagem": 2,
           "Encarregado Montagem": 2,
-          "Mestre Montagem": 4,
+          "Mestre Montagem": 5,
           "Mestre Andaime": 1,
           "Mestre de Solda": 1
         }
@@ -215,6 +215,23 @@
               "latitude":"-2,5650352",
               "longitude":"-44,3487367",
               "arquivoPdf":"om's/contrato 440 oms/Integridade/RP-03 202603982841 NIVELAR MESA DE CARGA.pdf", 
+              "status":"Em andamento"
+            }
+          ]
+        },
+        {
+          "lider":"Tiago de Jesus (Apoio á OS.450)",
+          "telefone":"98 8565-5384",
+          "equipe":"4 mecânicos + 2 soldadores + 2 caldeireiros + 1 eletricista + 1 ajudante de mont.",
+        
+        "oms":[
+           {
+              "frente":"VV-01",
+              "numero":"202604032281",
+              "descricao":"RECUP ESTRU PAREDE INT TREMONHA (VV-01)",
+              "latitude":"-2,5681063",
+              "longitude":"-44,3457358",
+              "arquivoPdf":"", 
               "status":"Em andamento"
             }
           ]
