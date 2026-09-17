@@ -1,8 +1,8 @@
 {
   "id": "os441",
   "nome": "Contrato OS 441",
-  "data": "17/09/2026",
-  "turno": "Dia B",
+  "data": "15/09/2026",
+  "turno": "Dia A",
   "horario": "07:00 às 19:00",
   "abas": [
     {
@@ -13,8 +13,8 @@
 
       "qlp": {
         "direto": {
-          "Caldeireiro": 3,
-          "Mecanico": 10,
+          "Caldeireiro": 2,
+          "Mecanico": 13,
           "Soldador": 3,
           "Montador": 9,
           "Eletricista": 0,
@@ -47,8 +47,9 @@
       },
 
       "ausencias": {
-      "Mecânico":1,
-     "justificadas": 1,
+        "Mecânico":1,
+        "Caldeireiro":2,
+     "justificadas": 3,
      "naoJustificadas":0
       },
 
@@ -64,8 +65,8 @@
         },
         {
           "tipo": "Munck",
-          "placa": "QRD-8213",
-          "operador": "Jhonatan",
+          "placa": "RQP-8G78",
+          "operador": "",
           "contato":"",
           "status": "Disponivel"
         },
@@ -80,15 +81,15 @@
         {
           "tipo": "Pick-up",
           "placa": "SFU-0A35",
-          "operador": "Anderson",
-          "contato":"(98) 98415-6236",
+          "operador": "Hilgles",
+          "contato":"98 98537-4937",
           "status": "Disponivel"
         },
         {
           "tipo": "Pick-up",
-          "placa": "SFT-9J87",
-          "operador": "Patrick",
-          "contato":"(98) 99984-4559",
+          "placa": "SFT-9H25",
+          "operador": "Carlos",
+          "contato":"98 98124-4272",
           "status": "Disponivel"
         }
       
@@ -96,73 +97,55 @@
 
       "atividades": [
         {
-        "lider": "Adilson",
-          "telefone": "98 8898-1856",
+        "lider": "Elias",
+          "telefone": "98 98210-6618",
           "tecnicoSeguranca": "",
-          "equipe": "04 Mecânicos + 01 Caldeireiro + 01 soldador + 03 montadores",
+          "equipe": "05 Mecânicos + 01 Caldeireiro + 01 soldador + 03 montadores",
           "oms": [
             {
               "frente":"ER-01",
                "latitude":"-2,5671205",
               "longitude":"-44,3524934",
-              "numero": "202601910250",
-              "descricao": "TROCAR 03 ROLOS IMPACTO MESA DA RODA (ER01)",
-              "arquivoPdf":"om's/contrato 441 oms/Desgaste/ER01 - 202601910250 - TROCAR 03 ROLOSIMPACTO MESA DARODA.pdf",
-              "status": "Em andamento"
-            },
-            {
-              "frente":"ER-01",
-               "latitude":"-2,5671205",
-              "longitude":"-44,3524934",
-              "numero": "202603719914",
-              "descricao": "MP DO CHUTE CENTRAL BANCADA SUPERIOR (ER01)",
+              "numero": "202604636645",
+              "descricao": "PREPARAÇÃO DE MATERIAS E5S PLAMONT (ER01)",
               "arquivoPdf":"",
               "status": "Em andamento"
             }
           ]
         },
         {
-          "lider": "Fernando Maranhão",
-          "telefone": "98 8742-8209",
+          "lider": "Iego",
+          "telefone": "98 8506-6056",
           "tecnicoSeguranca": "",
-          "equipe": "4 Mecânicos + 1 soldador + 01 caldeireiro + 3 Montadores",
+          "equipe": "5 Mecânicos + 1 soldador + 3 Montadores",
           "oms": [
             
             {
-              "numero": "202603719904",
-              "frente":"TR-313K-07",
-              "latitude":"-2,5671366",
-              "longitude":"-44,3568473",
+              "numero": "202603522976",
+              "frente":"TR-1417",
+              "latitude":"-2,5653945",
+              "longitude":"-44,3755972",
               "arquivoPdf":"",
-              "descricao": "TROCAR 48 ROLOS DE CARGA DO 1307 (TR-313K-07)",
-              "status": "Em andamento"
-            },
-             {
-              "numero": "202603788577",
-              "frente":"TR-313K-07",
-              "latitude":"-2,5671366",
-              "longitude":"-44,3568473",
-              "arquivoPdf":"",
-              "descricao": "TROCAR 70 ROLOS DE CARGA NO TR 1307 (TR-313K-07)",
+              "descricao": "CHUTE_TROCAR REVESTIMENTO CHTE DESC (TR1417)",
               "status": "Em andamento"
             }
           ]
         },
         {
-          "lider": "Ederson (Apoio)",
-          "telefone": "98 8242-1348",
+          "lider": "Alexandre",
+          "telefone": "98 99228‑6538",
           "tecnicoSeguranca": "",
-          "equipe": "2 Mecânicos + 1 Caldeireiro + 1 soldador + 3 Montadores",
+          "equipe": "3 Mecânicos + 1 Caldeireiro + 1 soldador + 3 Montadores",
           "oms": [
             {
-              "numero": "202603788577",
-              "frente":"TR-313K-07",
-              "latitude":"-2,5671366",
-              "longitude":"-44,3568473",
+              "numero":"202501874294",
+              "frente":"TR-1359",
+              "latitude":"-2,5634191",
+              "longitude":"-44,3457215",
+              "descricao":"TROCAR CAV AA RETORNO PLANO CAB MÓVEL (TR1359)",
               "arquivoPdf":"",
-              "descricao": "TROCAR 70 ROLOS DE CARGA NO TR 1307 (TR-313K-07)",
-              "status": "Em andamento"
-            }
+              "status":"Em andamento"
+          }
           ]
         }
       ]
@@ -177,8 +160,8 @@
 
       "qlp": {
         "direto": {
-          "Caldeireiro": 4,
-          "Mecanico": 3,
+          "Caldeireiro": 3,
+          "Mecanico": 2,
           "Soldador": 4,
           "Montador": 2,
           "Eletricista": 0,
@@ -207,7 +190,8 @@
         }
       },
       "ausencias": {
-        "justificadas": 0,
+        "Mecânico":1,
+        "justificadas": 1,
      "naoJustificadas":0
       },
       "mobilizacao": {},
@@ -215,33 +199,33 @@
 
       "atividades": [
         {
-          "lider": "Wanderson/Adeilton",
-          "telefone": "98 98508-8348/98 8882-2306",
+          "lider": "Julio/Erickson",
+          "telefone": "98 8506-6125/98 9609-7660",
           "tecnicoSeguranca": "",
-          "equipe": "3 Mecânicos + 4 Caldeireiros + 4 Soldadores + 2 Montadores + 1 pintor",
+          "equipe": "2 Mecânicos + 3 Caldeireiros + 4 Soldadores + 2 Montadores + 1 pintor",
           "oms": [
             {
-              "numero":"202603543771",
-              "frente":"ER-06",
-              "latitude":"-2,5713731",
-              "longitude":"-44,3426074",
-              "descricao":"SEG_GC_SOLD.G.CORP.INT.PASS.TR.LANÇ.ER06 (ER-06)",
+              "numero":"202501581736",
+              "frente":"TR-1512",
+              "latitude":"-2,5651953",
+              "longitude":"-44,3754809",
+              "descricao":"Passarela do TR 1512",
               "status":"Em andamento"
           },
          {
-              "numero":"202603531465",
-              "frente":"ER-06",
-              "latitude":"-2,5713731",
-              "longitude":"-44,3426074",
-              "descricao":"SEG_PS_TROC.GRAD.PIS. TR LANÇA LD ER 06 (ER-06)",
+              "numero":"202302212482",
+              "frente":"AM-06",
+              "latitude":"",
+              "longitude":"",
+              "descricao":"Troca da chapa do AM06",
               "status":"Em andamento"
           },
            {
-              "numero":"202603531466",
-              "frente":"ER-06",
-              "latitude":"-2,5713731",
-              "longitude":"-44,3426074",
-              "descricao":" SEG_PS_TROC.GRAD.PIS. ESC,ACES.CONTP ER6 (ER-06)",
+              "numero":"202603674978",
+              "frente":"TR-2507",
+              "latitude":"-2,5630375",
+              "longitude":"-44,3791164",
+              "descricao":" TROCAR CHAPAS DE PS COM OXI PASS LD DIREITO TR2507",
               "status":"Em andamento"
           }
           ]

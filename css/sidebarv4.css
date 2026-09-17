@@ -168,78 +168,21 @@
 
 
 /* ==========================================================
-   ÁREA ROLÁVEL DO MENU
-========================================================== */
+   MENU
+   ========================================================== */
 
 .sidebar-menu{
-    flex:1 1 auto;
 
-    /* essencial dentro de um container flex */
-    min-height:0;
+    flex:1;
 
     display:flex;
     flex-direction:column;
 
-    padding:24px 12px 90px;
+    padding:24px 12px 12px;
 
     overflow-y:auto;
-    overflow-x:hidden;
 
-    overscroll-behavior:contain;
-    -webkit-overflow-scrolling:touch;
-
-    scrollbar-width:thin;
-    scrollbar-color:rgba(255,255,255,.25) transparent;
 }
-
-/* ==========================================================
-   SCROLL EXCLUSIVO DA LISTA DE CONTRATOS
-========================================================== */
-
-.sidebar .contratos-lista.submenu.aberto{
-    max-height:300px;
-
-    overflow-y:auto;
-    overflow-x:hidden;
-
-    padding-right:5px;
-
-    overscroll-behavior:contain;
-    -webkit-overflow-scrolling:touch;
-
-    scrollbar-width:thin;
-    scrollbar-color:rgba(255,255,255,.28) transparent;
-}
-
-/* mantém os itens com o tamanho atual */
-.sidebar .contratos-lista .menu-item{
-    flex:0 0 auto;
-}
-
-.sidebar .contratos-lista .menu-btn{
-    height:42px;
-    min-height:42px;
-    flex:0 0 42px;
-}
-
-/* scrollbar */
-.sidebar .contratos-lista::-webkit-scrollbar{
-    width:5px;
-}
-
-.sidebar .contratos-lista::-webkit-scrollbar-track{
-    background:transparent;
-}
-
-.sidebar .contratos-lista::-webkit-scrollbar-thumb{
-    background:rgba(255,255,255,.26);
-    border-radius:999px;
-}
-
-.sidebar .contratos-lista::-webkit-scrollbar-thumb:hover{
-    background:rgba(255,255,255,.42);
-}
-
 
 
 /* Scroll */
@@ -468,14 +411,22 @@
 
 }
 .sidebar.recolhida .seta{
+
     opacity:0;
+
     transform:translateX(-10px);
+
     pointer-events:none;
+
+}
+
+.sidebar.recolhida .seta{
 
     width:0;
     flex:0 0 0;
     margin:0;
     overflow:hidden;
+
 }
 
 /* Impede abrir submenu quando recolhida.
@@ -486,49 +437,6 @@
     display:none;
 }
 /* ==========================================================
-   TEXTO DOS BOTÕES PRINCIPAIS DA SIDEBAR
-========================================================== */
-
-.menu-texto{
-    flex:1;
-    min-width:0;
-
-    display:flex;
-    flex-direction:column;
-    align-items:flex-start;
-    justify-content:center;
-
-    gap:2px;
-
-    text-align:left;
-}
-
-.menu-texto strong{
-    display:block;
-
-    width:100%;
-
-    font-size:15px;
-    font-weight:700;
-    line-height:1.1;
-
-    white-space:nowrap;
-}
-
-.menu-texto small{
-    display:block;
-
-    width:100%;
-
-    font-size:12px;
-    font-weight:500;
-    line-height:1.1;
-
-    color:rgba(255,255,255,.78);
-
-    white-space:nowrap;
-}
-/* ==========================================================
    MENU E SUBMENU
    ========================================================== */
 
@@ -537,27 +445,15 @@
     min-height:52px;
     margin-bottom:6px;
     padding:0 16px;
-
     display:flex;
     align-items:center;
     justify-content:flex-start;
-
-    gap:10px;
-
-    border:none;
+    gap:10px;border:none;
     border-radius:12px;
-
     background:#13558b;
     color:#fff;
-
     font-size:15px;
-    font-weight:600;
-
-    cursor:pointer;
-    transition:.25s;
-
-    /* novo */
-    text-align:left;
+    font-weight:600;cursor:pointer;transition:.25s
 }
 
 .menu-btn:hover{
@@ -567,6 +463,39 @@
 
 .menu-btn.ativo{
     background:linear-gradient(90deg,#2479ff,#1b63d4)
+}
+
+.menu-texto{
+    display:flex;
+    flex:1;
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-start;
+    min-width:0;
+    gap:2px;
+    text-align:left;
+}
+
+.menu-texto strong,
+.menu-texto small{
+    display:block;
+    max-width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.menu-texto strong{
+    font-size:15px;
+    font-weight:700;
+    line-height:1.15;
+}
+
+.menu-texto small{
+    color:rgba(255,255,255,.72);
+    font-size:12px;
+    font-weight:500;
+    line-height:1.15;
 }
 
 .menu-item{

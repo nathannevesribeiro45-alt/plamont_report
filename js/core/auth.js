@@ -1,20 +1,28 @@
 /* ==========================================================
-   PLAMONT AUTH — Autenticação básica via Supabase Auth
-   Fase 1: login/logout/sessão. Perfis e permissões entram depois.
+   PLAMONT AUTH — Sessão, perfil corporativo e permissões
+   Senhas e tokens são administrados exclusivamente pelo
+   Supabase Auth. O perfil público não armazena credenciais.
    ========================================================== */
 
 window.PlamontAuth = {
 
     supabase: null,
     sessao: null,
+    usuario: null,
     inicializado: false,
     pronto: null,
+    carregandoPerfil: null,
+    carregandoPerfilPara: null,
+
+    iniciar() {
+        return this.inicializar();
+    },
 
     inicializar() {
 
         if (this.pronto) return this.pronto;
 
-        this.pronto = new Promise(async (resolve) => {
+        this.pronto = (async () => {
 
             try {
 
@@ -45,39 +53,97 @@ window.PlamontAuth = {
                 if (error) throw error;
 
                 this.sessao = data?.session || null;
-                this.inicializado = true;
 
-                this.atualizarInterface();
+                if (this.sessao?.user) {
+                    try {
+                        await this.carregarPerfil(this.sessao.user);
+                    } catch (erroPerfil) {
+                        console.warn("Sessão corporativa não disponível:", erroPerfil);
+                    }
+                }
 
                 this.supabase.auth.onAuthStateChange((evento, sessao) => {
                     this.sessao = sessao || null;
-                    this.atualizarInterface();
+
+                    if (!sessao?.user) {
+                        this.limparUsuario();
+                        return;
+                    }
+
+                    if (this.usuario?.id === sessao.user.id && this.usuario.ativo) {
+                        this.atualizarInterface();
+                        return;
+                    }
+
+                    window.setTimeout(() => {
+                        this.carregarPerfil(sessao.user).catch(erroPerfil => {
+                            console.warn("Perfil corporativo não carregado:", erroPerfil);
+                        });
+                    }, 0);
                 });
 
+                this.inicializado = true;
                 this.configurarInterface();
+                this.atualizarInterface();
 
-                resolve(true);
+                return true;
 
             } catch (erro) {
 
                 console.error("Erro ao inicializar autenticação:", erro);
                 this.inicializado = false;
                 this.mostrarErroInicializacao(erro);
-                resolve(false);
+                return false;
 
             }
 
-        });
+        })();
 
         return this.pronto;
 
     },
 
-    estaAutenticado() {
-        return Boolean(this.sessao?.user);
+    estaLogado() {
+        return Boolean(this.sessao?.user && this.usuario?.ativo);
     },
 
-    async entrar(email, senha) {
+    estaAutenticado() {
+        return this.estaLogado();
+    },
+
+    pode(permissao) {
+        if (!this.estaLogado()) return false;
+
+        const permissoes = window.PlamontPermissoes || {};
+        return permissoes[this.usuario.perfil]?.[permissao] === true;
+    },
+
+    normalizarMatricula(matricula) {
+        return String(matricula || "").trim();
+    },
+
+    emailParaMatricula(matricula) {
+
+        const matriculaNormalizada = this.normalizarMatricula(matricula).toLowerCase();
+        const dominio = String(window.PlamontSupabaseConfig?.authEmailDomain || "").trim().toLowerCase();
+
+        if (!matriculaNormalizada || !/^[a-z0-9._-]+$/.test(matriculaNormalizada)) {
+            const erro = new Error("Matrícula inválida.");
+            erro.code = "matricula_invalida";
+            throw erro;
+        }
+
+        if (!dominio) {
+            const erro = new Error("Domínio interno de autenticação não configurado.");
+            erro.code = "configuracao_invalida";
+            throw erro;
+        }
+
+        return `${matriculaNormalizada}@${dominio}`;
+
+    },
+
+    async entrar(matricula, senha) {
 
         await this.pronto;
 
@@ -85,23 +151,107 @@ window.PlamontAuth = {
             throw new Error("Autenticação indisponível.");
         }
 
-        const emailNormalizado = String(email || "").trim();
+        const matriculaNormalizada = this.normalizarMatricula(matricula);
 
-        if (!emailNormalizado || !senha) {
-            throw new Error("Informe seu e-mail e sua senha.");
+        if (!matriculaNormalizada || !senha) {
+            const erro = new Error("Informe sua matrícula e sua senha.");
+            erro.code = "credenciais_incompletas";
+            throw erro;
         }
 
+        const emailInterno = this.emailParaMatricula(matriculaNormalizada);
+
         const { data, error } = await this.supabase.auth.signInWithPassword({
-            email: emailNormalizado,
+            email: emailInterno,
             password: senha
         });
 
         if (error) throw error;
 
         this.sessao = data?.session || null;
-        this.atualizarInterface();
+        await this.carregarPerfil(this.sessao?.user || data?.user);
 
         return data;
+
+    },
+
+    async carregarPerfil(usuarioAuth) {
+
+        const id = usuarioAuth?.id;
+
+        if (!id || !this.supabase) {
+            const erro = new Error("Sessão inválida.");
+            erro.code = "sessao_expirada";
+            throw erro;
+        }
+
+        if (this.usuario?.id === id && this.usuario.ativo) {
+            return this.usuario;
+        }
+
+        if (this.carregandoPerfil && this.carregandoPerfilPara === id) {
+            return this.carregandoPerfil;
+        }
+
+        this.carregandoPerfilPara = id;
+        this.carregandoPerfil = (async () => {
+
+            const { data, error } = await this.supabase
+                .from("usuarios")
+                .select("id, matricula, nome, perfil, ativo")
+                .eq("id", id)
+                .maybeSingle();
+
+            if (error) throw error;
+
+            if (!data) {
+                await this.encerrarSessaoInvalida("perfil_nao_encontrado");
+            }
+
+            if (!data.ativo) {
+                await this.encerrarSessaoInvalida("usuario_inativo");
+            }
+
+            if (!window.PlamontPermissoes?.[data.perfil]) {
+                await this.encerrarSessaoInvalida("perfil_invalido");
+            }
+
+            this.usuario = {
+                id: data.id,
+                matricula: data.matricula,
+                nome: data.nome,
+                perfil: data.perfil,
+                ativo: data.ativo
+            };
+
+            this.atualizarInterface();
+
+            return this.usuario;
+
+        })();
+
+        try {
+            return await this.carregandoPerfil;
+        } finally {
+            this.carregandoPerfil = null;
+            this.carregandoPerfilPara = null;
+        }
+
+    },
+
+    async encerrarSessaoInvalida(codigo) {
+
+        this.limparUsuario();
+
+        try {
+            await this.supabase?.auth.signOut();
+        } catch (erroLogout) {
+            console.warn("Não foi possível encerrar a sessão inválida:", erroLogout);
+        }
+
+        const erro = new Error(codigo);
+        erro.code = codigo;
+        throw erro;
 
     },
 
@@ -116,9 +266,15 @@ window.PlamontAuth = {
             throw error;
         }
 
-        this.sessao = null;
-        this.atualizarInterface();
+        this.limparUsuario();
+        this.abrirLogin();
 
+    },
+
+    limparUsuario() {
+        this.sessao = null;
+        this.usuario = null;
+        this.atualizarInterface();
     },
 
     abrirLogin() {
@@ -135,16 +291,14 @@ window.PlamontAuth = {
         }
 
         requestAnimationFrame(() => {
-            document.getElementById("plamont-login-email")?.focus();
+            document.getElementById("plamont-login-matricula")?.focus();
         });
 
     },
 
     fecharLogin() {
-
         const modal = document.getElementById("plamont-login-modal");
         if (modal) modal.hidden = true;
-
     },
 
     configurarInterface() {
@@ -157,7 +311,7 @@ window.PlamontAuth = {
 
         abrir?.addEventListener("click", () => {
 
-            if (this.estaAutenticado()) {
+            if (this.estaLogado()) {
                 const menu = document.getElementById("plamont-user-menu");
                 if (menu) menu.hidden = !menu.hidden;
                 return;
@@ -183,7 +337,7 @@ window.PlamontAuth = {
 
             evento.preventDefault();
 
-            const email = document.getElementById("plamont-login-email")?.value;
+            const matricula = document.getElementById("plamont-login-matricula")?.value;
             const senha = document.getElementById("plamont-login-password")?.value;
             const botao = document.getElementById("plamont-login-submit");
             const erro = document.getElementById("plamont-login-error");
@@ -201,7 +355,7 @@ window.PlamontAuth = {
 
             try {
 
-                await this.entrar(email, senha);
+                await this.entrar(matricula, senha);
                 this.fecharLogin();
 
                 const senhaInput = document.getElementById("plamont-login-password");
@@ -211,10 +365,8 @@ window.PlamontAuth = {
 
                 console.error("Falha no login:", erroLogin);
 
-                const mensagem = this.mensagemErro(erroLogin);
-
                 if (erro) {
-                    erro.textContent = mensagem;
+                    erro.textContent = this.mensagemErro(erroLogin);
                     erro.hidden = false;
                 }
 
@@ -254,9 +406,14 @@ window.PlamontAuth = {
 
         const entrar = document.getElementById("plamont-auth-open");
         const menu = document.getElementById("plamont-user-menu");
-        const email = document.getElementById("plamont-user-email");
+        const nome = document.getElementById("plamont-user-name");
+        const perfil = document.getElementById("plamont-user-profile");
+        const logado = this.estaLogado();
 
-        if (this.estaAutenticado()) {
+        document.documentElement.dataset.plamontPerfil = logado ? this.usuario.perfil : "";
+        document.documentElement.dataset.plamontAutenticado = String(logado);
+
+        if (logado) {
 
             if (entrar) {
                 entrar.classList.add("autenticado");
@@ -265,11 +422,10 @@ window.PlamontAuth = {
                 );
             }
 
-            if (email) {
-                email.textContent = this.sessao.user.email || "Usuário autenticado";
-            }
+            if (nome) nome.textContent = this.usuario.nome;
+            if (perfil) perfil.textContent = `${this.usuario.matricula} · ${this.usuario.perfil}`;
 
-            this.atualizarAcessoCamera(true);
+            this.atualizarAcessoCamera(this.pode("visualizar"));
 
         } else {
 
@@ -281,10 +437,20 @@ window.PlamontAuth = {
             }
 
             if (menu) menu.hidden = true;
+            if (nome) nome.textContent = "";
+            if (perfil) perfil.textContent = "";
 
             this.atualizarAcessoCamera(false);
 
         }
+
+        document.dispatchEvent(new CustomEvent("plamont:auth-alterado", {
+            detail: {
+                logado,
+                usuario: this.usuario,
+                permissoes: logado ? window.PlamontPermissoes[this.usuario.perfil] : null
+            }
+        }));
 
     },
 
@@ -312,14 +478,35 @@ window.PlamontAuth = {
 
     mensagemErro(erro) {
 
+        const codigo = String(erro?.code || "").toLowerCase();
         const mensagem = String(erro?.message || "").toLowerCase();
 
-        if (mensagem.includes("invalid login credentials")) {
-            return "E-mail ou senha incorretos.";
+        if (codigo === "matricula_invalida") {
+            return "Informe uma matrícula válida.";
         }
 
-        if (mensagem.includes("email not confirmed")) {
-            return "Este e-mail ainda não foi confirmado.";
+        if (codigo === "credenciais_incompletas") {
+            return "Informe sua matrícula e sua senha.";
+        }
+
+        if (codigo === "usuario_inativo") {
+            return "Este usuário está inativo. Procure a administração.";
+        }
+
+        if (codigo === "perfil_nao_encontrado") {
+            return "Seu perfil corporativo não foi encontrado. Procure a administração.";
+        }
+
+        if (codigo === "perfil_invalido") {
+            return "Seu perfil corporativo é inválido. Procure a administração.";
+        }
+
+        if (codigo === "sessao_expirada") {
+            return "Sua sessão expirou. Entre novamente.";
+        }
+
+        if (mensagem.includes("invalid login credentials")) {
+            return "Matrícula ou senha incorreta.";
         }
 
         if (mensagem.includes("too many requests")) {
@@ -330,7 +517,7 @@ window.PlamontAuth = {
             return "Não foi possível conectar ao serviço de autenticação.";
         }
 
-        return erro?.message || "Não foi possível realizar o login.";
+        return "Não foi possível realizar o login. Tente novamente.";
 
     },
 
@@ -340,6 +527,9 @@ window.PlamontAuth = {
 
 };
 
+// Alias curto para os módulos futuros consultarem Auth.pode("editar").
+window.Auth = window.PlamontAuth;
+
 document.addEventListener("DOMContentLoaded", () => {
-    window.PlamontAuth.inicializar();
+    window.PlamontAuth.iniciar();
 });

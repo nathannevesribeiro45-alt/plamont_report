@@ -61,25 +61,21 @@
       "atividades": {
         "realizadas": [
           {
-            "om":"202500228759",
             "area": "AE14.4_FAB.PINOS E OLHAIS ART.CONTRAPESO",
             "descricao": "Desmontagem de andaimes",
             "status": "Concluído"
           },
           {
-            "om":"202600134651",
             "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
             "descricao": "LP Líquido Penetrante",
             "status": "Concluído"
           },
           {
-            "om":"202600134651",
             "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
             "descricao": "Realizar cortes dos suportes da roldanas",
             "status": "Concluído"
           },
           {
-            "om":"202600134651",
             "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
             "descricao": "Limpeza mecânica",
             "status": "Concluído"
@@ -88,97 +84,81 @@
 
         "proximas": [
           {
-            "om":"202600134651",
             "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
             "descricao": "Montagem e ajustes dos reforços da 2° travessa",
             "status": "Em andamento"
           },
           {
-            "om":"202600134651",
             "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
             "descricao": "Soldagem da 2° travessa",
             "status": "Em andamento"
           },
           {
-            "om":"202600134651",
             "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
             "descricao": "Montagem e ajustes do suporte das roldanas",
             "status": "Em andamento"
           },
           {
-            "om":"202600134651",
             "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
             "descricao": "Soldas dos suportes",
             "status": "Em andamento"
           },
           {
-            "om":"202603982841",
             "area": "Alinhar Suporte da Coluna da Mesa de Impacto do Chute da Lança",
             "descricao": "Desmontagem do andaime",
             "status": "Em andamento"
           },
           {
-            "om":"202600134651",
             "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
             "descricao": "LP Líquido Penetrante",
             "status": "Programado"
           },
           {
-            "om":"202600134651",
             "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
             "descricao": "Retirada do estaiamento do contrapeso",
             "status": "Programado"
           },
           {
-            "om":"202600134651",
             "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
             "descricao": "Retoque de pintura",
             "status": "Programado"
           },
           {
-            "om":"202600134651",
             "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
             "descricao": "Desmontagem de andaimes suspenso e apoiado AC 1.80",
             "status": "Programado"
           },
           {
-            "om":"202600134651",
             "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
             "descricao": "Montagem e ajustes das grades de piso",
             "status": "Programado"
           },
           {
-            "om":"202600134651",
             "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
             "descricao": "Soldagem da grade de piso",
             "status": "Programado"
           },
           {
-            "om":"202600134651",
             "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
             "descricao": "Retoque de pintura",
             "status": "Programado"
           },
           {
-            "om":"202600134651",
             "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
             "descricao": "Desmontagem de isolamentos",
             "status": "Programado"
           },
           {
-            "om":"202600134651",
             "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
             "descricao": "Descida de materiais de andaimes",
             "status": "Programado"
           },
           {
-            "om":"202603982841",
             "area": "Alinhar Suporte da Coluna da Mesa de Impacto do Chute da Lança",
             "descricao": "Desmontagem do andaime",
             "status": "Programado"
           },
           {
-            "om":"202603982841",
             "area": "Alinhar Suporte da Coluna da Mesa de Impacto do Chute da Lança",
             "descricao": "Descida de materiais de andaime/ferramental/sucatas - Guindaste",
             "status": "Programado"

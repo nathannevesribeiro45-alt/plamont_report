@@ -120,37 +120,37 @@
             "om": "202604032281",
             "area": "AL-01 E AL-02",
             "descricao": "Fabricação das chapas base no Pipe Shop VV01",
-            "status": "Concluída"
+            "status": "Em andamento"
           },
           {
             "om": "202604032281",
             "area": "AL-01 — Superior",
             "descricao": "Enchimento das furações das chapas de desgaste na região frontal e laterais do balancim e divisor do AL",
-            "status": "Concluída"
+            "status": "Em andamento"
           },
           {
             "om": "202604032281",
             "area": "AL-01 — Intermediário",
             "descricao": "Montagem e solda dos recortes das chapas de desgaste",
-            "status": "Concluída"
+            "status": "Em andamento"
           },
           {
             "om": "202604032281",
             "area": "AL-01 — Extra",
             "descricao": "Solda das chapas de desgaste na região da guia",
-            "status": "Concluída"
+            "status": "Em andamento"
           },
           {
             "om": "202604032281",
             "area": "AL-02 — Intermediário",
             "descricao": "Furações das chapas de desgaste da região frontal",
-            "status": "Concluída"
+            "status": "Em andamento"
           },
           {
             "om": "202604032281",
             "area": "AL-02 — Metálica",
             "descricao": "Montagem das chapas de desgaste na região da guia",
-            "status": "Concluída"
+            "status": "Em andamento"
           }
             
         ],

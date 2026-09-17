@@ -1,7 +1,7 @@
 {
   "id": "os450",
   "nome": "Contrato OS 450",
-  "data": "17/09/2026",
+  "data": "10/09/2026",
   "turno": "Dia B",
   "horario": "07:00 às 19:00",
   "abas": [
@@ -23,7 +23,7 @@
           "Encarregado Montagem": 3,
           "Supervisor Andaime": 1,
           "Encarregado Elétrica": 1,
-          "Mestre Montagem": 3,
+          "Mestre Montagem": 4,
           "Mestre Andaime": 2
         }
       },
@@ -45,7 +45,8 @@
         }
       },
       "ausencias": {
-        "justificadas":0,
+        "Mecânicos":2,
+        "justificadas":2,
         "naoJustificadas":0
       },
       "mobilizacao": {},
@@ -61,29 +62,29 @@
         {
           "tipo": "Munck",
           "placa": "QRI-7I40",
-          "operador": "Italo",
-          "contato":"98 98203-1746",
+          "operador": "Moisés",
+          "contato":"94 99181-8671",
           "status": "disponivel"
         },
          {
           "tipo": "Munck",
           "placa": "QRI-8D21",
-          "operador": "Euclides",
-          "contato":"98 98791-0912",
+          "operador": "Márcio",
+          "contato":"98 98805-1819",
           "status": "disponivel"
         },
         {
           "tipo": "Pick-up",
           "placa": "QRI-2G24",
-          "operador": "Alisson",
-          "contato":"98 98876-4732",
+          "operador": "Italo",
+          "contato":"98 98184-5269",
           "status": "Disponivel"
         },
         {
           "tipo": "Pick-up",
           "placa": "SFV-7L97",
-          "operador": "Kaka",
-          "contato":"98480-6556",
+          "operador": "Rosivaldo",
+          "contato":"98 99187-8772",
           "status": "Disponivel"
         },
         {
@@ -92,6 +93,34 @@
           "operador": "Maxuel",
           "contato":"98 98113-3561",
           "status": "disponivel"
+        },
+        {
+          "tipo": "Veículo leve",
+          "placa": "SMX-6G78",
+          "operador": "Geilson",
+          "contato":"98 98850-8993",
+          "status": "Operante"
+        },
+        {
+          "tipo": "Veículo leve",
+          "placa": "SMX-4110",
+          "operador": "Alciomar",
+          "contato":"98 98802-8232",
+          "status": "Operante"
+        },
+        {
+          "tipo": "Veículo leve",
+          "placa": "SMX-3C99",
+          "operador": "Oliveira",
+          "contato":"98 97010-4041",
+          "status": "Disponivel"
+        },
+        {
+          "tipo": "Veículo leve",
+          "placa": "SMX-6I53",
+          "operador": "Gilmar",
+          "contato":"98 98474-3782",
+          "status": "Disponivel"
         }
       ],
       "atividades": [
@@ -115,11 +144,30 @@
           ]
 
         },
-        
         {
           "lider":"Jessé",
           "telefone":"98 8817-1971",
-          "equipe":"5 mecânicos + 2 soldadores + 1 caldeireiro + 1 pintor ",
+          "equipe":"5 mecânicos + 2 soldador + 1 caldeireiro + 1 pintor",
+          "oms":[
+            {
+              "frente":"VV-01",
+              "numero":"202604032281",
+              "descricao":"RECUP ESTRU PAREDE INT TREMONHA (VV-01)",
+              "latitude":"-2,5681063",
+              "longitude":"-44,3457358",
+              "arquivoPdf":"", 
+              "status":"Em andamento"
+            }
+
+            
+          ]
+
+        },
+
+        {
+          "lider":"Maurício",
+          "telefone":"",
+          "equipe":"3 mecânicos + 1 soldador + 1 caldeireiro + 4 montadores",
           "oms":[
             {
               "frente":"ER-01",
@@ -135,6 +183,10 @@
           ]
 
         }
+
+
+
+
 
       ],
        "observacoes": [],
