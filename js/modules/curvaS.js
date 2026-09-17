@@ -734,6 +734,12 @@ renderVazio() {
         const renderSecao = grupo => {
             const dadosGrupo = grupos[grupo];
             const contagem = dadosGrupo.itens.length;
+            const gruposPorOM = this.agruparAtividadesPorOM(dadosGrupo.itens);
+            const quantidadeOms = gruposPorOM.filter(grupoOM => grupoOM.om).length;
+            const textoAtividades = `${contagem} ${contagem === 1 ? "atividade" : "atividades"}`;
+            const textoContagem = quantidadeOms
+                ? `${quantidadeOms} ${quantidadeOms === 1 ? "OM" : "OMs"} · ${textoAtividades}`
+                : textoAtividades;
 
             return `
                 <section class="curvaS-modal-secao curvaS-modal-secao-${grupo}">
@@ -743,10 +749,10 @@ renderVazio() {
                             <strong>${dadosGrupo.tituloCurto}</strong>
                             <span class="curvaS-modal-turno-horario">${dadosGrupo.horario}</span>
                         </div>
-                        <span class="curvaS-modal-contagem">${contagem} ${contagem === 1 ? "atividade" : "atividades"}</span>
+                        <span class="curvaS-modal-contagem">${textoContagem}</span>
                     </div>
                     <ul class="curvaS-modal-lista">
-                        ${this.renderItensAtividade(dadosGrupo.itens, grupo)}
+                        ${this.renderGruposAtividade(gruposPorOM, grupo)}
                     </ul>
                 </section>
             `;
@@ -851,24 +857,62 @@ renderVazio() {
 
     },
 
-    // Gera os <li> de uma lista de atividades, mantendo os dados originais
-    // e aplicando somente a identidade visual do grupo exibido.
-    renderItensAtividade(itens, grupo = "realizadas") {
+    // Agrupa somente para renderização. Itens sem OM recebem uma chave única
+    // para continuarem independentes e a ordem original é preservada.
+    agruparAtividadesPorOM(atividades = []) {
 
-        if (!itens || !itens.length) {
+        const grupos = new Map();
+
+        atividades.forEach((atividade, indice) => {
+            const om = String(atividade?.om || "").trim();
+            const chave = om || `sem-om-${indice}`;
+
+            if (!grupos.has(chave)) {
+                grupos.set(chave, {
+                    om: om || null,
+                    atividades: []
+                });
+            }
+
+            grupos.get(chave).atividades.push(atividade);
+        });
+
+        return [...grupos.values()];
+
+    },
+
+    // Gera os blocos visuais por OM sem alterar os itens recebidos.
+    renderGruposAtividade(gruposPorOM, grupo = "realizadas") {
+
+        if (!gruposPorOM || !gruposPorOM.length) {
             return `<li class="curvaS-modal-vazio">Nenhuma atividade registrada.</li>`;
         }
 
-        return itens.map(item => `
-            <li class="curvaS-modal-item curvaS-modal-item--${grupo}">
-                <div class="curvaS-modal-item-topo">
-                    ${item.om ? `<span class="curvaS-modal-item-om">OM ${item.om}</span>` : ""}
-                    ${item.area ? `<span class="curvaS-modal-item-area">${item.area}</span>` : ""}
-                </div>
-                <p class="curvaS-modal-item-desc">${item.descricao || "—"}</p>
-                ${item.status ? `<span class="curvaS-modal-item-status curvaS-modal-item-status--${grupo}">${item.status}</span>` : ""}
-            </li>
-        `).join("");
+        return gruposPorOM.map(grupoOM => {
+            const quantidade = grupoOM.atividades.length;
+
+            return `
+                <li class="curvaS-modal-grupo-om ${grupoOM.om ? "curvaS-modal-grupo-om--com-om" : "curvaS-modal-grupo-om--sem-om"}">
+                    ${grupoOM.om ? `
+                        <div class="curvaS-modal-grupo-om-cabecalho">
+                            <strong>OM ${grupoOM.om}</strong>
+                            <span>${quantidade} ${quantidade === 1 ? "atividade" : "atividades"}</span>
+                        </div>
+                    ` : ""}
+                    <ul class="curvaS-modal-grupo-om-lista">
+                        ${grupoOM.atividades.map(item => `
+                            <li class="curvaS-modal-item curvaS-modal-item--${grupo}">
+                                <div class="curvaS-modal-item-topo">
+                                    ${item.area ? `<span class="curvaS-modal-item-area">${item.area}</span>` : ""}
+                                </div>
+                                <p class="curvaS-modal-item-desc">${item.descricao || "—"}</p>
+                                ${item.status ? `<span class="curvaS-modal-item-status curvaS-modal-item-status--${grupo}">${item.status}</span>` : ""}
+                            </li>
+                        `).join("")}
+                    </ul>
+                </li>
+            `;
+        }).join("");
 
     },
 

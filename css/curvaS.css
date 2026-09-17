@@ -1686,3 +1686,110 @@
         border-left: 0;
     }
 }
+
+/* ==========================================================
+   ATIVIDADES AGRUPADAS POR ORDEM DE MANUTENÇÃO
+   ========================================================== */
+
+.curvaS-modal--atividades .curvaS-modal-grupo-om {
+    list-style: none;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #dfe8f2;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(8, 47, 88, .04);
+}
+
+.curvaS-modal--atividades .curvaS-modal-grupo-om--sem-om {
+    overflow: visible;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.curvaS-modal-grupo-om-cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 13px;
+    border-bottom: 1px solid #dfe8f2;
+}
+
+.curvaS-modal-secao-realizadas .curvaS-modal-grupo-om-cabecalho {
+    background: linear-gradient(90deg, #f1fbf5, #f9fdfb);
+}
+
+.curvaS-modal-secao-proximas .curvaS-modal-grupo-om-cabecalho {
+    background: linear-gradient(90deg, #f1f7ff, #f9fbff);
+}
+
+.curvaS-modal-grupo-om-cabecalho strong {
+    min-width: 0;
+    overflow: hidden;
+    color: #082f58;
+    font-size: .78rem;
+    font-weight: 800;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.curvaS-modal-grupo-om-cabecalho span {
+    flex: 0 0 auto;
+    padding: 3px 8px;
+    border-radius: 999px;
+    color: #58708d;
+    background: #eaf1f8;
+    font-size: .67rem;
+    font-weight: 800;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.curvaS-modal-grupo-om-lista {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.curvaS-modal--atividades .curvaS-modal-grupo-om--com-om .curvaS-modal-item {
+    padding: 11px 13px;
+    background: #ffffff;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.curvaS-modal--atividades .curvaS-modal-grupo-om--com-om .curvaS-modal-item + .curvaS-modal-item {
+    border-top: 1px solid #edf1f5;
+}
+
+.curvaS-modal--atividades .curvaS-modal-grupo-om--com-om .curvaS-modal-item--realizadas {
+    border-left: 3px solid rgba(18, 160, 92, .42);
+}
+
+.curvaS-modal--atividades .curvaS-modal-grupo-om--com-om .curvaS-modal-item--proximas {
+    border-left: 3px solid rgba(20, 117, 232, .42);
+}
+
+.curvaS-modal--atividades .curvaS-modal-grupo-om--com-om .curvaS-modal-item-topo {
+    margin-bottom: 5px;
+}
+
+.curvaS-modal--atividades .curvaS-modal-item-topo:empty {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .curvaS-modal-grupo-om-cabecalho {
+        padding: 10px 12px;
+    }
+
+    .curvaS-modal--atividades .curvaS-modal-grupo-om--com-om .curvaS-modal-item {
+        padding: 11px 12px;
+    }
+}
