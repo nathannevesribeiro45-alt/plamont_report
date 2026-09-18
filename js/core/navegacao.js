@@ -8,6 +8,17 @@ function abrirPagina(idPagina, botao, idAba = null) {
 
     console.log("Clique:", idPagina);
 
+    // A página administrativa não pode ser aberta apenas por conhecer sua URL
+    // ou por uma chamada manual no console. A Edge Function mantém a mesma
+    // validação no servidor para todas as operações.
+    if (
+        idPagina === "usuarios" &&
+        !window.Auth?.pode?.("administrarUsuarios")
+    ) {
+        idPagina = "dashboard";
+        botao = document.querySelector('.menu-btn[data-pagina="dashboard"]');
+    }
+
     // Esconde todas as páginas
     paginas.forEach(pagina => {
         pagina.classList.remove("ativa");

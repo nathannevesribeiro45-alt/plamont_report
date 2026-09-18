@@ -8,5 +8,9 @@ window.PlamontSupabaseConfig = {
 
     // O usuário informa somente a matrícula. Ao criar contas no
     // Supabase Auth, use <matricula>@auth.plamont.local como e-mail interno.
-    authEmailDomain: "auth.plamont.local"
+    authEmailDomain: "auth.plamont.local",
+
+    // Nome público da Edge Function administrativa. A chave de serviço
+    // permanece exclusivamente no ambiente seguro da função.
+    adminUsersFunction: "admin-users"
 };

@@ -11,6 +11,7 @@ const Sidebar = {
 
     mobile: false,
     aberta: false,
+    escutandoAuth: false,
 
     // ==========================
     // Inicialização
@@ -102,6 +103,28 @@ if (this.mobileToggle) {
 
         }
 
+        if (!this.escutandoAuth) {
+
+            document.addEventListener("plamont:auth-alterado", () => {
+                this.render();
+            });
+
+            this.escutandoAuth = true;
+
+        }
+
+        // A primeira montagem pode ocorrer enquanto o Supabase ainda está
+        // restaurando a sessão. O evento acima cobre login/logout; esta
+        // reconciliação cobre especificamente a sessão persistida no F5.
+        const autenticacaoPronta = window.Auth?.pronto;
+
+        if (autenticacaoPronta && typeof autenticacaoPronta.then === "function") {
+            Promise.resolve(autenticacaoPronta).then(
+                () => this.render(),
+                () => this.render()
+            );
+        }
+
         this.render();
 
     },
@@ -112,6 +135,8 @@ if (this.mobileToggle) {
 
     render() {
 
+        if (!this.menu) return;
+
         this.menu.innerHTML = "";
 
         this.renderDashboard();
@@ -120,7 +145,15 @@ if (this.mobileToggle) {
 
         this.renderCurvaS();
 
+        this.renderUsuarios();
+
         this.renderContratos();
+
+        const paginaAtiva = document.querySelector(".pagina.ativa")?.id;
+
+        this.menu.querySelectorAll(".menu-btn[data-pagina]").forEach(item => {
+            item.classList.toggle("ativo", item.dataset.pagina === paginaAtiva);
+        });
 
     },
 
@@ -224,6 +257,50 @@ if (this.mobileToggle) {
 
             if (typeof CurvaS !== "undefined") {
                 CurvaS.render();
+            }
+
+            this.fecharSidebar();
+
+        });
+
+        this.menu.appendChild(item);
+
+    },
+
+    // ==========================
+    // Gestão de Usuários (admin)
+    // ==========================
+
+    renderUsuarios() {
+
+        if (!window.Auth?.pode?.("administrarUsuarios")) return;
+
+        const item = document.createElement("button");
+
+        item.className = "menu-btn";
+        item.dataset.pagina = "usuarios";
+
+        item.innerHTML = `
+            <span class="icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M19 8v6M22 11h-6"></path>
+                </svg>
+            </span>
+
+            <span class="menu-texto">
+                <strong>Gestão de Usuários</strong>
+                <small>Administração</small>
+            </span>
+        `;
+
+        item.addEventListener("click", () => {
+
+            abrirPagina("usuarios", item);
+
+            if (typeof Usuarios !== "undefined") {
+                Usuarios.render();
             }
 
             this.fecharSidebar();

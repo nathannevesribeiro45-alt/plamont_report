@@ -12,6 +12,7 @@
 <link href="css/contratos.css" rel="stylesheet"/>
 <link href="css/mapa.css" rel="stylesheet"/>
 <link href="css/curvaS.css" rel="stylesheet"/>
+<link href="css/usuarios.css" rel="stylesheet"/>
 <title>Plamont Report Diário</title>
 <link rel="shortcut icon" href="assets/logo icon site/android-chrome-192x192.png" type="logo do site Plamont">
 
@@ -612,6 +613,54 @@
 
 </section>
 <!-- ====================================================== -->
+<!--              GESTÃO DE USUÁRIOS (ADMIN)               -->
+<!-- ====================================================== -->
+<section class="pagina usuarios-page" id="usuarios" aria-labelledby="usuarios-titulo">
+    <header class="usuarios-cabecalho">
+        <div>
+            <p class="usuarios-eyebrow">Administração</p>
+            <h1 id="usuarios-titulo">Gestão de Usuários</h1>
+            <p class="subtitulo">Crie, atualize e acompanhe os acessos ao Report Diário Plamont.</p>
+        </div>
+        <button class="usuarios-btn usuarios-btn-primario" type="button" id="usuarios-novo">
+            <span aria-hidden="true">+</span>
+            Novo usuário
+        </button>
+    </header>
+
+    <section class="usuarios-painel" aria-label="Lista de usuários">
+        <div class="usuarios-filtros">
+            <label class="usuarios-pesquisa" for="usuarios-busca">
+                <span aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+                </span>
+                <input id="usuarios-busca" type="search" placeholder="Buscar por nome ou matrícula" autocomplete="off">
+            </label>
+            <label class="usuarios-filtro-select" for="usuarios-perfil">
+                <span>Perfil</span>
+                <select id="usuarios-perfil">
+                    <option value="">Todos os perfis</option>
+                    <option value="visualizador">Visualizador</option>
+                    <option value="editor">Editor</option>
+                    <option value="planejamento">Planejamento</option>
+                    <option value="admin">Administrador</option>
+                </select>
+            </label>
+            <label class="usuarios-filtro-select" for="usuarios-status">
+                <span>Status</span>
+                <select id="usuarios-status">
+                    <option value="">Todos</option>
+                    <option value="ativo">Ativos</option>
+                    <option value="inativo">Inativos</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="usuarios-feedback" id="usuarios-feedback" role="status" aria-live="polite" hidden></div>
+        <div class="usuarios-lista" id="usuarios-lista" aria-live="polite"></div>
+    </section>
+</section>
+<!-- ====================================================== -->
 <!--                      OS 440                        -->
 <!-- ====================================================== -->
 <section class="pagina" id="os440">
@@ -732,6 +781,7 @@
 <script src="js/modules/mapaPainel.js"></script>
 <script src="js/modules/mapa.js"></script>
 <script src="js/modules/curvaS.js"></script>
+<script src="js/modules/usuarios.js"></script>
 <script src="js/modules/sidebar.js"></script>
 <script src="js/modules/busca.js"></script>
 <script src="js/modules/abas.js"></script>

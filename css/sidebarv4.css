@@ -539,10 +539,14 @@
     flex-shrink:0
 }
 
-.menu-icon img,.icone img{
+.menu-icon img,.icone img,
+.menu-icon svg,.icone svg{
     width:20px;
     height:20px;
     display:block;
+}
+
+.menu-icon img,.icone img{
     filter: brightness(0) invert(1);
 }
 
