@@ -1,198 +1,287 @@
 {
-  "id": "os450",
-  "nome": "Contrato OS 450",
-  "data": "10/09/2026",
+  "id": "os442",
+  "nome": "Contrato OS 442",
+  "data": "21/09/2026",
   "turno": "Dia B",
   "horario": "07:00 às 19:00",
   "abas": [
     {
-      "id": "manutenção de ativos",
-      "icone":"assets/icons/manutecao.svg",
+      "id": "ambiental",
+      "nome": "Infraelétrica",
+      "icone": "assets/icons/raio.svg",
+
       "qlp": {
         "direto": {
-          "Caldeireiro": 5,
-          "Mecanico": 12,
-          "Soldador": 5,
-          "Montador": 8,
-          "Eletricista": 8,
-          "Ajudante de mont.": 2,
-          "Pintor": 1
+          "Caldeireiro": 1,
+          "Mecanico": 0,
+          "Soldador": 1,
+          "Montador": 0,
+          "Eletricista": 3,
+          "Pintor": 0
         },
         "indireto": {
-          "Supervisor Montagem": 1,
-          "Encarregado Montagem": 3,
-          "Supervisor Andaime": 1,
-          "Encarregado Elétrica": 1,
-          "Mestre Montagem": 4,
-          "Mestre Andaime": 2
+          "Supervisor Montagem": 0,
+          "Encarregado Montagem": 0,
+          "Mestre Montagem": 0,
+          "Mestre Andaime": 0
         }
       },
+
       "histograma": {
         "direto": {
-          "Caldeireiro": 5,
-          "Mecanico": 12,
-          "Soldador": 7,
-          "Montador": 7,
-          "Eletricista": 7,
+          "Caldeireiro": 1,
+          "Mecanico": 0,
+          "Soldador": 1,
+          "Montador": 0,
+          "Eletricista": 4,
+          "Pintor": 0
+        },
+        "indireto": {
+          "Supervisor Montagem": 0,
+          "Encarregado Montagem": 0,
+          "Mestre Montagem": 0,
+          "Mestre Andaime": 0
+        }
+      },
+
+      "ausencias": {
+        "Eletricista":1,
+        "justificadas":1,
+        "naoJustificadas":0
+      },
+
+      "mobilizacao": {},
+
+      "recursos": [],
+
+      "atividades": [ {
+          "lider": "Jodersson",
+          "telefone": "98 8476-4303",
+          "tecnicoSeguranca": "",
+          "equipe": "03 Eletricistas + 01 Soldador + 1 caldereiro",
+          "oms": [
+            {
+            "numero": "202505155058",
+            "frente": "CN-06",
+            "latitude":"-2,5547117",
+            "longitude":"-44,3797357",
+            "descricao": "INST TAMPAS DE BANDEJAS ESCADA DE ACESSO CN06",
+            "status": "Em andamento"
+            },
+              {
+            "numero": "202600286018",
+            "frente": "CN-07",
+            "latitude":"-2,5535402",
+            "longitude":"-44,3793104",
+            "descricao": "TROCAR BANDEJAMENTO PIVÔ TRASEIRO CN07",
+            "status": "Em andamento"
+            }
+
+            
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "utilidades",
+      "nome": "Utilidades",
+      "icone": "assets/icons/utilidades.svg",
+
+      "qlp": {
+        "direto": {
+          "Caldeireiro": 1,
+          "Mecanico": 6,
+          "Soldador": 1,
+          "Montador": 3,
+          "Eletricista": 6,
           "Pintor": 0
         },
         "indireto": {
           "Supervisor Montagem": 1,
-          "Encarregado Montagem": 2,
-          "Encarregado Elétrica": 1,
-          "Mestre Montagem": 2,
-          "Mestre Andaime": 2
+          "Encarregado Montagem": 1,
+          "Mestre Montagem": 0,
+          "Mestre Andaime": 0,
+          "Mestre Eletrica": 0
         }
       },
-      "ausencias": {
-        "Mecânicos":2,
-        "justificadas":2,
-        "naoJustificadas":0
+
+      "histograma": {
+        "direto": {
+          "Caldeireiro": 1,
+          "Mecanico": 6,
+          "Soldador": 1,
+          "Montador": 3,
+          "Eletricista": 6,
+          "Pintor": 0
+        },
+        "indireto": {
+          "Supervisor Montagem": 1,
+          "Encarregado Montagem": 1,
+          "Mestre Montagem": 0,
+          "Mestre Andaime": 0
+        }
       },
-      "mobilizacao": {},
+
+      "ausencias": {},
+
+      "mobilizacao": {
+        "Mecanico": 0,
+        "Eletricista": 0
+      },
 
       "recursos": [
         {
           "tipo": "Munck",
-          "placa": "QRD-8213",
+          "placa": "RBB-3I45 ",
           "operador": "",
           "contato":"",
-          "status": "manutencao"
+          "status": "Disponivel"
         },
-        {
-          "tipo": "Munck",
-          "placa": "QRI-7I40",
-          "operador": "Moisés",
-          "contato":"94 99181-8671",
+          {
+          "tipo": "pick-up",
+          "placa": "SFT-9H25",
+          "operador": "Rafael",
+          "telefone":"(98) 98168-1612",
           "status": "disponivel"
-        },
-         {
-          "tipo": "Munck",
-          "placa": "QRI-8D21",
-          "operador": "Márcio",
-          "contato":"98 98805-1819",
-          "status": "disponivel"
-        },
-        {
-          "tipo": "Pick-up",
-          "placa": "QRI-2G24",
-          "operador": "Italo",
-          "contato":"98 98184-5269",
-          "status": "Disponivel"
-        },
-        {
-          "tipo": "Pick-up",
-          "placa": "SFV-7L97",
-          "operador": "Rosivaldo",
-          "contato":"98 99187-8772",
-          "status": "Disponivel"
-        },
-        {
-          "tipo": "Caminhao comboio",
-          "placa": "PTG-3093",
-          "operador": "Maxuel",
-          "contato":"98 98113-3561",
-          "status": "disponivel"
-        },
-        {
-          "tipo": "Veículo leve",
-          "placa": "SMX-6G78",
-          "operador": "Geilson",
-          "contato":"98 98850-8993",
-          "status": "Operante"
-        },
-        {
-          "tipo": "Veículo leve",
-          "placa": "SMX-4110",
-          "operador": "Alciomar",
-          "contato":"98 98802-8232",
-          "status": "Operante"
-        },
-        {
-          "tipo": "Veículo leve",
-          "placa": "SMX-3C99",
-          "operador": "Oliveira",
-          "contato":"98 97010-4041",
-          "status": "Disponivel"
-        },
-        {
-          "tipo": "Veículo leve",
-          "placa": "SMX-6I53",
-          "operador": "Gilmar",
-          "contato":"98 98474-3782",
-          "status": "Disponivel"
         }
       ],
+
       "atividades": [
-     
         {
-          "lider":"Cosmo (Extra)",
-          "telefone":"98 8863-1678",
-          "equipe":"4 mecânicos + 2 soldador + 2 caldeireiro",
+          "lider": "Sueliton",
+          "telefone": "98 98888-4303",
+          "tecnicoSeguranca": "",
+          "equipe": "6 Mecânicos + 6 Eletricistas + 1 caldeireiro + 1 soldador + 3 Montadores",
           "oms":[
-            {
-              "frente":"VV-01",
-              "numero":"202604032281",
-              "descricao":"RECUP ESTRU PAREDE INT TREMONHA (VV-01)",
-              "latitude":"-2,5681063",
-              "longitude":"-44,3457358",
-              "arquivoPdf":"", 
-              "status":"Em andamento"
-            }
-
-            
-          ]
-
-        },
-        {
-          "lider":"Jessé",
-          "telefone":"98 8817-1971",
-          "equipe":"5 mecânicos + 2 soldador + 1 caldeireiro + 1 pintor",
-          "oms":[
-            {
-              "frente":"VV-01",
-              "numero":"202604032281",
-              "descricao":"RECUP ESTRU PAREDE INT TREMONHA (VV-01)",
-              "latitude":"-2,5681063",
-              "longitude":"-44,3457358",
-              "arquivoPdf":"", 
-              "status":"Em andamento"
-            }
-
-            
-          ]
-
-        },
-
-        {
-          "lider":"Maurício",
-          "telefone":"",
-          "equipe":"3 mecânicos + 1 soldador + 1 caldeireiro + 4 montadores",
-          "oms":[
-            {
-              "frente":"ER-01",
-              "numero":"202405911719",
-              "descricao":"TROCAR RAMPA CURVA DA ER-01 (ER-01)",
-              "latitude":"-2,5671205",
-              "longitude":"-44,3524934",
-              "arquivoPdf":"om's/contrato 450 oms/OM 202405911719 TROCAR RAMPA CURVA DA ER-01.pdf", 
-              "status":"Em andamento"
-            }
-
-            
-          ]
-
-        }
-
-
-
-
-
-      ],
-       "observacoes": [],
-      "nome": "Manutenção de ativos"
-    }
+    {
+        "numero": "202604443468",
+        "frente":"VV-06",
+        "descricao": "MCM-MPV ELE 16S TALHA TE-11-218 VV6",
+        "status": "Em andamento",
+        "latitude":"-2,5690485",
+        "longitude":"-44,3447038"
+      },
+      {
+        "numero": "202604443469",
+        "frente":"VV-06",
+        "descricao": "MCM-MPV ELE 16S TALHA TE-11-223 VV6",
+        "status": "Em andamento",
+       "latitude":"-2,5690485",
+        "longitude":"-44,3447038"
+      },
+      {
+        "numero": "202604443470",
+        "frente":"VV-06",
+        "descricao": "MCM-MPV ELE 16S TALHA TE-11-224 VV6",
+        "status": "Em andamento",
+       "latitude":"-2,5690485",
+        "longitude":"-44,3447038"
+      },
+      {
+        "numero": "202604443471",
+        "frente":"VV-06",
+        "descricao": "MCM-MPV ELE 16S TALHA TE-11-230 VV6",
+        "status": "Em andamento",
+        "latitude":"-2,5690485",
+        "longitude":"-44,3447038"
+      },
+      {
+        "numero": "202602984850",
+        "frente":"GC 1534",
+        "descricao": "GC 1534 - PARAFUSOS DA BASE CORROIDOS",
+        "status": "Em andamento",
+        "latitude": null,
+        "longitude": null
+      },
+      {
+        "numero": "202602899733",
+        "frente":"EX-311K-212",
+        "descricao": "SUBSTITUIR EXTRATOR 311K-212",
+        "status": "Em andamento",
+        "latitude": "-2,5690483",
+        "longitude": "-44,3442484"
+      },
+      {
+        "numero": "202603945352",
+        "frente":"TR-313K-88",
+        "descricao": "EPO-MPV 08S LUB GUINCHO ATS TR-313K-88",
+        "status": "Em andamento",
+        "latitude": "-2,5724918",
+        "longitude": "-44,3453183"
+      },
+      {
+        "numero": "202604073260",
+        "frente":"TR-313K-88",
+        "descricao": "EPO-MPV 08S MEC GUINCHO ATS TR-313K-88",
+        "status": "Em andamento",
+         "latitude": "-2,5724918",
+        "longitude": "-44,3453183"
+      },
+      {
+        "numero": "202604447862",
+        "frente":"",
+        "descricao": "MP ELE PAINEL BT",
+        "status": "Em andamento",
+        "latitude": null,
+        "longitude": null
+      },
+      {
+        "numero": "202604677138",
+        "descricao": "MP ELE ENROLADOR DE CABO PD",
+        "status": "Em andamento",
+        "latitude": null,
+        "longitude": null
+      },
+      {
+        "numero": "202604677139",
+        "descricao": "MP ELE TRANSLACAO PORTICO 50/15T PD",
+        "status": "Em andamento",
+        "latitude": null,
+        "longitude": null
+      },
+      {
+        "numero": "202604677160",
+        "descricao": "MP ELE SENSORIAMENTO E SINALIZACAO",
+        "status": "Em andamento",
+        "latitude": null,
+        "longitude": null
+      },
+      {
+        "numero": "202604677161",
+        "descricao": "MP ELE TRANSLACAO CARRO PONTE 50/15T PD",
+        "status": "Em andamento",
+        "latitude": null,
+        "longitude": null
+      },
+      {
+        "numero": "202604677162",
+        "descricao": "MP ELE ELEVACAO PRINCIPAL E AUXILIAR",
+        "status": "Em andamento",
+        "latitude": null,
+        "longitude": null
+      },
+      {
+        "numero": "202602005812",
+        "frente":"EX-311K-205",
+        "descricao": "MP ELMEC PONTE ROLANTE PR-311K-205",
+        "status": "Em andamento",
+        "latitude":"-2,5682268",
+        "longitude":"-44,3460261"
+      },
+      {
+        "numero": "202604328207",
+        "frente":"EX-313k-07",
+        "descricao": "EX 1307 - TROCAR TB FIXO E ALINH. DESALIN - travar eixo do rolo no suporte",
+        "status": "Em andamento",
+        "latitude": "-2,5671654",
+        "longitude": "-44,3577348"
+      }
+    
     
   ]
-  
+}
+      ]
+    }
+  ]
 }

@@ -1,8 +1,8 @@
 {
   "id": "os441",
   "nome": "Contrato OS 441",
-  "data": "15/09/2026",
-  "turno": "Dia A",
+  "data": "21/09/2026",
+  "turno": "Dia B",
   "horario": "07:00 às 19:00",
   "abas": [
     {
@@ -13,8 +13,8 @@
 
       "qlp": {
         "direto": {
-          "Caldeireiro": 2,
-          "Mecanico": 13,
+          "Caldeireiro": 3,
+          "Mecanico": 9,
           "Soldador": 3,
           "Montador": 9,
           "Eletricista": 0,
@@ -47,9 +47,8 @@
       },
 
       "ausencias": {
-        "Mecânico":1,
-        "Caldeireiro":2,
-     "justificadas": 3,
+      "Mecânico":2,
+     "justificadas": 2,
      "naoJustificadas":0
       },
 
@@ -65,8 +64,8 @@
         },
         {
           "tipo": "Munck",
-          "placa": "RQP-8G78",
-          "operador": "",
+          "placa": "QRD-8212",
+          "operador": "Jhonatan",
           "contato":"",
           "status": "Disponivel"
         },
@@ -80,16 +79,16 @@
       
         {
           "tipo": "Pick-up",
-          "placa": "SFU-0A35",
-          "operador": "Hilgles",
-          "contato":"98 98537-4937",
+          "placa": "SFT-9J87",
+          "operador": "Patrick",
+          "contato":"(98) 99984-4559",
           "status": "Disponivel"
         },
         {
           "tipo": "Pick-up",
-          "placa": "SFT-9H25",
-          "operador": "Carlos",
-          "contato":"98 98124-4272",
+          "placa": "QRI-2G50",
+          "operador": "Anderson",
+          "contato":"(98) 98415-6236",
           "status": "Disponivel"
         }
       
@@ -97,55 +96,91 @@
 
       "atividades": [
         {
-        "lider": "Elias",
-          "telefone": "98 98210-6618",
+        "lider": "Adilson",
+          "telefone": "98 8898-1856",
           "tecnicoSeguranca": "",
-          "equipe": "05 Mecânicos + 01 Caldeireiro + 01 soldador + 03 montadores",
+          "equipe": "04 Mecânicos + 01 Caldeireiro + 01 soldador + 03 montadores",
           "oms": [
             {
-              "frente":"ER-01",
-               "latitude":"-2,5671205",
-              "longitude":"-44,3524934",
-              "numero": "202604636645",
-              "descricao": "PREPARAÇÃO DE MATERIAS E5S PLAMONT (ER01)",
+              "frente":"TR-315K-33",
+              "latitude":"-2,5682235",
+              "longitude":"-44,3555469",
+              "numero": "202603674833",
+              "descricao": "TROCAR 2 ROLOS DE RETORNO BL 3 CV 1 (TR-315K-33)",
+              "arquivoPdf":"",
+              "status": "Em andamento"
+            },
+            {
+              "frente":"TR-315K-33",
+              "latitude":"-2,5682235",
+              "longitude":"-44,3555469",
+              "numero": "202603580008",
+              "descricao": "TROCAR 2 ROLOS DE RETORNO BL 4 CV 6 (TR-315K-33)",
+              "arquivoPdf":"",
+              "status": "Em andamento"
+            },
+            {
+              "frente":"TR-315K-33",
+              "latitude":"-2,5682235",
+              "longitude":"-44,3555469",
+              "numero": "202604590121",
+              "descricao": "MCM-MPV MEC 16S CHAP DESG DEFL TR-1533 (TR-315K-33)",
               "arquivoPdf":"",
               "status": "Em andamento"
             }
           ]
         },
         {
-          "lider": "Iego",
-          "telefone": "98 8506-6056",
+          "lider": "Fernando Maranhão",
+          "telefone": "98 8742-8209",
           "tecnicoSeguranca": "",
-          "equipe": "5 Mecânicos + 1 soldador + 3 Montadores",
+          "equipe": "3 Mecânicos + 1 soldador + 01 caldeireiro + 3 Montadores",
           "oms": [
             
             {
-              "numero": "202603522976",
-              "frente":"TR-1417",
-              "latitude":"-2,5653945",
-              "longitude":"-44,3755972",
+              "numero": "202501141672",
+              "frente":"TR-326K-01",
+              "latitude":"-2,5573071",
+              "longitude":"-44,3698684",
               "arquivoPdf":"",
-              "descricao": "CHUTE_TROCAR REVESTIMENTO CHTE DESC (TR1417)",
+              "descricao": "DSG_MONTAR DESMONTAR ANDAIME PLAMONT TROC 6O ROLOS DE CARGA 2601 (TR-326K-01)",
+              "status": "Em andamento"
+            },
+             {
+              "numero": "202501141433",
+              "frente":"TR-326K-01",
+              "latitude":"-2,5573071",
+              "longitude":"-44,3698684",
+              "arquivoPdf":"",
+              "descricao": "TROCAR 60 ROLOS DE CARGA NO TR2601 (TR-326K-01)",
+              "status": "Em andamento"
+            },
+            {
+              "numero": "202504066022",
+              "frente":"TR-326K-01",
+              "latitude":"-2,5573071",
+              "longitude":"-44,3698684",
+              "arquivoPdf":"",
+              "descricao": "MONTAR ANDAIME - TROCAR 16 CHAPAS DA FACA DO AM314K-203.",
               "status": "Em andamento"
             }
           ]
         },
         {
-          "lider": "Alexandre",
-          "telefone": "98 99228‑6538",
+          "lider": "Ederson",
+          "telefone": "98 8242-1348",
           "tecnicoSeguranca": "",
-          "equipe": "3 Mecânicos + 1 Caldeireiro + 1 soldador + 3 Montadores",
+          "equipe": "2 Mecânicos + 1 Caldeireiro + 1 soldador + 3 Montadores",
           "oms": [
             {
-              "numero":"202501874294",
-              "frente":"TR-1359",
-              "latitude":"-2,5634191",
-              "longitude":"-44,3457215",
-              "descricao":"TROCAR CAV AA RETORNO PLANO CAB MÓVEL (TR1359)",
+              "numero": "202604591162",
+              "frente":"EP-06",
+              "latitude":"-2,5727272",
+              "longitude":"-44,3359387",
               "arquivoPdf":"",
-              "status":"Em andamento"
-          }
+              "descricao": "PREPARAÇÃO E MOBILIZAÇÃO DE FERRAMENTAS -PLAMONT DESGASTES EP06",
+              "status": "Em andamento"
+            }
           ]
         }
       ]
@@ -160,8 +195,8 @@
 
       "qlp": {
         "direto": {
-          "Caldeireiro": 3,
-          "Mecanico": 2,
+          "Caldeireiro": 2,
+          "Mecanico": 3,
           "Soldador": 4,
           "Montador": 2,
           "Eletricista": 0,
@@ -190,8 +225,9 @@
         }
       },
       "ausencias": {
-        "Mecânico":1,
-        "justificadas": 1,
+        "Mecânicos":1,
+        "Caldeireiros":"2",
+        "justificadas": 0,
      "naoJustificadas":0
       },
       "mobilizacao": {},
@@ -199,36 +235,132 @@
 
       "atividades": [
         {
-          "lider": "Julio/Erickson",
-          "telefone": "98 8506-6125/98 9609-7660",
+          "lider": "Wanderson/Adeilton",
+          "telefone": "98 98508-8348/98 8882-2306",
           "tecnicoSeguranca": "",
-          "equipe": "2 Mecânicos + 3 Caldeireiros + 4 Soldadores + 2 Montadores + 1 pintor",
+          "equipe": "3 Mecânicos + 2 Caldeireiros + 4 Soldadores + 2 Montadores + 1 pintor",
           "oms": [
-            {
-              "numero":"202501581736",
-              "frente":"TR-1512",
-              "latitude":"-2,5651953",
-              "longitude":"-44,3754809",
-              "descricao":"Passarela do TR 1512",
-              "status":"Em andamento"
-          },
-         {
-              "numero":"202302212482",
-              "frente":"AM-06",
-              "latitude":"",
-              "longitude":"",
-              "descricao":"Troca da chapa do AM06",
-              "status":"Em andamento"
-          },
-           {
-              "numero":"202603674978",
-              "frente":"TR-2507",
-              "latitude":"-2,5630375",
-              "longitude":"-44,3791164",
-              "descricao":" TROCAR CHAPAS DE PS COM OXI PASS LD DIREITO TR2507",
-              "status":"Em andamento"
-          }
-          ]
+  {
+    "numero": "202600059943",
+    "frente": "",
+    "latitude": "",
+    "longitude": "",
+    "descricao": "SEG_GC_FAB.G.C OXI PASSR TRANSL LANÇA",
+    "status": "Em andamento"
+  },
+  {
+    "numero": "202600060337",
+    "frente": "CN-07",
+    "latitude": "",
+    "longitude": "",
+    "descricao": "SEG_GC_FAB.G.C OXI PASSR TRANSL LANÇA",
+    "status": "Em andamento"
+  },
+  {
+    "numero": "202300059267",
+    "frente": "",
+    "latitude": "",
+    "longitude": "",
+    "descricao": "SEG GC_TROC TUBOINTERMED DO G.C PASS ACE",
+    "status": "Em andamento"
+  },
+  {
+    "numero": "202600057107",
+    "frente": "CN-06",
+    "latitude": "",
+    "longitude": "",
+    "descricao": "SEG GC_TROC TUBOINTERMED DO G.C PASS L/D",
+    "status": "Em andamento"
+  },
+  {
+    "numero": "202602340925",
+    "frente": "TR-315K-39",
+    "latitude": "-2,5611162",
+    "longitude": "-44,3623805",
+    "descricao": "SEG PS_GRADE PISO LDSF BALIZA 19 CH",
+    "status": "Em andamento"
+  },
+  {
+    "numero": "202602340995",
+    "frente": "TR-315K-39",
+    "latitude": "-2,5611162",
+    "longitude": "-44,3623805",
+    "descricao": "SEG PS_GRADE PISO LESF BALIZA 19 CV 1",
+    "status": "Em andamento"
+  },
+  {
+    "numero": "202602346136",
+    "frente": "TR-315K-39",
+    "latitude": "-2,5611162",
+    "longitude": "-44,3623805",
+    "descricao": "SEG PS_GRADE PISO LESF BALIZA LADO M1",
+    "status": "Em andamento"
+  },
+  {
+    "numero": "202601272173",
+    "frente": "TR-311K-14",
+    "latitude": "-2,5715538",
+    "longitude": "-44,3446362",
+    "descricao": "SEG DG TROC 5 DEG ESC ACESS. CAUD TR1114",
+    "status": "Em andamento"
+  },
+  {
+    "numero": "202600598080",
+    "frente": "TR-311K-14",
+    "latitude": "-2,5715538",
+    "longitude": "-44,3446362",
+    "descricao": "SEG PS TROC PIS LE 1110 ACIMA TR1114",
+    "status": "Em andamento"
+  },
+  {
+    "numero": "202603912729",
+    "frente": "TR-311K-14",
+    "latitude": "-2,5715538",
+    "longitude": "-44,3446362",
+    "descricao": "SEG GC_AUS.FECHADURA PORTINHOLA CAB.M",
+    "status": "Em andamento"
+  },
+  {
+    "numero": "202600430139",
+    "frente": "TR-315K-33",
+    "latitude": "-2,5682235",
+    "longitude": "-44,3555469",
+    "descricao": "SEG D PS TRO 02 GRA PROX TB 17 CAU LE",
+    "status": "Em andamento"
+  },
+  {
+    "numero": "202601043746",
+    "frente": "",
+    "latitude": "",
+    "longitude": "",
+    "descricao": "SEG A GC SOL GUAR - CORP PASS CAB-MOV LD/LE",
+    "status": "Em andamento"
+  },
+  {
+    "numero": "202601043653",
+    "frente": "TR-315K-35",
+    "latitude": "-2,5645686",
+    "longitude": "-44,3605516",
+    "descricao": "SEG A DG TROC 01 DEG ESC ACESS PROX ACI",
+    "status": "Em andamento"
+  },
+  {
+    "numero": "202601043428",
+    "frente": "TR-315K-35",
+    "latitude": "-2,5645686",
+    "longitude": "-44,3605516",
+    "descricao": "SEG D_PS TROC 02 GRAD PROX AO TB LD ACIO",
+    "status": "Em andamento"
+  },
+  {
+    "numero": "202603083802",
+    "frente": "TR-315K-35",
+    "latitude": "-2,5645686",
+    "longitude": "-44,3605516",
+    "descricao": "SEG GD TROCAR 1 GRADE DE PISO AVRIADA",
+    "status": "Em andamento"
+  }
+]
 
         }
       ]

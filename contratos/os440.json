@@ -1,8 +1,8 @@
 {
   "id": "os440",
   "nome": "Contrato OS 440",
-  "data": "15/09/2026",
-  "turno": "Dia A",
+  "data": "21/09/2026",
+  "turno": "Dia B",
   "horario": "07:00 às 19:00",
   "abas": [
     {
@@ -10,12 +10,12 @@
       "icone":"assets/icons/integridade.svg",
       "qlp": {
         "direto": {
-          "Caldeireiro": 7,
-          "Mecanico": 18,
+          "Caldeireiro": 8,
+          "Mecanico": 16,
           "Soldador": 8,
-          "Eletricista": 2, 
+          "Eletricista": 3, 
           "Ajudante de eletricista": 1,
-          "Ajudante de montagem": 3,
+          "Ajudante de montagem":2,
           "Pintor": 1,
           "Montador": 12
         },
@@ -55,7 +55,7 @@
           "placa": "SGA-3I26 (RESERVA/PIT STOP)",
           "operador": "",
           "contato": "",
-          "status":"Preventiva"
+          "status":"Disponivel"
         },
         {
           "tipo": "Munck",
@@ -89,15 +89,15 @@
          {
           "tipo": "Pick-up",
           "placa": "SFU-0A47",
-          "operador": "Antônio",
-          "contato": "(98) 98896-6615",
+          "operador": "Janice",
+          "contato": "(98) 98880-3110",
           "status":"Disponivel"
         },
         {
           "tipo": "Pick-up",
           "placa": "SFU-0A01",
-          "operador": "Beneval",
-          "contato": "(98) 98474-8512",
+          "operador": "Genilon",
+          "contato": "(98) 98715-5916",
           "status":"Disponivel"
         },
         {
@@ -143,36 +143,36 @@
           
 
         {
-          "lider":"Gutemberg",
-          "telefone":"98 8177-7618",
-          "equipe":"5 mecânicos + 2 soldadores + 1 caldereiros + 1 ajudante de mont.",
+          "lider":"Fagner",
+          "telefone":"98 9614-6804",
+          "equipe":"5 mecânicos + 2 soldadores + 2 caldeireiros + 1 eletricista",
         
         "oms":[
-           {
-             "frente":"RP-03",
-              "numero":"202600134651",
-              "descricao":"PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. LANC. (RP-03)",
-              "latitude":"-2,5650352",
-              "longitude":"-44,3487367",
-              "arquivoPdf":"om's/contrato 440 oms/Integridade/RP03 OM 202600134651  PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. LANC.pdf", 
+            {
+             "frente":"CN-07",
+              "numero":"202301508489",
+              "descricao":"PE1.2_SUBS ESTR APOI LD MES CAR REDLE (CN-07)",
+              "latitude":"-2,5535402",
+              "longitude":"-44,3793104",
+              "arquivoPdf":"om's/contrato 440 oms/Integridade/CN07 OM 202301508489 PE1.2_SUBS ESTR APOI LD MES CAR REDLE.pdf", 
               "status":"Em andamento"
             }
           ]
         },
          
         {
-          "lider":"Mailson",
-          "telefone":"98 9614-6804",
-          "equipe":"4 mecânicos + 1 soldadores + 2 caldeireiros + 1 eletricista + 1 pintor",
+          "lider":"Rogério",
+          "telefone":"98 9965-3798",
+          "equipe":"3 mecânicos + 1 soldador + 1 caldeireiro + 1 ajudante de mont. + 1 eletricista",
         
         "oms":[
             {
-             "frente":"ER-01",
-              "numero":"202403158303",
-              "descricao":"AE1.0_FAB TROC.VIGA TRAV.LONG.LANÇA (ER-01)",
-              "latitude":"-2,5671205",
-              "longitude":"-44,3524934",
-              "arquivoPdf":"om's/contrato 440 oms/Integridade/ER01 OM 202403158303 AE1.0_FAB TROC.VIGA TRAV.LONG.LANÇA.pdf", 
+             "frente":"EP-06",
+              "numero":"--",
+              "descricao":"MOBILIZAÇÃO PARA EP-06",
+              "latitude":"-2,5727272",
+              "longitude":"-44,3359387",
+              "arquivoPdf":"", 
               "status":"Em andamento"
             }
           ]
@@ -184,42 +184,39 @@
         
         "oms":[
             {
-             "frente":"TR-1307",
-              "numero":"202500911479",
-              "descricao":" AE1.8_SUBST.ELEM.FIX.CREMALHEI.CABÇ (TR-1307)",
-              "latitude":"-2,5671366",
-              "longitude":"-44,3568473",
-              "arquivoPdf":"", 
+             "frente":"TR-315K-34",
+              "numero":"202506089708",
+              "descricao":"PE2. _FABRIC.E SUBST.TRAVE.SUP.EIXO 32 (TR-315K-34)",
+              "latitude":"-2,5654938",
+              "longitude":"-44,3592505",
+              "arquivoPdf":"om's/contrato 440 oms/Integridade/TR1534 OM 202506089708 PE2. _FABRIC.E SUBST.TRAVE.SUP.EIXO 32 rev1.pdf", 
               "status":"Em andamento"
             }
           ]
         },
-          {
-          "lider":"João Batista",
-          "telefone":"98 8887-8415",
-          "equipe":"4 mecânicos + 2 soldadores + 2 caldereiros + 1 eletricista",
+        {
+          "lider":"Cleyton",
+          "telefone":"98 93300-5461",
+          "equipe":"3 mecânicos + 2 soldadores + 3 caldereiros + 1 eletricista + 1 ajudante de mont.",
         
         "oms":[
             {
-              "frente":"VV-01",
-              "numero":"202604032281",
-              "descricao":"RECUP ESTRU PAREDE INT TREMONHA (VV-01)",
-              "latitude":"-2,5681063",
-              "longitude":"-44,3457358",
+             "frente":"VV-06",
+              "numero":"--",
+              "descricao":"MOBILIZAÇÃO PARA VV-06",
+              "latitude":"-2,5690485",
+              "longitude":"-44,3447038",
               "arquivoPdf":"", 
               "status":"Em andamento"
             }
           ]
         }
-       
-     
+          
       ]
       ,
       
       "nome":"Integridade",
-      "observacoes": [
-        "Lider Batista na frente da mobilização do CN-07"
-      ]
+      "observacoes": []
      
     },
     
@@ -267,29 +264,26 @@
       "recursos": [],
       "atividades": [
         {
-          "lider": "Ronielisson",
-          "telefone": "98 8498-4952",
+          "lider": "Alonso Costa",
+          "telefone": "31 8495-2503", 
           "tecnicoSeguranca": "",
           "equipe": "08 mecânicos + 01 eletricista",
           "oms": [
             {
-              "frente":"TR-314K-13",
-              "numero":"202502848942",
-              "descricao":"REPOR TELHAS  TR1413 (TR-314K-13)",
-              "latitude":"-2,5651389",
-              "longitude":"-44,3754015",
-              "arquivoPdf":"om's/contrato 440 oms/Telhado/OM 202603476693 REPOR TELHAS  TR1413.pdf",
+              "frente":"TR-315K-33",
+              "numero":"202501386655",
+              "descricao":"TME-TROCAR/REPOR-TELHAS#TR1533",
+              "latitude":"-2,5682235",
+              "longitude":"-44,3555469",
+              "arquivoPdf":"",
               "arquivoLaudo":"",
-              "status":"Concluída",
-              "observacoes":"Somente desmobilização."
+              "status":"Em andamento"
           }
           ]
         }
       ],
       "nome": "Telhado",
-      "observacoes": [
-        "Somente desmobilização do TR-314K-13, atividade do TR-313K-17 postergarda para sexta-feira. "
-      ]
+      "observacoes": []
     }
   ]
 }
