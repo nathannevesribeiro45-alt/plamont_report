@@ -13,11 +13,11 @@ const dashboardStatus = {
         "Nenhuma ocorrência crítica registrada neste turno."
     ],
 
-    turno: "Dia A",
+    turno: "Dia B",
 
     horario: "07:00 às 19:00",
 
-    atualizacao: "15/09/2026 às 07:00"
+    atualizacao: "21/09/2026 às 07:00"
 
 };
 
