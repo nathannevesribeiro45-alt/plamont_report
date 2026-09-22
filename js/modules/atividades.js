@@ -118,12 +118,10 @@ render(aba, container) {
             <h2>${Icons.oms} OM's do Dia</h2>
 
             <div class="atividades-acoes-cabecalho">
-                ${window.Auth?.pode?.("editar") ? `
-                    <button class="atividade-editar-btn" type="button" data-abrir-editor aria-label="Editar atividades deste relatório">
+                    <button class="atividade-editar-btn" type="button" data-abrir-editor aria-label="Editar atividades deste relatório" ${window.Auth?.pode?.("editar") === true ? "" : "hidden disabled"}>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
                         <span>Editar relatório</span>
                     </button>
-                ` : ""}
                 <span class="bloco-toggle">▼</span>
             </div>
 
@@ -144,6 +142,19 @@ render(aba, container) {
     return secao;
 
 },
+
+    // A sessão pode terminar de carregar depois do relatório. Atualiza
+    // somente os botões, preservando os blocos abertos e o rascunho atual.
+    atualizarAcessoEditor() {
+
+        const permitido = window.Auth?.pode?.("editar") === true;
+
+        document.querySelectorAll("[data-abrir-editor]").forEach(botao => {
+            botao.hidden = !permitido;
+            botao.disabled = !permitido;
+        });
+
+    },
 
     // ======================================
     // Cria todos os cards dos líderes
@@ -414,3 +425,7 @@ criarObservacoes(observacoes) {
 }
 
 };
+
+document.addEventListener("plamont:auth-alterado", () => {
+    Atividades.atualizarAcessoEditor();
+});

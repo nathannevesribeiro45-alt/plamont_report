@@ -21,20 +21,29 @@
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    min-height: 34px;
+    min-height: 44px;
     padding: 0 12px;
-    border: 1px solid rgba(255, 255, 255, .45);
+    border: 1px solid #0752a2;
     border-radius: 9px;
-    background: rgba(255, 255, 255, .12);
+    background: #0752a2;
     color: #fff;
     font-size: .82rem;
     font-weight: 800;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
-.atividade-editar-btn:hover,
+.atividade-editar-btn[hidden] {
+    display: none !important;
+}
+
+.atividade-editar-btn:hover {
+    background: #063d79;
+}
+
 .atividade-editar-btn:focus-visible {
-    background: rgba(255, 255, 255, .22);
-    outline: none;
+    outline: 3px solid #7cbcff;
+    outline-offset: 3px;
 }
 
 .atividade-editar-btn svg,
@@ -339,8 +348,9 @@
 }
 
 @media (max-width: 680px) {
+    .card-atividades > .bloco-header { flex-wrap: wrap; gap: 10px; }
     .atividades-acoes-cabecalho { gap: 7px; }
-    .atividade-editar-btn { min-height: 36px; padding: 0 10px; }
+    .atividade-editar-btn { padding: 0 10px; }
     .editor-relatorio-cabecalho { align-items: stretch; flex-direction: column; padding: 17px; }
     .editor-relatorio-acoes { display: grid; grid-template-columns: 1fr 1.3fr; }
     .editor-relatorio-campos-grupo,
