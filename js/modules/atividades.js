@@ -11,10 +11,19 @@ const Atividades = {
 // ======================================
 render(aba, container) {
 
-    if (!aba || !aba.atividades) return;
     if (!container) return;
+    if (!aba) return;
 
-    const secao = this.criarSecao();
+    // Durante a edição, a interface recebe somente o rascunho mantido
+    // pelo módulo independente. A aba ativa continua intacta até aplicar.
+    if (window.EditorRelatorio?.deveEditarAba?.(aba)) {
+        window.EditorRelatorio.renderizarAtividades(aba, container);
+        return;
+    }
+
+    const atividades = Array.isArray(aba.atividades) ? aba.atividades : [];
+
+    const secao = this.criarSecao(aba);
 
     const listaContainer = secao.querySelector(".atividades-lista");
 
@@ -22,7 +31,7 @@ render(aba, container) {
     // mostra toda atividade realmente executada (em andamento,
     // concluída ou atrasada), mesmo sem localização ainda, mas
     // nunca uma OM que ainda é apenas "Planejada".
-    const atividadesDoResumo = this.filtrarAtividadesDoResumo(aba.atividades);
+    const atividadesDoResumo = this.filtrarAtividadesDoResumo(atividades);
 
     this.criarLista(
         atividadesDoResumo,
@@ -54,6 +63,13 @@ render(aba, container) {
     `;
 
     container.appendChild(secao);
+
+    const editar = secao.querySelector("[data-abrir-editor]");
+
+    editar?.addEventListener("click", evento => {
+        evento.stopPropagation();
+        window.EditorRelatorio?.iniciar(aba);
+    });
 
     const header = secao.querySelector(".bloco-header");
     const content = secao.querySelector(".bloco-content");
@@ -89,7 +105,7 @@ render(aba, container) {
     // ======================================
     // Cria a seção
     // ======================================
-   criarSecao() {
+   criarSecao(aba) {
 
     const secao = document.createElement("section");
 
@@ -101,7 +117,15 @@ render(aba, container) {
 
             <h2>${Icons.oms} OM's do Dia</h2>
 
-            <span class="bloco-toggle">▼</span>
+            <div class="atividades-acoes-cabecalho">
+                ${window.Auth?.pode?.("editar") ? `
+                    <button class="atividade-editar-btn" type="button" data-abrir-editor aria-label="Editar atividades deste relatório">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+                        <span>Editar relatório</span>
+                    </button>
+                ` : ""}
+                <span class="bloco-toggle">▼</span>
+            </div>
 
         </div>
 

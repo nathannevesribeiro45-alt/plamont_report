@@ -1,0 +1,353 @@
+/* ==========================================================
+   EDITOR DE RELATÓRIO — estilos isolados da edição em memória
+   ========================================================== */
+
+.atividades-acoes-cabecalho {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.atividade-editar-btn,
+.editor-relatorio-btn,
+.editor-relatorio-adicionar-grupo,
+.editor-relatorio-adicionar-om,
+.editor-relatorio-link-perigo {
+    font: inherit;
+    cursor: pointer;
+}
+
+.atividade-editar-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 34px;
+    padding: 0 12px;
+    border: 1px solid rgba(255, 255, 255, .45);
+    border-radius: 9px;
+    background: rgba(255, 255, 255, .12);
+    color: #fff;
+    font-size: .82rem;
+    font-weight: 800;
+}
+
+.atividade-editar-btn:hover,
+.atividade-editar-btn:focus-visible {
+    background: rgba(255, 255, 255, .22);
+    outline: none;
+}
+
+.atividade-editar-btn svg,
+.editor-relatorio-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.editor-relatorio-atividades {
+    overflow: hidden;
+    border: 1px solid #cfe2f8;
+    box-shadow: 0 10px 24px rgba(8, 55, 109, .08);
+}
+
+.editor-relatorio-cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 20px 22px;
+    background: linear-gradient(135deg, #073464, #0b67bb);
+    color: #fff;
+}
+
+.editor-relatorio-etiqueta {
+    display: inline-block;
+    margin-bottom: 4px;
+    color: #bde1ff;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.editor-relatorio-cabecalho h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.25rem;
+}
+
+.editor-relatorio-cabecalho p {
+    margin: 5px 0 0;
+    color: rgba(255, 255, 255, .82);
+    font-size: .84rem;
+}
+
+.editor-relatorio-acoes {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 9px;
+}
+
+.editor-relatorio-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 39px;
+    padding: 0 13px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    font-size: .83rem;
+    font-weight: 800;
+}
+
+.editor-relatorio-btn-secundario {
+    border-color: rgba(255, 255, 255, .52);
+    background: transparent;
+    color: #fff;
+}
+
+.editor-relatorio-btn-primario {
+    background: #fff;
+    color: #0752a2;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .12);
+}
+
+.editor-relatorio-mensagem {
+    margin: 16px 18px 0;
+    padding: 11px 13px;
+    border-radius: 10px;
+    font-size: .86rem;
+    font-weight: 700;
+}
+
+.editor-relatorio-mensagem.erro {
+    border: 1px solid #ffd1d5;
+    background: #fff1f2;
+    color: #a6293b;
+}
+
+.editor-relatorio-grupos {
+    display: grid;
+    gap: 16px;
+    padding: 18px;
+    background: #f6f9fd;
+}
+
+.editor-relatorio-grupo {
+    overflow: hidden;
+    border: 1px solid #d7e4f2;
+    border-radius: 14px;
+    background: #fff;
+}
+
+.editor-relatorio-grupo-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 13px 15px;
+    background: #edf5ff;
+    border-bottom: 1px solid #dce9f6;
+}
+
+.editor-relatorio-grupo-topo span {
+    display: block;
+    margin-bottom: 2px;
+    color: #527596;
+    font-size: .74rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.editor-relatorio-grupo-topo strong {
+    color: #0a376b;
+    font-size: .98rem;
+}
+
+.editor-relatorio-campos-grupo,
+.editor-relatorio-campos-om {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    padding: 15px;
+}
+
+.editor-relatorio-campo {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 6px;
+    color: #34587c;
+    font-size: .77rem;
+    font-weight: 800;
+}
+
+.editor-relatorio-campo input,
+.editor-relatorio-campo textarea,
+.editor-relatorio-campo select {
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid #c8dcef;
+    border-radius: 9px;
+    outline: none;
+    background: #fff;
+    color: #0b3568;
+    font: inherit;
+    font-size: .88rem;
+    font-weight: 600;
+    transition: border-color .16s ease, box-shadow .16s ease;
+}
+
+.editor-relatorio-campo input,
+.editor-relatorio-campo select {
+    min-height: 40px;
+    padding: 0 10px;
+}
+
+.editor-relatorio-campo textarea {
+    min-height: 78px;
+    padding: 9px 10px;
+    resize: vertical;
+}
+
+.editor-relatorio-campo input:focus,
+.editor-relatorio-campo textarea:focus,
+.editor-relatorio-campo select:focus {
+    border-color: #0b73d4;
+    box-shadow: 0 0 0 3px rgba(11, 115, 212, .14);
+}
+
+.editor-relatorio-campo input[readonly] {
+    background: #f1f5f9;
+    color: #6a8199;
+    cursor: default;
+}
+
+.editor-relatorio-oms {
+    display: grid;
+    gap: 12px;
+    padding: 15px;
+    border-top: 1px solid #e2ebf5;
+    background: #fbfdff;
+}
+
+.editor-relatorio-subtitulo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    color: #103f74;
+}
+
+.editor-relatorio-subtitulo span {
+    color: #64809d;
+    font-size: .76rem;
+    font-weight: 700;
+}
+
+.editor-relatorio-om {
+    border: 1px solid #dce7f3;
+    border-radius: 11px;
+    background: #fff;
+}
+
+.editor-relatorio-om-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 11px 13px;
+    border-bottom: 1px solid #e7eef6;
+    color: #0a3d77;
+}
+
+.editor-relatorio-campos-om {
+    grid-template-columns: minmax(120px, .65fr) minmax(160px, 1fr) minmax(150px, .75fr) minmax(220px, 2fr);
+}
+
+.editor-relatorio-campo-descricao {
+    grid-column: auto;
+}
+
+.editor-relatorio-ajuda {
+    margin: -3px 15px 13px;
+    color: #6a8199;
+    font-size: .74rem;
+    line-height: 1.35;
+}
+
+.editor-relatorio-adicionar-grupo,
+.editor-relatorio-adicionar-om {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 38px;
+    border: 1px dashed #79a8d8;
+    border-radius: 10px;
+    background: #f5faff;
+    color: #0a60b7;
+    font-size: .84rem;
+    font-weight: 800;
+}
+
+.editor-relatorio-adicionar-grupo {
+    width: calc(100% - 36px);
+    margin: 0 18px 18px;
+}
+
+.editor-relatorio-adicionar-grupo span,
+.editor-relatorio-adicionar-om span {
+    font-size: 1.15rem;
+    line-height: 1;
+}
+
+.editor-relatorio-adicionar-grupo:hover,
+.editor-relatorio-adicionar-om:hover {
+    border-color: #126fc9;
+    background: #eaf5ff;
+}
+
+.editor-relatorio-link-perigo {
+    padding: 4px 0;
+    border: 0;
+    background: transparent;
+    color: #bd3543;
+    font-size: .76rem;
+    font-weight: 800;
+}
+
+.editor-relatorio-link-perigo:hover { color: #922332; text-decoration: underline; }
+
+.editor-relatorio-sem-om,
+.editor-relatorio-vazio {
+    padding: 16px;
+    border: 1px dashed #cbddec;
+    border-radius: 10px;
+    background: #f8fbfe;
+    color: #69819b;
+    font-size: .84rem;
+    text-align: center;
+}
+
+.editor-relatorio-vazio { margin: 0; }
+
+@media (max-width: 920px) {
+    .editor-relatorio-campos-grupo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .editor-relatorio-campos-om { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .editor-relatorio-campo-descricao { grid-column: 1 / -1; }
+}
+
+@media (max-width: 680px) {
+    .atividades-acoes-cabecalho { gap: 7px; }
+    .atividade-editar-btn { min-height: 36px; padding: 0 10px; }
+    .editor-relatorio-cabecalho { align-items: stretch; flex-direction: column; padding: 17px; }
+    .editor-relatorio-acoes { display: grid; grid-template-columns: 1fr 1.3fr; }
+    .editor-relatorio-campos-grupo,
+    .editor-relatorio-campos-om { grid-template-columns: 1fr; padding: 13px; }
+    .editor-relatorio-campo-descricao { grid-column: auto; }
+    .editor-relatorio-grupos { padding: 12px; }
+    .editor-relatorio-grupo-topo,
+    .editor-relatorio-om-topo { align-items: flex-start; flex-direction: column; gap: 5px; }
+    .editor-relatorio-adicionar-grupo { width: calc(100% - 24px); margin: 0 12px 12px; }
+}

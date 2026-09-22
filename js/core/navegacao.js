@@ -8,6 +8,10 @@ function abrirPagina(idPagina, botao, idAba = null) {
 
     console.log("Clique:", idPagina);
 
+    if (window.EditorRelatorio?.confirmarSaidaDePagina?.(idPagina)) {
+        return;
+    }
+
     // A página administrativa não pode ser aberta apenas por conhecer sua URL
     // ou por uma chamada manual no console. A Edge Function mantém a mesma
     // validação no servidor para todas as operações.
