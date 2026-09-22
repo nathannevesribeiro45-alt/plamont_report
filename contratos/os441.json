@@ -1,7 +1,7 @@
 {
   "id": "os441",
   "nome": "Contrato OS 441",
-  "data": "21/09/2026",
+  "data": "22/09/2026",
   "turno": "Dia B",
   "horario": "07:00 às 19:00",
   "abas": [
@@ -47,8 +47,8 @@
       },
 
       "ausencias": {
-      "Mecânico":2,
-     "justificadas": 2,
+      "Mecânico":3,
+     "justificadas": 3,
      "naoJustificadas":0
       },
 

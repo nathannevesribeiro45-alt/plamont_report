@@ -1,7 +1,7 @@
 {
   "id": "os440",
   "nome": "Contrato OS 440",
-  "data": "21/09/2026",
+  "data": "22/09/2026",
   "turno": "Dia B",
   "horario": "07:00 às 19:00",
   "abas": [
@@ -102,7 +102,7 @@
         },
         {
           "tipo": "Pick-up",
-          "placa": "QRI-2G50",
+          "placa": "SFU-0A29",
           "operador": "Paulo",
           "contato": "(98) 99601-6428",
           "status":"Disponivel"
@@ -167,23 +167,6 @@
         
         "oms":[
             {
-             "frente":"EP-06",
-              "numero":"--",
-              "descricao":"MOBILIZAÇÃO PARA EP-06",
-              "latitude":"-2,5727272",
-              "longitude":"-44,3359387",
-              "arquivoPdf":"", 
-              "status":"Em andamento"
-            }
-          ]
-        },
-        {
-          "lider":"Augusto Campos",
-          "telefone":"98 8508-9007",
-          "equipe":"5 mecânicos + 3 soldadores + 2 caldereiros + 1 ajudante eletr.",
-        
-        "oms":[
-            {
              "frente":"TR-315K-34",
               "numero":"202506089708",
               "descricao":"PE2. _FABRIC.E SUBST.TRAVE.SUP.EIXO 32 (TR-315K-34)",
@@ -195,16 +178,33 @@
           ]
         },
         {
+          "lider":"Augusto Campos",
+          "telefone":"98 8508-9007",
+          "equipe":"5 mecânicos + 3 soldadores + 2 caldereiros + 1 ajudante eletr.",
+        
+        "oms":[
+            {
+             "frente":"EP-06",
+              "numero":"202404498272",
+              "descricao":"1.4_TRC.ELEM.FIX SUP.SUST PASSAD.TRIP. (EP-06)",
+              "latitude":"-2,5727272",
+              "longitude":"-44,3359387",
+              "arquivoPdf":"om's/contrato 440 oms/Integridade/EP06 OM 202404498272 1.4_TRC.ELEM.FIX SUP.SUST PASSAD.TRIP..pdf", 
+              "status":"Em andamento"
+            }
+          ]
+        },
+        {
           "lider":"Cleyton",
           "telefone":"98 93300-5461",
           "equipe":"3 mecânicos + 2 soldadores + 3 caldereiros + 1 eletricista + 1 ajudante de mont.",
         
         "oms":[
             {
-             "frente":"VV-06",
+             "frente":"MOBILIZAÇÃO PARA O VV-06",
               "numero":"--",
-              "descricao":"MOBILIZAÇÃO PARA VV-06",
-              "latitude":"-2,5690485",
+              "descricao":"",
+              "latitude":"-2,5690485",  
               "longitude":"-44,3447038",
               "arquivoPdf":"", 
               "status":"Em andamento"
