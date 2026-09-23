@@ -1,0 +1,101 @@
+/* Linhas compartilhadas dos editores de quantidades; não altera painéis normais. */
+.editor-qlp-grupos 
+ { 
+    display:grid; 
+    grid-template-columns:repeat(2,minmax(0,1fr)); 
+    gap:18px; 
+    padding:18px; 
+    background:#f5f8fc; 
+ }
+.editor-qlp-grupo 
+ {
+     min-width:0; 
+    padding:16px; 
+    border:1px solid #d6e3f1;
+    border-radius:12px;
+    background:#fff; 
+    }
+.editor-qlp-grupo h3 
+{ 
+    margin:0 0 14px; 
+    color:#0a376b; 
+    font-size:1rem; 
+}
+
+.editor-qlp-linha 
+{ 
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 100px auto; 
+    align-items:end; 
+    gap:10px; 
+    margin-bottom:12px; 
+}
+
+.editor-qlp-linha input 
+{
+     padding:9px; 
+}
+.editor-qlp-linha [aria-invalid="true"] 
+{
+     border-color:#b02d3c; 
+    }
+
+.editor-qlp-erro-linha 
+{ 
+    grid-column:1 / -1; margin:0;
+    font-size:.78rem; 
+    line-height:1.4;
+    color:#a12536; 
+    }
+
+.editor-qlp [hidden] 
+{ 
+    display:none !important; 
+}
+
+.editor-qlp-subtotal 
+{ 
+    margin:14px 0 0; 
+    color:#31577d; 
+    font-size:.9rem; 
+}
+
+.editor-qlp output 
+{ 
+    font-weight:700;
+    font-variant-numeric:tabular-nums; 
+    }
+
+.editor-qlp-total 
+{ 
+    margin:0; padding:16px 20px;
+    border-top:1px solid #d6e3f1;
+    color:#0a376b;
+    background:#edf4fc;
+    font-weight:600;
+     }
+@media(max-width:1100px) 
+{ 
+    .editor-qlp-grupos { grid-template-columns:1fr; } 
+}
+@media(max-width:680px) {
+    .editor-qlp-grupos { padding:12px; gap:12px; }
+    .editor-qlp-grupo { padding:12px; }
+    .editor-qlp-linha { grid-template-columns:minmax(0,1fr) auto; padding-bottom:12px; border-bottom:1px solid #e1eaf3; }
+    .editor-qlp-nome { grid-column:1 / -1; }
+    .editor-qlp-linha button { min-height:44px; }
+}
+
+/* Ausências ocupa a largura disponível no grid, sem modificar Mobilização. */
+.grid-secoes > .editor-ausencias { grid-column:1 / -1; min-width:0; }
+.editor-ausencias .editor-qlp-grupos { grid-template-columns:1fr; }
+.editor-ausencias-resumo { margin:0 18px 18px; padding:16px; border:1px solid #d6e3f1; border-radius:12px; background:#fff; }
+.editor-ausencias-resumo h3 { margin:0 0 14px; color:#0a376b; font-size:1rem; }
+.editor-ausencias-resumo-campos { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.editor-ausencias-resumo .editor-ajuda { margin:12px 0 0; }
+@media(max-width:680px) {
+    .editor-ausencias-resumo { margin:0 12px 12px; padding:12px; }
+    .editor-ausencias-resumo-campos { grid-template-columns:1fr; }
+}
+
+

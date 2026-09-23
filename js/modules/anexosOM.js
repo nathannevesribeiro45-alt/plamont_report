@@ -107,11 +107,33 @@ window.AnexosOM = {
             { nome: "Laudo", categoria: "laudo", caminho: om?.laudo || om?.arquivoLaudo }
         ].filter(a => a.caminho).map(a => ({ ...a, url: this.urlDocumento(a.caminho) }));
     },
-    render(om, { editavel = false, grupo = 0, indice = 0, legados = true } = {}) {
+    render(om, { editavel = false, grupo = 0, indice = 0, legados = true, compacto = false } = {}) {
         const documentos = legados ? this.documentosLegados(om) : [];
         const anexos = this.listar(om);
         if (!editavel && !documentos.length && !anexos.length) return "";
         const esc = escaparHtml;
+        // Apenas a leitura das atividades usa chips. O editor e as demais
+        // áreas mantêm os detalhes e o mesmo ciclo de vida dos documentos.
+        if (compacto && !editavel) {
+            const chips = [...documentos, ...anexos].map((a, i) => {
+                const categoria = this.categorias[a.categoria] || "Outro";
+                const contexto = `${categoria} da OM ${om.numero || "não informada"}, documento ${i + 1}`;
+                const titulo = esc(a.nome || categoria);
+                const atributos = `class="om-anexo-chip" title="${titulo}"`;
+                if (i < documentos.length && a.url) {
+                    return `<a ${atributos} href="${esc(a.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(`Abrir documento ${contexto} (nova aba)`)}">${esc(categoria)}</a>`;
+                }
+                if (i >= documentos.length && !a.storagePath && this.arquivo(a.id)) {
+                    return `<button type="button" ${atributos} data-anexo-visualizar="${esc(a.id)}" aria-label="${esc(`Abrir documento ${contexto}: ${a.nome || categoria}`)}">${esc(categoria)}</button>`;
+                }
+                // Sem URL ou binário disponível, conserva a indisponibilidade
+                // existente; não inventa resolução de Storage nesta etapa.
+                return `<button type="button" class="om-anexo-chip" disabled title="${titulo} — Documento indisponível nesta página" aria-label="${esc(`Documento ${contexto} indisponível nesta página`)}">${esc(categoria)}</button>`;
+            });
+            return `<section class="om-anexos om-anexos--compactos" aria-label="Anexos da OM ${esc(om.numero || "não informada")}">
+                <h5><span aria-hidden="true">${Icons.oms}</span> Anexos (${chips.length})</h5>
+                <div class="om-anexos-lista">${chips.join("")}</div></section>`;
+        }
         return `<section class="om-anexos" aria-label="Anexos da OM ${esc(om.numero || "nova")}">
             <h5><span aria-hidden="true">${Icons.oms}</span> Anexos</h5>
             <div class="om-anexos-lista">${documentos.map(a => `<article class="om-anexo-card"><div class="om-anexo-info"><strong>${esc(a.nome)}</strong><small>${esc(this.categorias[a.categoria])} · Documento existente</small></div><div class="om-anexo-acoes">${a.url ? `<a class="om-anexo-acao" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer">Visualizar</a>` : '<span class="om-anexo-indisponivel">Caminho indisponível</span>'}</div></article>`).join("")}

@@ -81,3 +81,21 @@
     .mapa-selecao-rodape { align-items:stretch; flex-direction:column; gap:10px; padding:12px 12px max(12px,env(safe-area-inset-bottom)); }
     .mapa-selecao-rodape .editor-acoes { display:grid; grid-template-columns:1fr 1fr; }
 }
+
+/* =========================================
+   Ações globais do relatório
+   ========================================= */
+
+.relatorio-acoes {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.relatorio-editar-btn {
+    width: auto;
+    flex: 0 0 auto;
+}

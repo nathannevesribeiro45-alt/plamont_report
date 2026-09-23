@@ -60,10 +60,7 @@ render(aba, container) {
 
     container.appendChild(secao);
 
-    secao.querySelector("[data-abrir-editor]").addEventListener("click", evento => {
-        evento.stopPropagation();
-        window.EditorRelatorio?.iniciar(aba);
-    });
+   
 
     const header = secao.querySelector(".bloco-header");
     const content = secao.querySelector(".bloco-content");
@@ -112,12 +109,8 @@ render(aba, container) {
             <h2>${Icons.oms} OM's do Dia</h2>
 
             <div class="atividades-acoes-cabecalho">
-                <button type="button" class="atividade-editar-btn" data-abrir-editor ${window.Auth?.pode?.("editar") === true ? "" : "hidden disabled"}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20h9M16 3l5 5L7 22l-5 1 1-5Z"/></svg>
-                    Editar relatório
-                </button>
-                <span class="bloco-toggle">▼</span>
-            </div>
+    <span class="bloco-toggle">▼</span>
+</div>
 
         </div>
 
@@ -272,12 +265,6 @@ ${lider.tecnicoSeguranca ? `
 
         card.dataset.busca = (om.numero || "").toString();
 
-        const documentos = AnexosOM.documentosLegados(om);
-        const arquivoOM = documentos.find(a => a.categoria === "om")?.url;
-        const arquivoLaudo = documentos.find(a => a.categoria === "laudo")?.url;
-
-        const ariaOM = `Abrir documento da OM ${om.numero || ""}`.trim();
-        const ariaLaudo = `Abrir laudo da OM ${om.numero || ""}`.trim();
 
         card.innerHTML = `
 
@@ -303,31 +290,10 @@ ${lider.tecnicoSeguranca ? `
 
             </div>
 
-            <div class="om-documentos">
-
-                ${arquivoOM ? `
-                    <a class="om-documento om-documento-disponivel" href="${escaparHtml(arquivoOM)}" target="_blank" rel="noopener" aria-label="${escaparHtml(ariaOM)}">
-                        <span class="om-documento-icone">📄</span> OM
-                    </a>
-                ` : `
-                    <span class="om-documento om-documento-indisponivel" aria-hidden="true">
-                        <span class="om-documento-icone">📄</span> OM
-                    </span>
-                `}
-
-                ${arquivoLaudo ? `
-                    <a class="om-documento om-documento-disponivel" href="${escaparHtml(arquivoLaudo)}" target="_blank" rel="noopener" aria-label="${escaparHtml(ariaLaudo)}">
-                        <span class="om-documento-icone">📑</span> Laudo
-                    </a>
-                ` : `
-                    <span class="om-documento om-documento-indisponivel">--</span>
-                `}
-
-            </div>
 
         `;
 
-        card.insertAdjacentHTML("beforeend", AnexosOM.render(om, { legados: false }));
+        card.insertAdjacentHTML("beforeend", AnexosOM.render(om, { compacto: true }));
         return card;
 
     },

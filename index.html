@@ -672,8 +672,17 @@
 </div>
 <div class="calendar-card" id="os440-data-card"><div class="calendar-top" id="os440-data"></div><div class="calendar-body"><span class="calendar-label">TURNO</span><span class="calendar-shift" id="os440-turno"></span><span class="calendar-time" id="os440-horario"></span></div></div>
 </header>
-<!-- Navegação das abas -->
-<nav class="tabs" id="os440-tabs"></nav>
+<!-- Navegação das abas + ações do relatório -->
+<div class="topo-abas-relatorio">
+
+    <div class="abas-area">
+        <nav class="tabs" id="os440-tabs"></nav>
+    </div>
+
+    <div class="acoes-relatorio" id="os440-acoes"></div>
+
+</div>
+
 <!-- Conteúdo renderizado -->
 <main id="os440-content">
 <!-- Conteúdo gerado pelo JavaScript -->
@@ -691,8 +700,17 @@
 </div>
 <div class="calendar-card" id="os441-data-card"><div class="calendar-top" id="os441-data"></div><div class="calendar-body"><span class="calendar-label">TURNO</span><span class="calendar-shift" id="os441-turno"></span><span class="calendar-time" id="os441-horario"></span></div></div>
 </header>
-<!-- Navegação das abas -->
-<nav class="tabs" id="os441-tabs"></nav>
+<!-- Navegação das abas + ações do relatório -->
+<div class="topo-abas-relatorio">
+
+    <div class="abas-area">
+        <nav class="tabs" id="os441-tabs"></nav>
+    </div>
+
+    <div class="acoes-relatorio" id="os441-acoes"></div>
+
+</div>
+
 <!-- Conteúdo renderizado -->
 <main id="os441-content">
 <!-- Conteúdo gerado pelo JavaScript -->
@@ -710,8 +728,17 @@
 </div>
 <div class="calendar-card" id="os442-data-card"><div class="calendar-top" id="os442-data"></div><div class="calendar-body"><span class="calendar-label">TURNO</span><span class="calendar-shift" id="os442-turno"></span><span class="calendar-time" id="os442-horario"></span></div></div>
 </header>
-<!-- Navegação das abas -->
-<nav class="tabs" id="os442-tabs"></nav>
+<!-- Navegação das abas + ações do relatório -->
+<div class="topo-abas-relatorio">
+
+    <div class="abas-area">
+        <nav class="tabs" id="os442-tabs"></nav>
+    </div>
+
+    <div class="acoes-relatorio" id="os442-acoes"></div>
+
+</div>
+
 <!-- Conteúdo renderizado -->
 <main id="os442-content">
 <!-- Conteúdo gerado pelo JavaScript -->
@@ -729,8 +756,17 @@
 </div>
 <div class="calendar-card" id="os450-data-card"><div class="calendar-top" id="os450-data"></div><div class="calendar-body"><span class="calendar-label">TURNO</span><span class="calendar-shift" id="os450-turno"></span><span class="calendar-time" id="os450-horario"></span></div></div>
 </header>
-<!-- Navegação das abas -->
-<nav class="tabs" id="os450-tabs"></nav>
+<!-- Navegação das abas + ações do relatório -->
+<div class="topo-abas-relatorio">
+
+    <div class="abas-area">
+        <nav class="tabs" id="os450-tabs"></nav>
+    </div>
+
+    <div class="acoes-relatorio" id="os450-acoes"></div>
+
+</div>
+
 <!-- Conteúdo renderizado -->
 <main id="os450-content">
 </section>
@@ -748,8 +784,17 @@
 </div>
 <div class="calendar-card" id="os456-data-card"><div class="calendar-top" id="os456-data"></div><div class="calendar-body"><span class="calendar-label">TURNO</span><span class="calendar-shift" id="os456-turno"></span><span class="calendar-time" id="os456-horario"></span></div></div>
 </header>
-<!-- Navegação das abas -->
-<nav class="tabs" id="os456-tabs"></nav>
+<!-- Navegação das abas + ações do relatório -->
+<div class="topo-abas-relatorio">
+
+    <div class="abas-area">
+        <nav class="tabs" id="os456-tabs"></nav>
+    </div>
+
+    <div class="acoes-relatorio" id="os456-acoes"></div>
+
+</div>
+
 <!-- Conteúdo renderizado -->
 <main id="os456-content">
 </section>
@@ -769,16 +814,17 @@
 <link href="css/banner.css" rel="stylesheet"/>
 <link rel="stylesheet" href="css/mobile.css">
 <link rel="stylesheet" href="css/editorRelatorio.css?v=editor-localizacao-1">
-<link rel="stylesheet" href="css/anexosOM.css?v=editor-anexos-1">
+<link rel="stylesheet" href="css/editorQLP.css?v=editor-quantidades-1">
+<link rel="stylesheet" href="css/anexosOM.css?v=anexos-compactos-1">
 <script src="js/core/header.js"></script>
-<script src="js/modules/qlp.js"></script>
-<script src="js/modules/histograma.js"></script>
-<script src="js/modules/ausencias.js"></script>
+<script src="js/modules/qlp.js?v=editor-qlp-1"></script>
+<script src="js/modules/histograma.js?v=editor-quantidades-1"></script>
+<script src="js/modules/ausencias.js?v=editor-quantidades-1"></script>
 <script src="js/modules/mobilizacao.js"></script>
 <script src="js/modules/recursos.js"></script>
 <script src="js/modules/icons.js"></script>
-<script src="js/modules/anexosOM.js?v=editor-anexos-1"></script>
-<script src="js/modules/atividades.js?v=editor-anexos-1"></script>
+<script src="js/modules/anexosOM.js?v=anexos-compactos-1"></script>
+<script src="js/modules/atividades.js?v=anexos-compactos-1"></script>
 <!-- Leaflet (mapa de visão aérea) -->
 <script crossorigin="" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="js/modules/mapaPainel.js?v=editor-anexos-1"></script>
@@ -791,7 +837,11 @@
 <script src="js/modules/abas.js"></script>
 <script src="js/core/render.js?v=editor-localizacao-1"></script>
 <script src="js/core/script.js"></script>
-<script src="js/modules/editorRelatorio.js?v=editor-anexos-1"></script>
+<script src="js/modules/editorQuantidades.js?v=editor-quantidades-1"></script>
+<script src="js/modules/editorQLP.js?v=editor-quantidades-1"></script>
+<script src="js/modules/editorHistograma.js?v=editor-quantidades-1"></script>
+<script src="js/modules/editorAusencias.js?v=editor-quantidades-1"></script>
+<script src="js/modules/editorRelatorio.js?v=editor-quantidades-1"></script>
 <div id="sidebar-overlay" class="sidebar-overlay"></div>
 </body>
 </html>

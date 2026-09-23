@@ -11,6 +11,11 @@ const Histograma = {
     // ======================================
     render(aba, container) {
 
+        if (window.EditorRelatorio?.deveEditarAba(aba)) {
+            EditorHistograma.render(aba, container);
+            return;
+        }
+
         if (!aba?.histograma) return;
         if (!container) return;
 
@@ -128,15 +133,15 @@ criarSecao() {
 
         lista.className = "painel-lista";
 
-        Object.entries(dados).forEach(([funcao, quantidade]) => {
+        Object.entries(dados || {}).forEach(([funcao, quantidade]) => {
 
             const item = document.createElement("li");
 
             item.className = "painel-item";
 
             item.innerHTML = `
-                <span>${funcao}</span>
-                <span class="painel-valor">${quantidade}</span>
+                <span>${escaparHtml(funcao)}</span>
+                <span class="painel-valor">${escaparHtml(quantidade)}</span>
             `;
 
             lista.appendChild(item);

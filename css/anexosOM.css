@@ -33,6 +33,17 @@
 .anexo-preview img { display:block; max-width:100%; max-height:65vh; object-fit:contain; margin:auto; }
 .anexo-preview pre { white-space:pre-wrap; overflow-wrap:anywhere; max-height:60vh; overflow:auto; padding:12px; background:#f3f5f8; border-radius:8px; font-size:.85rem; }
 .anexo-preview .om-anexo-acao { justify-self:start; }
+/* Leitura do relatório: categoria clicável, sem os cards administrativos. */
+.om-anexos--compactos { margin-top:10px; padding-top:10px; }
+.om-anexos--compactos h5 { margin-bottom:8px; font-size:.78rem; font-weight:600; color:#546d85; }
+.om-anexos--compactos h5 svg { width:16px; height:16px; }
+.om-anexos--compactos .om-anexos-lista { display:flex; flex-wrap:wrap; gap:8px; }
+.om-anexos--compactos .om-anexo-chip { display:inline-flex; align-items:center; justify-content:center; flex:0 1 auto; width:auto; min-width:0; max-width:100%; min-height:36px; box-sizing:border-box; padding:7px 12px; border:1px solid #d5e2ef; border-radius:8px; background:#f5f9fd; color:#174b7b; font:inherit; font-size:.78rem; font-weight:600; line-height:1.4; text-align:center; text-decoration:none; overflow-wrap:anywhere; cursor:pointer; }
+@media(hover:hover) {
+    .om-anexos--compactos .om-anexo-chip:not(:disabled):hover { background:#eaf3fc; border-color:#9bbdde; color:#0752a2; }
+}
+.om-anexos--compactos .om-anexo-chip:focus-visible { outline:3px solid #2379c9; outline-offset:2px; }
+.om-anexos--compactos .om-anexo-chip:disabled { color:#61758a; border-style:dashed; cursor:not-allowed; }
 @media(max-width:680px) {
     .om-anexo-card { align-items:stretch; flex-direction:column; gap:10px; }
     .om-anexo-acoes { width:100%; }

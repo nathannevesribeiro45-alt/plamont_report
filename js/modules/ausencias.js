@@ -11,6 +11,11 @@ const Ausencias = {
     // ======================================
     render(aba, container) {
 
+        if (window.EditorRelatorio?.deveEditarAba(aba)) {
+            EditorAusencias.render(aba, container);
+            return;
+        }
+
         if (!aba?.ausencias) return;
         if (!container) return;
 
@@ -47,9 +52,9 @@ const painelTotal = secao.querySelector(".painel-total");
 
 painelTotal.innerHTML = `
 
-    <span>📋 Justificadas: <strong>${aba.ausencias.justificadas}</strong></span>
+    <span>📋 Justificadas: <strong>${escaparHtml(aba.ausencias.justificadas ?? 0)}</strong></span>
 
-    <span>❌ Não justificadas: <strong>${aba.ausencias.naoJustificadas}</strong></span>
+    <span>❌ Não justificadas: <strong>${escaparHtml(aba.ausencias.naoJustificadas ?? 0)}</strong></span>
 
     <span>👥 Total: <strong>${total}</strong></span>
 
@@ -123,9 +128,9 @@ criarSecao() {
             item.className = "lista-item";
 
             item.innerHTML = `
-                <span class="lista-label">${funcao}</span>
+                <span class="lista-label">${escaparHtml(funcao)}</span>
 
-                <span class="lista-valor">${quantidade}</span>
+                <span class="lista-valor">${escaparHtml(quantidade)}</span>
             `;
 
             container.appendChild(item);
@@ -141,7 +146,7 @@ criarSecao() {
 
         let total = 0;
 
-        Object.entries(ausencias).forEach(([funcao, quantidade]) => {
+        Object.entries(ausencias || {}).forEach(([funcao, quantidade]) => {
 
             if (
                 funcao === "justificadas" ||

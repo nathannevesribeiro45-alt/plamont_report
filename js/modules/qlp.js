@@ -10,6 +10,11 @@ const QLP = {
     // ======================================
     render(aba, container) {
 
+        if (window.EditorRelatorio?.deveEditarAba(aba)) {
+            EditorQLP.render(aba, container);
+            return;
+        }
+
         if (!aba?.qlp) return;
         if (!container) return;
 
@@ -125,16 +130,18 @@ const QLP = {
 
         lista.className = "painel-lista";
 
-        Object.entries(dados).forEach(([funcao, quantidade]) => {
+        Object.entries(dados || {}).forEach(([funcao, quantidade]) => {
 
             const item = document.createElement("li");
 
             item.className = "painel-item";
 
-            item.innerHTML = `
-                <span>${funcao}</span>
-                <span class="painel-valor">${quantidade}</span>
-            `;
+            const nome = document.createElement("span");
+            nome.textContent = funcao;
+            const valor = document.createElement("span");
+            valor.className = "painel-valor";
+            valor.textContent = quantidade;
+            item.append(nome, valor);
 
             lista.appendChild(item);
 
