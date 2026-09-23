@@ -2,6 +2,11 @@
 // UTILITÁRIOS DO SISTEMA
 // ======================================
 
+// Texto seguro para os templates do editor e dos documentos das OMs.
+function escaparHtml(valor) {
+    return String(valor ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+}
+
 /**
  * Atalho para document.querySelector()
  */
@@ -150,8 +155,24 @@ function parseCoordenadaOM(valor) {
 
     if (!texto || texto.toLowerCase() === "null") return null;
 
+    if (!/^[+-]?(?:\d+(?:[.,]\d*)?|[.,]\d+)$/.test(texto)) return null;
+
     const numero = Number(texto.replace(",", "."));
 
     return Number.isFinite(numero) ? numero : null;
 
+}
+
+// Regra compartilhada pelo editor e pelo mapa: um par vazio é permitido,
+// mas uma posição exige duas coordenadas finitas dentro dos limites.
+function validarCoordenadasOM(latitude, longitude) {
+    const vazio = valor => valor == null || String(valor).trim() === "";
+    if (vazio(latitude) && vazio(longitude)) return { valida: true, vazia: true, lat: null, lng: null };
+    if (vazio(latitude) || vazio(longitude)) return { valida: false, mensagem: "Preencha latitude e longitude juntas ou limpe as duas." };
+    const lat = parseCoordenadaOM(latitude);
+    const lng = parseCoordenadaOM(longitude);
+    if (lat === null || lng === null) return { valida: false, mensagem: "Informe coordenadas numéricas válidas, com ponto ou vírgula decimal." };
+    if (lat < -90 || lat > 90) return { valida: false, mensagem: "A latitude deve estar entre -90 e 90." };
+    if (lng < -180 || lng > 180) return { valida: false, mensagem: "A longitude deve estar entre -180 e 180." };
+    return { valida: true, vazia: false, lat, lng };
 }

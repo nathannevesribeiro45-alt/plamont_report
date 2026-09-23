@@ -187,6 +187,7 @@ const MapaPainel = {
                                             <div class="mapa-painel-fotos" data-galeria-fotos="${this.chaveFoto(om, lider, contexto)}">
                                                 ${this.renderFotos(om, lider, contexto)}
                                             </div>
+                                            ${AnexosOM.render(om, { legados: false })}
                                         </div>
                                     </div>
                                 `;
@@ -266,8 +267,9 @@ const MapaPainel = {
 
         (oms || []).forEach(om => {
 
-            const arquivoPdf = om.arquivoPdf || om.pdf;
-            const arquivoLaudo = om.laudo || om.arquivoLaudo;
+            const documentos = AnexosOM.documentosLegados(om);
+            const arquivoPdf = documentos.find(a => a.categoria === "om")?.url;
+            const arquivoLaudo = documentos.find(a => a.categoria === "laudo")?.url;
 
             if (arquivoPdf) {
                 anexos.push({
@@ -325,9 +327,9 @@ const MapaPainel = {
                 ${unicos.length ? `
                     <div class="mapa-painel-anexos">
                         ${unicos.map(anexo => `
-                            <a class="mapa-painel-anexo pdf disponivel" href="${anexo.arquivo}" target="_blank" rel="noopener" title="Abrir ${anexo.titulo}">
+                            <a class="mapa-painel-anexo pdf disponivel" href="${escaparHtml(anexo.arquivo)}" target="_blank" rel="noopener" title="Abrir ${escaparHtml(anexo.titulo)}">
                                 <svg fill="none" viewbox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z" stroke="currentColor" stroke-linejoin="round" stroke-width="2"></path><path d="M14 2v6h6" stroke="currentColor" stroke-linejoin="round" stroke-width="2"></path></svg>
-                                ${anexo.titulo}
+                                ${escaparHtml(anexo.titulo)}
                             </a>
                         `).join("")}
                     </div>

@@ -1,571 +1,295 @@
-/* ==========================================================
-   EDITOR DE RELATÓRIO — V1 (atividades em memória)
-   Mantém original e rascunho separados para viabilizar
-   rascunhos persistidos, publicação e histórico no futuro.
-   ========================================================== */
-
-const EditorRelatorio = {
-
+/* Editor de atividades: original + rascunho. Sem armazenamento ou rede. */
+window.EditorRelatorio = {
     ativo: false,
     contratoId: null,
     abaId: null,
+    usuarioId: null,
     original: null,
     rascunho: null,
-    sujo: false,
     container: null,
-    novosGrupos: null,
-    novasOms: null,
-    escutandoAuth: false,
+    novosGrupos: new WeakSet(),
+    novasOms: new WeakSet(),
+    confirmacao: null,
+    get arquivosPendentes() { return AnexosOM.arquivosPendentes; },
 
-    iniciarSistema() {
-
-        if (this.escutandoAuth) return;
-
-        document.addEventListener("plamont:auth-alterado", () => {
-            if (this.ativo && !this.podeEditar()) {
-                this.descartar({ renderizar: true });
-            }
-        });
-
-        this.escutandoAuth = true;
-
+    clonar(dados) {
+        return typeof structuredClone === "function" ? structuredClone(dados) : JSON.parse(JSON.stringify(dados));
     },
-
-    podeEditar() {
-        return window.Auth?.pode?.("editar") === true;
+    podeEditar() { return window.Auth?.pode?.("editar") === true; },
+    obterOriginal() { return this.original ? this.clonar(this.original) : null; },
+    obterRascunho() { return this.rascunho ? this.clonar(this.rascunho) : null; },
+    gerarPayload() {
+        return this.ativo ? AnexosOM.garantirPayloadSerializavel({ contratoId: this.contratoId, abaId: this.abaId, dados: this.obterRascunho() }) : null;
     },
-
     deveEditarAba(aba) {
-        return Boolean(
-            this.ativo &&
-            this.podeEditar() &&
-            aba?.id === this.abaId &&
-            Dashboard?.contratoAtual?.id === this.contratoId
-        );
+        return this.ativo && this.podeEditar() && aba?.id === this.abaId && Dashboard.contratoAtual?.id === this.contratoId;
     },
-
-    iniciar(aba = Dashboard?.abaAtual) {
-
-        if (!this.podeEditar() || !aba || !Dashboard?.contratoAtual) return false;
-
+    iniciar(aba = Dashboard.abaAtual) {
+        if (!this.podeEditar() || !aba || this.ativo || !Dashboard.contratoAtual) return false;
+        AnexosOM.iniciarSessao();
         this.ativo = true;
         this.contratoId = Dashboard.contratoAtual.id;
         this.abaId = aba.id;
+        this.usuarioId = window.Auth.usuario?.id || null;
         this.original = this.clonar(aba);
         this.rascunho = this.clonar(aba);
-        this.rascunho.atividades = Array.isArray(this.rascunho.atividades)
-            ? this.rascunho.atividades
-            : [];
-        this.sujo = false;
+        if (!Array.isArray(this.rascunho.atividades)) this.rascunho.atividades = [];
         this.novosGrupos = new WeakSet();
         this.novasOms = new WeakSet();
-
         Render.atualizar();
+        this.container?.querySelector("[data-editor]")?.scrollIntoView({ block: "start", behavior: "smooth" });
         return true;
-
     },
-
-    cancelar() {
-        if (!this.ativo) return;
-        this.descartar({ renderizar: true });
-    },
-
-    descartar({ renderizar = false } = {}) {
-
+    descartar() {
+        AnexosOM.encerrarSessao();
+        if (typeof Mapa !== "undefined") Mapa.cancelarSelecaoLocalizacao?.();
+        this.confirmacao?.fechar(false);
         this.ativo = false;
-        this.contratoId = null;
-        this.abaId = null;
-        this.original = null;
-        this.rascunho = null;
-        this.sujo = false;
-        this.container = null;
-        this.novosGrupos = null;
-        this.novasOms = null;
-
-        if (renderizar && Dashboard?.abaAtual) {
-            Render.atualizar();
-        }
-
+        this.contratoId = this.abaId = this.usuarioId = null;
+        this.original = this.rascunho = this.container = null;
+        this.novosGrupos = new WeakSet();
+        this.novasOms = new WeakSet();
     },
-
-    confirmarTrocaAba(idAba) {
-        if (!this.ativo || idAba === this.abaId) return false;
-        return this.confirmarDescarte();
-    },
-
-    confirmarSaidaDePagina(idPagina) {
-        if (!this.ativo || idPagina === this.contratoId) return false;
-        return this.confirmarDescarte();
-    },
-
-    confirmarDescarte() {
-
-        if (!this.sujo) {
-            this.descartar();
-            return false;
-        }
-
-        const descartar = window.confirm(
-            "Existem alterações não aplicadas.\n\n" +
-            "OK: descartar alterações\n" +
-            "Cancelar: continuar editando"
-        );
-
-        if (!descartar) return true;
-
-        this.descartar();
-        return false;
-
-    },
-
-    obterOriginal() {
-        return this.original ? this.clonar(this.original) : null;
-    },
-
-    obterRascunho() {
-        return this.rascunho ? this.clonar(this.rascunho) : null;
-    },
-
-    gerarPayload() {
-
-        if (!this.ativo || !this.rascunho) return null;
-
-        return {
-            contratoId: this.contratoId,
-            abaId: this.abaId,
-            dados: this.clonar(this.rascunho)
-        };
-
-    },
-
-    aplicar() {
-
-        if (!this.ativo || !this.podeEditar()) {
-            this.descartar({ renderizar: true });
-            return false;
-        }
-
-        const erros = this.validar();
-
-        if (erros.length) {
-            this.mostrarMensagem(erros[0], "erro");
-            return false;
-        }
-
-        const payload = this.gerarPayload();
-        const contrato = Dashboard?.contratos?.[payload?.contratoId];
-        const abaAtual = contrato?.abas?.find(aba => aba.id === payload?.abaId);
-
-        if (!abaAtual) {
-            this.mostrarMensagem("A aba em edição não está mais disponível.", "erro");
-            return false;
-        }
-
-        // Atualiza a referência em memória mantendo campos desconhecidos
-        // presentes no JSON. Nenhum arquivo JSON é escrito nesta V1.
-        Object.assign(abaAtual, this.clonar(payload.dados));
-        Dashboard.abaAtual = abaAtual;
-
+    cancelar() {
         this.descartar();
         Render.atualizar();
-        this.atualizarMapa();
-
+    },
+    temAlteracoes() {
+        return this.ativo && JSON.stringify(this.original.atividades || []) !== JSON.stringify(this.rascunho.atividades);
+    },
+    deveConfirmarNavegacao(pagina, aba) {
+        return this.ativo && (pagina !== this.contratoId || (aba && aba !== this.abaId));
+    },
+    async confirmarSaida() {
+        if (this.temAlteracoes() && !await this.confirmar("Existem alterações não aplicadas.", "Deseja descartá-las e sair do editor?", "Descartar alterações", "Continuar editando")) return false;
+        this.descartar();
         return true;
-
     },
-
-    atualizarMapa() {
-
-        if (
-            typeof Mapa !== "undefined" &&
-            Mapa.contratoAtivo === Dashboard?.contratoAtual?.id &&
-            Mapa.map &&
-            Mapa.markersLayer
-        ) {
-            Mapa.renderFrentes(false);
-        }
-
+    confirmar(titulo, mensagem, aceitar, recusar = "Cancelar") {
+        if (this.confirmacao) return this.confirmacao.promessa;
+        const dialog = document.createElement("dialog");
+        dialog.className = "editor-confirmacao";
+        dialog.setAttribute("aria-labelledby", "editor-confirmacao-titulo");
+        dialog.innerHTML = `<h2 id="editor-confirmacao-titulo">${this.escapar(titulo)}</h2><p>${this.escapar(mensagem)}</p>
+            <div class="editor-acoes"><button type="button" data-recusar autofocus>${this.escapar(recusar)}</button><button type="button" class="editor-perigo" data-aceitar>${this.escapar(aceitar)}</button></div>`;
+        const foco = document.activeElement;
+        let resolver;
+        const promessa = new Promise(resolve => { resolver = resolve; });
+        const fechar = resultado => {
+            dialog.close(); dialog.remove(); this.confirmacao = null;
+            if (foco?.isConnected) foco.focus({ preventScroll: true });
+            resolver(resultado);
+        };
+        this.confirmacao = { promessa, fechar };
+        dialog.querySelector("[data-recusar]").onclick = () => fechar(false);
+        dialog.querySelector("[data-aceitar]").onclick = () => fechar(true);
+        dialog.addEventListener("cancel", evento => { evento.preventDefault(); fechar(false); });
+        document.body.append(dialog); dialog.showModal();
+        return promessa;
     },
-
-    renderizarAtividades(aba, container) {
-
-        if (!this.deveEditarAba(aba) || !container || !this.rascunho) return;
-
+    aplicar() {
+        if (!this.ativo || !this.podeEditar()) return false;
+        const erros = this.validar();
+        if (erros.length) { this.mostrarMensagem(erros[0]); return false; }
+        let payload;
+        try { payload = this.gerarPayload(); }
+        catch (erro) { this.mostrarMensagem(erro.message); return false; }
+        const aba = Dashboard.contratos[payload.contratoId]?.abas?.find(item => item.id === payload.abaId);
+        if (!aba) { this.mostrarMensagem("A aba em edição não está disponível."); return false; }
+        Object.assign(aba, this.clonar(payload.dados));
+        Dashboard.abaAtual = aba;
+        AnexosOM.aplicar(Dashboard.contratos);
+        this.descartar();
+        Render.atualizar();
+        if (typeof Mapa !== "undefined" && Mapa.map && Mapa.markersLayer) Mapa.renderFrentes(false);
+        const aviso = document.createElement("p");
+        aviso.className = "editor-aviso-aplicado";
+        aviso.setAttribute("role", "status");
+        aviso.textContent = "Alterações aplicadas nesta página. Ao recarregar, o relatório original será restaurado.";
+        document.getElementById(`${Dashboard.contratoAtual.id}-content`)?.querySelector(".card-atividades")?.prepend(aviso);
+        return true;
+    },
+    renderAtividades(aba, container) {
+        if (!this.deveEditarAba(aba)) return;
         this.container = container;
-
         const secao = document.createElement("section");
-        secao.className = "bloco card-atividades editor-relatorio-atividades";
-        secao.dataset.editorRelatorio = "atividades";
-        secao.innerHTML = `
-            <div class="editor-relatorio-cabecalho">
-                <div>
-                    <span class="editor-relatorio-etiqueta">Modo de edição</span>
-                    <h2>Atividades do relatório</h2>
-                    <p>As alterações ficam neste rascunho até você aplicá-las.</p>
-                </div>
-                <div class="editor-relatorio-acoes">
-                    <button class="editor-relatorio-btn editor-relatorio-btn-secundario" type="button" data-editor-acao="cancelar">Cancelar</button>
-                    <button class="editor-relatorio-btn editor-relatorio-btn-primario" type="button" data-editor-acao="aplicar">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
-                        Aplicar alterações
-                    </button>
-                </div>
-            </div>
-            <div class="editor-relatorio-mensagem" data-editor-mensagem hidden role="alert"></div>
-            <div class="editor-relatorio-grupos">${this.htmlGrupos()}</div>
-            <button class="editor-relatorio-adicionar-grupo" type="button" data-editor-acao="adicionar-grupo">
-                <span aria-hidden="true">+</span> Adicionar equipe / líder
-            </button>
-        `;
-
-        const anterior = container.querySelector("[data-editor-relatorio='atividades']");
-
-        if (anterior) {
-            anterior.replaceWith(secao);
-        } else {
-            container.appendChild(secao);
-        }
-
-        secao.addEventListener("input", evento => this.atualizarCampo(evento));
-        secao.addEventListener("change", evento => this.atualizarCampo(evento));
-        secao.addEventListener("click", evento => this.executarAcao(evento));
-
+        secao.className = "bloco editor-relatorio";
+        secao.dataset.editor = "atividades";
+        secao.innerHTML = `<header class="editor-cabecalho"><div><span class="editor-etiqueta">Modo de edição</span><h2>Atividades do relatório</h2>
+            <p>Aplicação temporária nesta página. Recarregar restaura o relatório original.</p></div>
+            <div class="editor-acoes"><button type="button" data-acao-editor="cancelar">Cancelar</button><button type="button" class="editor-primario" data-acao-editor="aplicar">Aplicar alterações</button></div></header>
+            <p data-editor-erro class="editor-erro" role="alert" hidden></p>
+            <div class="editor-grupos">${this.rascunho.atividades.length ? this.rascunho.atividades.map((g, i) => this.htmlGrupo(g, i)).join("") : '<p class="editor-vazio">Nenhuma equipe cadastrada. Adicione uma equipe ou líder para começar.</p>'}</div>
+            <button type="button" class="editor-adicionar" data-acao-editor="adicionar-grupo">+ Adicionar equipe / líder</button>`;
+        const anterior = container.querySelector("[data-editor]");
+        if (anterior) anterior.replaceWith(secao); else container.append(secao);
+        secao.addEventListener("input", e => this.atualizarCampo(e));
+        secao.addEventListener("change", e => this.atualizarCampo(e));
+        secao.addEventListener("click", e => this.executarAcao(e));
     },
-
-    htmlGrupos() {
-
-        const grupos = this.rascunho?.atividades || [];
-
-        if (!grupos.length) {
-            return `<div class="editor-relatorio-vazio">Nenhuma equipe cadastrada neste rascunho. Adicione uma equipe ou líder para começar.</div>`;
-        }
-
-        return grupos.map((grupo, indiceGrupo) => this.htmlGrupo(grupo, indiceGrupo)).join("");
-
-    },
-
-    htmlGrupo(grupo, indiceGrupo) {
-
-        const grupoNovo = this.ehNovoGrupo(grupo);
-        const oms = Array.isArray(grupo.oms) ? grupo.oms : [];
-        const lider = grupo.lider || "";
-
-        return `
-            <article class="editor-relatorio-grupo" data-editor-grupo="${indiceGrupo}">
-                <div class="editor-relatorio-grupo-topo">
-                    <div>
-                        <span>Equipe / líder</span>
-                        <strong>${this.escapar(lider || "Líder não informado")}</strong>
-                    </div>
-                    <button class="editor-relatorio-link-perigo" type="button" data-editor-acao="remover-grupo" data-grupo="${indiceGrupo}">Remover equipe</button>
-                </div>
-                <div class="editor-relatorio-campos-grupo">
-                    ${this.campoTexto("Líder", "lider", lider, { grupo: indiceGrupo, somenteLeitura: !grupoNovo })}
-                    ${this.campoTexto("Telefone", "telefone", grupo.telefone || "", { grupo: indiceGrupo, tipo: "tel" })}
-                    ${this.campoTexto("Equipe", "equipe", grupo.equipe || "", { grupo: indiceGrupo })}
-                    ${this.campoTexto("Técnico de Segurança", "tecnicoSeguranca", grupo.tecnicoSeguranca || "", { grupo: indiceGrupo })}
-                </div>
-                <div class="editor-relatorio-oms">
-                    <div class="editor-relatorio-subtitulo"><strong>Atividades / OMs</strong><span>${oms.length} ${oms.length === 1 ? "OM" : "OMs"}</span></div>
-                    ${oms.length ? oms.map((om, indiceOm) => this.htmlOm(om, indiceGrupo, indiceOm)).join("") : '<div class="editor-relatorio-sem-om">Nenhuma OM cadastrada para esta equipe.</div>'}
-                    <button class="editor-relatorio-adicionar-om" type="button" data-editor-acao="adicionar-om" data-grupo="${indiceGrupo}"><span aria-hidden="true">+</span> Adicionar OM</button>
-                </div>
-            </article>
-        `;
-
-    },
-
-    htmlOm(om, indiceGrupo, indiceOm) {
-
-        const omNova = this.ehNovaOm(om);
-
-        return `
-            <section class="editor-relatorio-om" data-editor-om="${indiceOm}">
-                <div class="editor-relatorio-om-topo">
-                    <strong>OM ${this.escapar(om.numero || "nova")}</strong>
-                    <button class="editor-relatorio-link-perigo" type="button" data-editor-acao="remover-om" data-grupo="${indiceGrupo}" data-om="${indiceOm}">Remover atividade</button>
-                </div>
-                <div class="editor-relatorio-campos-om">
-                    ${this.campoTexto("Número", "numero", om.numero || "", { grupo: indiceGrupo, om: indiceOm, somenteLeitura: !omNova, obrigatorio: omNova })}
-                    ${this.campoTexto("Frente", "frente", om.frente || "", { grupo: indiceGrupo, om: indiceOm, somenteLeitura: !omNova, obrigatorio: omNova })}
-                    ${this.campoStatus(om, indiceGrupo, indiceOm)}
-                    ${this.campoDescricao(om, indiceGrupo, indiceOm)}
-                </div>
-                ${omNova ? '<p class="editor-relatorio-ajuda">Número, frente e descrição são obrigatórios para uma nova OM.</p>' : '<p class="editor-relatorio-ajuda">Número e frente desta OM existente permanecem protegidos para preservar fotos e referências.</p>'}
-            </section>
-        `;
-
-    },
-
-    campoTexto(rotulo, campo, valor, { grupo, om = null, tipo = "text", somenteLeitura = false, obrigatorio = false } = {}) {
-
-        const escopo = om === null ? "grupo" : "om";
-        const dados = `data-editor-campo="${campo}" data-editor-escopo="${escopo}" data-grupo="${grupo}"${om === null ? "" : ` data-om="${om}"`}`;
-
-        return `
-            <label class="editor-relatorio-campo">
-                <span>${rotulo}${obrigatorio ? " *" : ""}</span>
-                <input type="${tipo}" value="${this.escaparAtributo(valor)}" ${dados} ${somenteLeitura ? "readonly" : ""}>
-            </label>
-        `;
-
-    },
-
-    campoStatus(om, indiceGrupo, indiceOm) {
-
-        const statusAtual = om.status || this.statusPadrao();
-        const opcoes = this.opcoesStatus(statusAtual);
-
-        return `
-            <label class="editor-relatorio-campo">
-                <span>Status</span>
-                <select data-editor-campo="status" data-editor-escopo="om" data-grupo="${indiceGrupo}" data-om="${indiceOm}">
-                    ${opcoes.map(status => `<option value="${this.escaparAtributo(status)}" ${status === statusAtual ? "selected" : ""}>${this.escapar(status)}</option>`).join("")}
-                </select>
-            </label>
-        `;
-
-    },
-
-    campoDescricao(om, indiceGrupo, indiceOm) {
-        return `
-            <label class="editor-relatorio-campo editor-relatorio-campo-descricao">
-                <span>Descrição${this.ehNovaOm(om) ? " *" : ""}</span>
-                <textarea rows="3" data-editor-campo="descricao" data-editor-escopo="om" data-grupo="${indiceGrupo}" data-om="${indiceOm}">${this.escapar(om.descricao || "")}</textarea>
-            </label>
-        `;
-    },
-
-    atualizarCampo(evento) {
-
-        const campo = evento.target.closest("[data-editor-campo]");
-        if (!campo || !this.ativo) return;
-
-        const alvo = this.obterAlvo(campo.dataset);
-        if (!alvo) return;
-
-        alvo[campo.dataset.editorCampo] = campo.value;
-        this.sujo = true;
-        this.esconderMensagem();
-
-    },
-
-    executarAcao(evento) {
-
-        const botao = evento.target.closest("button[data-editor-acao]");
-        if (!botao) return;
-
-        const acao = botao.dataset.editorAcao;
-        const grupo = Number(botao.dataset.grupo);
-        const om = Number(botao.dataset.om);
-
-        if (acao === "cancelar") this.cancelar();
-        if (acao === "aplicar") this.aplicar();
-        if (acao === "adicionar-grupo") this.adicionarGrupo();
-        if (acao === "adicionar-om") this.adicionarOm(grupo);
-        if (acao === "remover-grupo") this.removerGrupo(grupo);
-        if (acao === "remover-om") this.removerOm(grupo, om);
-
-    },
-
-    obterAlvo(dados) {
-
-        const grupo = this.rascunho?.atividades?.[Number(dados.grupo)];
-        if (!grupo) return null;
-
-        if (dados.editorEscopo === "grupo") return grupo;
-        return grupo.oms?.[Number(dados.om)] || null;
-
-    },
-
-    adicionarGrupo() {
-
-        const grupo = {
-            lider: "",
-            telefone: "",
-            equipe: "",
-            tecnicoSeguranca: "",
-            oms: []
-        };
-
-        this.rascunho.atividades.push(grupo);
-        this.novosGrupos.add(grupo);
-        this.sujo = true;
-        this.renderizarSomenteAtividades();
-
-    },
-
-    adicionarOm(indiceGrupo) {
-
-        const grupo = this.rascunho?.atividades?.[indiceGrupo];
-        if (!grupo) return;
-
-        if (!Array.isArray(grupo.oms)) grupo.oms = [];
-
-        const om = {
-            numero: "",
-            frente: "",
-            descricao: "",
-            status: this.statusPadrao()
-        };
-
-        grupo.oms.push(om);
-        this.novasOms.add(om);
-        this.sujo = true;
-        this.renderizarSomenteAtividades();
-
-    },
-
-    removerOm(indiceGrupo, indiceOm) {
-
-        const grupo = this.rascunho?.atividades?.[indiceGrupo];
-        const om = grupo?.oms?.[indiceOm];
-        if (!om) return;
-
-        if (!this.ehNovaOm(om) && !window.confirm("Remover esta atividade do relatório? Esta ação afeta somente o rascunho.")) {
-            return;
-        }
-
-        grupo.oms.splice(indiceOm, 1);
-        this.sujo = true;
-        this.renderizarSomenteAtividades();
-
-    },
-
-    removerGrupo(indiceGrupo) {
-
-        const grupo = this.rascunho?.atividades?.[indiceGrupo];
-        if (!grupo) return;
-
-        const quantidade = grupo.oms?.length || 0;
-        const mensagem = quantidade
-            ? `Remover esta equipe e suas ${quantidade} ${quantidade === 1 ? "atividade" : "atividades"} do rascunho?`
-            : "Remover esta equipe do rascunho?";
-
-        if (!window.confirm(mensagem)) return;
-
-        this.rascunho.atividades.splice(indiceGrupo, 1);
-        this.sujo = true;
-        this.renderizarSomenteAtividades();
-
-    },
-
     renderizarSomenteAtividades() {
-        if (this.container && Dashboard?.abaAtual) {
-            this.renderizarAtividades(Dashboard.abaAtual, this.container);
+        if (this.container && this.ativo) this.renderAtividades(Dashboard.abaAtual, this.container);
+    },
+    htmlGrupo(grupo, g) {
+        const oms = Array.isArray(grupo.oms) ? grupo.oms : [];
+        return `<article class="editor-grupo"><header class="editor-grupo-titulo"><h3>${this.escapar(grupo.lider || "Líder não informado")}</h3>
+            <button type="button" class="editor-remover" data-acao-editor="remover-grupo" data-grupo="${g}">Remover equipe</button></header>
+            <div class="editor-campos-grupo">
+                ${this.campo("Líder", "lider", grupo.lider, g, null, !this.novosGrupos.has(grupo))}
+                ${this.campo("Telefone", "telefone", grupo.telefone, g)}
+                ${this.campo("Equipe", "equipe", grupo.equipe, g)}
+                ${this.campo("Técnico de Segurança", "tecnicoSeguranca", grupo.tecnicoSeguranca, g)}
+            </div><div class="editor-oms">${oms.map((om, o) => this.htmlOM(om, g, o)).join("")}
+                <button type="button" class="editor-adicionar" data-acao-editor="adicionar-om" data-grupo="${g}">+ Adicionar OM</button>
+            </div></article>`;
+    },
+    htmlOM(om, g, o) {
+        const nova = this.novasOms.has(om);
+        const status = om.status || "";
+        // Reutiliza as categorias do mapa e mantém o valor original, inclusive
+        // variantes reconhecidas pela função normalizarStatusOM.
+        const opcoes = [...new Set([status, ...Object.values(Mapa.statusConfig).map(item => item.label), "Postergada"])];
+        return `<section class="editor-om" data-editor-om="${g}-${o}"><header class="editor-om-titulo"><h4>OM ${this.escapar(om.numero || "nova")}</h4>
+            <button type="button" class="editor-remover" data-acao-editor="remover-om" data-grupo="${g}" data-om="${o}">Remover atividade</button></header>
+            <div class="editor-campos-om">
+                ${this.campo("Número" + (nova ? " *" : ""), "numero", om.numero, g, o, !nova)}
+                ${this.campo("Frente" + (nova ? " *" : ""), "frente", om.frente, g, o, !nova)}
+                <label>Status<select data-campo="status" data-grupo="${g}" data-om="${o}">${opcoes.map(valor => `<option value="${this.escapar(valor)}" ${valor === status ? "selected" : ""}>${this.escapar(valor || "Sem status (planejada)")}</option>`).join("")}</select></label>
+                <label class="editor-descricao">Descrição${nova ? " *" : ""}<textarea rows="3" data-campo="descricao" data-grupo="${g}" data-om="${o}">${this.escapar(om.descricao)}</textarea></label>
+            </div><div class="editor-localizacao">
+                <div class="editor-coordenadas">${this.campo("Latitude", "latitude", om.latitude, g, o)}${this.campo("Longitude", "longitude", om.longitude, g, o)}</div>
+                <div class="editor-acoes-localizacao"><button type="button" data-acao-editor="selecionar-localizacao" data-grupo="${g}" data-om="${o}">Selecionar no mapa</button>
+                <button type="button" data-acao-editor="limpar-localizacao" data-grupo="${g}" data-om="${o}">Limpar localização</button></div>
+                <p class="editor-ajuda">Use ponto ou vírgula decimal. As duas coordenadas podem ficar vazias.</p>
+            </div><p class="editor-ajuda">${nova ? "* Número, frente e descrição são obrigatórios." : "Líder, número e frente protegidos para preservar fotos e referências."}</p>
+            ${AnexosOM.render(om, { editavel: true, grupo: g, indice: o })}</section>`;
+    },
+    campo(rotulo, nome, valor, grupo, om = null, readonly = false) {
+        const tipo = nome === "telefone" ? "tel" : "text";
+        const decimal = nome === "latitude" || nome === "longitude";
+        return `<label>${rotulo}<input type="${tipo}" ${decimal ? 'inputmode="decimal"' : ""} data-campo="${nome}" data-grupo="${grupo}" ${om === null ? "" : `data-om="${om}"`} value="${this.escapar(valor)}" ${readonly ? "readonly" : ""}></label>`;
+    },
+    atualizarCampo(evento) {
+        if (!this.ativo || !this.podeEditar()) return;
+        const campo = evento.target.closest("[data-campo]");
+        if (!campo || campo.readOnly) return;
+        const grupo = this.rascunho.atividades[Number(campo.dataset.grupo)];
+        const om = campo.dataset.om === undefined ? null : grupo?.oms?.[Number(campo.dataset.om)];
+        const nome = campo.dataset.campo;
+        const permitidos = om ? ["descricao", "status", "latitude", "longitude", ...(this.novasOms.has(om) ? ["numero", "frente"] : [])]
+            : ["telefone", "equipe", "tecnicoSeguranca", ...(this.novosGrupos.has(grupo) ? ["lider"] : [])];
+        if (!permitidos.includes(nome)) return;
+        const alvo = om || grupo;
+        if (!alvo) return;
+        alvo[nome] = campo.value;
+        const mensagem = this.container.querySelector("[data-editor-erro]");
+        if (mensagem) mensagem.hidden = true;
+    },
+    executarAcao(evento) {
+        const botao = evento.target.closest("[data-acao-editor]");
+        if (!botao || !this.ativo || !this.podeEditar()) return;
+        const g = Number(botao.dataset.grupo), o = Number(botao.dataset.om);
+        const acoes = {
+            cancelar: () => this.cancelar(), aplicar: () => this.aplicar(),
+            "adicionar-grupo": () => this.adicionarGrupo(), "remover-grupo": () => this.removerGrupo(g),
+            "adicionar-om": () => this.adicionarOM(g), "remover-om": () => this.removerOM(g, o),
+            "selecionar-localizacao": () => this.iniciarSelecaoLocalizacao(g, o),
+            "limpar-localizacao": () => this.limparLocalizacao(g, o)
+        };
+        acoes[botao.dataset.acaoEditor]?.();
+    },
+    adicionarGrupo() {
+        if (!this.ativo || !this.podeEditar()) return;
+        const grupo = { lider: "", telefone: "", equipe: "", tecnicoSeguranca: "", oms: [] };
+        this.novosGrupos.add(grupo); this.rascunho.atividades.push(grupo);
+        this.renderizarSomenteAtividades();
+        this.container?.querySelector(`[data-campo="lider"][data-grupo="${this.rascunho.atividades.length - 1}"]`)?.focus();
+    },
+    adicionarOM(g) {
+        const grupo = this.rascunho?.atividades[g];
+        if (!grupo || !this.podeEditar()) return;
+        const om = { numero: "", frente: "", descricao: "", status: "Em andamento", latitude: "", longitude: "" };
+        if (!Array.isArray(grupo.oms)) grupo.oms = [];
+        this.novasOms.add(om); grupo.oms.push(om);
+        this.renderizarSomenteAtividades();
+        this.container?.querySelector(`[data-campo="numero"][data-grupo="${g}"][data-om="${grupo.oms.length - 1}"]`)?.focus();
+    },
+    async removerOM(g, o) {
+        const grupo = this.rascunho?.atividades[g], om = grupo?.oms?.[o];
+        if (!om || !this.podeEditar()) return;
+        if (!this.novasOms.has(om) && !await this.confirmar("Remover esta atividade do relatório?", "A remoção afeta somente o rascunho. As fotos e os arquivos são preservados.", "Remover atividade")) return;
+        if (!this.ativo || !this.podeEditar()) return;
+        grupo.oms.splice(grupo.oms.indexOf(om), 1);
+        AnexosOM.reconciliarRascunho(this.rascunho);
+        this.renderizarSomenteAtividades();
+    },
+    async removerGrupo(g) {
+        const grupo = this.rascunho?.atividades[g];
+        if (!grupo || !this.podeEditar()) return;
+        if (!await this.confirmar("Remover equipe / líder?", `Este grupo e suas ${grupo.oms?.length || 0} OMs sairão somente do rascunho.`, "Remover equipe")) return;
+        if (!this.ativo || !this.podeEditar()) return;
+        this.rascunho.atividades.splice(this.rascunho.atividades.indexOf(grupo), 1);
+        AnexosOM.reconciliarRascunho(this.rascunho);
+        this.renderizarSomenteAtividades();
+    },
+    iniciarSelecaoLocalizacao(g, o) {
+        const om = this.rascunho?.atividades[g]?.oms?.[o];
+        if (!om || !this.podeEditar()) return;
+        try {
+            Mapa.iniciarSelecaoLocalizacao({
+                contratoId: this.contratoId, titulo: `Localização da OM ${om.numero || "nova"}`,
+                latitudeAtual: om.latitude, longitudeAtual: om.longitude, status: normalizarStatusOM(om.status),
+                aoSelecionar: (lat, lng) => {
+                    if (this.rascunho?.atividades[g]?.oms?.[o] === om) this.definirLocalizacao(g, o, lat, lng);
+                }
+            });
+        } catch (erro) { this.mostrarMensagem("Não foi possível abrir o mapa. Verifique sua conexão ou preencha as coordenadas manualmente."); }
+    },
+    definirLocalizacao(g, o, latitude, longitude) {
+        const om = this.rascunho?.atividades[g]?.oms?.[o];
+        if (!om || !this.podeEditar()) return false;
+        const ponto = validarCoordenadasOM(latitude, longitude);
+        if (!ponto.valida) return false;
+        om.latitude = ponto.vazia ? "" : String(ponto.lat);
+        om.longitude = ponto.vazia ? "" : String(ponto.lng);
+        // Mantém foco/rolagem e o restante do formulário intacto.
+        for (const nome of ["latitude", "longitude"]) {
+            const input = this.container?.querySelector(`[data-campo="${nome}"][data-grupo="${g}"][data-om="${o}"]`);
+            if (input) input.value = om[nome];
         }
+        return true;
     },
-
+    limparLocalizacao(g, o) { this.definirLocalizacao(g, o, "", ""); },
     validar() {
-
-        const erros = [];
-        const chaves = new Map();
-
-        (this.rascunho?.atividades || []).forEach((grupo, indiceGrupo) => {
-            (grupo.oms || []).forEach((om, indiceOm) => {
-
-                const nova = this.ehNovaOm(om);
-                const numero = String(om.numero || "").trim();
-                const frente = String(om.frente || "").trim();
-                const descricao = String(om.descricao || "").trim();
-
-                if (nova && (!numero || !frente || !descricao)) {
-                    erros.push(`Preencha número, frente e descrição da nova OM no grupo ${indiceGrupo + 1}.`);
-                }
-
-                if (!numero || !frente) return;
-
-                const chave = [grupo.lider || "", frente, numero].join("::").toLocaleLowerCase("pt-BR");
-
-                if (chaves.has(chave) && (nova || this.ehNovaOm(chaves.get(chave).om))) {
-                    erros.push(`A nova OM ${numero} repete a mesma identificação de uma atividade já existente.`);
-                } else {
-                    chaves.set(chave, { om, indiceOm });
-                }
-
-            });
-        });
-
+        const erros = [], chaves = new Map();
+        for (const [g, grupo] of (this.rascunho?.atividades || []).entries()) {
+            for (const om of grupo.oms || []) {
+                const nova = this.novasOms.has(om);
+                if (nova && [om.numero, om.frente, om.descricao].some(v => !String(v ?? "").trim())) erros.push(`Grupo ${g + 1}: preencha número, frente e descrição da nova OM.`);
+                const coordenadas = validarCoordenadasOM(om.latitude, om.longitude);
+                if (!coordenadas.valida) erros.push(`OM ${om.numero || "nova"}: ${coordenadas.mensagem}`);
+                const chave = JSON.stringify([grupo.lider || "", om.frente || "", om.numero || ""]);
+                if (chaves.has(chave) && (nova || this.novasOms.has(chaves.get(chave)))) erros.push(`A OM ${om.numero || "nova"} repete a identificação de outra atividade deste líder e frente.`);
+                chaves.set(chave, om);
+            }
+        }
         return erros;
-
     },
-
-    opcoesStatus(statusAtual) {
-
-        const encontrados = [];
-
-        (this.rascunho?.atividades || []).forEach(grupo => {
-            (grupo.oms || []).forEach(om => {
-                if (om.status && !encontrados.includes(om.status)) encontrados.push(om.status);
-            });
-        });
-
-        const reconhecidos = ["Planejada", "Em andamento", "Concluída", "Atrasada", "Postergada"];
-        const todos = [...encontrados, ...reconhecidos];
-
-        if (statusAtual && !todos.includes(statusAtual)) todos.unshift(statusAtual);
-
-        return [...new Set(todos)];
-
+    mostrarMensagem(texto) {
+        const aviso = this.container?.querySelector("[data-editor-erro]");
+        if (!aviso) return;
+        aviso.textContent = texto; aviso.hidden = false;
+        aviso.scrollIntoView({ block: "nearest", behavior: "smooth" });
     },
-
-    statusPadrao() {
-        const chave = typeof normalizarStatusOM === "function"
-            ? normalizarStatusOM("Em andamento")
-            : "andamento";
-
-        return {
-            planejada: "Planejada",
-            andamento: "Em andamento",
-            concluida: "Concluída",
-            atrasada: "Atrasada"
-        }[chave] || "Em andamento";
-    },
-
-    ehNovoGrupo(grupo) {
-        return Boolean(this.novosGrupos?.has(grupo));
-    },
-
-    ehNovaOm(om) {
-        return Boolean(this.novasOms?.has(om));
-    },
-
-    mostrarMensagem(mensagem, tipo) {
-        const elemento = this.container?.querySelector("[data-editor-mensagem]");
-        if (!elemento) return;
-        elemento.textContent = mensagem;
-        elemento.className = `editor-relatorio-mensagem ${tipo || ""}`;
-        elemento.hidden = false;
-    },
-
-    esconderMensagem() {
-        const elemento = this.container?.querySelector("[data-editor-mensagem]");
-        if (!elemento) return;
-        elemento.hidden = true;
-        elemento.textContent = "";
-        elemento.className = "editor-relatorio-mensagem";
-    },
-
-    clonar(dados) {
-        if (typeof structuredClone === "function") return structuredClone(dados);
-        return JSON.parse(JSON.stringify(dados));
-    },
-
     escapar(valor) {
-        return String(valor ?? "").replace(/[&<>"']/g, caractere => ({
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;"
-        })[caractere]);
-    },
-
-    escaparAtributo(valor) {
-        return this.escapar(valor).replace(/`/g, "&#96;");
+        return escaparHtml(valor);
     }
-
 };
 
-window.EditorRelatorio = EditorRelatorio;
-EditorRelatorio.iniciarSistema();
+document.addEventListener("plamont:auth-alterado", () => {
+    const editor = window.EditorRelatorio;
+    if (editor.ativo && (!editor.podeEditar() || editor.usuarioId !== (window.Auth.usuario?.id || null))) editor.cancelar();
+});
+window.addEventListener("beforeunload", evento => {
+    if (window.EditorRelatorio.temAlteracoes()) { evento.preventDefault(); evento.returnValue = ""; }
+});

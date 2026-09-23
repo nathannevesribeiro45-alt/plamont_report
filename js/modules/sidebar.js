@@ -179,9 +179,9 @@ if (this.mobileToggle) {
             </span>
         `;
 
-        item.addEventListener("click", () => {
+        item.addEventListener("click", async () => {
 
-            abrirPagina("dashboard", item);
+            if (await abrirPagina("dashboard", item) === false) return;
 
             this.fecharSidebar();
 
@@ -213,9 +213,9 @@ if (this.mobileToggle) {
             </span>
         `;
 
-        item.addEventListener("click", () => {
+        item.addEventListener("click", async () => {
 
-            abrirPagina("mapa", item);
+            if (await abrirPagina("mapa", item) === false) return;
 
             if (typeof Mapa !== "undefined") {
                 Mapa.render();
@@ -251,9 +251,9 @@ if (this.mobileToggle) {
             </span>
         `;
 
-        item.addEventListener("click", () => {
+        item.addEventListener("click", async () => {
 
-            abrirPagina("curvaS", item);
+            if (await abrirPagina("curvaS", item) === false) return;
 
             if (typeof CurvaS !== "undefined") {
                 CurvaS.render();
@@ -295,9 +295,9 @@ if (this.mobileToggle) {
             </span>
         `;
 
-        item.addEventListener("click", () => {
+        item.addEventListener("click", async () => {
 
-            abrirPagina("usuarios", item);
+            if (await abrirPagina("usuarios", item) === false) return;
 
             if (typeof Usuarios !== "undefined") {
                 Usuarios.render();
@@ -630,13 +630,13 @@ atualizarEstado() {
                 </span>
             `;
 
-            item.addEventListener("click", () => {
+            item.addEventListener("click", async () => {
 
-                abrirPagina(
+                if (await abrirPagina(
                     contrato.id,
                     item,
                     aba.id
-                );
+                ) === false) return;
 
 
                     this.fecharSidebar();

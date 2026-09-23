@@ -27,7 +27,7 @@ const Render = {
     Dashboard.contratoAtual.abas[0];
 
 if (abaInicial) {
-    this.selecionarAba(abaInicial.id);
+    await this.selecionarAba(abaInicial.id);
 }
 
     },
@@ -35,7 +35,11 @@ if (abaInicial) {
     // ==========================================
     // Troca de aba
     // ==========================================
-    selecionarAba(idAba) {
+    async selecionarAba(idAba) {
+
+    if (window.EditorRelatorio?.deveConfirmarNavegacao(Dashboard.contratoAtual.id, idAba)) {
+        if (!await window.EditorRelatorio.confirmarSaida()) return false;
+    }
 
     const container = document.getElementById(
         `${Dashboard.contratoAtual.id}-content`
@@ -64,7 +68,13 @@ if (abaInicial) {
     container.classList.add("aba-animando");
     container.classList.add("aba-slide-out");
 
+    const contratoRenderizado = Dashboard.contratoAtual;
     setTimeout(() => {
+
+        if (Dashboard.contratoAtual !== contratoRenderizado || Dashboard.abaAtual?.id !== idAba) {
+            container.classList.remove("aba-animando", "aba-slide-out", "aba-slide-in");
+            return;
+        }
 
         this.conteudo();
 

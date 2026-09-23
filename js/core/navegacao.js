@@ -4,13 +4,9 @@
 
 const paginas = document.querySelectorAll(".pagina");
 
-function abrirPagina(idPagina, botao, idAba = null) {
+async function abrirPagina(idPagina, botao, idAba = null) {
 
     console.log("Clique:", idPagina);
-
-    if (window.EditorRelatorio?.confirmarSaidaDePagina?.(idPagina)) {
-        return;
-    }
 
     // A página administrativa não pode ser aberta apenas por conhecer sua URL
     // ou por uma chamada manual no console. A Edge Function mantém a mesma
@@ -21,6 +17,10 @@ function abrirPagina(idPagina, botao, idAba = null) {
     ) {
         idPagina = "dashboard";
         botao = document.querySelector('.menu-btn[data-pagina="dashboard"]');
+    }
+
+    if (window.EditorRelatorio?.deveConfirmarNavegacao(idPagina, idAba)) {
+        if (!await window.EditorRelatorio.confirmarSaida()) return false;
     }
 
     // Esconde todas as páginas
@@ -52,15 +52,13 @@ function abrirPagina(idPagina, botao, idAba = null) {
 
         Dashboard.contratoAtual = Dashboard.contratos[idPagina];
 
-        if (idAba) {
-            Dashboard.abaAtual = Dashboard.contratoAtual.abas.find(
-                aba => aba.id === idAba
-            );
-        }
+        Dashboard.abaAtual = Dashboard.contratoAtual.abas.find(
+            aba => aba.id === (idAba || Dashboard.abaAtual?.id)
+        ) || Dashboard.contratoAtual.abas[0];
 
         console.log("Contrato carregado:", Dashboard.contratoAtual);
 
-        Render.inicializar();
+        await Render.inicializar();
 
         console.log("Render executado.");
     }
@@ -70,5 +68,7 @@ function abrirPagina(idPagina, botao, idAba = null) {
         top: 0,
         behavior: "smooth"
     });
+
+    return true;
 
 }

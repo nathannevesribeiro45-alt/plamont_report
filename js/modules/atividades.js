@@ -11,19 +11,15 @@ const Atividades = {
 // ======================================
 render(aba, container) {
 
-    if (!container) return;
     if (!aba) return;
+    if (!container) return;
 
-    // Durante a edição, a interface recebe somente o rascunho mantido
-    // pelo módulo independente. A aba ativa continua intacta até aplicar.
-    if (window.EditorRelatorio?.deveEditarAba?.(aba)) {
-        window.EditorRelatorio.renderizarAtividades(aba, container);
+    if (window.EditorRelatorio?.deveEditarAba(aba)) {
+        window.EditorRelatorio.renderAtividades(aba, container);
         return;
     }
 
-    const atividades = Array.isArray(aba.atividades) ? aba.atividades : [];
-
-    const secao = this.criarSecao(aba);
+    const secao = this.criarSecao();
 
     const listaContainer = secao.querySelector(".atividades-lista");
 
@@ -31,7 +27,7 @@ render(aba, container) {
     // mostra toda atividade realmente executada (em andamento,
     // concluída ou atrasada), mesmo sem localização ainda, mas
     // nunca uma OM que ainda é apenas "Planejada".
-    const atividadesDoResumo = this.filtrarAtividadesDoResumo(atividades);
+    const atividadesDoResumo = this.filtrarAtividadesDoResumo(aba.atividades);
 
     this.criarLista(
         atividadesDoResumo,
@@ -64,9 +60,7 @@ render(aba, container) {
 
     container.appendChild(secao);
 
-    const editar = secao.querySelector("[data-abrir-editor]");
-
-    editar?.addEventListener("click", evento => {
+    secao.querySelector("[data-abrir-editor]").addEventListener("click", evento => {
         evento.stopPropagation();
         window.EditorRelatorio?.iniciar(aba);
     });
@@ -105,7 +99,7 @@ render(aba, container) {
     // ======================================
     // Cria a seção
     // ======================================
-   criarSecao(aba) {
+   criarSecao() {
 
     const secao = document.createElement("section");
 
@@ -118,10 +112,10 @@ render(aba, container) {
             <h2>${Icons.oms} OM's do Dia</h2>
 
             <div class="atividades-acoes-cabecalho">
-                    <button class="atividade-editar-btn" type="button" data-abrir-editor aria-label="Editar atividades deste relatório" ${window.Auth?.pode?.("editar") === true ? "" : "hidden disabled"}>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
-                        <span>Editar relatório</span>
-                    </button>
+                <button type="button" class="atividade-editar-btn" data-abrir-editor ${window.Auth?.pode?.("editar") === true ? "" : "hidden disabled"}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20h9M16 3l5 5L7 22l-5 1 1-5Z"/></svg>
+                    Editar relatório
+                </button>
                 <span class="bloco-toggle">▼</span>
             </div>
 
@@ -142,19 +136,6 @@ render(aba, container) {
     return secao;
 
 },
-
-    // A sessão pode terminar de carregar depois do relatório. Atualiza
-    // somente os botões, preservando os blocos abertos e o rascunho atual.
-    atualizarAcessoEditor() {
-
-        const permitido = window.Auth?.pode?.("editar") === true;
-
-        document.querySelectorAll("[data-abrir-editor]").forEach(botao => {
-            botao.hidden = !permitido;
-            botao.disabled = !permitido;
-        });
-
-    },
 
     // ======================================
     // Cria todos os cards dos líderes
@@ -291,8 +272,9 @@ ${lider.tecnicoSeguranca ? `
 
         card.dataset.busca = (om.numero || "").toString();
 
-        const arquivoOM = om.arquivoPdf || om.pdf;
-        const arquivoLaudo = om.laudo || om.arquivoLaudo;
+        const documentos = AnexosOM.documentosLegados(om);
+        const arquivoOM = documentos.find(a => a.categoria === "om")?.url;
+        const arquivoLaudo = documentos.find(a => a.categoria === "laudo")?.url;
 
         const ariaOM = `Abrir documento da OM ${om.numero || ""}`.trim();
         const ariaLaudo = `Abrir laudo da OM ${om.numero || ""}`.trim();
@@ -324,7 +306,7 @@ ${lider.tecnicoSeguranca ? `
             <div class="om-documentos">
 
                 ${arquivoOM ? `
-                    <a class="om-documento om-documento-disponivel" href="${arquivoOM}" target="_blank" rel="noopener" aria-label="${ariaOM}">
+                    <a class="om-documento om-documento-disponivel" href="${escaparHtml(arquivoOM)}" target="_blank" rel="noopener" aria-label="${escaparHtml(ariaOM)}">
                         <span class="om-documento-icone">📄</span> OM
                     </a>
                 ` : `
@@ -334,7 +316,7 @@ ${lider.tecnicoSeguranca ? `
                 `}
 
                 ${arquivoLaudo ? `
-                    <a class="om-documento om-documento-disponivel" href="${arquivoLaudo}" target="_blank" rel="noopener" aria-label="${ariaLaudo}">
+                    <a class="om-documento om-documento-disponivel" href="${escaparHtml(arquivoLaudo)}" target="_blank" rel="noopener" aria-label="${escaparHtml(ariaLaudo)}">
                         <span class="om-documento-icone">📑</span> Laudo
                     </a>
                 ` : `
@@ -345,6 +327,7 @@ ${lider.tecnicoSeguranca ? `
 
         `;
 
+        card.insertAdjacentHTML("beforeend", AnexosOM.render(om, { legados: false }));
         return card;
 
     },
@@ -427,5 +410,9 @@ criarObservacoes(observacoes) {
 };
 
 document.addEventListener("plamont:auth-alterado", () => {
-    Atividades.atualizarAcessoEditor();
+    const permitido = window.Auth?.pode?.("editar") === true;
+    document.querySelectorAll("[data-abrir-editor]").forEach(botao => {
+        botao.hidden = !permitido;
+        botao.disabled = !permitido;
+    });
 });

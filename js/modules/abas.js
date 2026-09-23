@@ -77,11 +77,6 @@ const Abas = {
         `;
 
         botao.addEventListener("click", () => {
-
-            if (window.EditorRelatorio?.confirmarTrocaAba?.(aba.id)) {
-                return;
-            }
-
             Render.selecionarAba(aba.id);
         });
 

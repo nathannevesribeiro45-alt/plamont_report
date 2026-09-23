@@ -38,6 +38,8 @@ const Mapa = {
     // ======================================
     render() {
 
+        if (this.selecaoLocalizacao) return;
+
         const tabsContainer = document.getElementById("mapa-tabs");
         const area = document.getElementById("mapa-area");
         const vazio = document.getElementById("mapa-vazio");
@@ -342,7 +344,10 @@ const Mapa = {
                 icon: this.criarIcone(dado)
             });
 
-            marker.on("click", () => this.abrirPainel(dado, marker));
+            marker.on("click", () => {
+                if (this.selecaoLocalizacao) this.atualizarPontoSelecao(marker.getLatLng());
+                else this.abrirPainel(dado, marker);
+            });
 
             marker.addTo(this.markersLayer);
             pontos.push([dado.lat, dado.lng]);
@@ -351,7 +356,7 @@ const Mapa = {
 
         if (recentralizar && pontos.length) {
 
-            this.map.fitBounds(pontos, { padding: [60, 60], maxZoom: 16 });
+            this.map.fitBounds(pontos, { padding: [60, 60], maxZoom: 16, animate: this.selecaoLocalizacao ? false : undefined });
 
         }
 
@@ -433,12 +438,11 @@ const Mapa = {
                     // define a posição do marcador da frente.
                     if (grupo.lat === null || grupo.lng === null) {
 
-                        const lat = parseCoordenadaOM(om.latitude);
-                        const lng = parseCoordenadaOM(om.longitude);
+                        const ponto = validarCoordenadasOM(om.latitude, om.longitude);
 
-                        if (lat !== null && lng !== null) {
-                            grupo.lat = lat;
-                            grupo.lng = lng;
+                        if (ponto.valida && !ponto.vazia) {
+                            grupo.lat = ponto.lat;
+                            grupo.lng = ponto.lng;
                         }
 
                     }

@@ -1,0 +1,43 @@
+/* Anexos por OM — estilos compartilhados pelo editor e pela leitura. */
+.om-anexos { min-width:0; margin:16px 0 0; padding:14px 0 0; border-top:1px solid #dce7f2; color:#173c64; }
+.editor-om > .om-anexos { margin:0 16px 16px; }
+.om-anexos h5 { display:flex; align-items:center; gap:7px; margin:0 0 12px; font-size:.85rem; }
+.om-anexos svg, .anexo-dialog svg { width:19px; height:19px; flex:none; }
+.om-anexos h5 span { display:flex; }
+.om-anexos-lista { display:grid; gap:8px; min-width:0; }
+.om-anexo-card { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px; border:1px solid #dce7f2; background:#f7faff; border-radius:10px; min-width:0; }
+.om-anexo-info { display:grid; gap:4px; min-width:0; }
+.om-anexo-info strong, .anexo-nome-escolhido { overflow-wrap:anywhere; font-size:.88rem; line-height:1.5; }
+.om-anexo-info small { font-size:.76rem; color:#546d85; overflow-wrap:anywhere; }
+.om-anexo-etiqueta { font-size:.7rem; color:#537491; }
+.om-anexo-acoes { display:flex; gap:8px; align-items:center; flex-wrap:wrap; flex-shrink:0; max-width:100%; }
+.om-anexos .om-anexo-acao, .anexo-dialog .om-anexo-acao { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:9px 12px; border:1px solid #c8daed; border-radius:8px; background:#fff; color:#0752a2; font:inherit; font-size:.8rem; font-weight:700; text-decoration:none; cursor:pointer; box-sizing:border-box; }
+.om-anexos .om-anexo-remover { color:#b02d3c; }
+.om-anexos .om-anexo-adicionar { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; min-height:44px; margin-top:10px; border:1px dashed #7baddb; background:#f3f9ff; color:#0752a2; }
+.om-anexos .om-anexo-acao:focus-visible, .anexo-dialog a:focus-visible { outline:3px solid #74b8f6; outline-offset:2px; }
+.om-anexo-indisponivel { color:#60758c; font-size:.75rem; line-height:1.5; max-width:220px; }
+.om-anexos-ajuda, .om-anexos-vazio { font-size:.76rem; color:#617991; line-height:1.5; margin:10px 0 0; }
+.om-anexos input[hidden], .anexo-dialog [hidden] { display:none !important; }
+.anexo-dialog { max-height:calc(100vh - 32px); max-height:calc(100dvh - 32px); overflow:auto; }
+.anexo-dialog-cabecalho { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:16px; }
+.anexo-dialog-cabecalho h2 { margin:0; min-width:0; overflow-wrap:anywhere; }
+.anexo-dialog-cabecalho button { display:flex; align-items:center; justify-content:center; flex:none; }
+.anexo-dialog-corpo { display:grid; gap:14px; min-width:0; }
+.anexo-dialog label { display:grid; gap:7px; font-size:.85rem; font-weight:700; }
+.anexo-dialog select { min-height:44px; width:100%; border:1px solid #c8daed; border-radius:8px; padding:10px; font:inherit; font-size:16px; color:#173c64; background:#fff; }
+.anexo-dialog p { margin:0; }
+.anexo-dialog [data-anexo-erro] { color:#b02d3c; }
+.anexo-dialog [data-anexo-confirmar] { background:#0752a2; color:white; }
+.anexo-preview { width:min(1000px,calc(100vw - 32px)); }
+.anexo-preview iframe { width:100%; height:65vh; height:65dvh; border:1px solid #dce7f2; border-radius:8px; background:#f3f5f8; }
+.anexo-preview img { display:block; max-width:100%; max-height:65vh; object-fit:contain; margin:auto; }
+.anexo-preview pre { white-space:pre-wrap; overflow-wrap:anywhere; max-height:60vh; overflow:auto; padding:12px; background:#f3f5f8; border-radius:8px; font-size:.85rem; }
+.anexo-preview .om-anexo-acao { justify-self:start; }
+@media(max-width:680px) {
+    .om-anexo-card { align-items:stretch; flex-direction:column; gap:10px; }
+    .om-anexo-acoes { width:100%; }
+    .om-anexo-acoes .om-anexo-acao { flex:1; }
+    .om-anexo-indisponivel { max-width:none; }
+    .anexo-dialog { padding:16px; }
+    .anexo-dialog .editor-acoes { display:grid; grid-template-columns:1fr 1fr; }
+}

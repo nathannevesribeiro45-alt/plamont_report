@@ -351,7 +351,7 @@ const Busca = {
     // ==========================================
     // Vai até o resultado escolhido
     // ==========================================
-    selecionar(item) {
+    async selecionar(item) {
 
         let botaoAlvo = null;
 
@@ -387,7 +387,7 @@ const Busca = {
 
         }
 
-        abrirPagina(item.contratoId, botaoAlvo, item.abaId);
+        if (await abrirPagina(item.contratoId, botaoAlvo, item.abaId) === false) return;
 
         this.input.value = "";
         this.fecharDropdown();
