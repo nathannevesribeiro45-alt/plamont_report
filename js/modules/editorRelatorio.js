@@ -1,4 +1,4 @@
-/* Sessão global: atividades, QLP, Histograma e Ausências. Sem armazenamento ou rede. */
+/* Sessão global dos seis blocos editáveis. Sem armazenamento ou rede. */
 window.EditorRelatorio = {
     ativo: false,
     contratoId: null,
@@ -11,7 +11,8 @@ window.EditorRelatorio = {
     novasOms: new WeakSet(),
     confirmacao: null,
     get arquivosPendentes() { return AnexosOM.arquivosPendentes; },
-    get editoresQuantidades() { return [EditorQLP, EditorHistograma, EditorAusencias]; },
+    get editoresQuantidades() { return [EditorQLP, EditorHistograma, EditorAusencias, EditorMobilizacao]; },
+    get editoresBlocos() { return [...this.editoresQuantidades, EditorRecursos]; },
 
     clonar(dados) {
         return typeof structuredClone === "function" ? structuredClone(dados) : JSON.parse(JSON.stringify(dados));
@@ -35,7 +36,7 @@ window.EditorRelatorio = {
         this.original = this.clonar(aba);
         this.rascunho = this.clonar(aba);
         if (!Array.isArray(this.rascunho.atividades)) this.rascunho.atividades = [];
-        this.editoresQuantidades.forEach(editor => editor.iniciar(this.rascunho));
+        this.editoresBlocos.forEach(editor => editor.iniciar(this.rascunho));
         this.novosGrupos = new WeakSet();
         this.novasOms = new WeakSet();
         Render.atualizar();
@@ -43,7 +44,7 @@ window.EditorRelatorio = {
         return true;
     },
     descartar() {
-        this.editoresQuantidades.forEach(editor => editor.encerrar());
+        this.editoresBlocos.forEach(editor => editor.encerrar());
         AnexosOM.encerrarSessao();
         if (typeof Mapa !== "undefined") Mapa.cancelarSelecaoLocalizacao?.();
         this.confirmacao?.fechar(false);
@@ -59,8 +60,8 @@ window.EditorRelatorio = {
     },
     temAlteracoes() {
         if (!this.ativo) return false;
-        const editaveis = dados => ({ atividades: dados.atividades || [], ...Object.fromEntries(this.editoresQuantidades.map(editor => [editor.campo, editor.comparavel(dados[editor.campo])])) });
-        return this.editoresQuantidades.some(editor => editor.temPendencias()) || JSON.stringify(editaveis(this.original)) !== JSON.stringify(editaveis(this.rascunho));
+        const editaveis = dados => ({ atividades: dados.atividades || [], ...Object.fromEntries(this.editoresBlocos.map(editor => [editor.campo, editor.comparavel(dados[editor.campo])])) });
+        return this.editoresBlocos.some(editor => editor.temPendencias()) || JSON.stringify(editaveis(this.original)) !== JSON.stringify(editaveis(this.rascunho));
     },
     deveConfirmarNavegacao(pagina, aba) {
         return this.ativo && (pagina !== this.contratoId || (aba && aba !== this.abaId));
@@ -266,7 +267,7 @@ window.EditorRelatorio = {
     },
     limparLocalizacao(g, o) { this.definirLocalizacao(g, o, "", ""); },
     validar() {
-        const erros = this.editoresQuantidades.flatMap(editor => editor.validar()), chaves = new Map();
+        const erros = this.editoresBlocos.flatMap(editor => editor.validar()), chaves = new Map();
         for (const [g, grupo] of (this.rascunho?.atividades || []).entries()) {
             for (const om of grupo.oms || []) {
                 const nova = this.novasOms.has(om);
@@ -281,7 +282,7 @@ window.EditorRelatorio = {
         return erros;
     },
     mostrarMensagem(texto) {
-        const editor = this.editoresQuantidades.find(item => texto.startsWith(`${item.titulo} —`));
+        const editor = this.editoresBlocos.find(item => texto.startsWith(`${item.titulo} —`));
         if (editor) { editor.mostrarMensagem(texto); return; }
         const aviso = this.container?.querySelector("[data-editor-erro]");
         if (!aviso) return;

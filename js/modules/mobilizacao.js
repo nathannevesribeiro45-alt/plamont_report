@@ -11,6 +11,11 @@ const Mobilizacao = {
     // ======================================
     render(aba, container) {
 
+        if (window.EditorRelatorio?.deveEditarAba(aba)) {
+            EditorMobilizacao.render(aba, container);
+            return;
+        }
+
         if (!aba?.mobilizacao) return;
         if (!container) return;
 
@@ -113,9 +118,9 @@ criarSecao() {
             item.className = "lista-item";
 
             item.innerHTML = `
-                <span class="lista-label">${funcao}</span>
+                <span class="lista-label">${escaparHtml(funcao)}</span>
 
-                <span class="lista-valor">${quantidade}</span>
+                <span class="lista-valor">${escaparHtml(quantidade)}</span>
             `;
 
             container.appendChild(item);

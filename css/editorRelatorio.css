@@ -86,6 +86,23 @@
    Ações globais do relatório
    ========================================= */
 
+/* Recursos: somente o formulário, mantendo os painéis normais intactos. */
+.editor-recursos { margin-top:18px; min-width:0; }
+.editor-recursos-lista { display:grid; gap:12px; padding:18px; background:#f5f8fc; }
+.editor-recurso { min-width:0; border:1px solid #d6e3f1; border-radius:12px; overflow:hidden; background:#fff; }
+.editor-recurso h3 { margin:0; color:#0a376b; font-size:.95rem; }
+.editor-recurso-campos { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; padding:14px; }
+.editor-recurso-erro { color:#a12536; font-size:.78rem; line-height:1.4; }
+.editor-recursos [hidden] { display:none !important; }
+.editor-recursos [aria-invalid="true"] { border-color:#b02d3c; }
+.editor-recursos > button.editor-adicionar { width:calc(100% - 36px); margin:0 18px 18px; }
+@media(max-width:1100px) { .editor-recurso-campos { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:680px) {
+    .editor-recursos-lista { padding:12px; }
+    .editor-recurso-campos { grid-template-columns:1fr; padding:12px; }
+    .editor-recursos > button.editor-adicionar { width:calc(100% - 24px); margin:0 12px 12px; }
+}
+
 .relatorio-acoes {
     display: flex;
     justify-content: flex-end;

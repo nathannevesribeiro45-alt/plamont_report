@@ -6,10 +6,22 @@
 
 const Recursos = {
 
+    statusConfig: Object.freeze({
+        disponivel: { rotulo: "Disponível", classe: "disponivel" },
+        atendendo: { rotulo: "Atendendo", classe: "atendendo" },
+        preventiva: { rotulo: "Preventiva", classe: "preventiva" },
+        manutencao: { rotulo: "Manutenção", classe: "manutencao" }
+    }),
+
     // ======================================
     // Renderiza a seção
     // ======================================
     render(aba, container) {
+
+        if (window.EditorRelatorio?.deveEditarAba(aba)) {
+            EditorRecursos.render(aba, container);
+            return;
+        }
 
         if (!aba || !aba.recursos) return;
         if (!container) return;
@@ -120,7 +132,7 @@ criarLista(recursos, container) {
 
     }
 
-    const grupos = {};
+    const grupos = Object.create(null);
 
     recursos.forEach(recurso => {
 
@@ -173,7 +185,7 @@ criarItem(tipo, recursos) {
 
                 <div class="recurso-identificacao">
                     <span class="recurso-linha-icone" aria-hidden="true">&#128663;</span>
-                    <span class="recurso-placa-texto">${identificacao}</span>
+                    <span class="recurso-placa-texto">${escaparHtml(identificacao)}</span>
                     ${this.criarStatus(status)}
                 </div>
 
@@ -201,7 +213,7 @@ criarItem(tipo, recursos) {
 
         <span class="recurso-nome">
 
-            ${tipo}
+            ${escaparHtml(tipo)}
 
         </span>
 
@@ -268,8 +280,8 @@ formatarOperador(recurso) {
     return `
         <span class="recurso-operador-icone" aria-hidden="true">&#128119;</span>
         <span class="recurso-operador-dados">
-            <span class="recurso-operador-nome">${nome || "--"}</span>
-            ${contato ? `<span class="recurso-operador-contato">${contato}</span>` : ""}
+            <span class="recurso-operador-nome">${escaparHtml(nome || "--")}</span>
+            ${contato ? `<span class="recurso-operador-contato">${escaparHtml(contato)}</span>` : ""}
         </span>
     `;
 
@@ -284,6 +296,10 @@ formatarOperador(recurso) {
     },
 
     obterStatus(recurso) {
+
+        // Uma escolha canônica explícita tem prioridade sobre notas legadas
+        // na placa. O normalizador anterior continua atendendo dados antigos.
+        if (Object.hasOwn(this.statusConfig, recurso.status)) return recurso.status;
 
         const valorInformado = (recurso.status || "").trim().toLowerCase();
         const textoLegado = `${recurso.placa || ""} ${valorInformado}`.toLowerCase();
@@ -303,12 +319,7 @@ formatarOperador(recurso) {
 
     criarStatus(status) {
 
-        const configuracoes = {
-         disponivel: { rotulo: "Disponível", classe: "disponivel" },
-         atendendo: { rotulo: "Atendendo", classe: "atendendo" },
-         preventiva: { rotulo: "Preventiva", classe: "preventiva" },
-         manutencao: { rotulo: "Manutenção", classe: "manutencao" }
-};
+        const configuracoes = this.statusConfig;
 
         const configuracao = configuracoes[status] || configuracoes.disponivel;
 
