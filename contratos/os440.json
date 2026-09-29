@@ -1,7 +1,7 @@
 {
   "id": "os440",
   "nome": "Contrato OS 440",
-  "data": "22/09/2026",
+  "data": "29/08/2026",
   "turno": "Dia B",
   "horario": "07:00 às 19:00",
   "abas": [
@@ -11,7 +11,7 @@
       "qlp": {
         "direto": {
           "Caldeireiro": 8,
-          "Mecanico": 16,
+          "Mecanico": 13,
           "Soldador": 8,
           "Eletricista": 3, 
           "Ajudante de eletricista": 1,
@@ -76,14 +76,14 @@
           "placa": "SGA-3I14",
           "operador": "",
           "contato": "",
-          "status":"Disponivel"
+          "status":"Manutencao"
         },
         {
           "tipo": "Munck",
           "placa": "QRD-8213",
           "operador": "",
           "contato": "",
-          "status":"Manutencao"
+          "status":"Disponivel"
         },
 
          {
@@ -120,7 +120,7 @@
           "placa": "QRE-5I29",
           "operador": "",
           "contato": "",
-          "status":"Disponivel"
+          "status":"Manutencao"
         },
         {
           "tipo": "Guindaste",
@@ -132,6 +132,13 @@
         {
           "tipo": "Guindaste",
           "placa": "NXJ-6614 ",
+          "operador": "",
+          "contato": "",
+          "status":"Disponivel"
+        },
+        {
+          "tipo": "Guindaste",
+          "placa": "SGJ-7A95",
           "operador": "",
           "contato": "",
           "status":"Disponivel"
@@ -149,11 +156,29 @@
         
         "oms":[
             {
-             "frente":"CN-07",
-              "numero":"202301508489",
-              "descricao":"PE1.2_SUBS ESTR APOI LD MES CAR REDLE (CN-07)",
-              "latitude":"-2,5535402",
-              "longitude":"-44,3793104",
+             "frente":"EP-06",
+              "numero":"202602362916",
+              "descricao":"FAZER ESTAIAMENTO TRAVAMENTO CIL ELEV T (EP-06)",
+              "latitude":"-2,5727272",
+              "longitude":"-44,3359387",
+              "arquivoPdf":"om's/contrato 440 oms/Integridade/EP06 OM 202602362916 FAZER ESTAIAMENTO TRAVAMENTO CIL ELEV T.pdf",
+              "status":"Em andamento"
+            }
+          ]
+        },
+         {
+          "lider":"Cleyton",
+          "telefone":"98 93300-5461",
+          "equipe":"3 mecânicos + 2 soldadores + 3 caldeireiros + 1 eletricista + 1 ajudante de mont.",
+        
+        "oms":[
+            {
+             "frente":"EP-06",
+              "numero":"202602362916",
+              "descricao":"FAZER ESTAIAMENTO TRAVAMENTO CIL ELEV T (EP-06)",
+              "latitude":"-2,5727272",
+              "longitude":"-44,3359387",
+              "arquivoPdf":"om's/contrato 440 oms/Integridade/EP06 OM 202602362916 FAZER ESTAIAMENTO TRAVAMENTO CIL ELEV T.pdf",
               "status":"Em andamento"
             }
           ]
@@ -166,12 +191,12 @@
         
         "oms":[
             {
-             "frente":"TR-315K-34",
-              "numero":"202506089708",
-              "descricao":"PE2. _FABRIC.E SUBST.TRAVE.SUP.EIXO 32 (TR-315K-34)",
-              "latitude":"-2,5654938",
-              "longitude":"-44,3592505",
-              "arquivoPdf":"om's/contrato 440 oms/Integridade/TR1534 OM 202506089708 PE2. _FABRIC.E SUBST.TRAVE.SUP.EIXO 32 rev1.pdf", 
+             "frente":"CANTEIRO BEIRA-MAR",
+              "numero":"--",
+              "descricao":"SUCATEAMENTO DE MATERIAIS (CANTEIRO BEIRA-MAR)",
+              "latitude":"-2,5611756",
+              "longitude":"-44,3658971",
+              "arquivoPdf":"", 
               "status":"Em andamento"
             }
           ]
@@ -183,28 +208,11 @@
         
         "oms":[
             {
-             "frente":"EP-06",
-              "numero":"202404498272",
-              "descricao":"1.4_TRC.ELEM.FIX SUP.SUST PASSAD.TRIP. (EP-06)",
-              "latitude":"-2,5727272",
-              "longitude":"-44,3359387",
-              "arquivoPdf":"om's/contrato 440 oms/Integridade/EP06 OM 202404498272 1.4_TRC.ELEM.FIX SUP.SUST PASSAD.TRIP..pdf", 
-              "status":"Em andamento"
-            }
-          ]
-        },
-        {
-          "lider":"Cleyton",
-          "telefone":"98 93300-5461",
-          "equipe":"3 mecânicos + 2 soldadores + 3 caldereiros + 1 eletricista + 1 ajudante de mont.",
-        
-        "oms":[
-            {
-             "frente":"MOBILIZAÇÃO PARA O VV-06",
+             "frente":"CANTEIRO-CENTRAL",
               "numero":"--",
-              "descricao":"",
-              "latitude":"-2,5690485",  
-              "longitude":"-44,3447038",
+              "descricao":"FABRICAÇÃO NO PIPE SHOP (CANTEIRO-CENTRAL)",
+              "latitude":"-2,5560547",
+              "longitude":"-44,3504725",
               "arquivoPdf":"", 
               "status":"Em andamento"
             }
@@ -262,6 +270,7 @@
       "mobilizacao": {},
       "recursos": [],
       "atividades": [
+        
         {
           "lider": "Alonso Costa",
           "telefone": "31 8495-2503", 
@@ -269,20 +278,22 @@
           "equipe": "08 mecânicos + 01 eletricista",
           "oms": [
             {
-              "frente":"TR-315K-33",
-              "numero":"202501386655",
-              "descricao":"TME-TROCAR/REPOR-TELHAS#TR1533",
-              "latitude":"-2,5682235",
-              "longitude":"-44,3555469",
-              "arquivoPdf":"",
+              "frente":"CT-15/TR-315K-15",
+              "numero":"202602479754",
+              "descricao":"TME-SUBST.TLE-CT15-TR1515 (CT-15/TR-315K-15)",
+              "latitude":"-2,5628667",
+              "longitude":"-44,3602286",
+              "arquivoPdf":"om's/contrato 440 oms/Telhado/OM 202602479754 TME-SUBST.TLE-CT15-TR1515.pdf",
               "arquivoLaudo":"",
               "status":"Em andamento"
           }
           ]
         }
       ],
+    
       "nome": "Telhado",
       "observacoes": []
     }
   ]
 }
+  

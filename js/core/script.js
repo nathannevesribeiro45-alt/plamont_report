@@ -16,17 +16,86 @@ async function carregarContrato(nomeArquivo) {
 
     try {
 
-        const resposta = await fetch(`contratos/${nomeArquivo}`);
+        // ==================================
+        // 1. CARREGAR JSON BASE
+        // ==================================
+
+        const resposta =
+            await fetch(
+                `contratos/${nomeArquivo}`
+            );
 
         if (!resposta.ok) {
-            throw new Error(`Erro ao carregar ${nomeArquivo}`);
+
+            throw new Error(
+                `Erro ao carregar ${nomeArquivo}`
+            );
+
         }
 
-        return await resposta.json();
+        const contratoBase =
+            await resposta.json();
+
+
+        // ==================================
+        // 2. USUÁRIO NÃO AUTENTICADO
+        //
+        // O site continua público para
+        // visualização através dos JSONs.
+        // ==================================
+
+        const usuarioAutenticado =
+            !!window.Auth?.usuario?.id;
+
+
+        if (!usuarioAutenticado) {
+
+            return contratoBase;
+
+        }
+
+
+        // ==================================
+        // 3. USUÁRIO AUTENTICADO
+        //
+        // Busca uma versão persistida.
+        // ==================================
+
+        if (!window.RelatoriosStorage) {
+
+            throw new Error(
+                "RelatoriosStorage não foi carregado."
+            );
+
+        }
+
+
+        const resultado =
+            await RelatoriosStorage.carregar(
+                contratoBase
+            );
+
+
+        // ==================================
+        // 4. RETORNAR ESTADO ATUAL
+        //
+        // Sem registro:
+        // → JSON seed
+        //
+        // Com registro:
+        // → JSONB do Supabase
+        // ==================================
+
+        return resultado.dados;
+
 
     } catch (erro) {
 
-        console.error(`Erro ao carregar ${nomeArquivo}:`, erro);
+        console.error(
+            `Erro ao carregar ${nomeArquivo}:`,
+            erro
+        );
+
         return null;
 
     }

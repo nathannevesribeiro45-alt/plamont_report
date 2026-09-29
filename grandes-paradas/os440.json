@@ -3,45 +3,50 @@
   "horasPorDiaUtil": 12,
   "paradas": [
     {
-      "id": "rp-313k-03",
-      "nome": "RP-313K-03",
+      "id": "ep-313k-06",
+      "nome": "EP-313K-06",
       "tipo": "Grande Parada",
-      "equipamento": "RP-313K-03",
+      "equipamento": "EP-313K-06",
       "contrato": "os440",
 
       "status": {
-        "data": "14/09/2026",
-        "hora": "16:00"
+        "data": "29/09/2026",
+        "hora": "07:00"
       },
 
       "periodo": {
-        "inicio": "07/09/2026",
+        "inicio": "21/09/2026",
         "inicioHora": "00:00",
-        "fim": "18/09/2026",
-        "previstoFim": "18/09/2026",
-        "previstoFimHora": "23:00",
-        "realizadoFim": "18/09/2026",
-        "realizadoFimHora": "23:00"
+        "fim": "02/10/2026",
+        "previstoFim": "02/10/2026",
+        "previstoFimHora": "15:10",
+        "realizadoFim": "02/10/2026",
+        "realizadoFimHora": "10:40"
       },
 
-      "dataStatus": "14/09/2026",
+      "dataStatus": "29/09/2026",
 
       "pontos": [
         {
-          "data": "07/09/2026",
+          "data": "21/09/2026",
           "previsto": 0,
           "realizado": 0
         },
         {
-          "data": "14/09/2026",
-          "previsto": 81.62,
-          "realizado": 92.72
+          "data": "28/09/2026",
+          "previsto": 74.59,
+          "realizado": 79.01
+        },
+        {
+          "data": "29/09/2026",
+          "previsto": 76.92,
+          "realizado": 78.23
         }
       ],
 
       "marcos": [
         {
-          "data": "18/09/2026",
+          "data": "02/10/2026",
           "previsto": 100,
           "descricao": "Conclusão prevista"
         }
@@ -49,124 +54,102 @@
 
       "turno": {
         "realizado": {
-          "inicio": "07:00",
-          "fim": "16:00"
-        },
-        "proximo": {
           "inicio": "16:00",
           "fim": "07:00"
+        },
+        "proximo": {
+          "inicio": "07:00",
+          "fim": "16:00"
         }
       },
 
       "atividades": {
         "realizadas": [
           {
-            "area": "AE14.4_FAB.PINOS E OLHAIS ART.CONTRAPESO",
-            "descricao": "Desmontagem de andaimes",
-            "status": "Concluído"
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Corte e retirada da chapa avariada",
+            "status": "Em andamento"
           },
           {
-            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
-            "descricao": "LP Líquido Penetrante",
-            "status": "Concluído"
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Limpeza mecânica do local",
+            "status": "Em andamento"
           },
           {
-            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
-            "descricao": "Realizar cortes dos suportes da roldanas",
-            "status": "Concluído"
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Montagem das chapas de reforço da calha",
+            "status": "Em andamento"
           },
           {
-            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
-            "descricao": "Limpeza mecânica",
-            "status": "Concluído"
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Solda dos reforços da calha",
+            "status": "Em andamento"
+          },
+          {
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Corte e retirada dos parafusos do duto",
+            "status": "Em andamento"
           }
         ],
 
         "proximas": [
           {
-            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
-            "descricao": "Montagem e ajustes dos reforços da 2° travessa",
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Corte e retirada da chapa avariada",
             "status": "Em andamento"
           },
           {
-            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
-            "descricao": "Soldagem da 2° travessa",
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Limpeza mecânica do local",
             "status": "Em andamento"
           },
           {
-            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
-            "descricao": "Montagem e ajustes do suporte das roldanas",
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Montagem das chapas de reforço da calha",
             "status": "Em andamento"
           },
           {
-            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
-            "descricao": "Soldas dos suportes",
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Solda dos reforços da calha",
             "status": "Em andamento"
           },
           {
-            "area": "Alinhar Suporte da Coluna da Mesa de Impacto do Chute da Lança",
-            "descricao": "Desmontagem do andaime",
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Corte e retirada dos parafusos do duto",
             "status": "Em andamento"
           },
           {
-            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
-            "descricao": "LP Líquido Penetrante",
-            "status": "Programado"
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Montagem das chapas de reforço da calha",
+            "status": "Em andamento"
           },
           {
-            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
-            "descricao": "Retirada do estaiamento do contrapeso",
-            "status": "Programado"
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Corte e retirada dos parafusos do duto",
+            "status": "Em andamento"
           },
           {
-            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
-            "descricao": "Retoque de pintura",
-            "status": "Programado"
-          },
-          {
-            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
-            "descricao": "Desmontagem de andaimes suspenso e apoiado AC 1.80",
-            "status": "Programado"
-          },
-          {
-            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
-            "descricao": "Montagem e ajustes das grades de piso",
-            "status": "Programado"
-          },
-          {
-            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
-            "descricao": "Soldagem da grade de piso",
-            "status": "Programado"
-          },
-          {
-            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
-            "descricao": "Retoque de pintura",
-            "status": "Programado"
-          },
-          {
-            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
-            "descricao": "Desmontagem de isolamentos",
-            "status": "Programado"
-          },
-          {
-            "area": "PC1.4_RECUP.VIGAS SUP.GUINC. CTRP. ANC",
-            "descricao": "Descida de materiais de andaimes",
-            "status": "Programado"
-          },
-          {
-            "area": "Alinhar Suporte da Coluna da Mesa de Impacto do Chute da Lança",
-            "descricao": "Desmontagem do andaime",
-            "status": "Programado"
-          },
-          {
-            "area": "Alinhar Suporte da Coluna da Mesa de Impacto do Chute da Lança",
-            "descricao": "Descida de materiais de andaime/ferramental/sucatas - Guindaste",
-            "status": "Programado"
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Montagem e torque dos parafusos dos flanges do duto",
+            "status": "Em andamento"
           }
         ]
       },
 
-      "observacoes": "Desvio positivo de 11,11%. Ganho informado no report: 0,00h."
+      "observacoes": "Desvio informado no report: 1,31%. Ganho informado no report: 4:5hrs.\n\nA Plamont Engenharia informa: atividade de substituição de parafusos na região do tripper não se iniciou devido à indisponibilidade de equipamento (guindaste), impossibilitando o içamento de materiais de andaimes para dar início à montagem. Até o presente momento não está gerando atraso na linha de base do cronograma geral da parada. A linha da atividade ainda não iniciada está contabilizando 15 horas de atraso (linha 329).\n\nA Plamont Engenharia informa: iniciamos em 24/09, no turno da noite, a montagem de andaime na região do tripper lado direito sentido fluxo. Foi dada prioridade para iniciar a montagem de andaimes do lado esquerdo sentido fluxo devido à interferência do bandejamento de energia 0°. Conforme alinhamento, a atuação no lado esquerdo ocorre somente no turno do dia, com prazo de conclusão informado para domingo, 27/09.\n\nA Plamont Engenharia informa atraso na montagem de andaimes na região do tripper LDSF e LESF, gerando 8 horas de atraso devido ao impacto no início da parada e à disponibilidade de equipamento, que retardou a montagem de andaimes em ambos os lados.\n\nA Plamont Engenharia informa atraso de 8 horas em relação à substituição de parafusos na região do tripper. Como plano de retomada, será adicionado efetivo para trabalhar paralelamente em ambos os lados e reduzir o impacto ocorrido no início da parada.\n\nA Plamont Engenharia informa a conclusão da substituição dos parafusos na região do tripper LDSF e LESF, restando apenas a desmontagem de andaimes ao lado do bandejamento LDSF. Continua em execução a preparação para iniciar a atividade na calha.\n\n28/09/2026 às 07:00 - A Plamont Engenharia informa: foi identificada indisponibilidade dos parafusos para execução da atividade da calha, porém foram iniciados os reforços, não impactando o tempo da atividade e da parada.\n\n29/09/2026 às 07:00 - A Plamont Engenharia informa: seguimos com a atividade de recuperação da calha, montagem de reforços e substituição dos parafusos do duto. Informamos também a interferência com atividade extra na região do cilindro."
     }
   ]
 }

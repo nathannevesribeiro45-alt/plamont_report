@@ -1,8 +1,8 @@
 {
   "id": "os456",
   "nome": "Contrato OS 456",
-  "data": "31/08/2026",
-  "turno": "Dia A",
+  "data": "29/09/2026",
+  "turno": "Dia B",
   "horario": "07:00 às 19:00",
   "abas": [
     {
@@ -28,27 +28,95 @@
       },
       "histograma": {
         "direto": {
-          "Caldeireiro": 5,
-          "Mecanico": 12,
-          "Soldador": 7,
-          "Montador": 7,
-          "Eletricista": 7,
-          "Pintor": 0
+          "Caldeireiro": 4,
+          "Mecanico": 9,
+          "Soldador": 2,
+          "Montador": 5,
+          "Eletricista": 6,
+          "Pintor": 1
         },
         "indireto": {
           "Supervisor Montagem": 1,
-          "Encarregado Montagem": 2,
+          "Encarregado Montagem": 1,
           "Encarregado Elétrica": 1,
-          "Mestre Montagem": 2,
-          "Mestre Andaime": 2
+          "Mestre Montagem": 1,
+          "Mestre Andaime": 1
         }
       },
       "ausencias": {},
       "mobilizacao": {},
 
-      "recursos": [],
-      "atividades": [],
-       "observacoes": [],
+      "recursos": [
+        {
+          "tipo": "Munck",
+          "placa": "SGA-3I06",
+          "operador": "",
+          "contato": "",
+          "status":"Disponivel"
+        },
+         {
+          "tipo": "Pick-up",
+          "placa": "UAE-6A69",
+          "operador": "Luiz Carlos",
+          "contato": "(98) 998867-6966",
+          "status":"Disponivel"
+        }
+      ],
+      "atividades": [
+    {
+      "lider":"Arlindo",
+    "telefone":"98 9934-3558",
+    "equipe":"3 montadores de andaime",
+    "oms":[
+  {
+          "frente":"CT-TR-353K-02 (AMOSTRADOR SECUNDÁRIO)",
+          "numero":"--AMOSTRADOR SECUNDÁRIO (TR-353K-02)",
+          "descricao":"MONTAGEM DE ANDAIME PARA ENTRADA DA EQUIPE DA ELÉTRICA NO AMOSTRADOR",
+          "latitude":"-2,5706422",
+          "longitude":"-44,3673746",
+          "arquivoPdf":"",
+          "status":"Em andamento"
+        }
+    ]
+  },
+  {
+          "lider":"Ermeson",
+          "telefone":"98 9165-4599",
+          "equipe":"5 eletricistas",
+        
+        "oms":[
+            {
+             "frente":"CT-TR-353K-02 (AMOSTRADOR SECUNDÁRIO)",
+              "numero":"--AMOSTRADOR SECUNDÁRIO (TR-353K-02)",
+              "descricao":"FABRICAÇÃO DE SUPORTES PARA INFRA-ELÉTRICA DO PAINEL AMOS",
+              "latitude":"-2,5706422",
+              "longitude":"-44,3673746",
+              "arquivoPdf":"",
+              "status":"Em andamento"
+            }
+          ]
+        },
+        {
+          "lider":"Raimundo Júnior",
+          "telefone":"98 8498-9295",
+          "equipe":"4 mecânicos + 1 soldador + 1 caldeireiro + 1 ajudante de mont",
+        
+        "oms":[
+            {
+             "frente":"CT-TR-353K-02 (AMOSTRADOR SECUNDÁRIO)",
+              "numero":"--AMOSTRADOR SECUNDÁRIO (TR-353K-02)",
+              "descricao":"ORGANIZAÇÃO DE MATERIAIS E TENDAS",
+              "latitude":"-2,5706422",
+              "longitude":"-44,3673746",
+              "arquivoPdf":"",
+              "status":"Em andamento"
+            }
+          ]
+        }
+      ],
+       "observacoes": [
+        "Equipe do lider Raimundo Júnior aguardando entrada nas demais atividades, no momento realizando organização do canteiro e das tendas. "
+       ],
       "nome": "Cobre"
     }
     

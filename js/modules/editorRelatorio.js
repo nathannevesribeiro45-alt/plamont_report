@@ -10,6 +10,7 @@ window.EditorRelatorio = {
     novosGrupos: new WeakSet(),
     novasOms: new WeakSet(),
     confirmacao: null,
+    salvando:false,
     get arquivosPendentes() { return AnexosOM.arquivosPendentes; },
     get editoresQuantidades() { return [EditorQLP, EditorHistograma, EditorAusencias, EditorMobilizacao]; },
     get editoresBlocos() { return [...this.editoresQuantidades, EditorRecursos]; },
@@ -93,28 +94,91 @@ window.EditorRelatorio = {
         document.body.append(dialog); dialog.showModal();
         return promessa;
     },
-    aplicar() {
-        if (!this.ativo || !this.podeEditar()) return false;
-        const erros = this.validar();
-        if (erros.length) { this.mostrarMensagem(erros[0]); return false; }
-        let payload;
-        try { payload = this.gerarPayload(); }
-        catch (erro) { this.mostrarMensagem(erro.message); return false; }
-        const aba = Dashboard.contratos[payload.contratoId]?.abas?.find(item => item.id === payload.abaId);
-        if (!aba) { this.mostrarMensagem("A aba em edição não está disponível."); return false; }
-        Object.assign(aba, this.clonar(payload.dados));
-        Dashboard.abaAtual = aba;
-        AnexosOM.aplicar(Dashboard.contratos);
-        this.descartar();
-        Render.atualizar();
-        if (typeof Mapa !== "undefined" && Mapa.map && Mapa.markersLayer) Mapa.renderFrentes(false);
-        const aviso = document.createElement("p");
-        aviso.className = "editor-aviso-aplicado";
-        aviso.setAttribute("role", "status");
-        aviso.textContent = "Alterações aplicadas nesta página. Ao recarregar, o relatório original será restaurado.";
-        document.getElementById(`${Dashboard.contratoAtual.id}-content`)?.querySelector(".card-atividades")?.prepend(aviso);
-        return true;
-    },
+aplicar() {
+
+    if (!this.ativo || !this.podeEditar()) return false;
+
+    const erros = this.validar();
+
+    if (erros.length) {
+        this.mostrarMensagem(erros[0]);
+        return false;
+    }
+
+    let payload;
+
+    try {
+        payload = this.gerarPayload();
+    }
+
+    catch (erro) {
+        this.mostrarMensagem(erro.message);
+        return false;
+    }
+
+    const aba =
+        Dashboard.contratos[payload.contratoId]
+            ?.abas
+            ?.find(
+                item =>
+                    item.id === payload.abaId
+            );
+
+    if (!aba) {
+        this.mostrarMensagem(
+            "A aba em edição não está disponível."
+        );
+        return false;
+    }
+
+    Object.assign(
+        aba,
+        this.clonar(payload.dados)
+    );
+
+    Dashboard.abaAtual = aba;
+
+    AnexosOM.aplicar(
+        Dashboard.contratos
+    );
+
+    this.descartar();
+
+    Render.atualizar();
+
+    if (
+        typeof Mapa !== "undefined" &&
+        Mapa.map &&
+        Mapa.markersLayer
+    ) {
+        Mapa.renderFrentes(false);
+    }
+
+    const aviso =
+        document.createElement("p");
+
+    aviso.className =
+        "editor-aviso-aplicado";
+
+    aviso.setAttribute(
+        "role",
+        "status"
+    );
+
+    aviso.textContent =
+        "Alterações aplicadas nesta página. " +
+        "Ao recarregar, o relatório original será restaurado.";
+
+    document
+        .getElementById(
+            `${Dashboard.contratoAtual.id}-content`
+        )
+        ?.querySelector(".card-atividades")
+        ?.prepend(aviso);
+
+    return true;
+
+},
     renderAtividades(aba, container) {
         if (!this.deveEditarAba(aba)) return;
         this.container = container;
