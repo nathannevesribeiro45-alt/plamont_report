@@ -28,7 +28,7 @@ window.EditorRelatorio = {
         return this.ativo && this.podeEditar() && aba?.id === this.abaId && Dashboard.contratoAtual?.id === this.contratoId;
     },
     iniciar(aba = Dashboard.abaAtual) {
-        if (!this.podeEditar() || !aba || this.ativo || !Dashboard.contratoAtual) return false;
+        if (!this.podeEditar() || !aba || this.ativo || this.salvando || !Dashboard.contratoAtual) return false;
         AnexosOM.iniciarSessao();
         this.ativo = true;
         this.contratoId = Dashboard.contratoAtual.id;
@@ -56,6 +56,7 @@ window.EditorRelatorio = {
         this.novasOms = new WeakSet();
     },
     cancelar() {
+        if (this.salvando) return false;
         this.descartar();
         Render.atualizar();
     },
@@ -68,6 +69,7 @@ window.EditorRelatorio = {
         return this.ativo && (pagina !== this.contratoId || (aba && aba !== this.abaId));
     },
     async confirmarSaida() {
+        if (this.salvando) { this.mostrarMensagem("Aguarde a confirmação do salvamento."); return false; }
         if (this.temAlteracoes() && !await this.confirmar("Existem alterações não aplicadas.", "Deseja descartá-las e sair do editor?", "Descartar alterações", "Continuar editando")) return false;
         this.descartar();
         return true;
@@ -94,91 +96,53 @@ window.EditorRelatorio = {
         document.body.append(dialog); dialog.showModal();
         return promessa;
     },
-aplicar() {
-
-    if (!this.ativo || !this.podeEditar()) return false;
-
-    const erros = this.validar();
-
-    if (erros.length) {
-        this.mostrarMensagem(erros[0]);
-        return false;
-    }
-
-    let payload;
-
-    try {
-        payload = this.gerarPayload();
-    }
-
-    catch (erro) {
-        this.mostrarMensagem(erro.message);
-        return false;
-    }
-
-    const aba =
-        Dashboard.contratos[payload.contratoId]
-            ?.abas
-            ?.find(
-                item =>
-                    item.id === payload.abaId
-            );
-
-    if (!aba) {
-        this.mostrarMensagem(
-            "A aba em edição não está disponível."
-        );
-        return false;
-    }
-
-    Object.assign(
-        aba,
-        this.clonar(payload.dados)
-    );
-
-    Dashboard.abaAtual = aba;
-
-    AnexosOM.aplicar(
-        Dashboard.contratos
-    );
-
-    this.descartar();
-
-    Render.atualizar();
-
-    if (
-        typeof Mapa !== "undefined" &&
-        Mapa.map &&
-        Mapa.markersLayer
-    ) {
-        Mapa.renderFrentes(false);
-    }
-
-    const aviso =
-        document.createElement("p");
-
-    aviso.className =
-        "editor-aviso-aplicado";
-
-    aviso.setAttribute(
-        "role",
-        "status"
-    );
-
-    aviso.textContent =
-        "Alterações aplicadas nesta página. " +
-        "Ao recarregar, o relatório original será restaurado.";
-
-    document
-        .getElementById(
-            `${Dashboard.contratoAtual.id}-content`
-        )
-        ?.querySelector(".card-atividades")
-        ?.prepend(aviso);
-
-    return true;
-
-},
+    async aplicar() {
+        if (!this.ativo || !this.podeEditar() || this.salvando) return false;
+        const erros = this.validar();
+        if (erros.length) { this.mostrarMensagem(erros[0]); return false; }
+        let payload;
+        try { payload = this.gerarPayload(); }
+        catch (erro) { this.mostrarMensagem(erro.message); return false; }
+        const contrato = Dashboard.contratos[payload.contratoId];
+        if (!contrato?.abas?.some(aba => aba.id === payload.abaId)) {
+            this.mostrarMensagem("A aba em edição não está disponível."); return false;
+        }
+        const rascunhoEnviado = this.rascunho;
+        this.salvando = true;
+        // Impede novas edições/cancelamento durante o envio, sem re-renderizar
+        // ou perder foco, rascunho e binários temporários em caso de falha.
+        const controles = [...(this.container?.querySelectorAll("input, select, textarea, button") || [])]
+            .map(elemento => ({ elemento, disabled: elemento.disabled }));
+        controles.forEach(({ elemento }) => { elemento.disabled = true; });
+        const botoes = [...(this.container?.querySelectorAll('[data-acao-editor="aplicar"]') || [])];
+        botoes.forEach(botao => { botao.textContent = "Salvando..."; });
+        try {
+            const resultado = await RelatoriosStorage.salvarAba({ contrato, aba: payload.dados });
+            if (!this.ativo || this.rascunho !== rascunhoEnviado || !this.podeEditar()) return false;
+            Dashboard.contratos[payload.contratoId] = resultado.dados;
+            Dashboard.contratoAtual = resultado.dados;
+            Dashboard.abaAtual = resultado.dados.abas.find(aba => aba.id === payload.abaId);
+            AnexosOM.aplicar(Dashboard.contratos);
+            this.descartar();
+            Render.atualizar();
+            if (typeof Busca !== "undefined") Busca.construirIndice();
+            if (typeof Mapa !== "undefined" && Mapa.map && Mapa.markersLayer) Mapa.renderFrentes(false);
+            const aviso = document.createElement("p");
+            aviso.className = "editor-aviso-aplicado"; aviso.setAttribute("role", "status");
+            aviso.textContent = "Alterações salvas com sucesso.";
+            document.getElementById(`${payload.contratoId}-content`)?.prepend(aviso);
+            return true;
+        } catch (erro) {
+            if (this.ativo && this.rascunho === rascunhoEnviado) {
+                this.mostrarMensagem(`${erro.message || "Não foi possível salvar as alterações."} Suas alterações continuam no editor.`);
+            }
+            return false;
+        } finally {
+            this.salvando = false;
+            controles.forEach(({ elemento, disabled }) => { elemento.disabled = disabled; });
+            botoes.forEach(botao => { botao.textContent = "Aplicar alterações"; });
+        }
+    },
     renderAtividades(aba, container) {
         if (!this.deveEditarAba(aba)) return;
         this.container = container;
@@ -186,7 +150,7 @@ aplicar() {
         secao.className = "bloco editor-relatorio";
         secao.dataset.editor = "atividades";
         secao.innerHTML = `<header class="editor-cabecalho"><div><span class="editor-etiqueta">Modo de edição</span><h2>Atividades do relatório</h2>
-            <p>Aplicação temporária nesta página. Recarregar restaura o relatório original.</p></div>
+            <p>As alterações serão salvas no relatório ao clicar em Aplicar alterações. Arquivos anexados continuam disponíveis somente nesta página.</p></div>
             <div class="editor-acoes"><button type="button" data-acao-editor="cancelar">Cancelar</button><button type="button" class="editor-primario" data-acao-editor="aplicar">Aplicar alterações</button></div></header>
             <p data-editor-erro class="editor-erro" role="alert" hidden></p>
             <div class="editor-grupos">${this.rascunho.atividades.length ? this.rascunho.atividades.map((g, i) => this.htmlGrupo(g, i)).join("") : '<p class="editor-vazio">Nenhuma equipe cadastrada. Adicione uma equipe ou líder para começar.</p>'}</div>
@@ -360,7 +324,10 @@ aplicar() {
 
 document.addEventListener("plamont:auth-alterado", () => {
     const editor = window.EditorRelatorio;
-    if (editor.ativo && (!editor.podeEditar() || editor.usuarioId !== (window.Auth.usuario?.id || null))) editor.cancelar();
+    if (editor.ativo && (!editor.podeEditar() || editor.usuarioId !== (window.Auth.usuario?.id || null))) {
+        editor.descartar();
+        if (Dashboard.abaAtual) Render.atualizar();
+    }
 });
 window.addEventListener("beforeunload", evento => {
     if (window.EditorRelatorio.temAlteracoes()) { evento.preventDefault(); evento.returnValue = ""; }

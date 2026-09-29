@@ -11,6 +11,34 @@ const RelatoriosStorage = {
     // Estado técnico somente em memória.
     // NÃO faz parte do JSON operacional.
     estados: new Map(),
+    geracao: 0,
+    limparEstados() { this.geracao++; this.estados.clear(); },
+    contexto() { return { geracao: this.geracao, usuario: window.Auth?.usuario?.id }; },
+    conferirContexto(contexto) {
+        if (contexto.geracao !== this.geracao || contexto.usuario !== window.Auth?.usuario?.id || !window.Auth?.estaLogado()) {
+            const erro = new Error("A sessão mudou. Recarregue o relatório antes de salvar.");
+            erro.tipo = "sessao_alterada";
+            throw erro;
+        }
+    },
+    validarRegistro(registro, contrato) {
+        const esperado = this.identidade(contrato), dados = registro?.dados;
+        if (!dados || typeof dados !== "object" || Array.isArray(dados) || !Array.isArray(dados.abas) || !dados.abas.length ||
+            this.identidade(dados).chave !== esperado.chave || registro.contrato_id !== esperado.contratoId ||
+            registro.data_relatorio !== esperado.data || registro.turno !== esperado.turno ||
+            !Number.isInteger(registro.versao) || registro.versao < 1 || !registro.versoes_abas || Array.isArray(registro.versoes_abas)) {
+            throw new Error("O servidor retornou um relatório ou uma identidade inválida. Recarregue os dados.");
+        }
+        const ids = new Set();
+        for (const aba of dados.abas) {
+            const versao = registro.versoes_abas[aba?.id];
+            if (typeof aba?.id !== "string" || !aba.id || ids.has(aba.id) ||
+                !Object.hasOwn(registro.versoes_abas, aba.id) || !Number.isInteger(versao) || versao < 0 || versao > registro.versao) {
+                throw new Error("O servidor retornou versões de abas inválidas. Recarregue os dados.");
+            }
+            ids.add(aba.id);
+        }
+    },
 
 
     /* =====================================================
@@ -20,8 +48,7 @@ const RelatoriosStorage = {
     cliente() {
 
         const cliente =
-            window.Auth?.supabase ??
-            window.supabaseClient ??
+            window.PlamontAuth?.supabase ??
             null;
 
         if (!cliente) {
@@ -61,6 +88,9 @@ const RelatoriosStorage = {
         const data =
             String(valor ?? "").trim();
 
+        const iso = /^\d{4}-\d{2}-\d{2}$/.test(data) ? data : data.replace(/^(\d{2})\/(\d{2})\/(\d{4})$/, "$3-$2-$1");
+        const instante = new Date(`${iso}T00:00:00Z`);
+        if (!Number.isFinite(instante.getTime()) || instante.toISOString().slice(0, 10) !== iso) throw new Error("Data de relatório inválida.");
         // Já está no padrão ISO
         if (
             /^\d{4}-\d{2}-\d{2}$/.test(data)
@@ -301,6 +331,14 @@ const RelatoriosStorage = {
 
     async carregar(contratoBase) {
 
+        await window.Auth?.inicializar();
+        if (!window.Auth?.estaLogado()) {
+            if (window.Auth?.sessao?.user) throw new Error("O perfil autenticado não pôde ser carregado.");
+            this.criarEstadoSeed(contratoBase);
+            return { persistido: false, dados: this.clonar(contratoBase), versao: 0, registro: null };
+        }
+        const contexto = this.contexto();
+
         const identidade =
             this.identidade(
                 contratoBase
@@ -344,6 +382,8 @@ const RelatoriosStorage = {
                 identidade.turno
             )
             .maybeSingle();
+
+        this.conferirContexto(contexto);
 
 
         /* =================================================
@@ -420,6 +460,7 @@ const RelatoriosStorage = {
            REGISTRA VERSÕES E ESTADO DO SERVIDOR
         ================================================= */
 
+        this.validarRegistro(data, contratoBase);
         this.registrarEstadoPersistido(
             data.dados,
             data
@@ -456,6 +497,9 @@ const RelatoriosStorage = {
         aba
     }) {
 
+        if (!window.Auth?.pode?.("editar")) throw this.tratarErroSalvar({ code: "42501" });
+        const contexto = this.contexto();
+
         if (!contrato) {
             throw new Error(
                 "Contrato não informado."
@@ -482,16 +526,13 @@ const RelatoriosStorage = {
 
 
         /* =================================================
-           Se ainda não houver estado técnico registrado,
-           considera o contrato atual como seed.
+           Sem estado técnico conhecido não é seguro presumir seed.
+           É obrigatório carregar o contrato antes de salvar.
         ================================================= */
 
         if (!estado) {
 
-            estado =
-                this.criarEstadoSeed(
-                    contrato
-                );
+            throw new Error("Carregue o relatório antes de salvar: versão-base desconhecida.");
 
         }
 
@@ -586,9 +627,8 @@ const RelatoriosStorage = {
         };
 
 
-        const cliente =
-            this.cliente();
-
+        AnexosOM.garantirPayloadSerializavel(parametros);
+        const cliente = this.cliente();
 
         /* =================================================
            CHAMADA DA RPC
@@ -600,7 +640,9 @@ const RelatoriosStorage = {
         } = await cliente.rpc(
             this.rpcSalvar,
             parametros
-        );
+        ).catch(erro => { throw this.tratarErroSalvar(erro); });
+
+        this.conferirContexto(contexto);
 
 
         /* =================================================
@@ -658,6 +700,7 @@ const RelatoriosStorage = {
            retornados pela RPC.
         ================================================= */
 
+        this.validarRegistro(registro, contrato);
         this.registrarEstadoPersistido(
             registro.dados,
             registro
