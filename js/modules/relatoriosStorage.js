@@ -11,33 +11,145 @@ const RelatoriosStorage = {
     // Estado técnico somente em memória.
     // NÃO faz parte do JSON operacional.
     estados: new Map(),
+
     geracao: 0,
-    limparEstados() { this.geracao++; this.estados.clear(); },
-    contexto() { return { geracao: this.geracao, usuario: window.Auth?.usuario?.id }; },
-    conferirContexto(contexto) {
-        if (contexto.geracao !== this.geracao || contexto.usuario !== window.Auth?.usuario?.id || !window.Auth?.estaLogado()) {
-            const erro = new Error("A sessão mudou. Recarregue o relatório antes de salvar.");
-            erro.tipo = "sessao_alterada";
-            throw erro;
-        }
+
+    limparEstados() {
+        this.geracao++;
+        this.estados.clear();
     },
+
+
+    // =====================================================
+    // CONTEXTO DA SESSÃO
+    //
+    // A leitura pode ocorrer com ou sem login.
+    // O salvamento pode exigir uma sessão autenticada.
+    // =====================================================
+
+    contexto() {
+
+        return {
+            geracao: this.geracao,
+            usuario: window.Auth?.usuario?.id || null
+        };
+
+    },
+
+
+    conferirContexto(
+        contexto,
+        {
+            exigirLogin = false
+        } = {}
+    ) {
+
+        const usuarioAtual =
+            window.Auth?.usuario?.id || null;
+
+
+        if (
+            contexto.geracao !== this.geracao ||
+            contexto.usuario !== usuarioAtual ||
+            (
+                exigirLogin &&
+                !window.Auth?.estaLogado?.()
+            )
+        ) {
+
+            const erro =
+                new Error(
+                    "A sessão mudou. Recarregue o relatório antes de continuar."
+                );
+
+            erro.tipo =
+                "sessao_alterada";
+
+            throw erro;
+
+        }
+
+    },
+
+
+    // =====================================================
+    // VALIDAR REGISTRO VINDO DO SERVIDOR
+    // =====================================================
+
     validarRegistro(registro, contrato) {
-        const esperado = this.identidade(contrato), dados = registro?.dados;
-        if (!dados || typeof dados !== "object" || Array.isArray(dados) || !Array.isArray(dados.abas) || !dados.abas.length ||
-            this.identidade(dados).chave !== esperado.chave || registro.contrato_id !== esperado.contratoId ||
-            registro.data_relatorio !== esperado.data || registro.turno !== esperado.turno ||
-            !Number.isInteger(registro.versao) || registro.versao < 1 || !registro.versoes_abas || Array.isArray(registro.versoes_abas)) {
-            throw new Error("O servidor retornou um relatório ou uma identidade inválida. Recarregue os dados.");
+
+        const esperado =
+            this.identidade(contrato);
+
+        const dados =
+            registro?.dados;
+
+
+        if (
+            !dados ||
+            typeof dados !== "object" ||
+            Array.isArray(dados) ||
+            !Array.isArray(dados.abas) ||
+            !dados.abas.length ||
+
+            this.identidade(dados).chave !== esperado.chave ||
+
+            registro.contrato_id !== esperado.contratoId ||
+            registro.data_relatorio !== esperado.data ||
+            registro.turno !== esperado.turno ||
+
+            !Number.isInteger(registro.versao) ||
+            registro.versao < 1 ||
+
+            !registro.versoes_abas ||
+            Array.isArray(registro.versoes_abas)
+        ) {
+
+            throw new Error(
+                "O servidor retornou um relatório ou uma identidade inválida. Recarregue os dados."
+            );
+
         }
-        const ids = new Set();
+
+
+        const ids =
+            new Set();
+
+
         for (const aba of dados.abas) {
-            const versao = registro.versoes_abas[aba?.id];
-            if (typeof aba?.id !== "string" || !aba.id || ids.has(aba.id) ||
-                !Object.hasOwn(registro.versoes_abas, aba.id) || !Number.isInteger(versao) || versao < 0 || versao > registro.versao) {
-                throw new Error("O servidor retornou versões de abas inválidas. Recarregue os dados.");
+
+            const versao =
+                registro.versoes_abas[aba?.id];
+
+
+            if (
+                typeof aba?.id !== "string" ||
+                !aba.id ||
+                ids.has(aba.id) ||
+
+                !Object.hasOwn(
+                    registro.versoes_abas,
+                    aba.id
+                ) ||
+
+                !Number.isInteger(versao) ||
+                versao < 0 ||
+                versao > registro.versao
+            ) {
+
+                throw new Error(
+                    "O servidor retornou versões de abas inválidas. Recarregue os dados."
+                );
+
             }
-            ids.add(aba.id);
+
+
+            ids.add(
+                aba.id
+            );
+
         }
+
     },
 
 
@@ -51,11 +163,15 @@ const RelatoriosStorage = {
             window.PlamontAuth?.supabase ??
             null;
 
+
         if (!cliente) {
+
             throw new Error(
                 "Cliente Supabase não disponível."
             );
+
         }
+
 
         return cliente;
 
@@ -72,9 +188,17 @@ const RelatoriosStorage = {
             return undefined;
         }
 
-        if (typeof structuredClone === "function") {
-            return structuredClone(valor);
+
+        if (
+            typeof structuredClone === "function"
+        ) {
+
+            return structuredClone(
+                valor
+            );
+
         }
+
 
         return JSON.parse(
             JSON.stringify(valor)
@@ -88,29 +212,66 @@ const RelatoriosStorage = {
         const data =
             String(valor ?? "").trim();
 
-        const iso = /^\d{4}-\d{2}-\d{2}$/.test(data) ? data : data.replace(/^(\d{2})\/(\d{2})\/(\d{4})$/, "$3-$2-$1");
-        const instante = new Date(`${iso}T00:00:00Z`);
-        if (!Number.isFinite(instante.getTime()) || instante.toISOString().slice(0, 10) !== iso) throw new Error("Data de relatório inválida.");
+
+        const iso =
+            /^\d{4}-\d{2}-\d{2}$/.test(data)
+                ? data
+                : data.replace(
+                    /^(\d{2})\/(\d{2})\/(\d{4})$/,
+                    "$3-$2-$1"
+                );
+
+
+        const instante =
+            new Date(
+                `${iso}T00:00:00Z`
+            );
+
+
+        if (
+            !Number.isFinite(instante.getTime()) ||
+            instante.toISOString().slice(0, 10) !== iso
+        ) {
+
+            throw new Error(
+                "Data de relatório inválida."
+            );
+
+        }
+
+
         // Já está no padrão ISO
         if (
             /^\d{4}-\d{2}-\d{2}$/.test(data)
         ) {
+
             return data;
+
         }
+
 
         // Converte DD/MM/YYYY para YYYY-MM-DD
         const resultado =
             /^(\d{2})\/(\d{2})\/(\d{4})$/
                 .exec(data);
 
+
         if (!resultado) {
+
             throw new Error(
                 `Data de relatório inválida: ${data}`
             );
+
         }
 
-        const [, dia, mes, ano] =
-            resultado;
+
+        const [
+            ,
+            dia,
+            mes,
+            ano
+        ] = resultado;
+
 
         return `${ano}-${mes}-${dia}`;
 
@@ -122,11 +283,15 @@ const RelatoriosStorage = {
         const turno =
             String(valor ?? "").trim();
 
+
         if (!turno) {
+
             throw new Error(
                 "Turno do relatório não informado."
             );
+
         }
+
 
         return turno;
 
@@ -136,25 +301,32 @@ const RelatoriosStorage = {
     identidade(contrato) {
 
         if (!contrato?.id) {
+
             throw new Error(
                 "Contrato sem identificador."
             );
+
         }
+
 
         const data =
             this.dataParaISO(
                 contrato.data
             );
 
+
         const turno =
             this.turnoNormalizado(
                 contrato.turno
             );
 
+
         return {
 
             contratoId:
-                String(contrato.id),
+                String(
+                    contrato.id
+                ),
 
             data,
 
@@ -172,8 +344,12 @@ const RelatoriosStorage = {
 
     obterEstado(contrato) {
 
-        const { chave } =
-            this.identidade(contrato);
+        const {
+            chave
+        } = this.identidade(
+            contrato
+        );
+
 
         return (
             this.estados.get(chave) ??
@@ -190,10 +366,14 @@ const RelatoriosStorage = {
     criarEstadoSeed(contrato) {
 
         const identidade =
-            this.identidade(contrato);
+            this.identidade(
+                contrato
+            );
+
 
         const versoesAbas =
             new Map();
+
 
         for (
             const aba
@@ -204,12 +384,16 @@ const RelatoriosStorage = {
                 continue;
             }
 
+
             versoesAbas.set(
-                String(aba.id),
+                String(
+                    aba.id
+                ),
                 0
             );
 
         }
+
 
         const estado = {
 
@@ -225,18 +409,22 @@ const RelatoriosStorage = {
             turno:
                 identidade.turno,
 
-            persistido: false,
+            persistido:
+                false,
 
-            versaoGlobal: 0,
+            versaoGlobal:
+                0,
 
             versoesAbas
 
         };
 
+
         this.estados.set(
             identidade.chave,
             estado
         );
+
 
         return estado;
 
@@ -253,12 +441,16 @@ const RelatoriosStorage = {
     ) {
 
         const identidade =
-            this.identidade(contrato);
+            this.identidade(
+                contrato
+            );
+
 
         const versaoGlobal =
             Number(
                 registro?.versao ?? 0
             );
+
 
         const versoesServidor =
             registro?.versoes_abas &&
@@ -266,8 +458,10 @@ const RelatoriosStorage = {
                 ? registro.versoes_abas
                 : {};
 
+
         const versoesAbas =
             new Map();
+
 
         for (
             const aba
@@ -278,13 +472,18 @@ const RelatoriosStorage = {
                 continue;
             }
 
+
             const abaId =
-                String(aba.id);
+                String(
+                    aba.id
+                );
+
 
             const versaoAba =
                 Number(
                     versoesServidor[abaId] ?? 0
                 );
+
 
             versoesAbas.set(
                 abaId,
@@ -292,6 +491,7 @@ const RelatoriosStorage = {
             );
 
         }
+
 
         const estado = {
 
@@ -307,7 +507,8 @@ const RelatoriosStorage = {
             turno:
                 identidade.turno,
 
-            persistido: true,
+            persistido:
+                true,
 
             versaoGlobal,
 
@@ -315,10 +516,12 @@ const RelatoriosStorage = {
 
         };
 
+
         this.estados.set(
             identidade.chave,
             estado
         );
+
 
         return estado;
 
@@ -329,29 +532,43 @@ const RelatoriosStorage = {
        CARREGAMENTO
     ===================================================== */
 
-    async carregar(contratoBase) {
+    async carregar(
+        contratoBase
+    ) {
 
+        // Garante que o cliente Supabase já foi criado.
+        //
+        // IMPORTANTE:
+        // não exigimos login aqui.
+        //
+        // A versão persistida é pública e deve ser consultada
+        // tanto por visitantes quanto por usuários autenticados.
         await window.Auth?.inicializar();
-        if (!window.Auth?.estaLogado()) {
-            if (window.Auth?.sessao?.user) throw new Error("O perfil autenticado não pôde ser carregado.");
-            this.criarEstadoSeed(contratoBase);
-            return { persistido: false, dados: this.clonar(contratoBase), versao: 0, registro: null };
-        }
-        const contexto = this.contexto();
+
+
+        const contexto =
+            this.contexto();
+
 
         const identidade =
             this.identidade(
                 contratoBase
             );
 
+
         const cliente =
             this.cliente();
+
 
         const {
             data,
             error
         } = await cliente
-            .from(this.tabela)
+
+            .from(
+                this.tabela
+            )
+
             .select(`
                 id,
                 contrato_id,
@@ -369,25 +586,39 @@ const RelatoriosStorage = {
                 fechado_por,
                 fechado_em
             `)
+
             .eq(
                 "contrato_id",
                 identidade.contratoId
             )
+
             .eq(
                 "data_relatorio",
                 identidade.data
             )
+
             .eq(
                 "turno",
                 identidade.turno
             )
+
             .maybeSingle();
 
-        this.conferirContexto(contexto);
+
+        // A leitura pública aceita usuario = null.
+        // Ainda impedimos que uma troca de sessão no meio da
+        // requisição faça uma resposta antiga ser aplicada.
+        this.conferirContexto(
+            contexto
+        );
 
 
         /* =================================================
            ERRO REAL DE CARREGAMENTO
+
+           Não usar o JSON como fallback silencioso aqui.
+           Se o servidor falhou, não sabemos se existe uma
+           versão persistida mais recente.
         ================================================= */
 
         if (error) {
@@ -398,10 +629,14 @@ const RelatoriosStorage = {
                     "o relatório persistido."
                 );
 
-            erro.causa = error;
+
+            erro.causa =
+                error;
+
 
             erro.tipo =
                 "erro_carregamento";
+
 
             throw erro;
 
@@ -411,7 +646,8 @@ const RelatoriosStorage = {
         /* =================================================
            NÃO EXISTE NO BANCO
 
-           Continua utilizando o JSON original como seed.
+           Neste caso o JSON original é legitimamente
+           utilizado como seed.
         ================================================= */
 
         if (!data) {
@@ -420,18 +656,22 @@ const RelatoriosStorage = {
                 contratoBase
             );
 
+
             return {
 
-                persistido: false,
+                persistido:
+                    false,
 
                 dados:
                     this.clonar(
                         contratoBase
                     ),
 
-                versao: 0,
+                versao:
+                    0,
 
-                registro: null
+                registro:
+                    null
 
             };
 
@@ -460,7 +700,12 @@ const RelatoriosStorage = {
            REGISTRA VERSÕES E ESTADO DO SERVIDOR
         ================================================= */
 
-        this.validarRegistro(data, contratoBase);
+        this.validarRegistro(
+            data,
+            contratoBase
+        );
+
+
         this.registrarEstadoPersistido(
             data.dados,
             data
@@ -469,7 +714,8 @@ const RelatoriosStorage = {
 
         return {
 
-            persistido: true,
+            persistido:
+                true,
 
             dados:
                 this.clonar(
@@ -481,7 +727,8 @@ const RelatoriosStorage = {
                     data.versao
                 ),
 
-            registro: data
+            registro:
+                data
 
         };
 
@@ -497,19 +744,40 @@ const RelatoriosStorage = {
         aba
     }) {
 
-        if (!window.Auth?.pode?.("editar")) throw this.tratarErroSalvar({ code: "42501" });
-        const contexto = this.contexto();
+        // Além da proteção no banco/RPC, o frontend também
+        // impede qualquer tentativa de edição sem permissão.
+        if (
+            !window.Auth?.pode?.(
+                "editar"
+            )
+        ) {
+
+            throw this.tratarErroSalvar({
+                code: "42501"
+            });
+
+        }
+
+
+        const contexto =
+            this.contexto();
+
 
         if (!contrato) {
+
             throw new Error(
                 "Contrato não informado."
             );
+
         }
 
+
         if (!aba?.id) {
+
             throw new Error(
                 "Aba não informada."
             );
+
         }
 
 
@@ -526,13 +794,17 @@ const RelatoriosStorage = {
 
 
         /* =================================================
-           Sem estado técnico conhecido não é seguro presumir seed.
+           Sem estado técnico conhecido não é seguro
+           presumir seed.
+
            É obrigatório carregar o contrato antes de salvar.
         ================================================= */
 
         if (!estado) {
 
-            throw new Error("Carregue o relatório antes de salvar: versão-base desconhecida.");
+            throw new Error(
+                "Carregue o relatório antes de salvar: versão-base desconhecida."
+            );
 
         }
 
@@ -577,7 +849,9 @@ const RelatoriosStorage = {
             Number(
                 estado
                     .versoesAbas
-                    .get(abaId)
+                    .get(
+                        abaId
+                    )
             );
 
 
@@ -627,8 +901,14 @@ const RelatoriosStorage = {
         };
 
 
-        AnexosOM.garantirPayloadSerializavel(parametros);
-        const cliente = this.cliente();
+        AnexosOM.garantirPayloadSerializavel(
+            parametros
+        );
+
+
+        const cliente =
+            this.cliente();
+
 
         /* =================================================
            CHAMADA DA RPC
@@ -636,42 +916,53 @@ const RelatoriosStorage = {
 
         let resposta;
 
-try {
 
-    resposta = await cliente.rpc(
-        this.rpcSalvar,
-        parametros
-    );
+        try {
 
-} catch (erro) {
+            resposta =
+                await cliente.rpc(
+                    this.rpcSalvar,
+                    parametros
+                );
 
-    throw this.tratarErroSalvar(
-        erro
-    );
+        } catch (erro) {
 
-}
+            throw this.tratarErroSalvar(
+                erro
+            );
 
-const {
-    data,
-    error
-} = resposta;
+        }
 
 
-// Confirma que a sessão continua sendo a mesma
-this.conferirContexto(contexto);
+        const {
+            data,
+            error
+        } = resposta;
 
 
-// =================================================
-// ERRO NO SERVIDOR
-// =================================================
+        // Salvamento continua exigindo que:
+        //
+        // - a sessão não tenha mudado;
+        // - o usuário continue autenticado.
+        this.conferirContexto(
+            contexto,
+            {
+                exigirLogin: true
+            }
+        );
 
-if (error) {
 
-    throw this.tratarErroSalvar(
-        error
-    );
+        /* =================================================
+           ERRO NO SERVIDOR
+        ================================================= */
 
-}
+        if (error) {
+
+            throw this.tratarErroSalvar(
+                error
+            );
+
+        }
 
 
         /* =================================================
@@ -716,7 +1007,12 @@ if (error) {
            retornados pela RPC.
         ================================================= */
 
-        this.validarRegistro(registro, contrato);
+        this.validarRegistro(
+            registro,
+            contrato
+        );
+
+
         this.registrarEstadoPersistido(
             registro.dados,
             registro
@@ -751,20 +1047,24 @@ if (error) {
                 error?.code ?? ""
             );
 
+
         const mensagem =
             String(
                 error?.message ?? ""
             );
+
 
         const detalhes =
             String(
                 error?.details ?? ""
             );
 
+
         const hint =
             String(
                 error?.hint ?? ""
             );
+
 
         const texto =
             `${mensagem} ${detalhes} ${hint}`;
@@ -776,8 +1076,12 @@ if (error) {
                 "as alterações."
             );
 
-        erro.causa = error;
-        erro.codigo = codigo;
+
+        erro.causa =
+            error;
+
+        erro.codigo =
+            codigo;
 
 
         /* =================================================
@@ -791,9 +1095,11 @@ if (error) {
             erro.tipo =
                 "sem_permissao";
 
+
             erro.message =
                 "Você não possui permissão " +
                 "para salvar este relatório.";
+
 
             return erro;
 
@@ -814,10 +1120,12 @@ if (error) {
             erro.tipo =
                 "conflito";
 
+
             erro.message =
                 "Esta aba foi atualizada por " +
                 "outro usuário enquanto você " +
                 "estava editando.";
+
 
             return erro;
 
@@ -838,10 +1146,12 @@ if (error) {
             erro.tipo =
                 "base_inexistente";
 
+
             erro.message =
                 "A versão-base deste relatório " +
                 "não está mais disponível. " +
                 "Recarregue os dados.";
+
 
             return erro;
 
@@ -859,9 +1169,11 @@ if (error) {
             erro.tipo =
                 "dados_invalidos";
 
+
             erro.message =
                 "O servidor recusou os dados " +
                 "do relatório por inconsistência.";
+
 
             return erro;
 
@@ -877,17 +1189,21 @@ if (error) {
                 "40001",
                 "55P03",
                 "40P01"
-            ].includes(codigo)
+            ].includes(
+                codigo
+            )
         ) {
 
             erro.tipo =
                 "concorrencia";
+
 
             erro.message =
                 "O relatório foi atualizado " +
                 "por outra sessão. " +
                 "Tente novamente após " +
                 "recarregar os dados.";
+
 
             return erro;
 
@@ -900,6 +1216,7 @@ if (error) {
 
         erro.tipo =
             "erro_servidor";
+
 
         return erro;
 

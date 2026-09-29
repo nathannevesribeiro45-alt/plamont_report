@@ -43,7 +43,10 @@ function obterIdentidadeSessao() {
         return null;
     }
 
-    return window.Auth.usuario?.id || null;
+    return (
+        window.Auth.usuario?.id ||
+        null
+    );
 
 }
 
@@ -52,27 +55,43 @@ function obterIdentidadeSessao() {
 // CARREGAR UM CONTRATO
 // ======================================
 
-async function carregarContrato(nomeArquivo) {
+async function carregarContrato(
+    nomeArquivo
+) {
 
     try {
 
         // ==================================
-        // 1. GARANTIR AUTH RESOLVIDO
+        // 1. GARANTIR CLIENTE SUPABASE
+        //
+        // Auth.inicializar() também cria
+        // o cliente usado pelo
+        // RelatoriosStorage.
+        //
+        // Não significa exigir login.
         // ==================================
 
-        if (window.Auth?.inicializar) {
+        if (
+            window.Auth?.inicializar
+        ) {
+
             await window.Auth.inicializar();
+
         }
 
 
         // ==================================
         // 2. CARREGAR JSON BASE
+        //
+        // O JSON agora funciona somente
+        // como seed inicial.
         // ==================================
 
         const resposta =
             await fetch(
                 `contratos/${nomeArquivo}`
             );
+
 
         if (!resposta.ok) {
 
@@ -82,31 +101,22 @@ async function carregarContrato(nomeArquivo) {
 
         }
 
+
         const contratoBase =
             await resposta.json();
 
 
         // ==================================
-        // 3. USUÁRIO NÃO AUTENTICADO
+        // 3. RELATÓRIOS STORAGE
         //
-        // Visualização pública continua
-        // utilizando somente o JSON.
+        // A versão persistida é pública.
+        // Portanto esta consulta acontece
+        // com ou sem login.
         // ==================================
 
-        if (!window.Auth?.estaLogado?.()) {
-
-            return contratoBase;
-
-        }
-
-
-        // ==================================
-        // 4. USUÁRIO AUTENTICADO
-        //
-        // Consulta a versão persistida.
-        // ==================================
-
-        if (!window.RelatoriosStorage) {
+        if (
+            !window.RelatoriosStorage
+        ) {
 
             throw new Error(
                 "RelatoriosStorage não foi carregado."
@@ -122,7 +132,16 @@ async function carregarContrato(nomeArquivo) {
 
 
         // ==================================
-        // 5. SERVIDOR É A FONTE DE VERDADE
+        // 4. FONTE DE VERDADE
+        //
+        // Se existe no Supabase:
+        // → versão persistida
+        //
+        // Se não existe:
+        // → JSON seed
+        //
+        // Essa decisão é feita dentro do
+        // RelatoriosStorage.
         // ==================================
 
         return resultado.dados;
@@ -135,6 +154,15 @@ async function carregarContrato(nomeArquivo) {
             erro
         );
 
+
+        // IMPORTANTE:
+        //
+        // Não retornamos automaticamente o
+        // JSON em caso de falha no Supabase.
+        //
+        // Se o banco estiver indisponível,
+        // não sabemos se existe uma versão
+        // persistida mais recente.
         return null;
 
     }
@@ -150,6 +178,11 @@ async function carregarTodosContratos({
     preservarNavegacao = false
 } = {}) {
 
+    // Cada carregamento recebe uma geração.
+    //
+    // Se outro carregamento começar antes
+    // deste terminar, os resultados antigos
+    // serão descartados.
     const minhaGeracao =
         ++geracaoCarregamento;
 
@@ -163,6 +196,7 @@ async function carregarTodosContratos({
             ? Dashboard.contratoAtual?.id
             : null;
 
+
     const abaAnteriorId =
         preservarNavegacao
             ? Dashboard.abaAtual?.id
@@ -171,17 +205,15 @@ async function carregarTodosContratos({
 
     // ==================================
     // NOVO ESTADO
-    //
-    // Não reutilizamos os contratos
-    // anteriores para evitar manter
-    // dados públicos após login ou
-    // persistidos após logout.
     // ==================================
 
     const novosContratos = {};
 
 
-    for (const arquivo of ARQUIVOS_CONTRATOS) {
+    for (
+        const arquivo
+        of ARQUIVOS_CONTRATOS
+    ) {
 
         const contrato =
             await carregarContrato(
@@ -189,8 +221,10 @@ async function carregarTodosContratos({
             );
 
 
-        // Outro carregamento começou.
-        // Este resultado ficou obsoleto.
+        // ==================================
+        // ESTA CARGA FICOU OBSOLETA
+        // ==================================
+
         if (
             minhaGeracao !==
             geracaoCarregamento
@@ -212,14 +246,15 @@ async function carregarTodosContratos({
         }
 
 
-        novosContratos[contrato.id] =
-            contrato;
+        novosContratos[
+            contrato.id
+        ] = contrato;
 
     }
 
 
     // ==================================
-    // CONFIRMAR QUE AINDA É A CARGA ATUAL
+    // CONFIRMAR GERAÇÃO
     // ==================================
 
     if (
@@ -246,14 +281,18 @@ async function carregarTodosContratos({
 
     const contratoRestaurado =
         contratoAnteriorId
-            ? novosContratos[contratoAnteriorId]
+            ? novosContratos[
+                contratoAnteriorId
+            ]
             : null;
 
 
     Dashboard.contratoAtual =
         contratoRestaurado ||
         novosContratos.os440 ||
-        Object.values(novosContratos)[0] ||
+        Object.values(
+            novosContratos
+        )[0] ||
         null;
 
 
@@ -267,16 +306,19 @@ async function carregarTodosContratos({
     ) {
 
         Dashboard.abaAtual =
-            Dashboard.contratoAtual.abas
+            Dashboard.contratoAtual
+                .abas
                 ?.find(
                     aba =>
-                        aba.id === abaAnteriorId
+                        aba.id ===
+                        abaAnteriorId
                 ) ||
             null;
 
     } else {
 
-        Dashboard.abaAtual = null;
+        Dashboard.abaAtual =
+            null;
 
     }
 
@@ -287,19 +329,27 @@ async function carregarTodosContratos({
 
 
 // ======================================
-// ATUALIZAR INTERFACE APÓS TROCA
-// DE SESSÃO
+// ATUALIZAR CONTRATOS APÓS
+// LOGIN / LOGOUT / TROCA DE USUÁRIO
 // ======================================
 
 async function atualizarContratosPorSessao() {
 
     // ==================================
     // INVALIDAR ESTADO TÉCNICO
+    //
+    // Os dados continuam compartilhados,
+    // mas uma nova sessão deve trabalhar
+    // sobre versões-base recém-carregadas.
     // ==================================
 
     window.RelatoriosStorage
         ?.limparEstados?.();
 
+
+    // ==================================
+    // RECARREGAR FONTE PERSISTIDA
+    // ==================================
 
     const carregado =
         await carregarTodosContratos({
@@ -313,7 +363,7 @@ async function atualizarContratosPorSessao() {
 
 
     // ==================================
-    // RECONSTRUIR ÍNDICE DA BUSCA
+    // RECONSTRUIR BUSCA
     // ==================================
 
     if (
@@ -326,7 +376,7 @@ async function atualizarContratosPorSessao() {
 
 
     // ==================================
-    // ATUALIZAR PÁGINA ATUAL
+    // ATUALIZAR INTERFACE
     // ==================================
 
     if (
@@ -339,7 +389,7 @@ async function atualizarContratosPorSessao() {
 
 
     // ==================================
-    // ATUALIZAR MAPA SE JÁ EXISTIR
+    // ATUALIZAR MAPA
     // ==================================
 
     if (
@@ -348,7 +398,9 @@ async function atualizarContratosPorSessao() {
         Mapa.markersLayer
     ) {
 
-        Mapa.renderFrentes(false);
+        Mapa.renderFrentes(
+            false
+        );
 
     }
 
@@ -369,23 +421,38 @@ function configurarMudancaDeSessao() {
         "plamont:auth-alterado",
         async evento => {
 
-            if (!sistemaInicializado) {
+            // Durante a inicialização,
+            // o Auth também dispara eventos.
+            //
+            // A primeira carga já está cuidando
+            // deles, então ignoramos enquanto
+            // o sistema não estiver pronto.
+            if (
+                !sistemaInicializado
+            ) {
+
                 return;
+
             }
 
 
             const novaIdentidade =
                 evento.detail?.logado
-                    ? evento.detail?.usuario?.id || null
+                    ? (
+                        evento.detail
+                            ?.usuario
+                            ?.id ||
+                        null
+                    )
                     : null;
 
 
             // ==================================
             // IGNORAR EVENTOS DUPLICADOS
             //
-            // Auth pode atualizar a interface
-            // mais de uma vez para a mesma
-            // sessão.
+            // O Auth pode atualizar a interface
+            // mais de uma vez durante a mesma
+            // transição.
             // ==================================
 
             if (
@@ -438,6 +505,7 @@ document.addEventListener(
                 ".menu-btn"
             );
 
+
         abrirPagina(
             "dashboard",
             primeiroBotao
@@ -445,10 +513,16 @@ document.addEventListener(
 
 
         // ==================================
-        // 2. AGUARDAR AUTH
+        // 2. INICIALIZAR AUTH / SUPABASE
+        //
+        // Mesmo visitante anônimo precisa
+        // do cliente Supabase para ler os
+        // relatórios persistidos.
         // ==================================
 
-        if (window.Auth?.inicializar) {
+        if (
+            window.Auth?.inicializar
+        ) {
 
             await window.Auth.inicializar();
 
@@ -465,6 +539,8 @@ document.addEventListener(
 
         // ==================================
         // 4. CARREGAR CONTRATOS
+        //
+        // Sempre consulta o Supabase.
         // ==================================
 
         await carregarTodosContratos();
@@ -508,7 +584,8 @@ document.addEventListener(
         // 9. SISTEMA PRONTO
         // ==================================
 
-        sistemaInicializado = true;
+        sistemaInicializado =
+            true;
 
 
         // ==================================
