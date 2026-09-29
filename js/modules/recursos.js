@@ -122,9 +122,7 @@ criarLista(recursos, container) {
 
         container.innerHTML = `
             <div class="lista-vazia">
-                <div class="lista-vazia-icone"></div>
-                <h3>✅Nenhum recurso informado</h3>
-                <p>Não há equipamentos cadastrados para este turno.</p>
+
             </div>
         `;
 

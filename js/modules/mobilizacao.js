@@ -32,9 +32,7 @@ if (total === 0) {
 
     listaContainer.innerHTML = `
         <div class="lista-vazia">
-            <div class="lista-vazia-icone"></div>
-            <h3>✅Nenhum colaborador em mobilização</h3>
-            <p>Todo o efetivo está alocado em área operacional neste turno.</p>
+
         </div>
     `;
 
