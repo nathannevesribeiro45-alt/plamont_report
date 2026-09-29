@@ -11,7 +11,7 @@
       "contrato": "os456",
 
       "status": {
-        "data": "27/09/2026",
+        "data": "29/09/2026",
         "hora": "16:00"
       },
 
@@ -28,7 +28,7 @@
         "realizadoFimHora": null
       },
 
-      "dataStatus": "27/09/2026",
+      "dataStatus": "29/09/2026",
 
       "pontos": [
         {
@@ -107,6 +107,15 @@
           "realizado": 29.96,
           "previstoUnitario": 15.26,
           "realizadoUnitario": 15.26
+        },
+        {
+          "data": "29/09/2026",
+          "previsto": 30.35,
+          "realizado": 31,
+          "previstoUnitario": 15.26,
+          "realizadoUnitario": 15.26
+          
+
         },
         {
           "data": "01/10/2026",
@@ -244,21 +253,52 @@
         }
       ],
 
-      "turno": {
+       "turno": {
         "realizado": {
-          "inicio": "",
-          "fim": ""
+          "inicio": "16:00",
+          "fim": "07:00"
         },
-
         "proximo": {
-          "inicio": "",
-          "fim": ""
+          "inicio": "07:00",
+          "fim": "16:00"
         }
       },
 
       "atividades": {
-        "realizadas": [],
-        "proximas": []
+        "realizadas": [
+            {
+            "om": "--",
+            "area": "FABRICAÇÃO DE PLATAFORMAS DO AMOSTRADOR",
+            "descricao": "Fabricação das plataformas no Pipeshop central",
+            "status": "Em andamento"
+          },
+          {
+            "om": "--",
+            "area": "MONTAGEM DE ANDAIME PARA EQUIPE DA ELÉTRICA ATUA NO PAINÉL DO AMOSTRADOR",
+            "descricao": "Montagem do andaime de acesso ao painel em andamento",
+            "status": "Em andamento"
+          },
+           {
+            "om": "--",
+            "area": "5S NA ÁREA E ORGANIZAÇÃO CANTEIRO DO COBRE",
+            "descricao": "Mobilização de tendas e organização das tendas metálicas por parte da equipe da mecânica.",
+            "status": "Em andamento"
+          }
+        ],
+        "proximas": [
+                        {
+            "om": "--",
+            "area": "FABRICAÇÃO DE PLATAFORMAS DO AMOSTRADOR",
+            "descricao": "Fabricação das plataformas no Pipeshop central",
+            "status": "Em andamento"
+          },
+          {
+            "om": "--",
+            "area": "MONTAGEM DE ANDAIME PARA EQUIPE DA ELÉTRICA ATUA NO PAINÉL DO AMOSTRADOR",
+            "descricao": "Montagem do andaime de acesso ao painel em andamento",
+            "status": "Em andamento"
+          }
+        ]
       },
 
       "observacoes": ""
