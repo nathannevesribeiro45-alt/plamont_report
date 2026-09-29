@@ -1,0 +1,267 @@
+{
+  "dadosDeTeste": false,
+  "horasPorDiaUtil": 12,
+
+  "paradas": [
+    {
+      "id": "ct-tr-353k-02",
+      "nome": "AMOSTRADOR DA CASA DE TRANSFERÊNCIA CT-TR-353K-02",
+      "tipo": "Grande Parada",
+      "equipamento": "CT-TR-353K-02",
+      "contrato": "os456",
+
+      "status": {
+        "data": "27/09/2026",
+        "hora": "16:00"
+      },
+
+      "periodo": {
+        "inicio": "21/07/2026",
+        "inicioHora": "16:00",
+
+        "fim": "18/11/2026",
+
+        "previstoFim": "18/11/2026",
+        "previstoFimHora": null,
+
+        "realizadoFim": null,
+        "realizadoFimHora": null
+      },
+
+      "dataStatus": "27/09/2026",
+
+      "pontos": [
+        {
+          "data": "21/07/2026",
+          "previsto": 0.45,
+          "realizado": 0.45,
+          "previstoUnitario": 0.45,
+          "realizadoUnitario": 0.45
+        },
+        {
+          "data": "26/07/2026",
+          "previsto": 2.70,
+          "realizado": 2.70,
+          "previstoUnitario": 2.25,
+          "realizadoUnitario": 2.25
+        },
+        {
+          "data": "02/08/2026",
+          "previsto": 5.84,
+          "realizado": 5.84,
+          "previstoUnitario": 3.59,
+          "realizadoUnitario": 3.59
+        },
+        {
+          "data": "09/08/2026",
+          "previsto": 9.16,
+          "realizado": 9.16,
+          "previstoUnitario": 5.57,
+          "realizadoUnitario": 5.57
+        },
+        {
+          "data": "16/08/2026",
+          "previsto": 12.32,
+          "realizado": 12.32,
+          "previstoUnitario": 6.75,
+          "realizadoUnitario": 6.75
+        },
+        {
+          "data": "23/08/2026",
+          "previsto": 15.20,
+          "realizado": 15.20,
+          "previstoUnitario": 8.45,
+          "realizadoUnitario": 8.45
+        },
+        {
+          "data": "30/08/2026",
+          "previsto": 17.75,
+          "realizado": 17.75,
+          "previstoUnitario": 9.30,
+          "realizadoUnitario": 9.30
+        },
+        {
+          "data": "06/09/2026",
+          "previsto": 20.28,
+          "realizado": 20.28,
+          "previstoUnitario": 10.98,
+          "realizadoUnitario": 10.98
+        },
+        {
+          "data": "13/09/2026",
+          "previsto": 23.47,
+          "realizado": 23.47,
+          "previstoUnitario": 12.49,
+          "realizadoUnitario": 12.49
+        },
+        {
+          "data": "20/09/2026",
+          "previsto": 27.18,
+          "realizado": 27.18,
+          "previstoUnitario": 14.70,
+          "realizadoUnitario": 14.70
+        },
+        {
+          "data": "27/09/2026",
+          "previsto": 29.96,
+          "realizado": 29.96,
+          "previstoUnitario": 15.26,
+          "realizadoUnitario": 15.26
+        },
+        {
+          "data": "01/10/2026",
+          "previsto": 30.73,
+          "realizado": null,
+          "previstoUnitario": 15.47,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "02/10/2026",
+          "previsto": 32.25,
+          "realizado": null,
+          "previstoUnitario": 16.78,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "03/10/2026",
+          "previsto": 33.53,
+          "realizado": null,
+          "previstoUnitario": 16.75,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "04/10/2026",
+          "previsto": 35.00,
+          "realizado": null,
+          "previstoUnitario": 18.25,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "05/10/2026",
+          "previsto": 38.58,
+          "realizado": null,
+          "previstoUnitario": 20.33,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "06/10/2026",
+          "previsto": 40.56,
+          "realizado": null,
+          "previstoUnitario": 20.23,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "07/10/2026",
+          "previsto": 42.65,
+          "realizado": null,
+          "previstoUnitario": 22.41,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "08/10/2026",
+          "previsto": 44.90,
+          "realizado": null,
+          "previstoUnitario": 22.48,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "09/10/2026",
+          "previsto": 48.79,
+          "realizado": null,
+          "previstoUnitario": 26.31,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "10/10/2026",
+          "previsto": 56.13,
+          "realizado": null,
+          "previstoUnitario": 29.81,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "11/10/2026",
+          "previsto": 63.37,
+          "realizado": null,
+          "previstoUnitario": 33.56,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "12/10/2026",
+          "previsto": 68.93,
+          "realizado": null,
+          "previstoUnitario": 35.37,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "18/10/2026",
+          "previsto": 71.54,
+          "realizado": null,
+          "previstoUnitario": 36.18,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "25/10/2026",
+          "previsto": 73.75,
+          "realizado": null,
+          "previstoUnitario": 37.57,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "01/11/2026",
+          "previsto": 76.16,
+          "realizado": null,
+          "previstoUnitario": 38.59,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "08/11/2026",
+          "previsto": 78.25,
+          "realizado": null,
+          "previstoUnitario": 39.66,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "15/11/2026",
+          "previsto": 78.78,
+          "realizado": null,
+          "previstoUnitario": 39.11,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "18/11/2026",
+          "previsto": 100.00,
+          "realizado": null,
+          "previstoUnitario": 60.89,
+          "realizadoUnitario": null
+        }
+      ],
+
+      "marcos": [
+        {
+          "data": "18/11/2026",
+          "previsto": 100,
+          "descricao": "Conclusão prevista"
+        }
+      ],
+
+      "turno": {
+        "realizado": {
+          "inicio": "",
+          "fim": ""
+        },
+
+        "proximo": {
+          "inicio": "",
+          "fim": ""
+        }
+      },
+
+      "atividades": {
+        "realizadas": [],
+        "proximas": []
+      },
+
+      "observacoes": ""
+    }
+  ]
+}

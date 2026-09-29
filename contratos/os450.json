@@ -1,7 +1,7 @@
 {
   "id": "os450",
   "nome": "Contrato OS 450",
-  "data": "22/09/2026",
+  "data": "29/09/2026",
   "turno": "Dia B",
   "horario": "07:00 às 19:00",
   "abas": [
@@ -53,16 +53,9 @@
       "recursos": [
         {
           "tipo": "Munck",
-          "placa": "QRD-8213",
-          "operador": "Moisés",
-          "contato":"(94) 9 9181-8671",
-          "status": "disponivel"
-        },
-        {
-          "tipo": "Munck",
           "placa": "QRI-7I40",
-          "operador": "",
-          "contato":"",
+          "operador": "Moisés",
+          "contato":"9499181-8671",
           "status": "preventiva"
         },
          {
@@ -82,9 +75,9 @@
         {
           "tipo": "Pick-up",
           "placa": "SFR-3B97",
-          "operador": "Félix",
-          "contato":"(98) 98841-3585",
-          "status": "Disponivel"
+          "operador": "",
+          "contato":"",
+          "status": "manutencao"
         },
         {
           "tipo": "Caminhao comboio",
@@ -95,35 +88,19 @@
         }
       ],
       "atividades": [
-     
-        {
-          
-          "oms":[
-            {
-              "frente":"DESMOBILIZAÇÃO DO VV-01",
-              "numero":"202604381686",
-              "descricao":"APOIO-PREPARAÇÃO MATERIAIS VV01",
-              "latitude":"-2,5681063",
-              "longitude":"-44,3457358",
-              "arquivoPdf":"om's/contrato 450 oms/OM 202604381686 - APOIO- PREPARAÇÃO MATERIAIS VV01.pdf", 
-              "status":"Em andamento"
-            }
-
-          ]
-
-        },
+    
         {
           "lider":"Jessé",
           "telefone":"98 8817-1971",
           "equipe":"05 mecânicos + 2 soldadores + 1 caldeireiro + 01 pintor",
           "oms":[
             {
-              "frente":"ER-01",
-              "numero":"202405911719",
-              "descricao":"TROCAR RAMPA CURVA DA ER-01",
-              "latitude":"-2,5671549",
-              "longitude":"-44,3467192",
-              "arquivoPdf":"om's/contrato 450 oms/OM 202405911719 TROCAR RAMPA CURVA DA ER-01.pdf", 
+              "frente":"RP-08",
+              "numero":"202605036991",
+              "descricao":"INSTALAR SUPORTEBRAÇO CORTINA DE CABOS (RP-08)",
+              "latitude":"-2,5734222",
+              "longitude":"-44,3429541",
+              "arquivoPdf":"om's/contrato 450 oms/OM 202605036991 - INSTALAR SUPORTEBRAÇO CORTINA DE CABOS.pdf", 
               "status":"Em andamento"
             }
           ]
@@ -134,26 +111,30 @@
           "equipe":"03 mecânicos + 2 soldadores + 2 caldeireiro + 01 pintor",
           "oms":[
             {
-              "frente":"TR-315K-33",
-              "numero":"202603783670",
-              "descricao":"TROCAR 15 ROLOSDE CARGA (TR-315K-33)",
-              "latitude":"-2,5682235",
-              "longitude":"-44,3555469",
-              "arquivoPdf":"", 
-              "status":"Em andamento"
-            }
-          ]
-        },
-        {
-          
-          "oms":[
-            {
               "frente":"MOBILIZAÇÃO PARA ER-02",
               "numero":"202604783539",
               "descricao":"PREPARAÇÃO DE MATERIAS E 5S PLAMONT (ER-02)",
               "latitude":"-2,5643473",
               "longitude":"-44,3533069",
               "arquivoPdf":"om's/contrato 450 oms/OM 202604783539 - PREPARAÇÃO DE MATERIAS E 5S ER02.pdf", 
+              "status":"Em andamento"
+            }
+          ]
+        },
+        {
+          "lider":"Ricardo",
+          "telefone":"98 8497-6410",
+          "equipe":"05 mecânicos + 1 soldadores + 2 caldeireiro",
+          
+          "oms":[
+            
+            {
+              "frente":"CANTEIRO CENTRAL",
+              "numero":"--",
+              "descricao":"FABRICAÇÃO DE PARA ER-02",
+              "latitude":"-2,5560547",
+              "longitude":"-44,3504725",
+              "arquivoPdf":"", 
               "status":"Em andamento"
             }
           ]
