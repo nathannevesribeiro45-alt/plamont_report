@@ -8,8 +8,48 @@ const Dashboard = {
     abaAtual: null
 };
 
+
 // ======================================
-// CARREGAR CONTRATOS
+// CONTRATOS DISPONÍVEIS
+// ======================================
+
+const ARQUIVOS_CONTRATOS = [
+    "os440.json",
+    "os441.json",
+    "os442.json",
+    "os450.json",
+    "os456.json"
+];
+
+
+// ======================================
+// CONTROLE DE CARREGAMENTO
+// ======================================
+
+let sistemaInicializado = false;
+
+let geracaoCarregamento = 0;
+
+let identidadeSessaoAtual = null;
+
+
+// ======================================
+// IDENTIDADE DA SESSÃO
+// ======================================
+
+function obterIdentidadeSessao() {
+
+    if (!window.Auth?.estaLogado?.()) {
+        return null;
+    }
+
+    return window.Auth.usuario?.id || null;
+
+}
+
+
+// ======================================
+// CARREGAR UM CONTRATO
 // ======================================
 
 async function carregarContrato(nomeArquivo) {
@@ -17,7 +57,16 @@ async function carregarContrato(nomeArquivo) {
     try {
 
         // ==================================
-        // 1. CARREGAR JSON BASE
+        // 1. GARANTIR AUTH RESOLVIDO
+        // ==================================
+
+        if (window.Auth?.inicializar) {
+            await window.Auth.inicializar();
+        }
+
+
+        // ==================================
+        // 2. CARREGAR JSON BASE
         // ==================================
 
         const resposta =
@@ -38,17 +87,13 @@ async function carregarContrato(nomeArquivo) {
 
 
         // ==================================
-        // 2. USUÁRIO NÃO AUTENTICADO
+        // 3. USUÁRIO NÃO AUTENTICADO
         //
-        // O site continua público para
-        // visualização através dos JSONs.
+        // Visualização pública continua
+        // utilizando somente o JSON.
         // ==================================
 
-        const usuarioAutenticado =
-            !!window.Auth?.usuario?.id;
-
-
-        if (!usuarioAutenticado) {
+        if (!window.Auth?.estaLogado?.()) {
 
             return contratoBase;
 
@@ -56,9 +101,9 @@ async function carregarContrato(nomeArquivo) {
 
 
         // ==================================
-        // 3. USUÁRIO AUTENTICADO
+        // 4. USUÁRIO AUTENTICADO
         //
-        // Busca uma versão persistida.
+        // Consulta a versão persistida.
         // ==================================
 
         if (!window.RelatoriosStorage) {
@@ -77,13 +122,7 @@ async function carregarContrato(nomeArquivo) {
 
 
         // ==================================
-        // 4. RETORNAR ESTADO ATUAL
-        //
-        // Sem registro:
-        // → JSON seed
-        //
-        // Com registro:
-        // → JSONB do Supabase
+        // 5. SERVIDOR É A FONTE DE VERDADE
         // ==================================
 
         return resultado.dados;
@@ -102,53 +141,381 @@ async function carregarContrato(nomeArquivo) {
 
 }
 
+
+// ======================================
+// CARREGAR TODOS OS CONTRATOS
+// ======================================
+
+async function carregarTodosContratos({
+    preservarNavegacao = false
+} = {}) {
+
+    const minhaGeracao =
+        ++geracaoCarregamento;
+
+
+    // ==================================
+    // GUARDAR NAVEGAÇÃO ATUAL
+    // ==================================
+
+    const contratoAnteriorId =
+        preservarNavegacao
+            ? Dashboard.contratoAtual?.id
+            : null;
+
+    const abaAnteriorId =
+        preservarNavegacao
+            ? Dashboard.abaAtual?.id
+            : null;
+
+
+    // ==================================
+    // NOVO ESTADO
+    //
+    // Não reutilizamos os contratos
+    // anteriores para evitar manter
+    // dados públicos após login ou
+    // persistidos após logout.
+    // ==================================
+
+    const novosContratos = {};
+
+
+    for (const arquivo of ARQUIVOS_CONTRATOS) {
+
+        const contrato =
+            await carregarContrato(
+                arquivo
+            );
+
+
+        // Outro carregamento começou.
+        // Este resultado ficou obsoleto.
+        if (
+            minhaGeracao !==
+            geracaoCarregamento
+        ) {
+
+            return false;
+
+        }
+
+
+        if (!contrato) {
+
+            console.error(
+                `Contrato ${arquivo} não foi incluído no Dashboard.`
+            );
+
+            continue;
+
+        }
+
+
+        novosContratos[contrato.id] =
+            contrato;
+
+    }
+
+
+    // ==================================
+    // CONFIRMAR QUE AINDA É A CARGA ATUAL
+    // ==================================
+
+    if (
+        minhaGeracao !==
+        geracaoCarregamento
+    ) {
+
+        return false;
+
+    }
+
+
+    // ==================================
+    // SUBSTITUIR ESTADO DO DASHBOARD
+    // ==================================
+
+    Dashboard.contratos =
+        novosContratos;
+
+
+    // ==================================
+    // RESTAURAR CONTRATO ATUAL
+    // ==================================
+
+    const contratoRestaurado =
+        contratoAnteriorId
+            ? novosContratos[contratoAnteriorId]
+            : null;
+
+
+    Dashboard.contratoAtual =
+        contratoRestaurado ||
+        novosContratos.os440 ||
+        Object.values(novosContratos)[0] ||
+        null;
+
+
+    // ==================================
+    // RESTAURAR ABA ATUAL
+    // ==================================
+
+    if (
+        Dashboard.contratoAtual &&
+        abaAnteriorId
+    ) {
+
+        Dashboard.abaAtual =
+            Dashboard.contratoAtual.abas
+                ?.find(
+                    aba =>
+                        aba.id === abaAnteriorId
+                ) ||
+            null;
+
+    } else {
+
+        Dashboard.abaAtual = null;
+
+    }
+
+
+    return true;
+
+}
+
+
+// ======================================
+// ATUALIZAR INTERFACE APÓS TROCA
+// DE SESSÃO
+// ======================================
+
+async function atualizarContratosPorSessao() {
+
+    // ==================================
+    // INVALIDAR ESTADO TÉCNICO
+    // ==================================
+
+    window.RelatoriosStorage
+        ?.limparEstados?.();
+
+
+    const carregado =
+        await carregarTodosContratos({
+            preservarNavegacao: true
+        });
+
+
+    if (!carregado) {
+        return;
+    }
+
+
+    // ==================================
+    // RECONSTRUIR ÍNDICE DA BUSCA
+    // ==================================
+
+    if (
+        typeof Busca !== "undefined"
+    ) {
+
+        Busca.construirIndice?.();
+
+    }
+
+
+    // ==================================
+    // ATUALIZAR PÁGINA ATUAL
+    // ==================================
+
+    if (
+        typeof Render !== "undefined"
+    ) {
+
+        Render.atualizar?.();
+
+    }
+
+
+    // ==================================
+    // ATUALIZAR MAPA SE JÁ EXISTIR
+    // ==================================
+
+    if (
+        typeof Mapa !== "undefined" &&
+        Mapa.map &&
+        Mapa.markersLayer
+    ) {
+
+        Mapa.renderFrentes(false);
+
+    }
+
+}
+
+
+// ======================================
+// OBSERVAR LOGIN / LOGOUT
+// ======================================
+
+function configurarMudancaDeSessao() {
+
+    identidadeSessaoAtual =
+        obterIdentidadeSessao();
+
+
+    document.addEventListener(
+        "plamont:auth-alterado",
+        async evento => {
+
+            if (!sistemaInicializado) {
+                return;
+            }
+
+
+            const novaIdentidade =
+                evento.detail?.logado
+                    ? evento.detail?.usuario?.id || null
+                    : null;
+
+
+            // ==================================
+            // IGNORAR EVENTOS DUPLICADOS
+            //
+            // Auth pode atualizar a interface
+            // mais de uma vez para a mesma
+            // sessão.
+            // ==================================
+
+            if (
+                novaIdentidade ===
+                identidadeSessaoAtual
+            ) {
+
+                return;
+
+            }
+
+
+            identidadeSessaoAtual =
+                novaIdentidade;
+
+
+            try {
+
+                await atualizarContratosPorSessao();
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao atualizar contratos após mudança de sessão:",
+                    erro
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
 // ======================================
 // INICIALIZAÇÃO DO SISTEMA
 // ======================================
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
 
-    // Página inicial
-    const primeiroBotao = document.querySelector(".menu-btn");
-    abrirPagina("dashboard", primeiroBotao);
+        // ==================================
+        // 1. PÁGINA INICIAL
+        // ==================================
 
-    // Lista de contratos
-    const arquivos = [
-        "os440.json",
-        "os441.json",
-        "os442.json",
-        "os450.json",
-        "os456.json"
-    ];
+        const primeiroBotao =
+            document.querySelector(
+                ".menu-btn"
+            );
 
-    // Carrega todos os contratos
-    for (const arquivo of arquivos) {
+        abrirPagina(
+            "dashboard",
+            primeiroBotao
+        );
 
-        const contrato = await carregarContrato(arquivo);
 
-        if (!contrato) continue;
+        // ==================================
+        // 2. AGUARDAR AUTH
+        // ==================================
 
-        Dashboard.contratos[contrato.id] = contrato;
+        if (window.Auth?.inicializar) {
+
+            await window.Auth.inicializar();
+
+        }
+
+
+        // ==================================
+        // 3. LIMPAR ESTADO TÉCNICO
+        // ==================================
+
+        window.RelatoriosStorage
+            ?.limparEstados?.();
+
+
+        // ==================================
+        // 4. CARREGAR CONTRATOS
+        // ==================================
+
+        await carregarTodosContratos();
+
+
+        console.log(
+            "Dashboard:",
+            Dashboard
+        );
+
+
+        // ==================================
+        // 5. SPLASH
+        // ==================================
+
+        inicializarSplash();
+
+
+        // ==================================
+        // 6. SIDEBAR
+        // ==================================
+
+        Sidebar.init();
+
+
+        // ==================================
+        // 7. BUSCA
+        // ==================================
+
+        Busca.init();
+
+
+        // ==================================
+        // 8. INTERFACE
+        // ==================================
+
+        Render.inicializar();
+
+
+        // ==================================
+        // 9. SISTEMA PRONTO
+        // ==================================
+
+        sistemaInicializado = true;
+
+
+        // ==================================
+        // 10. ESCUTAR LOGIN / LOGOUT
+        // ==================================
+
+        configurarMudancaDeSessao();
 
     }
-
-    // Contrato inicial
-    Dashboard.contratoAtual = Dashboard.contratos.os440;
-
-    console.log("Dashboard:", Dashboard);
-
-    // Splash
-    inicializarSplash();
-
-    //Sidebar
-    Sidebar.init();
-
-    // Busca inteligente da sidebar
-    Busca.init();
-
-    // Interface
-    Render.inicializar();
-
-    
-
-});
+);

@@ -634,28 +634,44 @@ const RelatoriosStorage = {
            CHAMADA DA RPC
         ================================================= */
 
-        const {
-            data,
-            error
-        } = await cliente.rpc(
-            this.rpcSalvar,
-            parametros
-        ).catch(erro => { throw this.tratarErroSalvar(erro); });
+        let resposta;
 
-        this.conferirContexto(contexto);
+try {
+
+    resposta = await cliente.rpc(
+        this.rpcSalvar,
+        parametros
+    );
+
+} catch (erro) {
+
+    throw this.tratarErroSalvar(
+        erro
+    );
+
+}
+
+const {
+    data,
+    error
+} = resposta;
 
 
-        /* =================================================
-           ERRO NO SERVIDOR
-        ================================================= */
+// Confirma que a sessão continua sendo a mesma
+this.conferirContexto(contexto);
 
-        if (error) {
 
-            throw this.tratarErroSalvar(
-                error
-            );
+// =================================================
+// ERRO NO SERVIDOR
+// =================================================
 
-        }
+if (error) {
+
+    throw this.tratarErroSalvar(
+        error
+    );
+
+}
 
 
         /* =================================================
