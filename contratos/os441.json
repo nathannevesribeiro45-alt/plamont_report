@@ -17,7 +17,7 @@
           "Mecanico": 10,
           "Soldador": 3,
           "Montador": 9,
-          "Eletricista": 0,
+          "Eletricista": 1,
           "Pintor": 0
         },
         "indireto": {

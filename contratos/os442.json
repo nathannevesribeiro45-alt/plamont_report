@@ -94,7 +94,7 @@
           "Soldador": 1,
           "Montador": 3,
           "Eletricista": 6,
-          "Pintor": 1
+          "Pintor": 0
         },
         "indireto": {
           "Supervisor Montagem": 1,
@@ -112,7 +112,7 @@
           "Soldador": 1,
           "Montador": 3,
           "Eletricista": 6,
-          "Pintor": 1
+          "Pintor": 0
         },
         "indireto": {
           "Supervisor Montagem": 1,
