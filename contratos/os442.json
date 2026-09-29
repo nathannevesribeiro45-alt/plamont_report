@@ -45,8 +45,7 @@
       },
 
       "ausencias": {
-        "Eletricista":1,
-        "justificadas":1,
+        "justificadas":0,
         "naoJustificadas":0
       },
 
@@ -124,7 +123,8 @@
       },
 
       "ausencias": {
-        "justificadas":0,
+        "Mecânico":1,
+        "justificadas":1,
         "naoJustificadas":0
       },
 
@@ -155,10 +155,10 @@
           "lider": "Sueliton",
           "telefone": "98 98888-4303",
           "tecnicoSeguranca": "",
-          "equipe": "6 Mecânicos + 6 Eletricistas + 1 caldeireiro + 1 soldador + 3 Montadores",
+          "equipe": "5 Mecânicos + 6 Eletricistas + 1 caldeireiro + 1 soldador + 3 Montadores",
           "oms":[
   {
-    "numero": "202602005812",
+    "numero": "202604791650",
     "frente": "PONTE 205",
     "latitude": "",
     "longitude": "",
@@ -166,123 +166,11 @@
     "status": "Em andamento"
   },
   {
-    "numero": "202602899733",
+    "numero": "202604806963",
     "frente": "TR-311K-10",
     "latitude": "-2,5690474",
     "longitude": "-44,3448593",
     "descricao": "SUBSTITUIR EXTRATOR 311K-212",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202504495547",
-    "frente": "TR-311K-10",
-    "latitude": "-2,5690474",
-    "longitude": "-44,3448593",
-    "descricao": "TROCAR PAINEL DO EXTRATOR 213",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202604443468",
-    "frente": "VV-311K-06",
-    "latitude": "-2,5690485",
-    "longitude": "-44,3447038",
-    "descricao": "MCM-MPV ELE 16S TALHA TE-11-218 VV6",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202604443469",
-    "frente": "VV-311K-06",
-    "latitude": "-2,5690485",
-    "longitude": "-44,3447038",
-    "descricao": "MCM-MPV ELE 16S TALHA TE-11-223 VV6",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202604443470",
-    "frente": "VV-311K-06",
-    "latitude": "-2,5690485",
-    "longitude": "-44,3447038",
-    "descricao": "MCM-MPV ELE 16S TALHA TE-11-224 VV6",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202604443471",
-    "frente": "VV-311K-06",
-    "latitude": "-2,5690485",
-    "longitude": "-44,3447038",
-    "descricao": "MCM-MPV ELE 16S TALHA TE-11-230 VV6",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202604540411",
-    "frente": "TR-313K-84",
-    "latitude": "-2,5727253",
-    "longitude": "-44,3439651",
-    "descricao": "MCM-TRC LUB 01A ÓLEO GUINCH ATS TR1384",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202604075816",
-    "frente": "TR-313K-84",
-    "latitude": "-2,5727253",
-    "longitude": "-44,3439651",
-    "descricao": "MCM-MPV ELE 08S ESTICAMENTO ATS TR1384",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202604076225",
-    "frente": "TR-313K-84",
-    "latitude": "-2,5727253",
-    "longitude": "-44,3439651",
-    "descricao": "MCM-MPV UTL 08S MOTOFRE ESTIC ATS TR1384",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202604394803",
-    "frente": "TR-315K-34",
-    "latitude": "-2,5654938",
-    "longitude": "-44,3592505",
-    "descricao": "EX 1534 - INSTALAR MANGOTES DE LUB.",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202603945488",
-    "frente": "TR-315K-34",
-    "latitude": "-2,5654938",
-    "longitude": "-44,3592505",
-    "descricao": "MCM-MPV 16S MEC EXTRATOR TR-315K-34",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202603945341",
-    "frente": "TR-315K-34",
-    "latitude": "-2,5654938",
-    "longitude": "-44,3592505",
-    "descricao": "MCM-MPV ELE 16S SEPARAÇÃO MAG TR1534",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202604073206",
-    "frente": "TR-315K-34",
-   "latitude": "-2,5654938",
-    "longitude": "-44,3592505",
-    "descricao": "MCM-MPV ELE 08S GUINCHO ESTIC TR1534 (PENDENTE OM)",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202603954176",
-    "frente": "TR-315K-34",
-    "latitude": "-2,5654938",
-    "longitude": "-44,3592505",
-    "descricao": "MP LUB CABO AÇO GUINCHO CONTR_TR1534 (PENDENTE OM)",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202604927001",
-    "frente": "TR-315K-34",
-    "latitude": "-2,5654938",
-    "longitude": "-44,3592505",
-    "descricao": "APOIO PARA MONTAR E DESMONTAR ANDAIME NO EXTRATOR 205",
     "status": "Em andamento"
   }
 ]
