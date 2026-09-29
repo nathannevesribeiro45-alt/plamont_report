@@ -10,20 +10,19 @@
       "icone":"assets/icons/manutecao.svg",
       "qlp": {
         "direto": {
-          "Caldeireiro": 5,
-          "Mecanico": 12,
-          "Soldador": 5,
-          "Montador": 8,
-          "Eletricista": 8,
-          "Ajudante de mont.": 2,
-          "Pintor": 0
+          "Caldeireiro": 4,
+          "Mecanico": 9,
+          "Soldador": 2,
+          "Montador": 5,
+          "Eletricista": 6,
+          "Pintor": 1
         },
         "indireto": {
           "Supervisor Montagem": 1,
           "Encarregado Montagem": 1,
           "Encarregado Elétrica": 1,
-          "Mestre Montagem": 4,
-          "Mestre Andaime": 2
+          "Mestre Montagem": 1,
+          "Mestre Andaime": 1
         }
       },
       "histograma": {

@@ -1,7 +1,7 @@
 {
   "id": "os441",
   "nome": "Contrato OS 441",
-  "data": "22/09/2026",
+  "data": "29/09/2026",
   "turno": "Dia B",
   "horario": "07:00 às 19:00",
   "abas": [
@@ -13,8 +13,8 @@
 
       "qlp": {
         "direto": {
-          "Caldeireiro": 3,
-          "Mecanico": 9,
+          "Caldeireiro": 2,
+          "Mecanico": 10,
           "Soldador": 3,
           "Montador": 9,
           "Eletricista": 0,
@@ -47,8 +47,10 @@
       },
 
       "ausencias": {
-      "Mecânico":3,
-     "justificadas": 3,
+      "Mecânico":2,
+      "Caldeireiros":1,
+      "Soldadores":3,
+     "justificadas": 6,
      "naoJustificadas":0
       },
 
@@ -99,33 +101,15 @@
         "lider": "Adilson",
           "telefone": "98 8898-1856",
           "tecnicoSeguranca": "",
-          "equipe": "04 Mecânicos + 01 Caldeireiro + 01 soldador + 03 montadores",
+          "equipe": "05 Mecânicos + 01 Caldeireiro + 01 soldador + 03 montadores",
           "oms": [
             {
-              "frente":"TR-315K-33",
-              "latitude":"-2,5682235",
-              "longitude":"-44,3555469",
-              "numero": "202603674833",
-              "descricao": "TROCAR 2 ROLOS DE RETORNO BL 3 CV 1 (TR-315K-33)",
-              "arquivoPdf":"",
-              "status": "Em andamento"
-            },
-            {
-              "frente":"TR-315K-33",
-              "latitude":"-2,5682235",
-              "longitude":"-44,3555469",
-              "numero": "202603580008",
-              "descricao": "TROCAR 2 ROLOS DE RETORNO BL 4 CV 6 (TR-315K-33)",
-              "arquivoPdf":"",
-              "status": "Em andamento"
-            },
-            {
-              "frente":"TR-315K-33",
-              "latitude":"-2,5682235",
-              "longitude":"-44,3555469",
-              "numero": "202604590121",
-              "descricao": "MCM-MPV MEC 16S CHAP DESG DEFL TR-1533 (TR-315K-33)",
-              "arquivoPdf":"",
+              "frente":"TR-313K-29",
+              "latitude":"-2,5628445",
+              "longitude":"-44,3586765",
+              "numero": "202604196897",
+              "descricao": "CONT. TROCAR 70 ROLOS DE CARGA AO LONGO DO TR",
+              "arquivoPdf":"om's/contrato 441 oms/Desgaste/TR-1329 OM 202604196897 - TROCAR 70 ROLOS DE CARGA AO LONGO DO TR.pdf",
               "status": "Em andamento"
             }
           ]
@@ -136,16 +120,6 @@
           "tecnicoSeguranca": "",
           "equipe": "3 Mecânicos + 1 soldador + 01 caldeireiro + 3 Montadores",
           "oms": [
-            
-            {
-              "numero": "202501141672",
-              "frente":"TR-326K-01",
-              "latitude":"-2,5573071",
-              "longitude":"-44,3698684",
-              "arquivoPdf":"",
-              "descricao": "DSG_MONTAR DESMONTAR ANDAIME PLAMONT TROC 6O ROLOS DE CARGA 2601 (TR-326K-01)",
-              "status": "Em andamento"
-            },
              {
               "numero": "202501141433",
               "frente":"TR-326K-01",
@@ -154,15 +128,6 @@
               "arquivoPdf":"",
               "descricao": "TROCAR 60 ROLOS DE CARGA NO TR2601 (TR-326K-01)",
               "status": "Em andamento"
-            },
-            {
-              "numero": "202504066022",
-              "frente":"TR-326K-01",
-              "latitude":"-2,5573071",
-              "longitude":"-44,3698684",
-              "arquivoPdf":"",
-              "descricao": "MONTAR ANDAIME - TROCAR 16 CHAPAS DA FACA DO AM314K-203.",
-              "status": "Em andamento"
             }
           ]
         },
@@ -170,15 +135,24 @@
           "lider": "Ederson",
           "telefone": "98 8242-1348",
           "tecnicoSeguranca": "",
-          "equipe": "2 Mecânicos + 1 Caldeireiro + 1 soldador + 3 Montadores",
+          "equipe": "02 Mecânicos + 01 Soldador + 03 montadores",
           "oms": [
             {
-              "numero": "202604591162",
+              "numero": "202605074882",
               "frente":"EP-06",
               "latitude":"-2,5727272",
               "longitude":"-44,3359387",
               "arquivoPdf":"",
-              "descricao": "PREPARAÇÃO E MOBILIZAÇÃO DE FERRAMENTAS -PLAMONT DESGASTES EP06",
+              "descricao": "MONTAR DESMONTAR ANDAIME P TROCA ROLOS EP06",
+              "status": "Em andamento"
+            },
+             {
+              "numero": "202605074881 ",
+              "frente":"EP-06",
+              "latitude":"-2,5727272",
+              "longitude":"-44,3359387",
+              "arquivoPdf":"",
+              "descricao": "DG AJUSTAR CAV.SUBSTITUIR ROLOS IMPACTO EP06",
               "status": "Em andamento"
             }
           ]
@@ -195,11 +169,10 @@
 
       "qlp": {
         "direto": {
-          "Caldeireiro": 2,
-          "Mecanico": 3,
-          "Soldador": 4,
+          "Caldeireiro": 4,
+          "Mecanico": 2,
+          "Soldador": 1,
           "Montador": 2,
-          "Eletricista": 0,
           "Pintor": 1
         },
         "indireto": {
@@ -225,9 +198,8 @@
         }
       },
       "ausencias": {
-        "Mecânicos":1,
-        "Caldeireiros":"2",
-        "justificadas": 0,
+        "Mecânicos":2,
+        "justificadas": 2,
      "naoJustificadas":0
       },
       "mobilizacao": {},
@@ -238,129 +210,23 @@
           "lider": "Wanderson/Adeilton",
           "telefone": "98 98508-8348/98 8882-2306",
           "tecnicoSeguranca": "",
-          "equipe": "3 Mecânicos + 2 Caldeireiros + 4 Soldadores + 2 Montadores + 1 pintor",
+          "equipe": "02 Mecânicos + 04 Caldeireiros + 01 Soldadores + 02 Montadores + 01 Pintor",
           "oms": [
-  {
-    "numero": "202600059943",
-    "frente": "",
-    "latitude": "",
-    "longitude": "",
-    "descricao": "SEG_GC_FAB.G.C OXI PASSR TRANSL LANÇA",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202600060337",
-    "frente": "CN-07",
-    "latitude": "",
-    "longitude": "",
-    "descricao": "SEG_GC_FAB.G.C OXI PASSR TRANSL LANÇA",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202300059267",
-    "frente": "",
-    "latitude": "",
-    "longitude": "",
-    "descricao": "SEG GC_TROC TUBOINTERMED DO G.C PASS ACE",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202600057107",
-    "frente": "CN-06",
-    "latitude": "",
-    "longitude": "",
-    "descricao": "SEG GC_TROC TUBOINTERMED DO G.C PASS L/D",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202602340925",
-    "frente": "TR-315K-39",
-    "latitude": "-2,5611162",
-    "longitude": "-44,3623805",
-    "descricao": "SEG PS_GRADE PISO LDSF BALIZA 19 CH",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202602340995",
-    "frente": "TR-315K-39",
-    "latitude": "-2,5611162",
-    "longitude": "-44,3623805",
-    "descricao": "SEG PS_GRADE PISO LESF BALIZA 19 CV 1",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202602346136",
-    "frente": "TR-315K-39",
-    "latitude": "-2,5611162",
-    "longitude": "-44,3623805",
-    "descricao": "SEG PS_GRADE PISO LESF BALIZA LADO M1",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202601272173",
-    "frente": "TR-311K-14",
-    "latitude": "-2,5715538",
-    "longitude": "-44,3446362",
-    "descricao": "SEG DG TROC 5 DEG ESC ACESS. CAUD TR1114",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202600598080",
-    "frente": "TR-311K-14",
-    "latitude": "-2,5715538",
-    "longitude": "-44,3446362",
-    "descricao": "SEG PS TROC PIS LE 1110 ACIMA TR1114",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202603912729",
-    "frente": "TR-311K-14",
-    "latitude": "-2,5715538",
-    "longitude": "-44,3446362",
-    "descricao": "SEG GC_AUS.FECHADURA PORTINHOLA CAB.M",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202600430139",
-    "frente": "TR-315K-33",
-    "latitude": "-2,5682235",
-    "longitude": "-44,3555469",
-    "descricao": "SEG D PS TRO 02 GRA PROX TB 17 CAU LE",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202601043746",
-    "frente": "",
-    "latitude": "",
-    "longitude": "",
-    "descricao": "SEG A GC SOL GUAR - CORP PASS CAB-MOV LD/LE",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202601043653",
-    "frente": "TR-315K-35",
-    "latitude": "-2,5645686",
-    "longitude": "-44,3605516",
-    "descricao": "SEG A DG TROC 01 DEG ESC ACESS PROX ACI",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202601043428",
-    "frente": "TR-315K-35",
-    "latitude": "-2,5645686",
-    "longitude": "-44,3605516",
-    "descricao": "SEG D_PS TROC 02 GRAD PROX AO TB LD ACIO",
-    "status": "Em andamento"
-  },
-  {
-    "numero": "202603083802",
-    "frente": "TR-315K-35",
-    "latitude": "-2,5645686",
-    "longitude": "-44,3605516",
-    "descricao": "SEG GD TROCAR 1 GRADE DE PISO AVRIADA",
-    "status": "Em andamento"
-  }
-]
+            {
+              "numero": "-- ",
+              "frente":"--",
+              "latitude":"--",
+              "longitude":"--",
+              "arquivoPdf":"--",
+              "descricao": "Equipe aguardando direcionamento",
+              "status": "Em andamento"
+            }
+
+          ],
+          "observacoes":
+          [
+            "Equipe aguardando direcionamento da Vale por falta de material."
+          ]
 
         }
       ]
