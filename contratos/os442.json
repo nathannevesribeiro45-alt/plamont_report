@@ -1,7 +1,7 @@
 {
   "id": "os442",
   "nome": "Contrato OS 442",
-  "data": "22/09/2026",
+  "data": "29/09/2026",
   "turno": "Dia B",
   "horario": "07:00 às 19:00",
   "abas": [
@@ -90,7 +90,7 @@
       "qlp": {
         "direto": {
           "Caldeireiro": 1,
-          "Mecanico": 6,
+          "Mecanico": 5,
           "Soldador": 1,
           "Montador": 3,
           "Eletricista": 6,
@@ -137,9 +137,9 @@
         {
           "tipo": "Munck",
           "placa": "RBB-3I45 ",
-          "operador": "Fernando",
+          "operador": "",
           "contato":"",
-          "status": "Disponivel"
+          "status": "manutencao"
         },
           {
           "tipo": "pick-up",
@@ -156,22 +156,87 @@
           "telefone": "98 98888-4303",
           "tecnicoSeguranca": "",
           "equipe": "5 Mecânicos + 6 Eletricistas + 1 caldeireiro + 1 soldador + 3 Montadores",
-          "oms":[
+          "oms": [
   {
     "numero": "202604791650",
-    "frente": "PONTE 205",
+    "frente": "TE-3140KP-03",
+    "descricao": "MP LUB TALHA ELÉTRICA TE-3140KP-03",
+    "status": "Em andamento",
     "latitude": "",
     "longitude": "",
-    "descricao": "MP ELMEC PONTE ROLANTE PR-311K-205",
-    "status": "Em andamento"
+    "arquivoPdf": ""
   },
   {
     "numero": "202604806963",
-    "frente": "TR-311K-10",
-    "latitude": "-2,5690474",
-    "longitude": "-44,3448593",
-    "descricao": "SUBSTITUIR EXTRATOR 311K-212",
-    "status": "Em andamento"
+    "frente": "TR-313K-60",
+    "descricao": "MCM-MPV MEC UTL 08S GUINCHO TR1360",
+    "status": "Em andamento",
+    "latitude": "-2,5627716",
+    "longitude": "-44,3460527",
+    "arquivoPdf": ""
+  },
+  {
+    "numero": "202604806964",
+    "frente": "TR-313K-61",
+    "descricao": "MCM-MPV MEC UTL 08S GUINCHO TR1361",
+    "status": "Em andamento",
+    "latitude": "-2,5625057",
+    "longitude": "-44,3462034",
+    "arquivoPdf": ""
+  },
+  {
+    "numero": "202604806965",
+    "frente": "TR-313K-64",
+    "descricao": "MCM-MPV MEC UTL 08S GUINCHO TR1364",
+    "status": "Em andamento",
+    "latitude": "-2,5621509",
+    "longitude": "-44,3575290",
+    "arquivoPdf": ""
+  },
+  {
+    "numero": "202604806962",
+    "frente": "TR-313K-59",
+    "descricao": "MCM-MPV MEC UTL 08S GUINCHO TR1359",
+    "status": "Em andamento",
+    "latitude": "-2,5632261",
+    "longitude": "-44,3457272",
+    "arquivoPdf": ""
+  },
+  {
+    "numero": "202302074829",
+    "frente": "PÓRTICO 01",
+    "descricao": "SUBST TRAVA TRILHOS AVARIADOS PÓRTICO 01",
+    "status": "Em andamento",
+    "latitude": "-2,5680863",
+    "longitude": "-44,3455293",
+    "arquivoPdf": ""
+  },
+  {
+    "numero": "202505708653",
+    "frente": "",
+    "descricao": "SUBSTITUIR CABO DOS LIMITES TRANSLAÇÃO",
+    "status": "Em andamento",
+    "latitude": "",
+    "longitude": "",
+    "arquivoPdf": ""
+  },
+  {
+    "numero": "202604328811",
+    "frente": "",
+    "descricao": "SUBSTITUIR PAINEL DO RÁDIO ANTICOLISÃO",
+    "status": "Em andamento",
+    "latitude": "",
+    "longitude": "",
+    "arquivoPdf": ""
+  },
+  {
+    "numero": "202604049252",
+    "frente": "",
+    "descricao": "APOIO_FAZER RECUPERAÇÃO DAS ROLDANAS DAS",
+    "status": "Em andamento",
+    "latitude": "",
+    "longitude": "",
+    "arquivoPdf": ""
   }
 ]
 }
