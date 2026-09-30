@@ -5,6 +5,8 @@ window.PlamontSupabaseConfig = {
     url: "https://ntoadouzyjjgyhoihhap.supabase.co",
     anonKey: "sb_publishable_xGuKcW5CQDuUV4HYP2UbxA_uE6J0f7R",
     bucket: "report_fotos",
+    // PATCH 1: infraestrutura privada; ainda não integrada ao Aplicar.
+    anexosBucket: "report_anexos_om",
 
     // O usuário informa somente a matrícula. Ao criar contas no
     // Supabase Auth, use <matricula>@auth.plamont.local como e-mail interno.

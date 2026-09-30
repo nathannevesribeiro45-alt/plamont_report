@@ -6,7 +6,8 @@
 // ============================================================
 
 const FotosStorage = {
-    cliente: null,
+    // Auth é o único responsável por criar e manter o cliente/sessão.
+    get cliente() { return window.PlamontAuth?.supabase || null; },
     modo: "local",
     bucket: "report-fotos",
 
@@ -14,22 +15,14 @@ const FotosStorage = {
         const cfg = window.PlamontSupabaseConfig || {};
         this.bucket = cfg.bucket || "report-fotos";
 
-        if (cfg.url && cfg.anonKey && window.supabase?.createClient) {
-            try {
-                this.cliente = window.supabase.createClient(cfg.url, cfg.anonKey);
-                this.modo = "supabase";
-            } catch (erro) {
-                console.error("Não foi possível inicializar o Supabase. Fallback local ativado.", erro);
-                this.cliente = null;
-                this.modo = "local";
-            }
-        }
+        this.modo = cfg.url && cfg.anonKey && this.cliente ? "supabase" : "local";
 
         return this.modo;
     },
 
     configurado() {
-        return this.modo === "supabase" && !!this.cliente;
+        // A primeira carga deste script precede DOMContentLoaded do Auth.
+        return this.inicializar() === "supabase";
     },
 
     caminhoSeguro(valor) {
