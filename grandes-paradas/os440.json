@@ -10,7 +10,7 @@
       "contrato": "os440",
 
       "status": {
-        "data": "29/09/2026",
+        "data": "30/09/2026",
         "hora": "07:00"
       },
 
@@ -24,7 +24,7 @@
         "realizadoFimHora": "10:40"
       },
 
-      "dataStatus": "29/09/2026",
+      "dataStatus": "30/09/2026",
 
       "pontos": [
         {
@@ -41,6 +41,11 @@
           "data": "29/09/2026",
           "previsto": 76.92,
           "realizado": 78.23
+        },
+        {
+          "data": "30/09/2026",
+          "previsto": 84.73,
+          "realizado": 78.04
         }
       ],
 
@@ -53,103 +58,103 @@
       ],
 
       "turno": {
-        "realizado": {
-          "inicio": "16:00",
-          "fim": "07:00"
-        },
-        "proximo": {
-          "inicio": "07:00",
-          "fim": "16:00"
-        }
-      },
-
-      "atividades": {
-        "realizadas": [
-          {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Corte e retirada da chapa avariada",
-            "status": "Em andamento"
-          },
-          {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Limpeza mecânica do local",
-            "status": "Em andamento"
-          },
-          {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Montagem das chapas de reforço da calha",
-            "status": "Em andamento"
-          },
-          {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Solda dos reforços da calha",
-            "status": "Em andamento"
-          },
-          {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Corte e retirada dos parafusos do duto",
-            "status": "Em andamento"
-          }
-        ],
-
-        "proximas": [
-          {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Corte e retirada da chapa avariada",
-            "status": "Em andamento"
-          },
-          {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Limpeza mecânica do local",
-            "status": "Em andamento"
-          },
-          {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Montagem das chapas de reforço da calha",
-            "status": "Em andamento"
-          },
-          {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Solda dos reforços da calha",
-            "status": "Em andamento"
-          },
-          {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Corte e retirada dos parafusos do duto",
-            "status": "Em andamento"
-          },
-          {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Montagem das chapas de reforço da calha",
-            "status": "Em andamento"
-          },
-          {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Corte e retirada dos parafusos do duto",
-            "status": "Em andamento"
-          },
-          {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Montagem e torque dos parafusos dos flanges do duto",
-            "status": "Em andamento"
-          }
-        ]
-      },
-
-      "observacoes": "Desvio informado no report: 1,31%. Ganho informado no report: 4:5hrs.\n\nA Plamont Engenharia informa: atividade de substituição de parafusos na região do tripper não se iniciou devido à indisponibilidade de equipamento (guindaste), impossibilitando o içamento de materiais de andaimes para dar início à montagem. Até o presente momento não está gerando atraso na linha de base do cronograma geral da parada. A linha da atividade ainda não iniciada está contabilizando 15 horas de atraso (linha 329).\n\nA Plamont Engenharia informa: iniciamos em 24/09, no turno da noite, a montagem de andaime na região do tripper lado direito sentido fluxo. Foi dada prioridade para iniciar a montagem de andaimes do lado esquerdo sentido fluxo devido à interferência do bandejamento de energia 0°. Conforme alinhamento, a atuação no lado esquerdo ocorre somente no turno do dia, com prazo de conclusão informado para domingo, 27/09.\n\nA Plamont Engenharia informa atraso na montagem de andaimes na região do tripper LDSF e LESF, gerando 8 horas de atraso devido ao impacto no início da parada e à disponibilidade de equipamento, que retardou a montagem de andaimes em ambos os lados.\n\nA Plamont Engenharia informa atraso de 8 horas em relação à substituição de parafusos na região do tripper. Como plano de retomada, será adicionado efetivo para trabalhar paralelamente em ambos os lados e reduzir o impacto ocorrido no início da parada.\n\nA Plamont Engenharia informa a conclusão da substituição dos parafusos na região do tripper LDSF e LESF, restando apenas a desmontagem de andaimes ao lado do bandejamento LDSF. Continua em execução a preparação para iniciar a atividade na calha.\n\n28/09/2026 às 07:00 - A Plamont Engenharia informa: foi identificada indisponibilidade dos parafusos para execução da atividade da calha, porém foram iniciados os reforços, não impactando o tempo da atividade e da parada.\n\n29/09/2026 às 07:00 - A Plamont Engenharia informa: seguimos com a atividade de recuperação da calha, montagem de reforços e substituição dos parafusos do duto. Informamos também a interferência com atividade extra na região do cilindro."
+    "realizado": {
+      "inicio": "16:00",
+      "fim": "07:00"
+    },
+    "proximo": {
+      "inicio": "07:00",
+      "fim": "16:00"
     }
+      },
+
+       "atividades": {
+    "realizadas": [
+      {
+        "om": "202501046432",
+        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+        "descricao": "Montagem de andaimes",
+        "status": "Concluído"
+      },
+      {
+        "om": "202501046432",
+        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+        "descricao": "Corte e retirada da chapa avariada",
+        "status": "Atrasado"
+      },
+      {
+        "om": "202501046432",
+        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+        "descricao": "Limpeza mecânica",
+        "status": "Atrasado"
+      }
+    ],
+
+    "proximas": [
+      {
+        "om": "202501046432",
+        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+        "descricao": "Corte e retirada da chapa avariada",
+        "status": "Atrasado"
+      },
+      {
+        "om": "202501046432",
+        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+        "descricao": "Limpeza mecânica do local",
+        "status": "Atrasado"
+      },
+      {
+        "om": "202501046432",
+        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+        "descricao": "Montagem das chapas de reforço da calha",
+        "status": "Atrasado"
+      },
+      {
+        "om": "202501046432",
+        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+        "descricao": "Solda dos reforços da calha",
+        "status": "Atrasado"
+      },
+      {
+        "om": "202501046432",
+        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+        "descricao": "Corte e retirada dos parafusos do duto",
+        "status": "Atrasado"
+      },
+      {
+        "om": "202501046432",
+        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+        "descricao": "Montagem das chapas de reforço da calha",
+        "status": "Atrasado"
+      },
+      {
+        "om": "202501046432",
+        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+        "descricao": "Corte e retirada dos parafusos do duto",
+        "status": "Atrasado"
+      },
+      {
+        "om": "202501046432",
+        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+        "descricao": "Montagem e torque dos parafusos dos flanges do duto",
+        "status": "Atrasado"
+      },
+      {
+        "om": "202501046432",
+        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+        "descricao": "Retoque de pintura",
+        "status": "Programado"
+      },
+      {
+        "om": "202501046432",
+        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+        "descricao": "Desmontagem de andaimes",
+        "status": "Programado"
+      }
+    ]
+  },
+
+     "observacoes": "A Plamont Engenharia informa: devido à avaria no andaime durante movimentação da lança, foi necessário desmontar o andaime e aguardar novo bloqueio da lança para reiniciar sua montagem e dar continuidade à atividade. A montagem do andaime foi iniciada na tarde de 29/09 e concluída às 03:00 da madrugada de 30/09, liberando a frente para a mecânica. Com esses imprevistos, estão sendo reportadas 5 horas de atraso. A equipe segue focada nas atividades do turno do dia para retirada desse atraso."
+}
   ]
 }
