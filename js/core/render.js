@@ -100,6 +100,8 @@ if (abaInicial) {
     // ==========================================
     conteudo() {
 
+        if (!Dashboard.contratoAtual || !Dashboard.abaAtual) return;
+
         const container = document.getElementById(
             `${Dashboard.contratoAtual.id}-content`
         );

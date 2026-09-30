@@ -13,11 +13,11 @@ const dashboardStatus = {
         "Nenhuma ocorrência crítica registrada neste turno."
     ],
 
-    turno: "Dia B",
+    turno: "—",
 
-    horario: "07:00 às 19:00",
+    horario: "—",
 
-    atualizacao: "30/09/2026 às 07:00"
+    atualizacao: "Aguardando carregamento"
 
 };
 
@@ -161,5 +161,82 @@ function calcularStatusOperacao() {
     ];
 
 }
+
+// Quantidades válidas, sem coerção de booleanos, objetos, vazios ou Infinity.
+function quantidadesDashboard(grupo) {
+    if (!grupo || typeof grupo !== "object" || Array.isArray(grupo)) return {};
+    return Object.fromEntries(Object.entries(grupo || {}).filter(([, valor]) =>
+        (typeof valor === "number" || (typeof valor === "string" && valor.trim() !== "")) &&
+        Number.isFinite(Number(valor)) && Number(valor) >= 0
+    ).map(([chave, valor]) => [chave, Number(valor)]));
+}
+
+function calcularResumoContrato(contrato) {
+    const resumo = { efetivo: 0, ausencias: 0, oms: 0, recursos: 0 };
+    for (const aba of contrato?.abas || []) {
+        // Os cards anteriores de OS440/441/450 correspondem ao QLP.
+        resumo.efetivo += QLP.calcularTotal(
+            quantidadesDashboard(aba.qlp?.direto), quantidadesDashboard(aba.qlp?.indireto));
+        // Regra oficial já existente: classificações não somam ao total.
+        resumo.ausencias += Ausencias.calcularTotal(quantidadesDashboard(aba.ausencias));
+        for (const grupo of aba.atividades || []) {
+            for (const om of grupo.oms || []) {
+                const numero = String(om?.numero ?? "").trim();
+                // Preserva identificações alfanuméricas aceitas pelo editor.
+                // Sem número, zero ou prefixo '--' são marcadores, não OMs.
+                if (/^[\p{L}\p{N}]/u.test(numero) && /[1-9]/.test(numero)) resumo.oms++;
+            }
+        }
+        for (const recurso of aba.recursos || []) {
+            // A listagem atual exige tipo. '--' também é um placeholder.
+            if (!recurso || !String(recurso.tipo ?? "").trim().replace(/[-–—\s]/g, "")) continue;
+            if (Recursos.obterStatus({
+                ...recurso, status: String(recurso.status ?? ""), placa: String(recurso.placa ?? "")
+            }) === "disponivel") resumo.recursos++;
+        }
+    }
+    return resumo;
+}
+
+function calcularResumoGeral(contratos, resumos = Object.values(contratos).filter(Boolean).map(calcularResumoContrato)) {
+    return resumos.reduce((total, resumo) => {
+        for (const campo of ["efetivo", "ausencias", "oms", "recursos"]) total[campo] += resumo[campo];
+        total.contratos++;
+        return total;
+    }, { efetivo: 0, ausencias: 0, oms: 0, recursos: 0, contratos: 0 });
+}
+
+const DashboardResumo = {
+    atualizar() {
+        // Só resumos temporários: não mantém uma segunda cópia dos contratos.
+        const resumos = new Map(Object.values(Dashboard.contratos).filter(Boolean)
+            .map(contrato => [contrato.id, calcularResumoContrato(contrato)]));
+        const geral = calcularResumoGeral(Dashboard.contratos, [...resumos.values()]);
+        document.querySelectorAll("[data-dashboard-kpi]").forEach(elemento => {
+            elemento.textContent = geral[elemento.dataset.dashboardKpi].toLocaleString("pt-BR");
+        });
+        document.querySelectorAll("[data-dashboard-contrato]").forEach(card => {
+            const resumo = resumos.get(card.dataset.dashboardContrato);
+            card.querySelectorAll("[data-dashboard-metrica]").forEach(elemento => {
+                elemento.textContent = resumo ? resumo[elemento.dataset.dashboardMetrica].toLocaleString("pt-BR") : "—";
+            });
+            card.title = resumo ? "Recursos: somente disponíveis" : "Contrato não carregado";
+        });
+        const periodo = Dashboard.periodo;
+        if (periodo) {
+            document.querySelectorAll("[data-dashboard-periodo]").forEach(elemento => {
+                elemento.textContent = periodo[elemento.dataset.dashboardPeriodo];
+            });
+            dashboardStatus.turno = periodo.turno;
+            dashboardStatus.horario = periodo.horario;
+            dashboardStatus.atualizacao = new Intl.DateTimeFormat("pt-BR", {
+                timeZone: "America/Fortaleza", dateStyle: "short", timeStyle: "short"
+            }).format(new Date());
+            renderBanner();
+        }
+        return geral;
+    }
+};
+window.DashboardResumo = DashboardResumo;
 
 

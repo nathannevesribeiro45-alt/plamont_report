@@ -5,7 +5,9 @@
 const Dashboard = {
     contratos: {},
     contratoAtual: null,
-    abaAtual: null
+    abaAtual: null,
+    periodo: null,
+    carregando: false
 };
 
 
@@ -32,6 +34,50 @@ let geracaoCarregamento = 0;
 
 let identidadeSessaoAtual = null;
 
+let carregamentoEmCurso = null;
+let recargaEmCurso = null;
+let recargaPendente = false;
+
+// Um único verificador, inclusive após suspensão da aba/computador.
+const PeriodoOperacional = {
+    timer: null,
+    verificacao: null,
+    rascunhoAdiado: null,
+    chave(periodo) { return periodo ? `${periodo.dataISO}|${periodo.turno}` : ""; },
+    verificar(instante = new Date()) {
+        if (this.verificacao) return this.verificacao;
+        this.verificacao = this.conferir(instante).finally(() => { this.verificacao = null; });
+        return this.verificacao;
+    },
+    async conferir(instante) {
+        if (!sistemaInicializado || Dashboard.carregando || recargaEmCurso) return false;
+        const periodo = obterPeriodoOperacional(instante);
+        if (this.chave(periodo) === this.chave(Dashboard.periodo)) return false;
+        const editor = window.EditorRelatorio;
+        if (editor?.salvando || editor?.confirmacao) return false;
+        if (editor?.ativo) {
+            // Uma recusa não gera um novo diálogo a cada verificação.
+            if (this.rascunhoAdiado === editor.rascunho) return false;
+            if (!await editor.confirmarSaida({ mudancaPeriodo: true })) {
+                this.rascunhoAdiado = editor.rascunho;
+                return false;
+            }
+        }
+        this.rascunhoAdiado = null;
+        await atualizarContratosPorSessao(periodo);
+        return true;
+    },
+    iniciar() {
+        if (this.timer !== null) return;
+        const conferir = () => this.verificar().catch(erro => console.error("Falha na passagem de turno:", erro));
+        this.timer = setInterval(conferir, 30000);
+        window.addEventListener("focus", conferir);
+        document.addEventListener("visibilitychange", () => { if (!document.hidden) conferir(); });
+        conferir();
+    }
+};
+window.PeriodoOperacional = PeriodoOperacional;
+
 
 // ======================================
 // IDENTIDADE DA SESSÃO
@@ -56,7 +102,8 @@ function obterIdentidadeSessao() {
 // ======================================
 
 async function carregarContrato(
-    nomeArquivo
+    nomeArquivo,
+    periodo = obterPeriodoOperacional()
 ) {
 
     try {
@@ -104,6 +151,11 @@ async function carregarContrato(
 
         const contratoBase =
             await resposta.json();
+
+        // Identidade aplicada ANTES da consulta, sem modificar o arquivo seed.
+        contratoBase.data = periodo.data;
+        contratoBase.turno = periodo.turno;
+        contratoBase.horario = periodo.horario;
 
 
         // ==================================
@@ -174,8 +226,19 @@ async function carregarContrato(
 // CARREGAR TODOS OS CONTRATOS
 // ======================================
 
-async function carregarTodosContratos({
-    preservarNavegacao = false
+function carregarTodosContratos(opcoes = {}) {
+    if (carregamentoEmCurso) return carregamentoEmCurso;
+    Dashboard.carregando = true;
+    carregamentoEmCurso = Promise.resolve().then(() => carregarLoteContratos(opcoes)).finally(() => {
+        Dashboard.carregando = false;
+        carregamentoEmCurso = null;
+    });
+    return carregamentoEmCurso;
+}
+
+async function carregarLoteContratos({
+    preservarNavegacao = false,
+    periodo = obterPeriodoOperacional()
 } = {}) {
 
     // Cada carregamento recebe uma geração.
@@ -185,6 +248,8 @@ async function carregarTodosContratos({
     // serão descartados.
     const minhaGeracao =
         ++geracaoCarregamento;
+
+    const sessaoDaCarga = obterIdentidadeSessao();
 
 
     // ==================================
@@ -217,7 +282,8 @@ async function carregarTodosContratos({
 
         const contrato =
             await carregarContrato(
-                arquivo
+                arquivo,
+                periodo
             );
 
 
@@ -227,7 +293,7 @@ async function carregarTodosContratos({
 
         if (
             minhaGeracao !==
-            geracaoCarregamento
+            geracaoCarregamento || sessaoDaCarga !== obterIdentidadeSessao()
         ) {
 
             return false;
@@ -259,7 +325,7 @@ async function carregarTodosContratos({
 
     if (
         minhaGeracao !==
-        geracaoCarregamento
+        geracaoCarregamento || sessaoDaCarga !== obterIdentidadeSessao()
     ) {
 
         return false;
@@ -273,6 +339,21 @@ async function carregarTodosContratos({
 
     Dashboard.contratos =
         novosContratos;
+
+    Dashboard.periodo = periodo;
+
+    // Uma falha de leitura não pode deixar visível um relatório do turno antigo.
+    for (const arquivo of ARQUIVOS_CONTRATOS) {
+        const id = arquivo.replace(".json", "");
+        if (novosContratos[id]) continue;
+        const container = document.getElementById(`${id}-content`);
+        if (container) container.textContent = "Não foi possível carregar este relatório. Recarregue a página para tentar novamente.";
+        document.getElementById(`${id}-acoes`)?.replaceChildren();
+        for (const campo of ["data", "turno", "horario"]) {
+            const elemento = document.getElementById(`${id}-${campo}`);
+            if (elemento) elemento.textContent = "—";
+        }
+    }
 
 
     // ==================================
@@ -323,6 +404,7 @@ async function carregarTodosContratos({
     }
 
 
+    window.DashboardResumo?.atualizar();
     return true;
 
 }
@@ -333,7 +415,25 @@ async function carregarTodosContratos({
 // LOGIN / LOGOUT / TROCA DE USUÁRIO
 // ======================================
 
-async function atualizarContratosPorSessao() {
+function atualizarContratosPorSessao(periodo) {
+    recargaPendente = true;
+    // Invalida imediatamente uma resposta antiga, mesmo se a sessão mudar
+    // no meio de um lote. O próximo lote só começa quando o anterior acabar.
+    geracaoCarregamento++;
+    window.RelatoriosStorage?.limparEstados?.();
+    if (recargaEmCurso) return recargaEmCurso;
+    recargaEmCurso = (async () => {
+        do {
+            recargaPendente = false;
+            if (carregamentoEmCurso) await carregamentoEmCurso;
+            await recarregarInterface(periodo);
+            periodo = undefined;
+        } while (recargaPendente);
+    })().finally(() => { recargaEmCurso = null; });
+    return recargaEmCurso;
+}
+
+async function recarregarInterface(periodo) {
 
     // ==================================
     // INVALIDAR ESTADO TÉCNICO
@@ -353,7 +453,8 @@ async function atualizarContratosPorSessao() {
 
     const carregado =
         await carregarTodosContratos({
-            preservarNavegacao: true
+            preservarNavegacao: true,
+            periodo
         });
 
 
@@ -383,7 +484,7 @@ async function atualizarContratosPorSessao() {
         typeof Render !== "undefined"
     ) {
 
-        Render.atualizar?.();
+        await Render.inicializar?.();
 
     }
 
@@ -430,7 +531,12 @@ function configurarMudancaDeSessao() {
             if (
                 !sistemaInicializado
             ) {
-
+                if (obterIdentidadeSessao() !== identidadeSessaoAtual) {
+                    identidadeSessaoAtual = obterIdentidadeSessao();
+                    recargaPendente = true;
+                    geracaoCarregamento++;
+                    window.RelatoriosStorage?.limparEstados?.();
+                }
                 return;
 
             }
@@ -543,7 +649,12 @@ document.addEventListener(
         // Sempre consulta o Supabase.
         // ==================================
 
-        await carregarTodosContratos();
+        configurarMudancaDeSessao();
+        do {
+            recargaPendente = false;
+            window.RelatoriosStorage?.limparEstados?.();
+            await carregarTodosContratos();
+        } while (recargaPendente);
 
 
         console.log(
@@ -577,7 +688,7 @@ document.addEventListener(
         // 8. INTERFACE
         // ==================================
 
-        Render.inicializar();
+        await Render.inicializar();
 
 
         // ==================================
@@ -592,7 +703,8 @@ document.addEventListener(
         // 10. ESCUTAR LOGIN / LOGOUT
         // ==================================
 
-        configurarMudancaDeSessao();
+        if (recargaPendente) await atualizarContratosPorSessao();
+        PeriodoOperacional.iniciar();
 
     }
 );

@@ -2,6 +2,36 @@
 // UTILITÁRIOS DO SISTEMA
 // ======================================
 
+// A hora civil é sempre de Fortaleza. UTC abaixo serve apenas para a
+// aritmética de dias do calendário, nunca para decidir dia/noite.
+function obterPeriodoOperacional(instante = new Date()) {
+    if (typeof instante === "string" && !/(?:Z|[+-]\d{2}:\d{2})$/i.test(instante)) {
+        throw new TypeError("Informe um instante com fuso explícito, Date ou timestamp.");
+    }
+    const dataHora = new Date(instante);
+    if (instante === null || !Number.isFinite(dataHora.getTime())) {
+        throw new TypeError("Instante operacional inválido.");
+    }
+    const partes = Object.fromEntries(new Intl.DateTimeFormat("en-CA", {
+        timeZone: "America/Fortaleza", year: "numeric", month: "2-digit",
+        day: "2-digit", hour: "2-digit", hourCycle: "h23"
+    }).formatToParts(dataHora).map(parte => [parte.type, parte.value]));
+    const hora = Number(partes.hour);
+    const periodo = hora >= 7 && hora < 19 ? "dia" : "noite";
+    const diaOperacional = Date.UTC(Number(partes.year), Number(partes.month) - 1,
+        Number(partes.day)) - (hora < 7 ? 86400000 : 0);
+    const dias = Math.round((diaOperacional - Date.UTC(2026, 8, 29)) / 86400000);
+    const blocoBD = ((dias % 4) + 4) % 4 < 2;
+    const codigoTurno = periodo === "dia" ? (blocoBD ? "B" : "A") : (blocoBD ? "D" : "C");
+    const dataISO = new Date(diaOperacional).toISOString().slice(0, 10);
+    return {
+        data: dataISO.split("-").reverse().join("/"), dataISO, codigoTurno, periodo,
+        // Produção usa "Dia B". Não normalizar nem migrar identidades antigas.
+        turno: `${periodo === "dia" ? "Dia" : "Noite"} ${codigoTurno}`,
+        horario: periodo === "dia" ? "07:00 às 19:00" : "19:00 às 07:00"
+    };
+}
+
 // Texto seguro para os templates do editor e dos documentos das OMs.
 function escaparHtml(valor) {
     return String(valor ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);

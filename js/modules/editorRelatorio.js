@@ -28,7 +28,7 @@ window.EditorRelatorio = {
         return this.ativo && this.podeEditar() && aba?.id === this.abaId && Dashboard.contratoAtual?.id === this.contratoId;
     },
     iniciar(aba = Dashboard.abaAtual) {
-        if (!this.podeEditar() || !aba || this.ativo || this.salvando || !Dashboard.contratoAtual) return false;
+        if (!this.podeEditar() || !aba || this.ativo || this.salvando || Dashboard.carregando || !Dashboard.contratoAtual) return false;
         AnexosOM.iniciarSessao();
         this.ativo = true;
         this.contratoId = Dashboard.contratoAtual.id;
@@ -68,9 +68,12 @@ window.EditorRelatorio = {
     deveConfirmarNavegacao(pagina, aba) {
         return this.ativo && (pagina !== this.contratoId || (aba && aba !== this.abaId));
     },
-    async confirmarSaida() {
+    async confirmarSaida({ mudancaPeriodo = false } = {}) {
         if (this.salvando) { this.mostrarMensagem("Aguarde a confirmação do salvamento."); return false; }
-        if (this.temAlteracoes() && !await this.confirmar("Existem alterações não aplicadas.", "Deseja descartá-las e sair do editor?", "Descartar alterações", "Continuar editando")) return false;
+        if ((mudancaPeriodo || this.temAlteracoes()) && !await this.confirmar(
+            mudancaPeriodo ? "O período operacional mudou." : "Existem alterações não aplicadas.",
+            mudancaPeriodo ? "Carregar o novo turno descarta o rascunho atual. Se continuar editando, o salvamento permanecerá na data e no turno anteriores." : "Deseja descartá-las e sair do editor?",
+            mudancaPeriodo ? "Descartar e carregar novo turno" : "Descartar alterações", "Continuar editando")) return false;
         this.descartar();
         return true;
     },
@@ -122,6 +125,7 @@ window.EditorRelatorio = {
             Dashboard.contratos[payload.contratoId] = resultado.dados;
             Dashboard.contratoAtual = resultado.dados;
             Dashboard.abaAtual = resultado.dados.abas.find(aba => aba.id === payload.abaId);
+            window.DashboardResumo?.atualizar();
             AnexosOM.aplicar(Dashboard.contratos);
             this.descartar();
             Render.atualizar();
