@@ -1,8 +1,8 @@
 {
   "id": "os442",
   "nome": "Contrato OS 442",
-  "data": "30/09/2026",
-  "turno": "Dia B",
+  "data": "01/10/2026",
+  "turno": "Dia A",
   "horario": "07:00 às 19:00",
   "abas": [
     {
@@ -16,7 +16,7 @@
           "Mecanico": 0,
           "Soldador": 1,
           "Montador": 0,
-          "Eletricista": 3,
+          "Eletricista": 4,
           "Pintor": 0
         },
         "indireto": {
@@ -54,25 +54,17 @@
       "recursos": [],
 
       "atividades": [ {
-          "lider": "Jodersson",
-          "telefone": "98 8476-4303",
+          "lider": "Josias",
+          "telefone": "98 8161-3655",
           "tecnicoSeguranca": "",
-          "equipe": "03 Eletricistas + 01 Soldador + 1 caldereiro",
+          "equipe": "05 Eletricistas + 01 Soldador + 1 caldereiro",
           "oms": [
             {
-            "numero": "202505155058",
-            "frente": "CN-06",
-            "latitude":"-2,5547117",
-            "longitude":"-44,3797357",
-            "descricao": "INST TAMPAS DE BANDEJAS ESCADA DE ACESSO CN06",
-            "status": "Em andamento"
-            },
-              {
-            "numero": "202600286018",
-            "frente": "CN-07",
-            "latitude":"-2,5535402",
-            "longitude":"-44,3793104",
-            "descricao": "TROCAR BANDEJAMENTO PIVÔ TRASEIRO CN07",
+            "numero": "202602170950",
+            "frente": "VV-08",
+            "latitude":"-2,5693776",
+            "longitude":"-44,3443681",
+            "descricao": "INSP_TORRE/BASE DA ANT TOMBAMENT AVARIADO",
             "status": "Em andamento"
             }
 
@@ -90,7 +82,7 @@
       "qlp": {
         "direto": {
           "Caldeireiro": 1,
-          "Mecanico": 5,
+          "Mecanico": 6,
           "Soldador": 1,
           "Montador": 3,
           "Eletricista": 6,
@@ -123,8 +115,7 @@
       },
 
       "ausencias": {
-        "Mecânico":1,
-        "justificadas":1,
+        "justificadas":0,
         "naoJustificadas":0
       },
 
@@ -157,87 +148,51 @@
           "tecnicoSeguranca": "",
           "equipe": "5 Mecânicos + 6 Eletricistas + 1 caldeireiro + 1 soldador + 3 Montadores",
           "oms": [
-  {
-    "numero": "202604791650",
-    "frente": "TE-3140KP-03",
-    "descricao": "MP LUB TALHA ELÉTRICA TE-3140KP-03",
-    "status": "Em andamento",
-    "latitude": "",
-    "longitude": "",
-    "arquivoPdf": ""
-  },
-  {
-    "numero": "202604806963",
-    "frente": "TR-313K-60",
-    "descricao": "MCM-MPV MEC UTL 08S GUINCHO TR1360",
-    "status": "Em andamento",
-    "latitude": "-2,5627716",
-    "longitude": "-44,3460527",
-    "arquivoPdf": ""
-  },
-  {
-    "numero": "202604806964",
-    "frente": "TR-313K-61",
-    "descricao": "MCM-MPV MEC UTL 08S GUINCHO TR1361",
-    "status": "Em andamento",
-    "latitude": "-2,5625057",
-    "longitude": "-44,3462034",
-    "arquivoPdf": ""
-  },
-  {
-    "numero": "202604806965",
-    "frente": "TR-313K-64",
-    "descricao": "MCM-MPV MEC UTL 08S GUINCHO TR1364",
-    "status": "Em andamento",
-    "latitude": "-2,5621509",
-    "longitude": "-44,3575290",
-    "arquivoPdf": ""
-  },
-  {
-    "numero": "202604806962",
-    "frente": "TR-313K-59",
-    "descricao": "MCM-MPV MEC UTL 08S GUINCHO TR1359",
-    "status": "Em andamento",
-    "latitude": "-2,5632261",
-    "longitude": "-44,3457272",
-    "arquivoPdf": ""
-  },
-  {
-    "numero": "202302074829",
-    "frente": "PÓRTICO 01",
-    "descricao": "SUBST TRAVA TRILHOS AVARIADOS PÓRTICO 01",
-    "status": "Em andamento",
-    "latitude": "-2,5680863",
-    "longitude": "-44,3455293",
-    "arquivoPdf": ""
-  },
-  {
-    "numero": "202505708653",
-    "frente": "",
-    "descricao": "SUBSTITUIR CABO DOS LIMITES TRANSLAÇÃO",
-    "status": "Em andamento",
-    "latitude": "",
-    "longitude": "",
-    "arquivoPdf": ""
-  },
-  {
-    "numero": "202604328811",
-    "frente": "",
-    "descricao": "SUBSTITUIR PAINEL DO RÁDIO ANTICOLISÃO",
-    "status": "Em andamento",
-    "latitude": "",
-    "longitude": "",
-    "arquivoPdf": ""
-  },
-  {
-    "numero": "202604049252",
-    "frente": "",
-    "descricao": "APOIO_FAZER RECUPERAÇÃO DAS ROLDANAS DAS",
-    "status": "Em andamento",
-    "latitude": "",
-    "longitude": "",
-    "arquivoPdf": ""
-  }
+            {
+              "numero": "202302074829",
+              "frente": "PÓRTICO 01",
+              "descricao": "SUBST TRAVA TRILHOS AVARIADOS PÓRTICO 01",
+              "status": "Em andamento",
+              "latitude": "-2,5680863",
+              "longitude": "-44,3455293",
+              "arquivoPdf": ""
+            },
+            {
+              "numero": "202603579339",
+              "frente": "TR 311K- 14",
+              "descricao": "EX-311K14 REDUTOR COM AVARIA ",
+              "status": "Em andamento",
+              "latitude": "-2,5715538",
+              "longitude": "-44,3446362",
+              "arquivoPdf": ""
+            },
+            {
+              "numero": "202603945722",
+              "frente": "TR 311K- 14",
+              "descricao": "MCM-MPV ELE 16S EXTRATOR EX-311K-220 ",
+              "status": "Em andamento",
+              "latitude": "-2,5715538",
+              "longitude": "-44,3446362",
+              "arquivoPdf": ""
+            },
+            {
+              "numero": "202603945724",
+              "frente": "TR 311K- 14",
+              "descricao": "MCM-MPV MEC 16S EXTRATOR EX-311K-220",
+              "status": "Em andamento",
+              "latitude": "-2,5715538",
+              "longitude": "-44,3446362",
+              "arquivoPdf": ""
+            },
+             {
+              "numero": "202603947631",
+              "frente": "TR 311K- 14",
+              "descricao": "MONTAR/DESMONTAR ANDAIME PLAMONT NO EX31",
+              "status": "Em andamento",
+              "latitude": "-2,5715538",
+              "longitude": "-44,3446362",
+              "arquivoPdf": ""
+            }
 ]
 }
       ]
