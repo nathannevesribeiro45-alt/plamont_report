@@ -86,14 +86,24 @@ window.AnexosStorage = (() => {
             resposta = await sdk.storage.from(bucket()).upload(caminho, arquivo, {
                 contentType: "application/pdf", cacheControl: "60", upsert: false
             });
-            if (resposta.error) throw resposta.error;
         } catch (causa) {
             // Uma falha de transporte NÃO prova ausência do objeto no servidor.
             throw Object.assign(erro("upload_nao_confirmado", "Não foi possível confirmar o upload. Preserve o rascunho e confira esta tentativa antes de repetir.", causa), {
                 storagePath: caminho, resultadoIncerto: true
             });
         }
-        if (resposta.data?.path !== caminho) throw Object.assign(erro("upload_nao_confirmado", "O servidor retornou um caminho inesperado."), { storagePath: caminho, resultadoIncerto: true });
+        // Uma rejeição retornada pelo servidor não é uma exceção de transporte.
+        if (resposta?.error) {
+            console.error("[AnexosStorage] Upload rejeitado:", {
+                status: resposta.error.statusCode ?? resposta.error.status ?? null,
+                code: resposta.error.code ?? null,
+                message: resposta.error.message ?? "Erro de Storage sem mensagem."
+            });
+            throw Object.assign(erro("upload_rejeitado", "O servidor recusou o envio do anexo.", resposta.error), {
+                storagePath: caminho, resultadoIncerto: false, resultadoUpload: "rejeitado"
+            });
+        }
+        if (!resposta?.data?.path || resposta.data.path !== caminho) throw Object.assign(erro("upload_nao_confirmado", "O servidor retornou uma confirmação de upload inesperada."), { storagePath: caminho, resultadoIncerto: true });
         // O chamador precisa reconciliar/limpar o envio se a sessão mudou.
         if (window.PlamontAuth?.usuario?.id !== id || !window.PlamontAuth?.pode?.("editar")) {
             throw Object.assign(erro("sessao_alterada_apos_upload", "Sessão alterada após o envio. O relatório ainda não foi salvo."), { storagePath: caminho, uploadConfirmado: true });
