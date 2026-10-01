@@ -1,8 +1,8 @@
 {
   "id": "os450",
   "nome": "Contrato OS 450",
-  "data": "30/09/2026",
-  "turno": "Dia B",
+  "data": "01/10/2026",
+  "turno": "Dia A",
   "horario": "07:00 às 19:00",
   "abas": [
     {
@@ -54,23 +54,23 @@
         {
           "tipo": "Munck",
           "placa": "QRI-7I40",
-          "operador": "Moisés",
-          "contato":"9499181-8671",
-          "status": "preventiva"
+          "operador": "",
+          "contato":"",
+          "status": "disponivel"
         },
          {
           "tipo": "Munck",
           "placa": "QRI-8D21",
-          "operador": "Márcio",
-          "contato":"98 98805-1819",
-          "status": "disponivel"
+          "operador": "",
+          "contato":"",
+          "status": "manutencao"
         },
         {
           "tipo": "Pick-up",
           "placa": "QRI-2G24",
-          "operador": "Alisson",
-          "contato":"98 98876-4732",
-          "status": "Disponivel"
+          "operador": "",
+          "contato":"",
+          "status": "manutencao"
         },
         {
           "tipo": "Pick-up",
@@ -78,6 +78,13 @@
           "operador": "",
           "contato":"",
           "status": "manutencao"
+        },
+        {
+          "tipo": "Pick-up",
+          "placa": "SFU-0A29",
+          "operador": "Rosivaldo",
+          "contato":" (98) 99187-8772",
+          "status": "disponivel"
         },
         {
           "tipo": "Caminhao comboio",
@@ -90,50 +97,50 @@
       "atividades": [
     
         {
-          "lider":"Jessé",
-          "telefone":"98 8817-1971",
-          "equipe":"05 mecânicos + 2 soldadores + 1 caldeireiro + 01 pintor",
+          "lider":"Jean Mesquita",
+          "telefone":"98 8866-0232",
+          "equipe":"04 mecânicos + 2 soldadores + 2 caldeireiros",
           "oms":[
             {
-              "frente":"RP-08",
+              "frente":"PIER III",
               "numero":"202605036991",
-              "descricao":"INSTALAR SUPORTEBRAÇO CORTINA DE CABOS (RP-08)",
-              "latitude":"-2,5734222",
-              "longitude":"-44,3429541",
-              "arquivoPdf":"om's/contrato 450 oms/OM 202605036991 - INSTALAR SUPORTEBRAÇO CORTINA DE CABOS.pdf", 
+              "descricao":"Montagem SPDA PIII",
+              "latitude":"-2,5584095",
+              "longitude":"-44,3792419",
+              "arquivoPdf":"om's/contrato 450 oms/OM 202604786241 - SPDA PIER III (1).pdf", 
               "status":"Em andamento"
             }
           ]
         },
         {
-          "lider":"Fabrício Silva",
+          "lider":"Cosmo",
           "telefone":"98 8896-7117",
-          "equipe":"03 mecânicos + 2 soldadores + 2 caldeireiro + 01 pintor",
+          "equipe":"04 mecânicos + 3 soldadores + 2 caldeireiro",
           "oms":[
             {
-              "frente":"MOBILIZAÇÃO PARA ER-02",
-              "numero":"202604783539",
-              "descricao":"PREPARAÇÃO DE MATERIAS E 5S PLAMONT (ER-02)",
-              "latitude":"-2,5643473",
-              "longitude":"-44,3533069",
-              "arquivoPdf":"om's/contrato 450 oms/OM 202604783539 - PREPARAÇÃO DE MATERIAS E 5S ER02.pdf", 
+              "frente":"PIER IV",
+              "numero":"-- PREPARAÇÃO DE MATERIAIS (PIER IV)",
+              "descricao":"PREPARAÇÃO DE MATERIAIS (PIER IV)",
+              "latitude":"-2,5529272",
+              "longitude":"-44,3787579",
+              "arquivoPdf":"", 
               "status":"Em andamento"
             }
           ]
         },
         {
-          "lider":"Ricardo",
-          "telefone":"98 8497-6410",
+          "lider":"Irismar",
+          "telefone":"98 8144-1682",
           "equipe":"05 mecânicos + 1 soldadores + 2 caldeireiro",
           
           "oms":[
             
             {
-              "frente":"CANTEIRO CENTRAL",
-              "numero":"--",
-              "descricao":"FABRICAÇÃO DE GAIOLAS DE OXICORTE",
-              "latitude":"-2,5560547",
-              "longitude":"-44,3504725",
+              "frente":"ER-02",
+              "numero":"--MOBILIZAÇÃO PARA ER-02",
+              "descricao":"MOBILIZAÇÃO PARA ER-02",
+              "latitude":"-2,5643107",
+              "longitude":"-44,3590908",
               "arquivoPdf":"", 
               "status":"Em andamento"
             }
