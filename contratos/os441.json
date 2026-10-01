@@ -1,8 +1,8 @@
 {
   "id": "os441",
   "nome": "Contrato OS 441",
-  "data": "30/09/2026",
-  "turno": "Dia B",
+  "data": "01/10/2026",
+  "turno": "Dia A",
   "horario": "07:00 às 19:00",
   "abas": [
     {
@@ -13,8 +13,8 @@
 
       "qlp": {
         "direto": {
-          "Caldeireiro": 2,
-          "Mecanico": 10,
+          "Caldeireiro": 3,
+          "Mecanico": 14,
           "Soldador": 3,
           "Montador": 9,
           "Eletricista": 1,
@@ -47,10 +47,7 @@
       },
 
       "ausencias": {
-      "Mecânico":2,
-      "Caldeireiros":1,
-      "Soldadores":3,
-     "justificadas": 6,
+     "justificadas": 0,
      "naoJustificadas":0
       },
 
@@ -60,15 +57,15 @@
         {
           "tipo": "Munck",
           "placa": "SGC-7H66",
-          "operador": "",
-          "contato":"",
-          "status": "manutenção"
+          "operador": "Cícero",
+          "contato":"98 98121-1895",
+          "status": "Disponivel"
         },
         {
           "tipo": "Munck",
-          "placa": "QRD-8212",
-          "operador": "Jhonatan",
-          "contato":"",
+          "placa": " RQP-8G78",
+          "operador": "José Carlos",
+          "contato":" 98 98814-7068",
           "status": "Disponivel"
         },
         {
@@ -81,16 +78,16 @@
       
         {
           "tipo": "Pick-up",
-          "placa": "SFT-9J87",
-          "operador": "Patrick",
-          "contato":"(98) 99984-4559",
+          "placa": "SFT-9H25",
+          "operador": "Carlos",
+          "contato":"98 98124-4272",
           "status": "Disponivel"
         },
         {
           "tipo": "Pick-up",
-          "placa": "QRI-2G50",
-          "operador": "Anderson",
-          "contato":"(98) 98415-6236",
+          "placa": "SFU-OA35",
+          "operador": "Hilgles",
+          "contato":"98 98537-4937",
           "status": "Disponivel"
         }
       
@@ -98,52 +95,70 @@
 
       "atividades": [
         {
-        "lider": "Adilson",
-          "telefone": "98 8898-1856",
+        "lider": "Elias",
+          "telefone": "98 98210-6618",
           "tecnicoSeguranca": "",
           "equipe": "05 Mecânicos + 01 Caldeireiro + 01 soldador + 03 montadores",
           "oms": [
             {
-              "frente":"TR-313K-29",
-              "latitude":"-2,5628445",
-              "longitude":"-44,3586765",
-              "numero": "202604196897",
-              "descricao": "CONT. TROCAR 70 ROLOS DE CARGA AO LONGO DO TR",
-              "arquivoPdf":"om's/contrato 441 oms/Desgaste/TR-1329 OM 202604196897 - TROCAR 70 ROLOS DE CARGA AO LONGO DO TR.pdf",
+              "frente":"ROTA 89",
+              "latitude":"",
+              "longitude":"",
+              "numero": "202604846772",
+              "descricao": "PREPARAÇÃO PARA ATIVIDADES DESGASTE (ROTA 89)",
+              "arquivoPdf":"",
               "status": "Em andamento"
             }
           ]
         },
         {
-          "lider": "Fernando Maranhão",
-          "telefone": "98 8742-8209",
+          "lider": "Iego",
+          "telefone": "98 8506-6056",
           "tecnicoSeguranca": "",
-          "equipe": "3 Mecânicos + 1 soldador + 01 caldeireiro + 3 Montadores",
+          "equipe": "5 Mecânicos + 1 soldador + 01 caldeireiro + 3 Montadores",
           "oms": [
              {
-              "numero": "202501141433",
-              "frente":"TR-326K-01",
-              "latitude":"-2,5573071",
-              "longitude":"-44,3698684",
+              "numero": "202602069093",
+              "frente":"AMOS-6",
+              "latitude":"",
+              "longitude":"",
               "arquivoPdf":"",
-              "descricao": "TROCAR 60 ROLOS DE CARGA NO TR2601 (TR-326K-01)",
+              "descricao": "TROCAR 16 CHAPAS DA FACA DO AM3000KP-01 (AMOS-6)",
+              "status": "Em andamento"
+            },
+            {
+              "numero": "202602069470",
+              "frente":"AMOS-6",
+              "latitude":"",
+              "longitude":"",
+              "arquivoPdf":"",
+              "descricao": "DSG_MONTAR DESMONTAR ANDAIME PLAMONT (AMOS-6)",
+              "status": "Em andamento"
+            },
+            {
+              "numero": "202604747916",
+              "frente":"TR-315K-40",
+              "latitude":"",
+              "longitude":"",
+              "arquivoPdf":"",
+              "descricao": "FAZER PREPARAÇÃO MANUTENÇÃO e 5S PIER 4 (TR-315K-40)",
               "status": "Em andamento"
             }
           ]
         },
         {
-          "lider": "Ederson",
-          "telefone": "98 8242-1348",
+          "lider": "Alexandre",
+          "telefone": "98 99228‑6538",
           "tecnicoSeguranca": "",
-          "equipe": "02 Mecânicos + 01 Soldador + 03 montadores",
+          "equipe": "04 mecânicos + 01 caldeireiro + 01 soldador + 03 montadores",
           "oms": [
             {
-              "numero": "202605074882",
+              "numero": "202604622323",
               "frente":"EP-06",
               "latitude":"-2,5727272",
               "longitude":"-44,3359387",
               "arquivoPdf":"",
-              "descricao": "MONTAR DESMONTAR ANDAIME P TROCA ROLOS EP06",
+              "descricao": "TROCAR CAVALETE CARGA A.A TR DA LANÇA EP06",
               "status": "Em andamento"
             },
              {
@@ -153,6 +168,15 @@
               "longitude":"-44,3359387",
               "arquivoPdf":"",
               "descricao": "DG AJUSTAR CAV.SUBSTITUIR ROLOS IMPACTO EP06",
+              "status": "Em andamento"
+            },
+            {
+              "numero": "202604885886",
+              "frente":"TR-311K-12",
+              "latitude":"",
+              "longitude":"",
+              "arquivoPdf":"",
+              "descricao": "PREPARAÇÃO DE FERRAMENTAS E 5S - PLAMONT (TR-311K-12)",
               "status": "Em andamento"
             }
           ]
@@ -171,7 +195,7 @@
         "direto": {
           "Caldeireiro": 4,
           "Mecanico": 2,
-          "Soldador": 1,
+          "Soldador": 4,
           "Montador": 2,
           "Pintor": 1
         },
@@ -198,8 +222,8 @@
         }
       },
       "ausencias": {
-        "Mecânicos":2,
-        "justificadas": 2,
+        "Mecânicos":1,
+        "justificadas": 1,
      "naoJustificadas":0
       },
       "mobilizacao": {},
@@ -207,18 +231,36 @@
 
       "atividades": [
         {
-          "lider": "Wanderson/Adeilton",
-          "telefone": "98 98508-8348/98 8882-2306",
+          "lider": "Julio/ Erickson",
+          "telefone": "98 8506-6125 / 98 9609-7660 ",
           "tecnicoSeguranca": "",
-          "equipe": "02 Mecânicos + 04 Caldeireiros + 01 Soldadores + 02 Montadores + 01 Pintor",
+          "equipe": "02 Mecânicos + 04 Caldeireiros + 04 Soldadores + 02 Montadores + 01 Pintor",
           "oms": [
             {
-              "numero": "-- ",
-              "frente":"--",
-              "latitude":"--",
-              "longitude":"--",
+              "numero": "202304555808 ",
+              "frente":"Dolphin 13",
+              "latitude":"-2,5609171",
+              "longitude":"-44,3793644",
               "arquivoPdf":"--",
-              "descricao": "Equipe aguardando direcionamento",
+              "descricao": "A17-SEG CDI_TROC8 C. ENTRE OS DOLF 1 ",
+              "status": "Em andamento"
+            },
+             {
+              "numero": "202603675273 ",
+              "frente":"CN-09",
+              "latitude":"-2,5494714",
+              "longitude":"-44,3780698",
+              "arquivoPdf":"--",
+              "descricao": "SEG GC_TROC BARR GC ESCADAS ELEVA MOVEL (CN-09)",
+              "status": "Em andamento"
+            },
+             {
+              "numero": "202603209952",
+              "frente":"TR-326K-02",
+              "latitude":"-2,5571546",
+              "longitude":"-44,3700472",
+              "arquivoPdf":"--",
+              "descricao": " SEG_PS_TROC CH PISO OXIDACAO EXTRATOR LD (TR-326K-02)",
               "status": "Em andamento"
             }
 
