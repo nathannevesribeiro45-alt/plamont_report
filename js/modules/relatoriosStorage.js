@@ -533,7 +533,8 @@ const RelatoriosStorage = {
     ===================================================== */
 
     async carregar(
-        contratoBase
+        contratoBase,
+        { registrarEstado = true } = {}
     ) {
 
         // Garante que o cliente Supabase já foi criado.
@@ -652,7 +653,7 @@ const RelatoriosStorage = {
 
         if (!data) {
 
-            this.criarEstadoSeed(
+            if (registrarEstado) this.criarEstadoSeed(
                 contratoBase
             );
 
@@ -706,7 +707,7 @@ const RelatoriosStorage = {
         );
 
 
-        this.registrarEstadoPersistido(
+        if (registrarEstado) this.registrarEstadoPersistido(
             data.dados,
             data
         );
@@ -739,10 +740,22 @@ const RelatoriosStorage = {
        SALVAMENTO DE UMA ABA
     ===================================================== */
 
-    async salvarAba({
+    async salvarAba(parametros) {
+        let resultadoSalvamento = "nao_enviado";
+        try {
+            return await this.enviarAba(parametros, resultado => { resultadoSalvamento = resultado; });
+        } catch (causa) {
+            const erro = causa instanceof Error ? causa : this.tratarErroSalvar(causa);
+            erro.resultadoSalvamento = resultadoSalvamento;
+            throw erro;
+        }
+    },
+
+    async enviarAba({
         contrato,
-        aba
-    }) {
+        aba,
+        edicao
+    }, definirResultado) {
 
         // Além da proteção no banco/RPC, o frontend também
         // impede qualquer tentativa de edição sem permissão.
@@ -845,7 +858,7 @@ const RelatoriosStorage = {
            desnecessários.
         ================================================= */
 
-        const versaoBase =
+        const versaoAtual =
             Number(
                 estado
                     .versoesAbas
@@ -853,6 +866,25 @@ const RelatoriosStorage = {
                         abaId
                     )
             );
+
+        if (edicao !== undefined) {
+            const rejeitarSnapshot = () => {
+                throw this.tratarErroSalvar({ code: "22023", message: "Snapshot de edição inválido." });
+            };
+            if (!edicao || typeof edicao !== "object" || !edicao.contexto || !edicao.contrato || !edicao.destino) rejeitarSnapshot();
+            this.conferirContexto(edicao.contexto, { exigirLogin: true });
+            const capturada = this.identidade(edicao.contrato);
+            if (capturada.chave !== identidade.chave || edicao.chave !== identidade.chave ||
+                edicao.abaId !== abaId || !edicao.contrato.abas?.some(item => item.id === abaId) ||
+                edicao.destino.contratoId !== identidade.contratoId || edicao.destino.dataRelatorio !== identidade.data ||
+                edicao.destino.turno !== identidade.turno || edicao.destino.abaId !== abaId ||
+                !Number.isInteger(edicao.versao) || edicao.versao < 0) rejeitarSnapshot();
+            if (edicao.versao !== versaoAtual) {
+                throw this.tratarErroSalvar({ code: "40001", message: "relatorio_conflito_aba" });
+            }
+        }
+        // A versão pertence à edição iniciada, nunca a uma recarga posterior.
+        const versaoBase = edicao === undefined ? versaoAtual : edicao.versao;
 
 
         /* =================================================
@@ -916,11 +948,16 @@ const RelatoriosStorage = {
 
         let resposta;
 
+        const executarRpc = cliente.rpc;
+        if (typeof executarRpc !== "function") throw new Error("Cliente de salvamento indisponível.");
+        definirResultado("incerto");
+
 
         try {
 
             resposta =
-                await cliente.rpc(
+                await executarRpc.call(
+                    cliente,
                     this.rpcSalvar,
                     parametros
                 );
@@ -938,6 +975,15 @@ const RelatoriosStorage = {
             data,
             error
         } = resposta;
+
+        // O SDK também pode resolver falhas de fetch como { error, status: 0 }.
+        // Somente erros identificáveis do servidor comprovam rejeição; gateway,
+        // resposta malformada e transporte continuam incertos, mesmo sem throw.
+        // Não generalizar PGRST: por exemplo, erro de representação singular
+        // (PGRST116) pode ocorrer depois da execução e não comprova rollback.
+        if (error && resposta.status !== 0 && /^(42501|40001|40P01|55P03|22[A-Z0-9]{3}|23[A-Z0-9]{3}|P0001|PGRST(?:100|102|202|301|302|303))$/.test(String(error.code || ""))) {
+            definirResultado("rejeitado");
+        }
 
 
         // Salvamento continua exigindo que:
