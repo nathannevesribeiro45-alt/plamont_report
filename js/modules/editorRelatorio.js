@@ -253,10 +253,12 @@ window.EditorRelatorio = {
                         };
                     }
                     const mensagens = {
-                        conflito: "Esta aba foi alterada por outra sessão. Recarregue e revise o conflito antes de salvar.",
+                        conflito: "Esta aba foi atualizada por outro usuário enquanto você estava editando. Recarregue e revise o conflito antes de salvar.",
                         sem_permissao: "Sua sessão não possui permissão para salvar este relatório.",
                         dados_invalidos: "O servidor rejeitou os dados do relatório. Revise os campos.",
-                        sessao_alterada: "A sessão mudou. Recarregue o relatório antes de continuar."
+                        sessao_alterada: "A sessão mudou. Recarregue o relatório antes de continuar.",
+                        base_inexistente: "A versão-base deste relatório não está mais disponível. Recarregue os dados.",
+                        concorrencia: "O relatório foi atualizado por outra sessão. Tente novamente após recarregar os dados."
                     };
                     const mensagem = rpcIniciada
                         ? (mensagens[erro.tipo] || "O servidor não aceitou o salvamento. Recarregue e revise o relatório.")
