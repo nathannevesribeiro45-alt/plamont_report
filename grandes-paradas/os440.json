@@ -10,7 +10,7 @@
       "contrato": "os440",
 
       "status": {
-        "data": "30/09/2026",
+        "data": "01/10/2026",
         "hora": "07:00"
       },
 
@@ -21,10 +21,10 @@
         "previstoFim": "02/10/2026",
         "previstoFimHora": "15:10",
         "realizadoFim": "02/10/2026",
-        "realizadoFimHora": "10:40"
+        "realizadoFimHora": "15:10"
       },
 
-      "dataStatus": "30/09/2026",
+      "dataStatus": "01/10/2026",
 
       "pontos": [
         {
@@ -46,6 +46,11 @@
           "data": "30/09/2026",
           "previsto": 84.73,
           "realizado": 78.04
+        },
+        {
+          "data": "01/10/2026",
+          "previsto": 93.29,
+          "realizado": 93.29
         }
       ],
 
@@ -58,103 +63,55 @@
       ],
 
       "turno": {
-    "realizado": {
-      "inicio": "16:00",
-      "fim": "07:00"
-    },
-    "proximo": {
-      "inicio": "07:00",
-      "fim": "16:00"
+        "realizado": {
+          "inicio": "16:00",
+          "fim": "07:00"
+        },
+        "proximo": {
+          "inicio": "07:00",
+          "fim": "16:00"
+        }
+      },
+
+      "atividades": {
+        "realizadas": [
+          {
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Retoque de pintura",
+            "status": "Concluído"
+          },
+          {
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Desmontagem de andaimes",
+            "status": "Concluído"
+          },
+          {
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Organização e limpeza (5S) - EP-06",
+            "status": "Em andamento"
+          }
+        ],
+
+        "proximas": [
+          {
+            "om": "202501046432",
+            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
+            "descricao": "Organização e limpeza (5S) - EP-06",
+            "status": "Em andamento"
+          },
+          {
+            "om": "202602362916",
+            "area": "FAZER ESTAIAMENTO TRAVAMENTO CIL ELEV T (EXTRA)",
+            "descricao": "Estaiamento e travamento do cilindro elevatório",
+            "status": "Em andamento"
+          }
+        ]
+      },
+
+      "observacoes": "30/09/2026 16:00 — A Plamont Engenharia informa: conseguimos retirar o atraso de 5 horas do turno anterior, referente ao imprevisto ocorrido no decorrer da parada. Para o próximo turno permanecem apenas o retoque de pintura e a desmontagem de andaimes na região da calha, concluindo as atividades programadas da parada do ativo. Seguimos também com a atividade extra na região do cilindro, solicitada no decorrer da parada."
     }
-      },
-
-       "atividades": {
-    "realizadas": [
-      {
-        "om": "202501046432",
-        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-        "descricao": "Montagem de andaimes",
-        "status": "Concluído"
-      },
-      {
-        "om": "202501046432",
-        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-        "descricao": "Corte e retirada da chapa avariada",
-        "status": "Atrasado"
-      },
-      {
-        "om": "202501046432",
-        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-        "descricao": "Limpeza mecânica",
-        "status": "Atrasado"
-      }
-    ],
-
-    "proximas": [
-      {
-        "om": "202501046432",
-        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-        "descricao": "Corte e retirada da chapa avariada",
-        "status": "Atrasado"
-      },
-      {
-        "om": "202501046432",
-        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-        "descricao": "Limpeza mecânica do local",
-        "status": "Atrasado"
-      },
-      {
-        "om": "202501046432",
-        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-        "descricao": "Montagem das chapas de reforço da calha",
-        "status": "Atrasado"
-      },
-      {
-        "om": "202501046432",
-        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-        "descricao": "Solda dos reforços da calha",
-        "status": "Atrasado"
-      },
-      {
-        "om": "202501046432",
-        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-        "descricao": "Corte e retirada dos parafusos do duto",
-        "status": "Atrasado"
-      },
-      {
-        "om": "202501046432",
-        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-        "descricao": "Montagem das chapas de reforço da calha",
-        "status": "Atrasado"
-      },
-      {
-        "om": "202501046432",
-        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-        "descricao": "Corte e retirada dos parafusos do duto",
-        "status": "Atrasado"
-      },
-      {
-        "om": "202501046432",
-        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-        "descricao": "Montagem e torque dos parafusos dos flanges do duto",
-        "status": "Atrasado"
-      },
-      {
-        "om": "202501046432",
-        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-        "descricao": "Retoque de pintura",
-        "status": "Programado"
-      },
-      {
-        "om": "202501046432",
-        "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-        "descricao": "Desmontagem de andaimes",
-        "status": "Programado"
-      }
-    ]
-  },
-
-     "observacoes": "A Plamont Engenharia informa: devido à avaria no andaime durante movimentação da lança, foi necessário desmontar o andaime e aguardar novo bloqueio da lança para reiniciar sua montagem e dar continuidade à atividade. A montagem do andaime foi iniciada na tarde de 29/09 e concluída às 03:00 da madrugada de 30/09, liberando a frente para a mecânica. Com esses imprevistos, estão sendo reportadas 5 horas de atraso. A equipe segue focada nas atividades do turno do dia para retirada desse atraso."
-}
   ]
 }
