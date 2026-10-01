@@ -150,11 +150,36 @@ window.AnexosOM = {
                     return `<a ${atributos} href="${esc(a.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(`Abrir documento ${contexto} (nova aba)`)}">${esc(categoria)}</a>`;
                 }
                 if (i >= documentos.length && !a.storagePath && this.arquivo(a.id)) {
-                    return `<button type="button" ${atributos} data-anexo-visualizar="${esc(a.id)}" aria-label="${esc(`Abrir documento ${contexto}: ${a.nome || categoria}`)}">${esc(categoria)}</button>`;
-                }
-                // Sem URL ou binário disponível, conserva a indisponibilidade
-                // existente; não inventa resolução de Storage nesta etapa.
-                return `<button type="button" class="om-anexo-chip" disabled title="${titulo} — Documento indisponível nesta página" aria-label="${esc(`Documento ${contexto} indisponível nesta página`)}">${esc(categoria)}</button>`;
+    return `<button
+        type="button"
+        ${atributos}
+        data-anexo-visualizar="${esc(a.id)}"
+        data-anexo-nome="${esc(a.nome || categoria)}"
+        aria-label="${esc(`Abrir documento ${contexto}: ${a.nome || categoria}`)}">
+        ${esc(categoria)}
+    </button>`;
+}
+
+if (i >= documentos.length && a.storagePath) {
+    return `<button
+        type="button"
+        ${atributos}
+        data-anexo-visualizar="${esc(a.id)}"
+        data-anexo-storage-path="${esc(a.storagePath)}"
+        data-anexo-nome="${esc(a.nome || categoria)}"
+        aria-label="${esc(`Abrir documento persistido ${contexto}: ${a.nome || categoria}`)}">
+        ${esc(categoria)}
+    </button>`;
+}
+
+return `<button
+    type="button"
+    class="om-anexo-chip"
+    disabled
+    title="${titulo} — Documento indisponível nesta página"
+    aria-label="${esc(`Documento ${contexto} indisponível nesta página`)}">
+    ${esc(categoria)}
+</button>`;
             });
             return `<section class="om-anexos om-anexos--compactos" aria-label="Anexos da OM ${esc(om.numero || "não informada")}">
                 <h5><span aria-hidden="true">${Icons.oms}</span> Anexos (${chips.length})</h5>
@@ -164,11 +189,93 @@ window.AnexosOM = {
             <h5><span aria-hidden="true">${Icons.oms}</span> Anexos</h5>
             <div class="om-anexos-lista">${documentos.map(a => `<article class="om-anexo-card"><div class="om-anexo-info"><strong>${esc(a.nome)}</strong><small>${esc(this.categorias[a.categoria])} · Documento existente</small></div><div class="om-anexo-acoes">${a.url ? `<a class="om-anexo-acao" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer">Visualizar</a>` : '<span class="om-anexo-indisponivel">Caminho indisponível</span>'}</div></article>`).join("")}
             ${anexos.map(a => {
-                const local = !a.storagePath && !!this.arquivo(a.id);
-                return `<article class="om-anexo-card" data-anexo-card="${esc(a.id)}"><div class="om-anexo-info"><strong>${esc(a.nome || "Documento")}</strong><small>${esc(this.categorias[a.categoria] || a.categoria || "Outro")} · ${esc(this.formatarTamanho(a.tamanho))}</small><span class="om-anexo-etiqueta">${a.storagePath ? "Documento persistido" : local ? "Somente nesta página" : "Arquivo local indisponível"}</span></div><div class="om-anexo-acoes">
-                ${local ? `<button type="button" class="om-anexo-acao" data-anexo-visualizar="${esc(a.id)}">Visualizar</button>` : '<span class="om-anexo-indisponivel">' + (a.storagePath ? "Acesso ao Storage disponível em uma próxima etapa" : "Selecione o arquivo novamente em um novo anexo") + '</span>'}
-                ${editavel && local ? `<button type="button" class="om-anexo-acao om-anexo-remover" data-anexo-remover="${esc(a.id)}" data-grupo="${grupo}" data-om="${indice}">Remover</button>` : ""}</div></article>`;
-            }).join("")}${!documentos.length && !anexos.length ? '<p class="om-anexos-vazio">Nenhum documento nesta OM.</p>' : ""}</div>
+
+    const local =
+        !a.storagePath &&
+        !!this.arquivo(a.id);
+
+    const persistido =
+        typeof a.storagePath === "string" &&
+        !!a.storagePath.trim();
+
+    const visualizavel =
+        local || persistido;
+
+    return `
+        <article
+            class="om-anexo-card"
+            data-anexo-card="${esc(a.id)}">
+
+            <div class="om-anexo-info">
+
+                <strong>
+                    ${esc(a.nome || "Documento")}
+                </strong>
+
+                <small>
+                    ${esc(
+                        this.categorias[a.categoria] ||
+                        a.categoria ||
+                        "Outro"
+                    )}
+                    ·
+                    ${esc(this.formatarTamanho(a.tamanho))}
+                </small>
+
+                <span class="om-anexo-etiqueta">
+                    ${
+                        persistido
+                            ? "Documento persistido"
+                            : local
+                                ? "Somente nesta página"
+                                : "Arquivo local indisponível"
+                    }
+                </span>
+
+            </div>
+
+            <div class="om-anexo-acoes">
+
+                ${
+                    visualizavel
+                        ? `
+                            <button
+                                type="button"
+                                class="om-anexo-acao"
+                                data-anexo-visualizar="${esc(a.id)}"
+                                data-anexo-storage-path="${persistido ? esc(a.storagePath) : ""}"
+                                data-anexo-nome="${esc(a.nome || "Documento")}">
+                                Visualizar
+                            </button>
+                        `
+                        : `
+                            <span class="om-anexo-indisponivel">
+                                Selecione o arquivo novamente em um novo anexo
+                            </span>
+                        `
+                }
+
+                ${
+                    editavel && local
+                        ? `
+                            <button
+                                type="button"
+                                class="om-anexo-acao om-anexo-remover"
+                                data-anexo-remover="${esc(a.id)}"
+                                data-grupo="${grupo}"
+                                data-om="${indice}">
+                                Remover
+                            </button>
+                        `
+                        : ""
+                }
+
+            </div>
+
+        </article>
+    `;
+
+}).join("")}${!documentos.length && !anexos.length ? '<p class="om-anexos-vazio">Nenhum documento nesta OM.</p>' : ""}</div>
             ${editavel ? `<button type="button" class="om-anexo-adicionar" data-anexo-adicionar data-grupo="${grupo}" data-om="${indice}"><span aria-hidden="true">${Icons.mais}</span> Adicionar anexo</button>
             <input type="file" hidden data-anexo-input data-grupo="${grupo}" data-om="${indice}" aria-label="Selecionar anexo da OM ${esc(om.numero || "nova")}">
             <p class="om-anexos-ajuda">Até ${this.formatarTamanho(this.MAX_ANEXO_BYTES)} por arquivo. Sem envio ao servidor. F5 descarta os anexos locais.</p>` : ""}</section>`;
@@ -228,52 +335,414 @@ window.AnexosOM = {
         this.urlsTemporarias.delete(id);
     },
     revogarTodasUrls() { for (const id of this.urlsTemporarias.keys()) this.revogarUrl(id); },
-    async visualizar(id) {
-        const arquivo = this.arquivo(id);
-        if (!arquivo) return;
-        const estado = this.criarDialogo(arquivo.name, "anexo-preview");
-        const corpo = estado.elemento.querySelector(".anexo-dialog-corpo");
-        const extensao = arquivo.name.split(".").pop().toLowerCase();
-        const candidatoPdf = extensao === "pdf" && ["application/pdf", "", "application/octet-stream"].includes(arquivo.type);
-        // Confere o cabeçalho antes de entregar um PDF ao visualizador nativo.
-        let pdf = false;
-        if (candidatoPdf) {
-            try { pdf = (await arquivo.slice(0, 5).text()) === "%PDF-"; } catch { /* download continua disponível */ }
-            if (this.dialogo !== estado) return;
-        }
-        const imagem = /^(png|jpe?g|gif|webp)$/.test(extensao) && /^image\/(png|jpeg|gif|webp)$/.test(arquivo.type);
-        const texto = /^(txt|csv|json|log)$/.test(extensao);
-        // Não executar HTML, SVG ou scripts anexados na origem do sistema.
-        const url = URL.createObjectURL(new Blob([arquivo], { type: pdf ? "application/pdf" : imagem ? arquivo.type : "application/octet-stream" }));
-        this.urlsTemporarias.set(id, url);
-        estado.limpar = () => this.revogarUrl(id);
-        const link = document.createElement("a"); link.href = url; link.download = arquivo.name;
-        link.className = "om-anexo-acao"; link.textContent = "Baixar arquivo";
-        corpo.append(link);
-        if (pdf && navigator.pdfViewerEnabled !== false) {
-            const frame = document.createElement("iframe"); frame.title = "Prévia do documento PDF";
-            // O sandbox de iframe bloqueia o plugin PDF dos navegadores. Somente
-            // bytes com cabeçalho PDF, servidos como application/pdf, chegam aqui.
-            frame.src = url;
-            corpo.append(frame);
-            const dica = document.createElement("p"); dica.className = "om-anexos-ajuda";
-            dica.textContent = "Se o navegador não exibir o PDF, use Baixar arquivo."; corpo.append(dica);
-        } else if (pdf) {
-            const aviso = document.createElement("p");
-            aviso.textContent = "Este navegador não oferece visualização de PDF. Use Baixar arquivo para abrir o documento no leitor do dispositivo.";
+async visualizar(
+    id,
+    storagePath = null,
+    nomePersistido = ""
+) {
+
+    const arquivo =
+        this.arquivo(id);
+
+
+    // =====================================
+    // DOCUMENTO PERSISTIDO NO STORAGE
+    // =====================================
+
+    if (!arquivo && storagePath) {
+
+        const estado =
+            this.criarDialogo(
+                nomePersistido || "Documento PDF",
+                "anexo-preview"
+            );
+
+        const corpo =
+            estado.elemento.querySelector(
+                ".anexo-dialog-corpo"
+            );
+
+        const carregando =
+            document.createElement("p");
+
+        carregando.className =
+            "om-anexos-ajuda";
+
+        carregando.textContent =
+            "Carregando documento...";
+
+        corpo.append(carregando);
+
+        try {
+
+            if (
+                !window.AnexosStorage ||
+                typeof window.AnexosStorage
+                    .criarUrlTemporaria !== "function"
+            ) {
+
+                throw new Error(
+                    "O serviço de anexos persistidos não está disponível."
+                );
+
+            }
+
+
+            // URL curta e temporária.
+            // Nunca é salva no relatório.
+            const url =
+                await window.AnexosStorage
+                    .criarUrlTemporaria(
+                        storagePath,
+                        300
+                    );
+
+
+            // O usuário pode ter fechado o diálogo
+            // enquanto aguardávamos o servidor.
+            if (this.dialogo !== estado) {
+                return;
+            }
+
+
+            corpo.replaceChildren();
+
+
+            // =====================================
+            // ABRIR EM NOVA ABA
+            // =====================================
+
+            const link =
+                document.createElement("a");
+
+            link.href = url;
+
+            link.target = "_blank";
+
+            link.rel =
+                "noopener noreferrer";
+
+            link.className =
+                "om-anexo-acao";
+
+            link.textContent =
+                "Abrir PDF em nova aba";
+
+            corpo.append(link);
+
+
+            // =====================================
+            // PRÉVIA PDF
+            // =====================================
+
+            if (
+                navigator.pdfViewerEnabled !== false
+            ) {
+
+                const frame =
+                    document.createElement(
+                        "iframe"
+                    );
+
+                frame.title =
+                    "Prévia do documento PDF";
+
+                frame.src =
+                    url;
+
+                corpo.append(frame);
+
+
+                const dica =
+                    document.createElement("p");
+
+                dica.className =
+                    "om-anexos-ajuda";
+
+                dica.textContent =
+                    "Se o navegador não exibir o PDF, use Abrir PDF em nova aba.";
+
+                corpo.append(dica);
+
+            } else {
+
+                const aviso =
+                    document.createElement("p");
+
+                aviso.textContent =
+                    "Este navegador não oferece visualização integrada de PDF. Use Abrir PDF em nova aba.";
+
+                corpo.append(aviso);
+
+            }
+
+        } catch (erro) {
+
+            console.error(
+                "[AnexosOM] Falha ao visualizar anexo persistido:",
+                erro
+            );
+
+
+            if (this.dialogo !== estado) {
+                return;
+            }
+
+
+            corpo.replaceChildren();
+
+
+            const aviso =
+                document.createElement("p");
+
+            aviso.textContent =
+                erro?.message ||
+                "Não foi possível abrir este documento agora.";
+
             corpo.append(aviso);
-        } else if (imagem) {
-            const img = document.createElement("img"); img.src = url; img.alt = arquivo.name; corpo.append(img);
-        } else if (texto) {
-            const pre = document.createElement("pre"); corpo.append(pre);
-            try {
-                const conteudo = await arquivo.slice(0, 1024 * 1024).text();
-                if (this.dialogo === estado) pre.textContent = conteudo + (arquivo.size > 1024 * 1024 ? "\n[Prévia limitada ao primeiro MB. Baixe para ver o arquivo completo.]" : "");
-            } catch { if (this.dialogo === estado) pre.textContent = "Não foi possível ler a prévia. Use Baixar arquivo."; }
-        } else {
-            const aviso = document.createElement("p"); aviso.textContent = "Este formato não possui prévia local. Baixe o arquivo para abri-lo em um aplicativo compatível."; corpo.append(aviso);
+
+
+            const dica =
+                document.createElement("p");
+
+            dica.className =
+                "om-anexos-ajuda";
+
+            dica.textContent =
+                "O anexo continua preservado no relatório. Tente novamente ou verifique sua sessão.";
+
+            corpo.append(dica);
+
         }
+
+        return;
     }
+
+
+    // =====================================
+    // DOCUMENTO LOCAL
+    // =====================================
+
+    if (!arquivo) {
+        return;
+    }
+
+
+    const estado =
+        this.criarDialogo(
+            arquivo.name,
+            "anexo-preview"
+        );
+
+    const corpo =
+        estado.elemento.querySelector(
+            ".anexo-dialog-corpo"
+        );
+
+    const extensao =
+        arquivo.name
+            .split(".")
+            .pop()
+            .toLowerCase();
+
+    const candidatoPdf =
+        extensao === "pdf" &&
+        [
+            "application/pdf",
+            "",
+            "application/octet-stream"
+        ].includes(arquivo.type);
+
+
+    // Confere cabeçalho antes de mandar
+    // conteúdo ao visualizador PDF.
+    let pdf = false;
+
+    if (candidatoPdf) {
+
+        try {
+
+            pdf =
+                (
+                    await arquivo
+                        .slice(0, 5)
+                        .text()
+                ) === "%PDF-";
+
+        } catch {
+            // Download continua disponível.
+        }
+
+        if (this.dialogo !== estado) {
+            return;
+        }
+
+    }
+
+
+    const imagem =
+        /^(png|jpe?g|gif|webp)$/.test(
+            extensao
+        ) &&
+        /^image\/(png|jpeg|gif|webp)$/.test(
+            arquivo.type
+        );
+
+    const texto =
+        /^(txt|csv|json|log)$/.test(
+            extensao
+        );
+
+
+    // Não executar HTML, SVG ou scripts.
+    const url =
+        URL.createObjectURL(
+            new Blob(
+                [arquivo],
+                {
+                    type:
+                        pdf
+                            ? "application/pdf"
+                            : imagem
+                                ? arquivo.type
+                                : "application/octet-stream"
+                }
+            )
+        );
+
+
+    this.urlsTemporarias.set(
+        id,
+        url
+    );
+
+    estado.limpar =
+        () => this.revogarUrl(id);
+
+
+    const link =
+        document.createElement("a");
+
+    link.href =
+        url;
+
+    link.download =
+        arquivo.name;
+
+    link.className =
+        "om-anexo-acao";
+
+    link.textContent =
+        "Baixar arquivo";
+
+    corpo.append(link);
+
+
+    if (
+        pdf &&
+        navigator.pdfViewerEnabled !== false
+    ) {
+
+        const frame =
+            document.createElement("iframe");
+
+        frame.title =
+            "Prévia do documento PDF";
+
+        frame.src =
+            url;
+
+        corpo.append(frame);
+
+
+        const dica =
+            document.createElement("p");
+
+        dica.className =
+            "om-anexos-ajuda";
+
+        dica.textContent =
+            "Se o navegador não exibir o PDF, use Baixar arquivo.";
+
+        corpo.append(dica);
+
+    } else if (pdf) {
+
+        const aviso =
+            document.createElement("p");
+
+        aviso.textContent =
+            "Este navegador não oferece visualização de PDF. Use Baixar arquivo para abrir o documento no leitor do dispositivo.";
+
+        corpo.append(aviso);
+
+    } else if (imagem) {
+
+        const img =
+            document.createElement("img");
+
+        img.src =
+            url;
+
+        img.alt =
+            arquivo.name;
+
+        corpo.append(img);
+
+    } else if (texto) {
+
+        const pre =
+            document.createElement("pre");
+
+        corpo.append(pre);
+
+        try {
+
+            const conteudo =
+                await arquivo
+                    .slice(
+                        0,
+                        1024 * 1024
+                    )
+                    .text();
+
+            if (this.dialogo === estado) {
+
+                pre.textContent =
+                    conteudo +
+                    (
+                        arquivo.size >
+                        1024 * 1024
+                            ? "\n[Prévia limitada ao primeiro MB. Baixe para ver o arquivo completo.]"
+                            : ""
+                    );
+
+            }
+
+        } catch {
+
+            if (this.dialogo === estado) {
+
+                pre.textContent =
+                    "Não foi possível ler a prévia. Use Baixar arquivo.";
+
+            }
+
+        }
+
+    } else {
+
+        const aviso =
+            document.createElement("p");
+
+        aviso.textContent =
+            "Este formato não possui prévia local. Baixe o arquivo para abri-lo em um aplicativo compatível.";
+
+        corpo.append(aviso);
+
+    }
+
+}
 };
 
 // Eventos delegados: continuam válidos após Render atualizar cards ou mapa.
@@ -281,7 +750,26 @@ document.addEventListener("click", evento => {
     const botao = evento.target.closest("[data-anexo-adicionar], [data-anexo-remover], [data-anexo-visualizar]");
     if (!botao) return;
     evento.stopPropagation();
-    if (botao.hasAttribute("data-anexo-visualizar")) { AnexosOM.visualizar(botao.dataset.anexoVisualizar); return; }
+    if (botao.hasAttribute("data-anexo-visualizar")) { if (
+    botao.hasAttribute(
+        "data-anexo-visualizar"
+    )
+) {
+
+    AnexosOM.visualizar(
+
+        botao.dataset.anexoVisualizar,
+
+        botao.dataset.anexoStoragePath ||
+            null,
+
+        botao.dataset.anexoNome ||
+            ""
+
+    );
+
+    return;
+} return; }
     const g = Number(botao.dataset.grupo), o = Number(botao.dataset.om);
     const om = window.EditorRelatorio?.rascunho?.atividades[g]?.oms?.[o];
     if (!AnexosOM.omEditavel(om)) return;
