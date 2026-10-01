@@ -12,10 +12,17 @@ window.AnexosStorage = (() => {
     }
 
     function bucket() {
-        const valor = window.PlamontSupabaseConfig?.anexosBucket;
-        if (valor !== "report_anexos_om") throw erro("configuracao_anexos", "Bucket de anexos não configurado. Nenhum arquivo foi enviado.");
-        return valor;
+    const valor = window.PlamontSupabaseConfig?.anexosBucket;
+
+    if (valor !== "report_fotos") {
+        throw erro(
+            "configuracao_anexos",
+            "Bucket de anexos não configurado. Nenhum arquivo foi enviado."
+        );
     }
+
+    return valor;
+}
 
     async function cliente() {
         const auth = window.PlamontAuth;
