@@ -1,7 +1,7 @@
 {
   "id": "os440",
   "nome": "Contrato OS 440",
-  "data": "30/08/2026",
+  "data": "01/10/2026",
   "turno": "Dia B",
   "horario": "07:00 às 19:00",
   "abas": [
@@ -10,12 +10,12 @@
       "icone":"assets/icons/integridade.svg",
       "qlp": {
         "direto": {
-          "Caldeireiro": 8,
-          "Mecanico": 13,
+          "Caldeireiro": 7,
+          "Mecanico": 19,
           "Soldador": 8,
-          "Eletricista": 3, 
+          "Eletricista": 1, 
           "Ajudante de eletricista": 1,
-          "Ajudante de montagem":2,
+          "Ajudante de montagem":1,
           "Pintor": 1,
           "Montador": 12
         },
@@ -150,9 +150,9 @@
           
 
         {
-          "lider":"Fagner",
+          "lider":"Gutemberg",
           "telefone":"98 9614-6804",
-          "equipe":"5 mecânicos + 2 soldadores + 2 caldeireiros + 1 eletricista",
+          "equipe":"5 mecânicos + 2 soldadores + 1 caldeireiros",
         
         "oms":[
             {
@@ -167,27 +167,27 @@
           ]
         },
          {
-          "lider":"Cleyton",
-          "telefone":"98 93300-5461",
-          "equipe":"3 mecânicos + 2 soldadores + 3 caldeireiros + 1 eletricista + 1 ajudante de mont.",
+          "lider":"Mailson Cordeiro",
+          "telefone":"98 9614-6804",
+          "equipe":"4 mecânicos + 1 soldadores + 2 caldeireiros + 1 eletricista + 1 ajudante de mont.",
         
         "oms":[
             {
-             "frente":"EP-06",
-              "numero":"202602362916",
-              "descricao":"FAZER ESTAIAMENTO TRAVAMENTO CIL ELEV T (EP-06)",
-              "latitude":"-2,5727272",
-              "longitude":"-44,3359387",
-              "arquivoPdf":"om's/contrato 440 oms/Integridade/EP06 OM 202602362916 FAZER ESTAIAMENTO TRAVAMENTO CIL ELEV T.pdf",
+             "frente":"CN-09",
+              "numero":"202500213453",
+              "descricao":"AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F (CN-09)",
+              "latitude":"-2,5494714",
+              "longitude":"-44,3780698",
+              "arquivoPdf":"om's/contrato 440 oms/Integridade/CN09 OM 202500213453 AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F.pdf",
               "status":"Em andamento"
             }
           ]
         },
          
         {
-          "lider":"Rogério",
-          "telefone":"98 9965-3798",
-          "equipe":"3 mecânicos + 1 soldador + 1 caldeireiro + 1 ajudante de mont. + 1 eletricista",
+          "lider":"João Batista",
+          "telefone":"98 8508-9007",
+          "equipe":"5 mecânicos + 2 soldador + 2 caldeireiro + 1 eletricista",
         
         "oms":[
             {
@@ -272,8 +272,8 @@
       "atividades": [
         
         {
-          "lider": "Alonso Costa",
-          "telefone": "31 8495-2503", 
+          "lider": "Ronielisson",
+          "telefone": "98 9963-7084", 
           "tecnicoSeguranca": "",
           "equipe": "08 mecânicos + 01 eletricista",
           "oms": [
