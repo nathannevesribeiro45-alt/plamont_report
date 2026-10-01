@@ -455,6 +455,7 @@ window.EditorRelatorio = {
         if (!om || !this.podeAlterarRascunho()) return false;
         const ponto = validarCoordenadasOM(latitude, longitude);
         if (!ponto.valida) return false;
+        
         om.latitude = ponto.vazia ? "" : String(ponto.lat);
         om.longitude = ponto.vazia ? "" : String(ponto.lng);
         // Mantém foco/rolagem e o restante do formulário intacto.

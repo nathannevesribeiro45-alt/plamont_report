@@ -145,6 +145,24 @@
               "status":"Em andamento"
             }
           ]
+        },
+         {
+          "lider":"Joabson Costa",
+          "telefone":"98 8735-0792",
+          "equipe":"05 mecânicos + 02 caldeireiros + 02 soldadores + 02 eletricistas",
+          
+          "oms":[
+            
+            {
+              "frente":"CLARIFICADOR DO PIER III",
+              "numero":"202603544148",
+              "descricao":"DESMOBILIZAÇÃO CLARIFICADOR DO PIER III",
+              "latitude":"-2.5651552",
+              "longitude":"-44.3763002",
+              "arquivoPdf":"", 
+              "status":"Em andamento"
+            }
+          ]
         }
 
       ],
