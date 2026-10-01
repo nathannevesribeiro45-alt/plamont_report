@@ -1,8 +1,8 @@
 {
   "id": "os456",
   "nome": "Contrato OS 456",
-  "data": "30/09/2026",
-  "turno": "Dia B",
+  "data": "01/10/2026",
+  "turno": "Dia A",
   "horario": "07:00 às 19:00",
   "abas": [
     {
@@ -70,7 +70,7 @@
   {
           "frente":"CT-TR-353K-02 (AMOSTRADOR SECUNDÁRIO)",
           "numero":"--AMOSTRADOR SECUNDÁRIO (TR-353K-02)",
-          "descricao":"MONTAGEM DE ANDAIME PARA ENTRADA DA EQUIPE DA ELÉTRICA NO AMOSTRADOR",
+          "descricao":"Equipe está de apoio para elétrica e mecânica",
           "latitude":"-2,5706422",
           "longitude":"-44,3673746",
           "arquivoPdf":"",
@@ -87,7 +87,7 @@
             {
              "frente":"CT-TR-353K-02 (AMOSTRADOR SECUNDÁRIO)",
               "numero":"--AMOSTRADOR SECUNDÁRIO (TR-353K-02)",
-              "descricao":"FABRICAÇÃO DE SUPORTES PARA INFRA-ELÉTRICA DO PAINEL AMOS",
+              "descricao":"Equipe está de apoio para a mecânica e andaime",
               "latitude":"-2,5706422",
               "longitude":"-44,3673746",
               "arquivoPdf":"",
@@ -96,15 +96,15 @@
           ]
         },
         {
-          "lider":"Raimundo Júnior",
-          "telefone":"98 8498-9295",
+          "lider":"Weberth",
+          "telefone":"98 8544-4305",
           "equipe":"4 mecânicos + 1 soldador + 1 caldeireiro + 1 ajudante de mont",
         
         "oms":[
             {
              "frente":"CT-TR-353K-02 (AMOSTRADOR SECUNDÁRIO)",
               "numero":"--AMOSTRADOR SECUNDÁRIO (TR-353K-02)",
-              "descricao":"ORGANIZAÇÃO DE MATERIAIS E TENDAS",
+              "descricao":"SOLDAGEM DO DISPOSITIVO DE IÇAMENTO E PREPARAÇÃO DE MATERIAIS",
               "latitude":"-2,5706422",
               "longitude":"-44,3673746",
               "arquivoPdf":"",
