@@ -3,60 +3,45 @@
   "horasPorDiaUtil": 12,
   "paradas": [
     {
-      "id": "ep-313k-06",
-      "nome": "EP-313K-06",
+      "id": "cn-09",
+      "nome": "PIER IV NORTE - CN-09",
       "tipo": "Grande Parada",
-      "equipamento": "EP-313K-06",
+      "equipamento": "CN-09",
       "contrato": "os440",
 
       "status": {
-        "data": "01/10/2026",
+        "data": "02/10/2026",
         "hora": "07:00"
       },
 
       "periodo": {
-        "inicio": "21/09/2026",
-        "inicioHora": "00:00",
-        "fim": "02/10/2026",
-        "previstoFim": "02/10/2026",
-        "previstoFimHora": "15:10",
-        "realizadoFim": "02/10/2026",
-        "realizadoFimHora": "15:10"
+        "inicio": "01/10/2026",
+        "inicioHora": "12:00",
+        "fim": "06/10/2026",
+        "previstoFim": "06/10/2026",
+        "previstoFimHora": "21:10",
+        "realizadoFim": "06/10/2026",
+        "realizadoFimHora": "21:10"
       },
 
-      "dataStatus": "01/10/2026",
+      "dataStatus": "02/10/2026",
 
       "pontos": [
         {
-          "data": "21/09/2026",
-          "previsto": 0,
-          "realizado": 0
-        },
-        {
-          "data": "28/09/2026",
-          "previsto": 74.59,
-          "realizado": 79.01
-        },
-        {
-          "data": "29/09/2026",
-          "previsto": 76.92,
-          "realizado": 78.23
-        },
-        {
-          "data": "30/09/2026",
-          "previsto": 84.73,
-          "realizado": 78.04
-        },
-        {
           "data": "01/10/2026",
-          "previsto": 93.29,
-          "realizado": 93.29
+          "previsto": 8.27,
+          "realizado": 6.62
+        },
+        {
+          "data": "02/10/2026",
+          "previsto": 28.57,
+          "realizado": 28.72
         }
       ],
 
       "marcos": [
         {
-          "data": "02/10/2026",
+          "data": "06/10/2026",
           "previsto": 100,
           "descricao": "Conclusão prevista"
         }
@@ -76,42 +61,96 @@
       "atividades": {
         "realizadas": [
           {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Retoque de pintura",
+            "om": "202500042567",
+            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
+            "descricao": "Içamento de materiais com auxílio do guindaste",
             "status": "Concluído"
           },
           {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Desmontagem de andaimes",
+            "om": "202500042567",
+            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
+            "descricao": "Montagem de andaime balancin",
             "status": "Concluído"
           },
           {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Organização e limpeza (5S) - EP-06",
+            "om": "202500042567",
+            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
+            "descricao": "Condições seguras",
+            "status": "Concluído"
+          },
+          {
+            "om": "202500042567",
+            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
+            "descricao": "Corte e retirada dos elementos de fixação",
             "status": "Em andamento"
+          },
+          {
+            "om": "202500043307",
+            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M",
+            "descricao": "Içamento de materiais com auxílio do guindaste",
+            "status": "Concluído"
+          },
+          {
+            "om": "202500043307",
+            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M",
+            "descricao": "Montagem de andaime balancin",
+            "status": "Concluído"
           }
         ],
 
         "proximas": [
           {
-            "om": "202501046432",
-            "area": "AC1.2_SUBS.FIXADORES REFORÇAR CALHA",
-            "descricao": "Organização e limpeza (5S) - EP-06",
+            "om": "202500042567",
+            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
+            "descricao": "Corte e retirada dos elementos de fixação",
             "status": "Em andamento"
           },
           {
-            "om": "202602362916",
-            "area": "FAZER ESTAIAMENTO TRAVAMENTO CIL ELEV T (EXTRA)",
-            "descricao": "Estaiamento e travamento do cilindro elevatório",
-            "status": "Em andamento"
+            "om": "202500042567",
+            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
+            "descricao": "Montagem dos elementos de fixação",
+            "status": "Programado"
+          },
+          {
+            "om": "202500042567",
+            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
+            "descricao": "Torqueamento dos elementos de fixação",
+            "status": "Programado"
+          },
+          {
+            "om": "202500042567",
+            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
+            "descricao": "Retoque de pintura",
+            "status": "Programado"
+          },
+          {
+            "om": "202500042567",
+            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
+            "descricao": "Desmontagem de andaime",
+            "status": "Programado"
+          },
+          {
+            "om": "202500043307",
+            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M",
+            "descricao": "Içamento de materiais com auxílio do guindaste",
+            "status": "Concluído"
+          },
+          {
+            "om": "202500043307",
+            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M",
+            "descricao": "Montagem de andaime balancin",
+            "status": "Concluído"
+          },
+          {
+            "om": "202500043307",
+            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M",
+            "descricao": "Corte e retirada dos elementos de fixação",
+            "status": "Programado"
           }
         ]
       },
 
-      "observacoes": "30/09/2026 16:00 — A Plamont Engenharia informa: conseguimos retirar o atraso de 5 horas do turno anterior, referente ao imprevisto ocorrido no decorrer da parada. Para o próximo turno permanecem apenas o retoque de pintura e a desmontagem de andaimes na região da calha, concluindo as atividades programadas da parada do ativo. Seguimos também com a atividade extra na região do cilindro, solicitada no decorrer da parada."
+      "observacoes": "01/10/2026 16:00 — A Plamont Engenharia informa que não foi iniciada a montagem do andaime no mastro fixo em função da antecipação da atividade de Condição Segura, prevista para encerramento às 18:00. Esse desvio não impactou o tempo total do cronograma. No status de 01/10 às 16:00, o avanço era de 8,27% previsto contra 6,62% realizado, com desvio de -1,65 p.p. e atraso informado de 0,00 h. No status seguinte, em 02/10 às 07:00, o avanço passou para 28,57% previsto contra 28,72% realizado, com desvio positivo de +0,15 p.p. e ganho informado de 0,00 h."
     }
   ]
 }
