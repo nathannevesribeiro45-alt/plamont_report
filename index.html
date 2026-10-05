@@ -13,6 +13,7 @@
 <link href="css/mapa.css" rel="stylesheet"/>
 <link href="css/curvaS.css" rel="stylesheet"/>
 <link href="css/usuarios.css" rel="stylesheet"/>
+<link href="css/historico.css?v=historico-1" rel="stylesheet"/>
 <title>Plamont Report Diário</title>
 <link rel="shortcut icon" href="assets/logo icon site/android-chrome-192x192.png" type="logo do site Plamont">
 
@@ -649,6 +650,45 @@
 <!-- ====================================================== -->
 <!--              GESTÃO DE USUÁRIOS (ADMIN)               -->
 <!-- ====================================================== -->
+<section class="pagina historico-page" id="historico" aria-labelledby="historico-titulo" data-visualizacao="consulta">
+    <header class="historico-cabecalho">
+        <p class="historico-eyebrow">Memória operacional</p>
+        <h1 id="historico-titulo">Histórico de Relatórios</h1>
+        <p>Consulta dos reports anteriores por contrato, data e turno.</p>
+    </header>
+    <form id="historico-filtros" class="historico-filtros" aria-label="Filtros do histórico">
+        <label for="historico-contrato">Contrato
+            <select id="historico-contrato"><option value="">Todos os contratos</option></select>
+        </label>
+        <label for="historico-data">Data operacional <span class="historico-opcional">(opcional)</span>
+            <input id="historico-data" type="date" aria-describedby="historico-data-ajuda">
+            <span id="historico-data-ajuda" class="historico-ajuda">Em branco: todas as datas</span>
+        </label>
+        <label for="historico-turno">Turno
+            <select id="historico-turno">
+                <option value="">Todos os turnos</option>
+                <option value="Dia A">Dia A</option><option value="Dia B">Dia B</option>
+                <option value="Noite C">Noite C</option><option value="Noite D">Noite D</option>
+            </select>
+        </label>
+        <button id="historico-buscar" class="historico-btn historico-btn-primario" type="submit">Buscar</button>
+    </form>
+    <div id="historico-feedback" class="historico-feedback" role="status" aria-live="polite" hidden></div>
+    <div class="historico-layout">
+        <section id="historico-consulta" class="historico-painel historico-consulta" aria-labelledby="historico-lista-titulo">
+            <header class="historico-painel-header"><h2 id="historico-lista-titulo">Relatórios salvos</h2><span id="historico-contagem" class="historico-contagem">0 registros</span></header>
+            <p class="historico-nota">Última versão salva de cada período. Sem snapshots de alterações anteriores.</p>
+            <ul id="historico-lista" class="historico-lista" aria-label="Relatórios históricos"></ul>
+            <p id="historico-lista-estado" class="historico-estado">Use os filtros para consultar os relatórios.</p>
+            <button id="historico-mais" class="historico-btn historico-mais" type="button" hidden>Carregar mais</button>
+        </section>
+        <section id="historico-detalhe-painel" class="historico-painel historico-detalhe-painel" aria-label="Detalhe do relatório histórico">
+            <button id="historico-voltar" class="historico-btn historico-voltar" type="button">← Voltar ao histórico</button>
+            <div id="historico-detalhe"><p class="historico-estado">Selecione um relatório para visualizar o histórico.</p></div>
+        </section>
+    </div>
+</section>
+
 <section class="pagina usuarios-page" id="usuarios" aria-labelledby="usuarios-titulo">
     <header class="usuarios-cabecalho">
         <div>
@@ -843,6 +883,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/core/permissoes.js"></script>
 <script src="js/core/auth.js"></script>
+<script src="js/modules/historicoStorage.js?v=historico-1"></script>
+<script src="js/modules/historico.js?v=historico-1"></script>
 <script src="js/modules/relatoriosStorage.js?v=anexos-patch2-abcd-1"></script>
 <script src="js/core/fotosStorage.js?v=anexos-infra-1"></script>
 <script src="js/modules/anexosStorage.js"></script>
@@ -868,7 +910,7 @@
 <script src="js/modules/mapaSelecao.js?v=editor-localizacao-1"></script>
 <script src="js/modules/curvaS.js"></script>
 <script src="js/modules/usuarios.js"></script>
-<script src="js/modules/sidebar.js?v=editor-localizacao-1"></script>
+<script src="js/modules/sidebar.js?v=historico-1"></script>
 <script src="js/modules/busca.js?v=editor-localizacao-1"></script>
 <script src="js/modules/abas.js"></script>
 <script src="js/core/render.js?v=periodo-dashboard-1"></script>

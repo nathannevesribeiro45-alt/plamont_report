@@ -145,6 +145,8 @@ if (this.mobileToggle) {
 
         this.renderCurvaS();
 
+        this.renderHistorico();
+
         this.renderUsuarios();
 
         this.renderContratos();
@@ -265,6 +267,30 @@ if (this.mobileToggle) {
 
         this.menu.appendChild(item);
 
+    },
+
+    // ==========================
+    // Histórico — consulta independente do contrato atual
+    // ==========================
+
+    renderHistorico() {
+        const item = document.createElement("button");
+        item.className = "menu-btn";
+        item.dataset.pagina = "historico";
+        item.type = "button";
+        item.innerHTML = `
+            <span class="icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 11a9 9 0 1 1 2.6 7M3 4v7h7M12 7v5l3 2"></path>
+                </svg>
+            </span>
+            <span class="menu-texto"><strong>Histórico</strong><small>Relatórios anteriores</small></span>`;
+        item.addEventListener("click", async () => {
+            if (await abrirPagina("historico", item) === false) return;
+            this.fecharSidebar();
+            await window.Historico?.abrir?.();
+        });
+        this.menu.appendChild(item);
     },
 
     // ==========================
