@@ -11,24 +11,24 @@
       "contrato": "os456",
 
       "status": {
-        "data": "29/09/2026",
-        "hora": "16:00"
+        "data": "05/10/2026",
+        "hora": "07:00"
       },
 
       "periodo": {
         "inicio": "21/07/2026",
-        "inicioHora": "16:00",
+        "inicioHora": "08:00",
 
         "fim": "18/11/2026",
 
         "previstoFim": "18/11/2026",
-        "previstoFimHora": null,
+        "previstoFimHora": "16:30",
 
-        "realizadoFim": null,
-        "realizadoFimHora": null
+        "realizadoFim": "15/11/2026",
+        "realizadoFimHora": "16:30"
       },
 
-      "dataStatus": "29/09/2026",
+      "dataStatus": "05/10/2026",
 
       "pontos": [
         {
@@ -111,141 +111,25 @@
         {
           "data": "29/09/2026",
           "previsto": 30.35,
-          "realizado": 31,
+          "realizado": 31.00,
           "previstoUnitario": 15.26,
           "realizadoUnitario": 15.26
-          
-
-        },
-        {
-          "data": "01/10/2026",
-          "previsto": 30.73,
-          "realizado": null,
-          "previstoUnitario": 15.47,
-          "realizadoUnitario": null
-        },
-        {
-          "data": "02/10/2026",
-          "previsto": 32.25,
-          "realizado": null,
-          "previstoUnitario": 16.78,
-          "realizadoUnitario": null
-        },
-        {
-          "data": "03/10/2026",
-          "previsto": 33.53,
-          "realizado": null,
-          "previstoUnitario": 16.75,
-          "realizadoUnitario": null
-        },
-        {
-          "data": "04/10/2026",
-          "previsto": 35.00,
-          "realizado": null,
-          "previstoUnitario": 18.25,
-          "realizadoUnitario": null
         },
         {
           "data": "05/10/2026",
-          "previsto": 38.58,
-          "realizado": null,
-          "previstoUnitario": 20.33,
-          "realizadoUnitario": null
-        },
-        {
-          "data": "06/10/2026",
-          "previsto": 40.56,
-          "realizado": null,
-          "previstoUnitario": 20.23,
-          "realizadoUnitario": null
-        },
-        {
-          "data": "07/10/2026",
-          "previsto": 42.65,
-          "realizado": null,
-          "previstoUnitario": 22.41,
-          "realizadoUnitario": null
-        },
-        {
-          "data": "08/10/2026",
-          "previsto": 44.90,
-          "realizado": null,
-          "previstoUnitario": 22.48,
-          "realizadoUnitario": null
-        },
-        {
-          "data": "09/10/2026",
-          "previsto": 48.79,
-          "realizado": null,
-          "previstoUnitario": 26.31,
-          "realizadoUnitario": null
-        },
-        {
-          "data": "10/10/2026",
-          "previsto": 56.13,
-          "realizado": null,
-          "previstoUnitario": 29.81,
-          "realizadoUnitario": null
-        },
-        {
-          "data": "11/10/2026",
-          "previsto": 63.37,
-          "realizado": null,
-          "previstoUnitario": 33.56,
-          "realizadoUnitario": null
-        },
-        {
-          "data": "12/10/2026",
-          "previsto": 68.93,
-          "realizado": null,
-          "previstoUnitario": 35.37,
-          "realizadoUnitario": null
-        },
-        {
-          "data": "18/10/2026",
-          "previsto": 71.54,
-          "realizado": null,
-          "previstoUnitario": 36.18,
-          "realizadoUnitario": null
-        },
-        {
-          "data": "25/10/2026",
-          "previsto": 73.75,
-          "realizado": null,
-          "previstoUnitario": 37.57,
-          "realizadoUnitario": null
-        },
-        {
-          "data": "01/11/2026",
-          "previsto": 76.16,
-          "realizado": null,
-          "previstoUnitario": 38.59,
-          "realizadoUnitario": null
-        },
-        {
-          "data": "08/11/2026",
-          "previsto": 78.25,
-          "realizado": null,
-          "previstoUnitario": 39.66,
-          "realizadoUnitario": null
-        },
-        {
-          "data": "15/11/2026",
-          "previsto": 78.78,
-          "realizado": null,
-          "previstoUnitario": 39.11,
-          "realizadoUnitario": null
-        },
-        {
-          "data": "18/11/2026",
-          "previsto": 100.00,
-          "realizado": null,
-          "previstoUnitario": 60.89,
+          "previsto": 42.90,
+          "realizado": 56.92,
+          "previstoUnitario": null,
           "realizadoUnitario": null
         }
       ],
 
       "marcos": [
+        {
+          "data": "15/11/2026",
+          "previsto": null,
+          "descricao": "Término projetado atual"
+        },
         {
           "data": "18/11/2026",
           "previsto": 100,
@@ -253,9 +137,9 @@
         }
       ],
 
-       "turno": {
+      "turno": {
         "realizado": {
-          "inicio": "16:00",
+          "inicio": "19:00",
           "fim": "07:00"
         },
         "proximo": {
@@ -266,42 +150,91 @@
 
       "atividades": {
         "realizadas": [
-            {
+          {
             "om": "--",
-            "area": "FABRICAÇÃO DE PLATAFORMAS DO AMOSTRADOR",
-            "descricao": "Fabricação das plataformas no Pipeshop central",
+            "area": "MONTAGEM DO AMOSTRADOR",
+            "descricao": "Executar posicionamento e alinhamento da parte superior do amostrador com o chute",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "MONTAGEM DO AMOSTRADOR",
+            "descricao": "Executar furação dos novos pontos de fixação na estrutura de sustentação do amostrador",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "MONTAGEM DO AMOSTRADOR",
+            "descricao": "Executar montagem da parte inferior na superior do amostrador",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "MONTAGEM DO AMOSTRADOR",
+            "descricao": "Executar alinhamento do amostrador já completo no local exato de fixação",
             "status": "Em andamento"
           },
           {
             "om": "--",
-            "area": "MONTAGEM DE ANDAIME PARA EQUIPE DA ELÉTRICA ATUA NO PAINÉL DO AMOSTRADOR",
-            "descricao": "Montagem do andaime de acesso ao painel em andamento",
+            "area": "INFRAESTRUTURA",
+            "descricao": "Executar corte controlado do pavimento asfáltico para implantação da infraestrutura",
             "status": "Em andamento"
           },
-           {
+          {
             "om": "--",
-            "area": "5S NA ÁREA E ORGANIZAÇÃO CANTEIRO DO COBRE",
-            "descricao": "Mobilização de tendas e organização das tendas metálicas por parte da equipe da mecânica.",
+            "area": "ELÉTRICA",
+            "descricao": "Executar fabricação da infraestrutura elétrica de controle do painel do amostrador",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "ELÉTRICA",
+            "descricao": "Executar furos na laje para passagem dos eletrodutos",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "ELÉTRICA",
+            "descricao": "Executar instalação da infraestrutura elétrica de força do painel do amostrador",
             "status": "Em andamento"
           }
         ],
+
         "proximas": [
-                        {
+          {
             "om": "--",
-            "area": "FABRICAÇÃO DE PLATAFORMAS DO AMOSTRADOR",
-            "descricao": "Fabricação das plataformas no Pipeshop central",
-            "status": "Em andamento"
+            "area": "CABINE DE OPERAÇÃO",
+            "descricao": "Executar desmontagem da cabine de operação existente",
+            "status": "Programado"
           },
           {
             "om": "--",
-            "area": "MONTAGEM DE ANDAIME PARA EQUIPE DA ELÉTRICA ATUA NO PAINÉL DO AMOSTRADOR",
-            "descricao": "Montagem do andaime de acesso ao painel em andamento",
-            "status": "Em andamento"
+            "area": "MONTAGEM DO AMOSTRADOR",
+            "descricao": "Executar alinhamento do amostrador já completo no local exato de fixação",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "MONTAGEM DO AMOSTRADOR",
+            "descricao": "Executar montagem de todos os elementos de fixação do amostrador e do chute",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "INFRAESTRUTURA",
+            "descricao": "Executar corte controlado do pavimento asfáltico para implantação da infraestrutura",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "ELÉTRICA",
+            "descricao": "Executar instalação da infraestrutura elétrica de força do painel do amostrador",
+            "status": "Programado"
           }
         ]
       },
 
-      "observacoes": ""
+      "observacoes": "02/10/2026 às 16:00 — A Plamont Engenharia informa que a atividade de montagem de andaime na área interna da CT apresentou desvio em relação à programação inicialmente prevista, em decorrência da liberação tardia do ativo para realização do bloqueio e consequente início da atividade. Até o momento, o desvio identificado não impacta a tendência de término final do projeto em razão das ações de recuperação e medidas de controle implementadas pelo Planejamento em conjunto com a Execução. O monitoramento diário do cronograma, caminho crítico e avanço das atividades será mantido para preservar o marco de conclusão do projeto.\n\n05/10/2026 às 07:00 — Projeto Geral com avanço de 42,90% previsto contra 56,92% realizado, representando desvio positivo de +14,02 p.p. O término previsto permanece em 18/11/2026 às 16:30, enquanto a projeção atual de término passou para 15/11/2026 às 16:30, correspondendo a avanço informado de 3 dias."
     }
   ]
 }
