@@ -10,7 +10,7 @@
       "contrato": "os440",
 
       "status": {
-        "data": "02/10/2026",
+        "data": "05/10/2026",
         "hora": "07:00"
       },
 
@@ -21,10 +21,10 @@
         "previstoFim": "06/10/2026",
         "previstoFimHora": "21:10",
         "realizadoFim": "06/10/2026",
-        "realizadoFimHora": "21:10"
+        "realizadoFimHora": "09:10"
       },
 
-      "dataStatus": "02/10/2026",
+      "dataStatus": "05/10/2026",
 
       "pontos": [
         {
@@ -36,6 +36,11 @@
           "data": "02/10/2026",
           "previsto": 28.57,
           "realizado": 28.72
+        },
+        {
+          "data": "05/10/2026",
+          "previsto": 73.18,
+          "realizado": 95.46
         }
       ],
 
@@ -61,96 +66,79 @@
       "atividades": {
         "realizadas": [
           {
-            "om": "202500042567",
-            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
-            "descricao": "Içamento de materiais com auxílio do guindaste",
+            "om": "202500213554",
+            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 7º Suporte",
+            "descricao": "Corte dos elementos de fixação",
             "status": "Concluído"
           },
           {
-            "om": "202500042567",
-            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
-            "descricao": "Montagem de andaime balancin",
+            "om": "202500213554",
+            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 7º Suporte",
+            "descricao": "Montagem dos elementos de fixação",
             "status": "Concluído"
           },
           {
-            "om": "202500042567",
-            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
-            "descricao": "Condições seguras",
+            "om": "202500213554",
+            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 7º Suporte",
+            "descricao": "Torqueamento dos elementos de fixação",
             "status": "Concluído"
           },
           {
-            "om": "202500042567",
-            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
-            "descricao": "Corte e retirada dos elementos de fixação",
-            "status": "Em andamento"
-          },
-          {
-            "om": "202500043307",
-            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M",
-            "descricao": "Içamento de materiais com auxílio do guindaste",
+            "om": "202500213554",
+            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 7º Suporte",
+            "descricao": "Retoque de pintura",
             "status": "Concluído"
           },
           {
-            "om": "202500043307",
-            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M",
-            "descricao": "Montagem de andaime balancin",
+            "om": "202500213554",
+            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 7º Suporte",
+            "descricao": "Desmontagem de andaimes",
+            "status": "Concluído"
+          },
+
+          {
+            "om": "202500213554",
+            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 8º Suporte",
+            "descricao": "Corte dos elementos de fixação",
+            "status": "Concluído"
+          },
+          {
+            "om": "202500213554",
+            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 8º Suporte",
+            "descricao": "Montagem dos elementos de fixação",
+            "status": "Concluído"
+          },
+          {
+            "om": "202500213554",
+            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 8º Suporte",
+            "descricao": "Torqueamento dos elementos de fixação",
+            "status": "Concluído"
+          },
+          {
+            "om": "202500213554",
+            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 8º Suporte",
+            "descricao": "Retoque de pintura",
+            "status": "Concluído"
+          },
+          {
+            "om": "202500213554",
+            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 8º Suporte",
+            "descricao": "Desmontagem de andaimes",
             "status": "Concluído"
           }
         ],
 
         "proximas": [
           {
-            "om": "202500042567",
-            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
-            "descricao": "Corte e retirada dos elementos de fixação",
+            "om": "",
+            "area": "CN-09",
+            "descricao": "Desmobilização, limpeza e organização da área (5S)",
             "status": "Em andamento"
-          },
-          {
-            "om": "202500042567",
-            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
-            "descricao": "Montagem dos elementos de fixação",
-            "status": "Programado"
-          },
-          {
-            "om": "202500042567",
-            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
-            "descricao": "Torqueamento dos elementos de fixação",
-            "status": "Programado"
-          },
-          {
-            "om": "202500042567",
-            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
-            "descricao": "Retoque de pintura",
-            "status": "Programado"
-          },
-          {
-            "om": "202500042567",
-            "area": "AE1.4_SUBST. PARAF. SUST. ACESSO. MAST F",
-            "descricao": "Desmontagem de andaime",
-            "status": "Programado"
-          },
-          {
-            "om": "202500043307",
-            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M",
-            "descricao": "Içamento de materiais com auxílio do guindaste",
-            "status": "Concluído"
-          },
-          {
-            "om": "202500043307",
-            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M",
-            "descricao": "Montagem de andaime balancin",
-            "status": "Concluído"
-          },
-          {
-            "om": "202500043307",
-            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M",
-            "descricao": "Corte e retirada dos elementos de fixação",
-            "status": "Programado"
           }
         ]
       },
 
-      "observacoes": "01/10/2026 16:00 — A Plamont Engenharia informa que não foi iniciada a montagem do andaime no mastro fixo em função da antecipação da atividade de Condição Segura, prevista para encerramento às 18:00. Esse desvio não impactou o tempo total do cronograma. No status de 01/10 às 16:00, o avanço era de 8,27% previsto contra 6,62% realizado, com desvio de -1,65 p.p. e atraso informado de 0,00 h. No status seguinte, em 02/10 às 07:00, o avanço passou para 28,57% previsto contra 28,72% realizado, com desvio positivo de +0,15 p.p. e ganho informado de 0,00 h."
+      "observacoes": "01/10/2026 às 16:00 — A Plamont Engenharia informa que não foi iniciada a montagem do andaime no mastro fixo em função da antecipação da atividade de Condição Segura. O desvio não impactou o tempo total do cronograma.\n\n02/10/2026 às 16:00 — Registrado impacto de 5,17 h referente à atividade de passagem de cabos da Vale, com sobreposição à atividade da Plamont e utilização do acesso da frente de serviço. O bloqueio foi retirado às 11:00 e restabelecido às 14:40.\n\n03/10/2026 às 07:00 — Registrado impacto acumulado de 16,84 h devido à sobreposição de atividades com a Vale. As atividades previstas para o turno anterior foram reprogramadas, aguardando liberação das regiões do mastro fixo e móvel.\n\n03/10/2026 às 16:00 — Recuperação parcial do cronograma, com redução do atraso de aproximadamente 16 h para 8 h. A recuperação ocorreu por reforço de efetivo, execução em paralelo e avaliação das interferências na região do mastro.\n\nAtualização subsequente sem horário explicitado no report — A estratégia de recuperação permitiu retorno à linha de base do cronograma, recuperando as 8 h de atraso remanescentes. Foi mantida a estratégia de paralelismo nos patamares e reforço de equipe AND/MEC.\n\n04/10/2026 às 16:00 — Informado ganho de 6 h em relação ao cronograma em função das estratégias adotadas durante a parada. Restavam apenas os 7º e 8º suportes. Parte da equipe MEC/AND foi liberada para participação no processo eleitoral e outra equipe deu continuidade às atividades no mastro móvel.\n\n05/10/2026 às 07:00 — Avanço de 73,18% previsto contra 95,46% realizado. Desvio informado no report: +22,31 p.p. Ganho informado: 12 h. O término realizado/projetado passou para 06/10/2026 às 09:10, frente ao término previsto de 06/10/2026 às 21:10."
     }
   ]
 }
