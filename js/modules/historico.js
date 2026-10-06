@@ -18,8 +18,25 @@ window.Historico = (() => {
     const porId = id => document.getElementById(`historico-${id}`);
     const dataFormatada = data => /^\d{4}-\d{2}-\d{2}$/.test(texto(data)) ? data.split("-").reverse().join("/") : texto(data);
     const contratoRotulo = id => /^os\d+$/i.test(texto(id)) ? `OS ${id.slice(2)}` : texto(id);
+    const nomesContratos = Object.freeze({
+        os440: "Integridade Estrutural",
+        os441: "Manutenção de Desgaste",
+        os442: "Utilidades",
+        os450: "Manutenção de Ativos",
+        os456: "Cobre"
+    });
+    const nomesFrentes = Object.freeze({
+        os440: Object.freeze({ integridade: "Integridade Estrutural", telhado: "Telhado" })
+    });
+    const nomeContrato = id => nomesContratos[normalizar(id)] || "";
+    const tituloContrato = id => [contratoRotulo(id), nomeContrato(id)].filter(Boolean).join(" — ");
+    const nomeFrente = (contratoId, aba) => nomesFrentes[normalizar(contratoId)]?.[normalizar(aba?.nome || aba?.id)] || texto(aba?.nome) || texto(aba?.id) || "Frente não informada";
     const quantidade = valor => (typeof valor === "number" || typeof valor === "string") && texto(valor) !== "" &&
         Number.isSafeInteger(Number(valor)) && Number(valor) >= 0 ? Number(valor) : null;
+    const valorOperacional = valor => {
+        const numero = quantidade(valor);
+        return numero === null ? texto(valor) : String(numero).padStart(2, "0");
+    };
 
     function icone(tipo) {
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -202,10 +219,113 @@ window.Historico = (() => {
         return secao;
     }
 
+    function linhasQuantitativas(dados, agrupado = false, ausencias = false) {
+        if (!objeto(dados)) return [];
+        const linhas = [];
+        const adicionar = valores => {
+            for (const [nome, valor] of Object.entries(valores || {})) {
+                if (!texto(nome) || !["number", "string"].includes(typeof valor) || !texto(valor)) continue;
+                linhas.push(`${texto(nome)}: ${valorOperacional(valor)}`);
+            }
+        };
+        if (agrupado) {
+            if (objeto(dados.direto) && Object.keys(dados.direto).length) {
+                linhas.push("Mão de obra direta");
+                adicionar(dados.direto);
+            }
+            if (objeto(dados.indireto) && Object.keys(dados.indireto).length) {
+                if (linhas.length) linhas.push("");
+                linhas.push("Mão de obra indireta");
+                adicionar(dados.indireto);
+            }
+            return linhas;
+        }
+        if (ausencias) {
+            adicionar(Object.fromEntries(Object.entries(dados).filter(([chave]) => !["justificadas", "naoJustificadas"].includes(chave))));
+            const resumo = [];
+            if (Object.hasOwn(dados, "justificadas")) resumo.push(["Justificadas", dados.justificadas]);
+            if (Object.hasOwn(dados, "naoJustificadas")) resumo.push(["Não justificadas", dados.naoJustificadas]);
+            if (resumo.length) {
+                if (linhas.length) linhas.push("");
+                linhas.push("Resumo informado");
+                adicionar(Object.fromEntries(resumo));
+            }
+            return linhas;
+        }
+        adicionar(dados);
+        return linhas;
+    }
+
+    function inserirTextoBloco(destino, titulo, conteudo) {
+        const linhas = conteudo.filter(linha => typeof linha === "string" && linha.trim());
+        if (!linhas.length) return;
+        if (destino.length) destino.push("");
+        destino.push(titulo, "", ...conteudo);
+    }
+
+    function linhasRecursos(aba) {
+        const grupos = new Map();
+        for (const recurso of aba.recursos || []) {
+            const tipo = texto(recurso?.tipo) || "Tipo não informado";
+            if (!grupos.has(tipo)) grupos.set(tipo, []);
+            grupos.get(tipo).push(recurso);
+        }
+        const linhas = [];
+        for (const [tipo, recursosDoTipo] of grupos) {
+            if (linhas.length) linhas.push("");
+            linhas.push(tipo.toUpperCase());
+            for (const recurso of recursosDoTipo) {
+                const identificacao = [...new Set([texto(recurso.identificacao), texto(recurso.placa)].filter(Boolean))].join(" · ") || "Identificação não informada";
+                const status = statusRecurso(recurso);
+                linhas.push(identificacao, `${status[0]} ${status[1]}`);
+                const responsavel = texto(recurso.operador) || texto(recurso.responsavel);
+                if (responsavel) linhas.push(`Responsável: ${responsavel}`);
+                if (texto(recurso.contato)) linhas.push(`Contato: ${texto(recurso.contato)}`);
+                const motivo = textoLinhas(recurso.motivoIndisponibilidade) || textoLinhas(recurso.motivo) || textoLinhas(recurso.observacoes);
+                if (motivo) linhas.push(`Informação adicional: ${motivo}`);
+                linhas.push("");
+            }
+        }
+        return linhas;
+    }
+
+    function linhasAtividades(aba) {
+        const linhas = [];
+        for (const grupo of aba.atividades || []) {
+            const grupoLinhas = [];
+            const adicionarCampo = (rotulo, valor) => {
+                const conteudo = textoLinhas(valor);
+                if (conteudo) grupoLinhas.push(`${rotulo}: ${conteudo}`);
+            };
+            adicionarCampo("Líder", grupo.lider);
+            adicionarCampo("Contato", grupo.telefone);
+            adicionarCampo("Equipe", grupo.equipe);
+            adicionarCampo("Ativo", grupo.ativo);
+            adicionarCampo("Técnico de segurança", grupo.tecnicoSeguranca);
+            for (const om of grupo.oms || []) {
+                if (grupoLinhas.length) grupoLinhas.push("");
+                grupoLinhas.push(texto(om.numero) ? `OM ${texto(om.numero)}` : "OM não informada");
+                adicionarCampo("Ativo", om.ativo);
+                adicionarCampo("Frente", om.frente);
+                const descricao = textoLinhas(om.descricao);
+                if (descricao) grupoLinhas.push(descricao);
+                const status = statusAtividade(om.status);
+                if (texto(om.status)) grupoLinhas.push(`${status[0]} ${status[1]}`);
+                const resumo = textoLinhas(om.resumoAtividades);
+                if (resumo) grupoLinhas.push("Resumo de atividades:", resumo);
+            }
+            if (!grupoLinhas.filter(Boolean).length) continue;
+            if (linhas.length) linhas.push("");
+            linhas.push(...grupoLinhas);
+        }
+        return linhas;
+    }
+
     const api = {
         registros: [], selecionado: null, filtros: {}, selecaoId: null,
         inicializado: false, carregando: false, carregandoDetalhe: false,
         mais: false, deslocamento: 0, buscaId: 0, detalheId: 0, consultado: false,
+        copiaId: 0, copiaTimer: null,
 
         iniciar() {
             if (this.inicializado || !document.getElementById("historico")) return;
@@ -246,7 +366,7 @@ window.Historico = (() => {
             } catch (erro) { this.feedback(this.mensagemErro(erro), "erro"); }
         },
         limpar() {
-            this.buscaId++; this.detalheId++;
+            this.buscaId++; this.detalheId++; this.cancelarCopia();
             this.registros = []; this.selecionado = null; this.selecaoId = null;
             this.carregando = false; this.carregandoDetalhe = false; this.mais = false; this.deslocamento = 0; this.consultado = false;
             this.erroBusca = false;
@@ -301,6 +421,7 @@ window.Historico = (() => {
             const request = ++this.buscaId;
             const sessao = this.chaveSessao();
             if (!acrescentar) {
+                this.cancelarCopia();
                 this.filtros = this.lerFiltros(); this.registros = []; this.deslocamento = 0; this.mais = false;
                 this.detalheId++; this.selecaoId = null; this.selecionado = null; this.carregandoDetalhe = false;
                 document.getElementById("historico").dataset.visualizacao = "consulta";
@@ -333,6 +454,7 @@ window.Historico = (() => {
         async selecionar(id) {
             const registro = this.registros.find(item => item.id === id);
             if (!registro) return;
+            this.cancelarCopia();
             const request = ++this.detalheId;
             const sessao = this.chaveSessao();
             this.selecaoId = id; this.selecionado = null; this.carregandoDetalhe = true;
@@ -365,6 +487,97 @@ window.Historico = (() => {
             document.getElementById("historico").scrollIntoView({ block: "start", behavior: "auto" });
         },
 
+        cancelarCopia() {
+            this.copiaId++;
+            if (this.copiaTimer) window.clearTimeout(this.copiaTimer);
+            this.copiaTimer = null;
+        },
+
+        gerarTextoRelatorio(registro = this.selecionado) {
+            if (!registro?.dados || !Array.isArray(registro.dados.abas)) return "";
+            const linhas = [
+                `RELATÓRIO HISTÓRICO — ${contratoRotulo(registro.contratoId)}`
+            ];
+            const nome = nomeContrato(registro.contratoId);
+            if (nome) linhas.push(nome);
+            linhas.push("", `Data: ${dataFormatada(registro.data)}`, `Turno: ${texto(registro.turno)}`);
+            if (texto(registro.dados.horario)) linhas.push(`Horário: ${texto(registro.dados.horario)}`);
+
+            const multiplasFrentes = registro.dados.abas.length > 1;
+            for (const aba of registro.dados.abas) {
+                const frente = nomeFrente(registro.contratoId, aba);
+                const conteudo = [];
+                inserirTextoBloco(conteudo, "QLP GERAL", linhasQuantitativas(aba.qlp, true));
+                inserirTextoBloco(conteudo, "EFETIVO", linhasQuantitativas(aba.histograma, true));
+                inserirTextoBloco(conteudo, "AUSÊNCIAS", linhasQuantitativas(aba.ausencias, false, true));
+                inserirTextoBloco(conteudo, "MOBILIZAÇÃO", linhasQuantitativas(aba.mobilizacao));
+                inserirTextoBloco(conteudo, "RECURSOS", linhasRecursos(aba));
+                inserirTextoBloco(conteudo, "ATIVIDADES DO TURNO", linhasAtividades(aba));
+                if (!conteudo.length) continue;
+                linhas.push("");
+                if (multiplasFrentes) {
+                    linhas.push("=========================", frente.toUpperCase(), "=========================", "");
+                } else if (frente) {
+                    linhas.push(frente, "");
+                }
+                linhas.push(...conteudo);
+            }
+            const relatorio = linhas
+                .join("\n")
+                .replace(/<[^>\r\n]*>/g, "")
+                .replace(/\b(?:https?:\/\/|www\.)[^\s]+/gi, "");
+
+            return relatorio.replace(/\n{3,}/g, "\n\n").trim();
+        },
+
+        async escreverAreaTransferencia(conteudo) {
+            if (navigator.clipboard?.writeText) {
+                try {
+                    await navigator.clipboard.writeText(conteudo);
+                    return true;
+                } catch (_) {
+                    // Alguns navegadores bloqueiam a API mesmo em contexto seguro; usa o fallback local abaixo.
+                }
+            }
+            const area = document.createElement("textarea");
+            area.value = conteudo;
+            area.setAttribute("aria-hidden", "true");
+            area.style.cssText = "position:fixed;left:-9999px;top:0;opacity:0;";
+            document.body.append(area);
+            area.select();
+            area.setSelectionRange(0, conteudo.length);
+            let copiado = false;
+            try { copiado = document.execCommand?.("copy") === true; } finally { area.remove(); }
+            if (!copiado) throw new Error("clipboard_indisponivel");
+            return true;
+        },
+
+        async copiarRelatorio(botao = porId("copiar")) {
+            const registro = this.selecionado;
+            const conteudo = this.gerarTextoRelatorio(registro);
+            if (!registro || !conteudo || !botao) return false;
+            this.cancelarCopia();
+            const tentativa = this.copiaId;
+            botao.disabled = true;
+            botao.textContent = "Copiando…";
+            try {
+                await this.escreverAreaTransferencia(conteudo);
+                if (tentativa !== this.copiaId || registro !== this.selecionado) return false;
+                botao.textContent = "✓ Copiado";
+            } catch (_) {
+                if (tentativa !== this.copiaId || registro !== this.selecionado) return false;
+                botao.textContent = "Não foi possível copiar";
+            }
+            if (tentativa !== this.copiaId || registro !== this.selecionado) return false;
+            this.copiaTimer = window.setTimeout(() => {
+                if (tentativa === this.copiaId && registro === this.selecionado && botao.isConnected) {
+                    botao.disabled = false;
+                    botao.textContent = "Copiar relatório";
+                }
+            }, 1800);
+            return botao.textContent === "✓ Copiado";
+        },
+
         renderizarLista() {
             const fragment = document.createDocumentFragment();
             for (const registro of this.registros) {
@@ -393,17 +606,26 @@ window.Historico = (() => {
             const registro = this.selecionado;
             const report = el("article", "historico-report");
             const header = el("header", "historico-report-header"); const titulo = el("div");
-            titulo.append(el("h2", "", contratoRotulo(registro.contratoId)), el("p", "historico-periodo", `${dataFormatada(registro.data)} · ${registro.turno}`));
+            titulo.append(el("h2", "", tituloContrato(registro.contratoId)), el("p", "historico-periodo", `${dataFormatada(registro.data)} · ${registro.turno}`));
             if (texto(registro.dados.horario)) titulo.append(el("p", "historico-horario", registro.dados.horario));
-            titulo.append(el("p", "historico-versao", `Última versão salva: ${registro.versao}`));
+            const acoes = el("div", "historico-report-acoes");
             const selo = el("span", "historico-selo"); selo.append(icone("cadeado"), document.createTextNode("Somente leitura"));
-            header.append(titulo, selo); report.append(header);
+            const versao = el("span", "historico-versao", `Versão ${registro.versao}`);
+            const copiar = el("button", "historico-btn historico-copiar", "Copiar relatório");
+            copiar.type = "button"; copiar.id = "historico-copiar";
+            copiar.addEventListener("click", () => this.copiarRelatorio(copiar));
+            acoes.append(selo, versao, copiar);
+            header.append(titulo, acoes); report.append(header);
             for (const aba of registro.dados.abas) {
                 const frente = el("section", "historico-frente"); frente.dataset.aba = aba.id;
-                frente.append(el("h3", "historico-frente-titulo", texto(aba.nome) || texto(aba.id)), el("h3", "historico-secao-titulo", "Disponibilidade de mão de obra e recursos"));
+                frente.append(el("h3", "historico-frente-titulo", nomeFrente(registro.contratoId, aba)), el("h3", "historico-secao-titulo", "Disponibilidade de mão de obra e recursos"));
                 const numeros = el("div", "historico-quantitativos");
-                numeros.append(quantitativo("QLP geral", aba.qlp, true), quantitativo("Efetivo (histograma)", aba.histograma, true),
+                const qlp = quantitativo("QLP geral", aba.qlp, true);
+                qlp.classList.add("historico-bloco--qlp");
+                const resumo = el("div", "historico-resumo-operacional");
+                resumo.append(quantitativo("Efetivo (histograma)", aba.histograma, true),
                     quantitativo("Ausências", aba.ausencias, false, true), quantitativo("Efetivo em mobilização", aba.mobilizacao));
+                numeros.append(qlp, resumo);
                 frente.append(numeros, recursos(aba), atividades(aba)); report.append(frente);
             }
             report.append(el("p", "historico-report-footer", "Consulta histórica somente leitura. Conteúdo da última gravação deste contrato, data e turno."));

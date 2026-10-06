@@ -108,3 +108,379 @@
     #historico .historico-cabecalho { margin-bottom: 20px; }
     #historico .historico-equipe { padding: 13px; }
 }
+
+/* Refinamento visual do Histórico: regras estritamente isoladas nesta página. */
+#historico {
+    --hist-surface: #ffffff;
+    --hist-surface-soft: #f7faff;
+    --hist-blue-soft: #eaf3ff;
+    --hist-shadow: 0 10px 28px rgba(8, 40, 77, .06);
+    max-width: 1440px;
+    padding-bottom: 20px;
+}
+
+#historico .historico-cabecalho {
+    max-width: 760px;
+    margin-bottom: 18px;
+}
+
+#historico h1 {
+    font-size: clamp(27px, 2.4vw, 34px);
+    margin-bottom: 7px;
+}
+
+#historico .historico-cabecalho > p:last-child {
+    max-width: 620px;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+#historico .historico-filtros {
+    grid-template-columns: minmax(190px, 1.2fr) minmax(160px, .92fr) minmax(155px, .9fr) auto;
+    align-items: end;
+    gap: 13px;
+    padding: 16px;
+    border-radius: 14px;
+    box-shadow: var(--hist-shadow);
+    margin-bottom: 18px;
+}
+
+#historico .historico-filtros label {
+    color: #405673;
+    font-size: 11px;
+    letter-spacing: .02em;
+}
+
+#historico .historico-filtros input,
+#historico .historico-filtros select {
+    height: 42px;
+    margin-top: 5px;
+    border-color: #cfdbeb;
+    border-radius: 8px;
+    background: #fbfdff;
+    font-size: 13px;
+}
+
+#historico .historico-ajuda {
+    min-height: 14px;
+    margin-top: 3px;
+}
+
+#historico .historico-btn {
+    min-height: 40px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: background-color .16s ease, border-color .16s ease, color .16s ease;
+}
+
+#historico .historico-btn-primario {
+    min-width: 92px;
+    margin-top: 0;
+    min-height: 42px;
+}
+
+#historico .historico-layout {
+    grid-template-columns: clamp(292px, 32%, 390px) minmax(0, 1fr);
+    gap: 18px;
+}
+
+#historico .historico-painel {
+    border-radius: 16px;
+    box-shadow: var(--hist-shadow);
+}
+
+#historico .historico-painel-header {
+    padding: 18px 18px 9px;
+}
+
+#historico .historico-painel-header h2 {
+    font-size: 15px;
+    letter-spacing: -.01em;
+}
+
+#historico .historico-contagem {
+    padding: 3px 7px;
+    border-radius: 999px;
+    background: #f1f5fa;
+    color: #5e7189;
+    font-size: 10px;
+}
+
+#historico .historico-nota {
+    margin: 0 18px 12px;
+    line-height: 1.45;
+}
+
+#historico .historico-lista {
+    padding: 0 8px 9px;
+    max-height: 710px;
+}
+
+#historico .historico-item {
+    min-height: 74px;
+    padding: 12px;
+    border-color: transparent;
+    border-bottom-color: #edf2f8;
+    border-radius: 9px;
+}
+
+#historico .historico-item:hover {
+    background: #f4f8fd;
+}
+
+#historico .historico-item[aria-current="true"] {
+    background: var(--hist-blue-soft);
+    border-color: #b9d4f0;
+    box-shadow: inset 3px 0 0 var(--hist-blue);
+}
+
+#historico .historico-item strong { font-size: 13px; }
+#historico .historico-item small { font-size: 11px; }
+#historico .historico-item-versao { margin-top: 1px; font-size: 10px; }
+
+#historico .historico-mais {
+    margin: 8px auto 17px;
+    color: #244e7b;
+    background: #f8fbff;
+}
+
+#historico .historico-report {
+    padding: 22px;
+}
+
+#historico .historico-report-header {
+    align-items: flex-start;
+    gap: 18px;
+    padding-bottom: 17px;
+    margin-bottom: 18px;
+}
+
+#historico .historico-report-header h2 {
+    max-width: 630px;
+    font-size: clamp(21px, 2.1vw, 28px);
+    letter-spacing: -.025em;
+    margin-bottom: 5px;
+}
+
+#historico .historico-periodo {
+    color: #3e5878;
+    font-weight: 600;
+}
+
+#historico .historico-horario {
+    margin-top: 2px;
+    color: var(--hist-muted);
+    font-size: 12px;
+}
+
+#historico .historico-report-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+    flex-shrink: 0;
+}
+
+#historico .historico-selo,
+#historico .historico-versao {
+    display: inline-flex;
+    align-items: center;
+    min-height: 27px;
+    padding: 4px 8px;
+    border: 1px solid #d8e3ef;
+    border-radius: 999px;
+    color: #60738c;
+    background: #f8fbfe;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+#historico .historico-selo svg {
+    width: 13px;
+    height: 13px;
+    margin-right: 4px;
+}
+
+#historico .historico-copiar {
+    min-height: 32px;
+    border-color: #a8c9ea;
+    background: #f4f9ff;
+    color: #0d5da9;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+#historico .historico-copiar:hover:not(:disabled) {
+    border-color: #6ba7df;
+    background: #e9f3ff;
+}
+
+#historico .historico-frente + .historico-frente {
+    margin-top: 24px;
+    padding-top: 24px;
+}
+
+#historico .historico-frente-titulo {
+    margin-bottom: 14px;
+    padding: 9px 11px;
+    border: 1px solid #dce8f4;
+    border-radius: 8px;
+    background: #f6faff;
+    color: #163f69;
+    font-size: 15px;
+}
+
+#historico .historico-secao-titulo {
+    margin-bottom: 10px;
+    color: #52728f;
+    font-size: 10px;
+}
+
+#historico .historico-quantitativos {
+    display: grid;
+    grid-template-columns: minmax(215px, .95fr) minmax(0, 1.7fr);
+    gap: 15px;
+    align-items: stretch;
+}
+
+#historico .historico-resumo-operacional {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 11px;
+}
+
+#historico .historico-bloco {
+    min-width: 0;
+    padding: 13px;
+    border: 1px solid #e0e9f2;
+    border-radius: 10px;
+    background: #fff;
+}
+
+#historico .historico-bloco--qlp {
+    border-color: #c9ddf2;
+    background: #f7fbff;
+}
+
+#historico .historico-bloco h4,
+#historico .historico-recursos h4 {
+    color: #173c65;
+    font-size: 12px;
+    margin-bottom: 7px;
+}
+
+#historico .historico-subgrupo {
+    margin: 8px 0 3px;
+    color: #6a7d93;
+    font-size: 10px;
+}
+
+#historico .historico-quantidades {
+    font-size: 11px;
+}
+
+#historico .historico-quantidades > div {
+    gap: 8px;
+    padding: 2px 0;
+}
+
+#historico .historico-quantidades dd { color: #12365d; }
+
+#historico .historico-total {
+    padding-top: 7px;
+    margin-top: 7px;
+    color: #315171;
+    font-size: 11px;
+}
+
+#historico .historico-recursos {
+    margin-top: 16px;
+    padding: 14px;
+    border: 1px solid #e0e9f2;
+    border-radius: 10px;
+    background: #fbfdff;
+}
+
+#historico .historico-recursos h4 { margin-bottom: 10px; }
+
+#historico .historico-recurso-grupo { margin-bottom: 12px; }
+#historico .historico-recurso-grupo:last-child { margin-bottom: 0; }
+
+#historico .historico-recurso {
+    padding: 8px 0;
+}
+
+#historico .historico-recurso-linha { gap: 5px 7px; }
+#historico .historico-recurso-linha strong { font-size: 12px; }
+
+#historico .historico-status {
+    padding: 3px 7px;
+    font-size: 10px;
+}
+
+#historico .historico-atividades {
+    margin-top: 18px;
+    padding-top: 18px;
+}
+
+#historico .historico-equipe {
+    padding: 13px;
+    margin-bottom: 11px;
+    border-radius: 10px;
+    border-color: #dce6f1;
+    background: #fff;
+}
+
+#historico .historico-equipe-info {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3px 16px;
+    margin-bottom: 10px;
+    font-size: 11px;
+}
+
+#historico .historico-equipe-info p + p { margin-top: 0; }
+
+#historico .historico-om + .historico-om {
+    margin-top: 11px;
+    padding-top: 11px;
+}
+
+#historico .historico-om-header,
+#historico .historico-om-frente {
+    font-size: 11px;
+}
+
+#historico .historico-texto {
+    font-size: 11px;
+    line-height: 1.55;
+}
+
+#historico .historico-resumo {
+    margin-top: 9px;
+    padding: 8px 10px;
+}
+
+@media (max-width: 1200px) {
+    #historico .historico-quantitativos { grid-template-columns: 1fr; }
+    #historico .historico-resumo-operacional { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 1040px) and (min-width: 901px) {
+    #historico .historico-resumo-operacional { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 900px) {
+    #historico { padding-bottom: 10px; }
+    #historico .historico-cabecalho { margin-bottom: 15px; }
+    #historico .historico-filtros { grid-template-columns: minmax(0, 1fr); gap: 11px; padding: 14px; }
+    #historico .historico-report { padding: 16px; }
+    #historico .historico-report-header { gap: 12px; }
+    #historico .historico-report-acoes { justify-content: flex-start; }
+    #historico .historico-copiar { flex: 1 1 155px; }
+    #historico .historico-resumo-operacional { grid-template-columns: 1fr; }
+    #historico .historico-equipe-info { grid-template-columns: 1fr; gap: 3px; }
+    #historico .historico-voltar { margin: 13px 16px 0; }
+}
