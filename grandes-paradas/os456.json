@@ -11,7 +11,7 @@
       "contrato": "os456",
 
       "status": {
-        "data": "05/10/2026",
+        "data": "06/10/2026",
         "hora": "07:00"
       },
 
@@ -28,7 +28,7 @@
         "realizadoFimHora": "16:30"
       },
 
-      "dataStatus": "05/10/2026",
+      "dataStatus": "06/10/2026",
 
       "pontos": [
         {
@@ -121,6 +121,13 @@
           "realizado": 56.92,
           "previstoUnitario": null,
           "realizadoUnitario": null
+        },
+        {
+          "data": "06/10/2026",
+          "previsto": 45.82,
+          "realizado": 65.82,
+          "previstoUnitario": null,
+          "realizadoUnitario": null
         }
       ],
 
@@ -139,12 +146,12 @@
 
       "turno": {
         "realizado": {
-          "inicio": "19:00",
+          "inicio": "07:00",
           "fim": "07:00"
         },
         "proximo": {
           "inicio": "07:00",
-          "fim": "16:00"
+          "fim": "19:00"
         }
       },
 
@@ -152,89 +159,162 @@
         "realizadas": [
           {
             "om": "--",
-            "area": "MONTAGEM DO AMOSTRADOR",
-            "descricao": "Executar posicionamento e alinhamento da parte superior do amostrador com o chute",
-            "status": "Concluído"
-          },
-          {
-            "om": "--",
-            "area": "MONTAGEM DO AMOSTRADOR",
-            "descricao": "Executar furação dos novos pontos de fixação na estrutura de sustentação do amostrador",
-            "status": "Concluído"
-          },
-          {
-            "om": "--",
-            "area": "MONTAGEM DO AMOSTRADOR",
-            "descricao": "Executar montagem da parte inferior na superior do amostrador",
-            "status": "Concluído"
-          },
-          {
-            "om": "--",
-            "area": "MONTAGEM DO AMOSTRADOR",
+            "area": "MECÂNICA",
             "descricao": "Executar alinhamento do amostrador já completo no local exato de fixação",
-            "status": "Em andamento"
+            "status": "Concluído"
           },
           {
             "om": "--",
-            "area": "INFRAESTRUTURA",
-            "descricao": "Executar corte controlado do pavimento asfáltico para implantação da infraestrutura",
+            "area": "MECÂNICA",
+            "descricao": "Executar montagem de todos os elementos de fixação do amostrador e do chute",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA",
+            "descricao": "Executar torqueamento de todos os elementos de fixação do amostrador e do chute",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA",
+            "descricao": "Executar levantamento topográfico para confirmação do alinhamento do conjunto entre chute, amostrador e eixo do transportador",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA",
+            "descricao": "Executar montagem da parte superior da estrutura de descarte do excesso de amostra",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA",
+            "descricao": "Executar montagem da calha de descarte do excesso de amostra",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA",
+            "descricao": "Executar montagem das travessas superiores da estrutura de sustentação do amostrador",
             "status": "Em andamento"
           },
           {
             "om": "--",
             "area": "ELÉTRICA",
-            "descricao": "Executar fabricação da infraestrutura elétrica de controle do painel do amostrador",
+            "descricao": "Executar corte controlado do pavimento asfáltico para implantação da infraestrutura",
             "status": "Concluído"
           },
           {
             "om": "--",
             "area": "ELÉTRICA",
-            "descricao": "Executar furos na laje para passagem dos eletrodutos",
+            "descricao": "Executar instalação de eletroduto Ø 4\" para infraestrutura elétrica subterrânea",
             "status": "Concluído"
           },
           {
             "om": "--",
             "area": "ELÉTRICA",
             "descricao": "Executar instalação da infraestrutura elétrica de força do painel do amostrador",
-            "status": "Em andamento"
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "ELÉTRICA",
+            "descricao": "Executar instalação da infraestrutura elétrica de controle do painel do amostrador",
+            "status": "Concluído"
           }
         ],
 
         "proximas": [
           {
             "om": "--",
-            "area": "CABINE DE OPERAÇÃO",
+            "area": "MECÂNICA — TURNO 07:00 ÀS 19:00",
             "descricao": "Executar desmontagem da cabine de operação existente",
             "status": "Programado"
           },
           {
             "om": "--",
-            "area": "MONTAGEM DO AMOSTRADOR",
-            "descricao": "Executar alinhamento do amostrador já completo no local exato de fixação",
+            "area": "MECÂNICA — TURNO 07:00 ÀS 19:00",
+            "descricao": "Executar montagem das travessas superiores da estrutura de sustentação do amostrador",
             "status": "Programado"
           },
           {
             "om": "--",
-            "area": "MONTAGEM DO AMOSTRADOR",
-            "descricao": "Executar montagem de todos os elementos de fixação do amostrador e do chute",
+            "area": "ELÉTRICA — TURNO 07:00 ÀS 19:00",
+            "descricao": "Executar recomposição do pavimento asfáltico após instalação da infraestrutura",
             "status": "Programado"
           },
           {
             "om": "--",
-            "area": "INFRAESTRUTURA",
-            "descricao": "Executar corte controlado do pavimento asfáltico para implantação da infraestrutura",
+            "area": "ELÉTRICA — TURNO 07:00 ÀS 19:00",
+            "descricao": "Executar recomposição e acabamento da laje nas áreas de intervenção",
+            "status": "Programado"
+          },
+
+          {
+            "om": "--",
+            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Executar ajuste no andaime na região interna onde será instalada a primeira seção da tubulação de descida da amostra",
             "status": "Programado"
           },
           {
             "om": "--",
-            "area": "ELÉTRICA",
-            "descricao": "Executar instalação da infraestrutura elétrica de força do painel do amostrador",
+            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Executar içamento da primeira seção da tubulação com auxílio do dispositivo de içamento externo",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Executar retirada da chapa de piso na região onde a tubulação irá descer para o segundo pavimento",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Executar posicionamento da primeira seção da tubulação para avaliação dimensional",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Executar corte logo após o motovibrador da primeira seção da tubulação",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Executar posicionamento com os elementos de fixação do primeiro tubo no amostrador",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Executar solda da seção de extensão da primeira tubulação",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "ELÉTRICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Executar lançamento dos circuitos de força – Subestação → Painel do Amostrador",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "ELÉTRICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Executar lançamento dos circuitos de controle – Subestação → Painel do Amostrador",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "ELÉTRICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Executar lançamento dos circuitos de força – Painel → Motores do Amostrador",
             "status": "Programado"
           }
         ]
       },
 
-      "observacoes": "02/10/2026 às 16:00 — A Plamont Engenharia informa que a atividade de montagem de andaime na área interna da CT apresentou desvio em relação à programação inicialmente prevista, em decorrência da liberação tardia do ativo para realização do bloqueio e consequente início da atividade. Até o momento, o desvio identificado não impacta a tendência de término final do projeto em razão das ações de recuperação e medidas de controle implementadas pelo Planejamento em conjunto com a Execução. O monitoramento diário do cronograma, caminho crítico e avanço das atividades será mantido para preservar o marco de conclusão do projeto.\n\n05/10/2026 às 07:00 — Projeto Geral com avanço de 42,90% previsto contra 56,92% realizado, representando desvio positivo de +14,02 p.p. O término previsto permanece em 18/11/2026 às 16:30, enquanto a projeção atual de término passou para 15/11/2026 às 16:30, correspondendo a avanço informado de 3 dias."
+      "observacoes": "02/10/2026 às 16:00 — A Plamont Engenharia informa que a atividade de montagem de andaime na área interna da CT apresentou desvio em relação à programação inicialmente prevista, em decorrência da liberação tardia do ativo para realização do bloqueio e consequente início da atividade. Até o momento, o desvio identificado não impacta a tendência de término final do projeto em razão das ações de recuperação e medidas de controle implementadas pelo Planejamento em conjunto com a Execução. O monitoramento diário do cronograma, caminho crítico e avanço das atividades será mantido para preservar o marco de conclusão do projeto.\n\n05/10/2026 às 07:00 — Projeto Geral com avanço de 42,90% previsto contra 56,92% realizado, representando desvio positivo de +14,02 p.p. O término previsto permanece em 18/11/2026 às 16:30, enquanto a projeção atual de término passou para 15/11/2026 às 16:30, correspondendo a avanço informado de 3 dias.\n\n06/10/2026 às 07:00 — Projeto Geral com avanço de 45,82% previsto contra 65,82% realizado, representando desvio positivo de +20,00 p.p. A projeção de término permanece em 15/11/2026 às 16:30, mantendo avanço informado de 3 dias em relação ao término previsto de 18/11/2026 às 16:30. Conforme atualização do planejamento, a tendência para retirada do bloqueio está prevista para 09/10/2026 às 06:10. Após a retirada do bloqueio, as atividades remanescentes da Linha Macro 182 serão executadas em paralelo ao acompanhamento dos testes operacionais do novo Amostrador."
     }
   ]
 }
