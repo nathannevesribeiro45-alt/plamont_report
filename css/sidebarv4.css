@@ -57,12 +57,12 @@
 
     position:relative;
 
-    height:82px;
+    height:118px;
 
     display:flex;
     align-items:center;
 
-    padding:14px 18px;
+    padding:12px 18px 14px;
 
     border-bottom:1px solid var(--sidebar-border);
 
@@ -92,28 +92,73 @@
 .sidebar-logo{
 
     display:flex;
+    flex-direction:column;
     align-items:center;
-    justify-content:flex-start;
+    justify-content:center;
 
     width:100%;
     height:100%;
 
-    gap:12px;
+    gap:7px;
+
+    overflow:hidden;
 
     transition:all .35s cubic-bezier(.4,0,.2,1);
 
 }
 
-.sidebar-logo img{
+.sidebar-logo-marca{
 
-    width:72px;
-    height:auto;
+    width:196px;
+    height:58px;
 
-    object-fit:contain;
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
 
+    overflow:hidden;
     flex-shrink:0;
 
-    transition:transform .35s cubic-bezier(.4,0,.2,1);
+    transition:
+        width .35s cubic-bezier(.4,0,.2,1),
+        height .35s cubic-bezier(.4,0,.2,1);
+
+}
+
+.sidebar-logo-marca img{
+
+    width:196px;
+    height:auto;
+
+    display:block;
+    object-fit:contain;
+    flex-shrink:0;
+
+    filter:drop-shadow(0 0 8px rgba(255,255,255,.035));
+
+    transition:
+        width .35s cubic-bezier(.4,0,.2,1),
+        transform .35s cubic-bezier(.4,0,.2,1);
+
+}
+
+.sidebar-filial{
+
+    color:rgba(255,255,255,.76);
+
+    font-size:11px;
+    font-weight:500;
+
+    letter-spacing:1.8px;
+    line-height:1;
+
+    white-space:nowrap;
+    text-transform:uppercase;
+
+    transition:
+        opacity .22s ease,
+        transform .25s ease,
+        max-height .25s ease;
 
 }
 
@@ -209,57 +254,6 @@
 
 }
 
-/* ==========================================
-   IDENTIDADE
-========================================== */
-
-.sidebar-brand{
-
-    display:flex;
-    flex-direction:column;
-
-    justify-content:center;
-
-    white-space:nowrap;
-
-    transition:
-        opacity .25s ease,
-        transform .25s ease,
-        width .25s ease;
-
-}
-
-.brand-title{
-
-    color:#FFF;
-
-    font-size:17px;
-
-    font-weight:700;
-
-    letter-spacing:1px;
-
-    line-height:1;
-
-}
-
-.brand-subtitle{
-
-    margin-top:4px;
-
-    color:rgba(255,255,255,.65);
-
-    font-size:12px;
-
-    font-weight:500;
-
-    letter-spacing:3px;
-
-    text-transform:uppercase;
-
-}
-
-
 /* ==========================================================
    RESPONSIVO
    ========================================================== */
@@ -339,30 +333,41 @@
 }
 
 
+.sidebar.recolhida .sidebar-header{
+
+    padding-left:8px;
+    padding-right:8px;
+
+}
+
 .sidebar.recolhida .sidebar-logo{
 
     justify-content:center;
-    transform:translateX(6px);
+    gap:0;
+    transform:none;
 
 }
 
-.sidebar.recolhida .sidebar-brand{
+.sidebar.recolhida .sidebar-logo-marca{
+    width:44px;
+    height:58px;
+}
 
-    width:0;
+.sidebar.recolhida .sidebar-logo-marca img{
+
+    width:196px;
+    max-width:none;
+    transform:none;
+
+}
+
+.sidebar.recolhida .sidebar-filial{
 
     opacity:0;
-
+    max-height:0;
     overflow:hidden;
-
-    transform:translateX(-10px);
-
+    transform:translateY(-5px);
     pointer-events:none;
-
-}
-
-.sidebar.recolhida .sidebar-logo img{
-
-    transform:none;
 
 }
 
@@ -942,3 +947,4 @@
 .sidebar-menu {
     margin-bottom: 92px;
 }
+
