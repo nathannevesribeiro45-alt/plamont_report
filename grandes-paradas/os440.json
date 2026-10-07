@@ -1,144 +1,97 @@
 {
-  "dadosDeTeste": false,
-  "horasPorDiaUtil": 12,
-  "paradas": [
+  "id": "pier-iv-norte-cn-09",
+  "nome": "PIER IV NORTE - CN-09",
+  "tipo": "Grande Parada",
+  "equipamento": "CN-09",
+  "contrato": "os440",
+
+  "status": {
+    "data": "05/10/2026",
+    "hora": "16:00"
+  },
+
+  "periodo": {
+    "inicio": "01/10/2026",
+    "inicioHora": "12:00",
+
+    "fim": "06/10/2026",
+
+    "previstoFim": "06/10/2026",
+    "previstoFimHora": "21:10",
+
+    "realizadoFim": "06/10/2026",
+    "realizadoFimHora": "09:10"
+  },
+
+  "dataStatus": "05/10/2026",
+
+  "pontos": [
     {
-      "id": "cn-09",
-      "nome": "PIER IV NORTE - CN-09",
-      "tipo": "Grande Parada",
-      "equipamento": "CN-09",
-      "contrato": "os440",
-
-      "status": {
-        "data": "05/10/2026",
-        "hora": "07:00"
-      },
-
-      "periodo": {
-        "inicio": "01/10/2026",
-        "inicioHora": "12:00",
-        "fim": "06/10/2026",
-        "previstoFim": "06/10/2026",
-        "previstoFimHora": "21:10",
-        "realizadoFim": "06/10/2026",
-        "realizadoFimHora": "09:10"
-      },
-
-      "dataStatus": "05/10/2026",
-
-      "pontos": [
-        {
-          "data": "01/10/2026",
-          "previsto": 8.27,
-          "realizado": 6.62
-        },
-        {
-          "data": "02/10/2026",
-          "previsto": 28.57,
-          "realizado": 28.72
-        },
-        {
-          "data": "05/10/2026",
-          "previsto": 73.18,
-          "realizado": 95.46
-        }
-      ],
-
-      "marcos": [
-        {
-          "data": "06/10/2026",
-          "previsto": 100,
-          "descricao": "Conclusão prevista"
-        }
-      ],
-
-      "turno": {
-        "realizado": {
-          "inicio": "16:00",
-          "fim": "07:00"
-        },
-        "proximo": {
-          "inicio": "07:00",
-          "fim": "16:00"
-        }
-      },
-
-      "atividades": {
-        "realizadas": [
-          {
-            "om": "202500213554",
-            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 7º Suporte",
-            "descricao": "Corte dos elementos de fixação",
-            "status": "Concluído"
-          },
-          {
-            "om": "202500213554",
-            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 7º Suporte",
-            "descricao": "Montagem dos elementos de fixação",
-            "status": "Concluído"
-          },
-          {
-            "om": "202500213554",
-            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 7º Suporte",
-            "descricao": "Torqueamento dos elementos de fixação",
-            "status": "Concluído"
-          },
-          {
-            "om": "202500213554",
-            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 7º Suporte",
-            "descricao": "Retoque de pintura",
-            "status": "Concluído"
-          },
-          {
-            "om": "202500213554",
-            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 7º Suporte",
-            "descricao": "Desmontagem de andaimes",
-            "status": "Concluído"
-          },
-
-          {
-            "om": "202500213554",
-            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 8º Suporte",
-            "descricao": "Corte dos elementos de fixação",
-            "status": "Concluído"
-          },
-          {
-            "om": "202500213554",
-            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 8º Suporte",
-            "descricao": "Montagem dos elementos de fixação",
-            "status": "Concluído"
-          },
-          {
-            "om": "202500213554",
-            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 8º Suporte",
-            "descricao": "Torqueamento dos elementos de fixação",
-            "status": "Concluído"
-          },
-          {
-            "om": "202500213554",
-            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 8º Suporte",
-            "descricao": "Retoque de pintura",
-            "status": "Concluído"
-          },
-          {
-            "om": "202500213554",
-            "area": "AC1.4_SUBST. PARAF. SUST.ACESSO MASTRO M - 8º Suporte",
-            "descricao": "Desmontagem de andaimes",
-            "status": "Concluído"
-          }
-        ],
-
-        "proximas": [
-          {
-            "om": "",
-            "area": "CN-09",
-            "descricao": "Desmobilização, limpeza e organização da área (5S)",
-            "status": "Em andamento"
-          }
-        ]
-      },
-
-      "observacoes": "01/10/2026 às 16:00 — A Plamont Engenharia informa que não foi iniciada a montagem do andaime no mastro fixo em função da antecipação da atividade de Condição Segura. O desvio não impactou o tempo total do cronograma.\n\n02/10/2026 às 16:00 — Registrado impacto de 5,17 h referente à atividade de passagem de cabos da Vale, com sobreposição à atividade da Plamont e utilização do acesso da frente de serviço. O bloqueio foi retirado às 11:00 e restabelecido às 14:40.\n\n03/10/2026 às 07:00 — Registrado impacto acumulado de 16,84 h devido à sobreposição de atividades com a Vale. As atividades previstas para o turno anterior foram reprogramadas, aguardando liberação das regiões do mastro fixo e móvel.\n\n03/10/2026 às 16:00 — Recuperação parcial do cronograma, com redução do atraso de aproximadamente 16 h para 8 h. A recuperação ocorreu por reforço de efetivo, execução em paralelo e avaliação das interferências na região do mastro.\n\nAtualização subsequente sem horário explicitado no report — A estratégia de recuperação permitiu retorno à linha de base do cronograma, recuperando as 8 h de atraso remanescentes. Foi mantida a estratégia de paralelismo nos patamares e reforço de equipe AND/MEC.\n\n04/10/2026 às 16:00 — Informado ganho de 6 h em relação ao cronograma em função das estratégias adotadas durante a parada. Restavam apenas os 7º e 8º suportes. Parte da equipe MEC/AND foi liberada para participação no processo eleitoral e outra equipe deu continuidade às atividades no mastro móvel.\n\n05/10/2026 às 07:00 — Avanço de 73,18% previsto contra 95,46% realizado. Desvio informado no report: +22,31 p.p. Ganho informado: 12 h. O término realizado/projetado passou para 06/10/2026 às 09:10, frente ao término previsto de 06/10/2026 às 21:10."
+      "data": "01/10/2026",
+      "previsto": 8.27,
+      "realizado": 6.62,
+      "previstoUnitario": null,
+      "realizadoUnitario": null
+    },
+    {
+      "data": "02/10/2026",
+      "previsto": 28.57,
+      "realizado": 28.72,
+      "previstoUnitario": null,
+      "realizadoUnitario": null
+    },
+    {
+      "data": "05/10/2026",
+      "previsto": 78.32,
+      "realizado": 97.56,
+      "previstoUnitario": null,
+      "realizadoUnitario": null
     }
-  ]
+  ],
+
+  "marcos": [
+    {
+      "data": "06/10/2026",
+      "previsto": null,
+      "descricao": "Término projetado atual"
+    },
+    {
+      "data": "06/10/2026",
+      "previsto": 100,
+      "descricao": "Conclusão prevista"
+    }
+  ],
+
+  "turno": {
+    "realizado": {
+      "inicio": "07:00",
+      "fim": "16:00"
+    },
+    "proximo": {
+      "inicio": "16:00",
+      "fim": "07:00"
+    }
+  },
+
+  "atividades": {
+    "realizadas": [
+      {
+        "om": "--",
+        "area": "CN-09",
+        "descricao": "Desmobilização, limpeza e organização da área (5S)",
+        "status": "Em andamento"
+      }
+    ],
+
+    "proximas": [
+      {
+        "om": "--",
+        "area": "CN-09 — TURNO 16:00 ÀS 07:00",
+        "descricao": "Dar continuidade à desmobilização, limpeza e organização da área (5S)",
+        "status": "Em andamento"
+      }
+    ]
+  },
+
+  "observacoes": "01/10/2026 às 16:00 — A Plamont Engenharia informa que não foi iniciada a montagem do andaime no mastro fixo em função da antecipação da atividade de Condição Segura, prevista para encerramento às 18:00. O desvio informado não impactou o tempo total do cronograma.\n\n02/10/2026 às 16:00 — Foi informado impacto de 5,17 horas devido à atividade de passagem de cabos da Vale, com sobreposição à atividade da Plamont e utilização do mesmo acesso. A atividade sofreu paralisações em diversos momentos. O bloqueio foi retirado pela equipe Vale às 11:00 e restabelecido às 14:40.\n\n03/10/2026 às 07:00 — Foi informado impacto acumulado de 16,84 horas devido à sobreposição com atividades da Vale. As atividades previstas para o turno noturno anterior foram reprogramadas para o turno diurno, aguardando liberação para continuidade nas regiões do mastro fixo e móvel.\n\n03/10/2026 às 16:00 — Recuperação parcial do cronograma, reduzindo o atraso informado de 16 horas para 8 horas. As estratégias utilizadas foram reforço de efetivo para execução em paralelo e avaliação das interferências na região do mastro, permitindo passagem de cabos sem impacto na atividade principal. A mesma estratégia de paralelismo foi mantida para o turno noturno com objetivo de retorno à linha de base.\n\nA Plamont Engenharia informa que, conforme estratégia de recuperação definida pelo Planejamento e Execução, houve retorno à linha de base do cronograma, com recuperação das 8 horas de atraso do turno anterior. A estratégia de paralelismo nos patamares foi mantida, com reforço de equipe de andaime e mecânica para continuidade das atividades.\n\n04/10/2026 às 16:00 — Informado ganho de 6 horas decorrente das estratégias adotadas durante a parada. Permaneceram pendentes apenas as conclusões dos 7º e 8º suportes. Em razão do processo eleitoral, equipes de MEC/AND que atuaram durante o dia foram liberadas da frente de serviço, enquanto outra equipe deu continuidade à substituição dos elementos de fixação na região do mastro móvel.\n\n05/10/2026 às 07:00 — Projeto com 73,18% previsto e 95,46% realizado. Foi informado desvio positivo de 22,31% e ganho de 12 horas. Os serviços dos 7º e 8º suportes foram concluídos, permanecendo desmobilização, limpeza e organização da área.\n\n05/10/2026 às 16:00 — Atualização do cronograma com 78,32% previsto e 97,56% realizado, desvio informado de 19,24% e ganho informado de 12:00 horas. O término previsto permanece em 06/10/2026 às 21:10 e a projeção de término permanece em 06/10/2026 às 09:10. A desmobilização, limpeza e organização da área (5S) permanecem em andamento."
 }
