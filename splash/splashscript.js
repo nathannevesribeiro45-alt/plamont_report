@@ -1,152 +1,26 @@
-const paginas = document.querySelectorAll(".pagina");
-const botoes = document.querySelectorAll(".menu-btn");
+/* ==========================================
+   PLAMONT REPORT CENTER
+   Splash Screen v2.0
+========================================== */
 
-// ======================================
-// NAVEGAÇÃO ENTRE PÁGINAS
-// ======================================
-
-function abrirPagina(idPagina, botao) {
-
-    paginas.forEach(pagina => {
-        pagina.classList.remove("ativa");
-    });
-
-    const paginaSelecionada = document.getElementById(idPagina);
-
-    if (paginaSelecionada) {
-        paginaSelecionada.classList.add("ativa");
-    }
-
-    botoes.forEach(btn => {
-        btn.classList.remove("ativo");
-    });
-
-    if (botao) {
-        botao.classList.add("ativo");
-    }
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
-}
-
-// ======================================
-// SOMA DOS VALORES DAS LISTAS
-// ======================================
-
-function somarLista(lista) {
-
-    let total = 0;
-
-    if (!lista) return total;
-
-    lista.querySelectorAll("strong").forEach(item => {
-
-        const valor = parseInt(item.textContent);
-
-        if (!isNaN(valor)) {
-            total += valor;
-        }
-
-    });
-
-    return total;
-
-}
-
-// ======================================
-// TOTAL DO QLP
-// ======================================
-
-function atualizarTotalQLP() {
-
-    document.querySelectorAll(".pagina").forEach(pagina => {
-
-        const blocos = pagina.querySelectorAll(".bloco");
-
-        if (blocos.length < 2) return;
-
-        const blocoQLP = blocos[0];
-
-        const listas = blocoQLP.querySelectorAll(".efetivo-coluna ul");
-
-        if (listas.length === 0) return;
-
-        let total = 0;
-
-        listas.forEach(lista => {
-            total += somarLista(lista);
-        });
-
-        const campoTotal = blocoQLP.querySelector(".efetivo-total");
-
-        if (campoTotal) {
-
-            campoTotal.innerHTML =
-                `👥 Total em área: <strong>${total}</strong> colaboradores`;
-
-        }
-
-    });
-
-}
-
-// ======================================
-// TOTAL DO HISTOGRAMA
-// ======================================
-
-function atualizarHistograma() {
-
-    document.querySelectorAll(".pagina").forEach(pagina => {
-
-        const blocos = pagina.querySelectorAll(".bloco");
-
-        if (blocos.length < 2) return;
-
-        const blocoHistograma = blocos[1];
-
-        const listas = blocoHistograma.querySelectorAll(".efetivo-coluna ul");
-
-        if (listas.length === 0) return;
-
-        let total = 0;
-
-        listas.forEach(lista => {
-            total += somarLista(lista);
-        });
-
-        let campoTotal = blocoHistograma.querySelector(".hist-total");
-
-        if (!campoTotal) {
-
-            campoTotal = document.createElement("div");
-
-            campoTotal.className = "efetivo-total hist-total";
-
-            blocoHistograma.appendChild(campoTotal);
-
-        }
-
-        campoTotal.innerHTML =
-            `👥 Total do Histograma: <strong>${total}</strong> colaboradores`;
-
-    });
-
-}
-
-// ======================================
-// SPLASH SCREEN
-// ======================================
-
-function iniciarSplash() {
+document.addEventListener("DOMContentLoaded", () => {
 
     const splash = document.querySelector(".splash-screen");
+    const container = document.querySelector(".splash-container");
     const barra = document.querySelector(".loading-fill");
     const texto = document.querySelector(".loading-text");
 
-    if (!splash || !barra || !texto) return;
+    if (!splash || !barra || !texto) {
+        return;
+    }
+
+    /* ======================================
+       CONFIGURAÇÃO
+    ====================================== */
+
+    const reduzirMovimento = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    ).matches;
 
     const etapas = [
         {
@@ -154,12 +28,12 @@ function iniciarSplash() {
             texto: "Inicializando..."
         },
         {
-            progresso: 45,
+            progresso: 48,
             texto: "Carregando contratos..."
         },
         {
-            progresso: 70,
-            texto: "Preparando Dashboard..."
+            progresso: 78,
+            texto: "Preparando dashboard..."
         },
         {
             progresso: 100,
@@ -167,54 +41,187 @@ function iniciarSplash() {
         }
     ];
 
+    const tempoEntreEtapas = reduzirMovimento
+        ? 180
+        : 430;
+
+    const tempoSaida = reduzirMovimento
+        ? 150
+        : 550;
+
     let indice = 0;
+    let encerrada = false;
 
-    function carregar() {
 
-        if (indice >= etapas.length) {
+    /* ======================================
+       ALTERAR TEXTO
+    ====================================== */
 
-            splash.style.transition = "opacity .8s ease";
+    function atualizarTexto(novoTexto) {
 
-            splash.style.opacity = "0";
+        if (reduzirMovimento) {
+            texto.textContent = novoTexto;
+            return;
+        }
 
-            setTimeout(() => {
+        texto.style.opacity = "0";
 
-                splash.style.display = "none";
+        setTimeout(() => {
 
-            }, 800);
+            texto.textContent = novoTexto;
+            texto.style.opacity = "1";
+
+        }, 120);
+
+    }
+
+
+    /* ======================================
+       FINALIZAR SPLASH
+    ====================================== */
+
+    async function finalizarSplash() {
+
+        if (encerrada) {
+            return;
+        }
+
+        encerrada = true;
+
+        /* Sem animação longa para usuários
+           que preferem movimento reduzido */
+
+        if (reduzirMovimento) {
+
+            splash.style.display = "none";
+            document.body.style.overflow = "";
 
             return;
 
         }
 
-        barra.style.width = etapas[indice].progresso + "%";
+        const animacaoSplash = splash.animate(
+            [
+                {
+                    opacity: 1
+                },
+                {
+                    opacity: 0
+                }
+            ],
+            {
+                duration: tempoSaida,
+                easing: "ease",
+                fill: "forwards"
+            }
+        );
 
-        texto.textContent = etapas[indice].texto;
 
-        indice++;
+        /* Movimento extremamente sutil
+           do conteúdo durante a saída */
 
-        setTimeout(carregar, 600);
+        if (container) {
+
+            container.animate(
+                [
+                    {
+                        opacity: 1,
+                        transform: "translateY(0) scale(1)"
+                    },
+                    {
+                        opacity: 0,
+                        transform: "translateY(-6px) scale(1.01)"
+                    }
+                ],
+                {
+                    duration: tempoSaida,
+                    easing: "cubic-bezier(.22,.61,.36,1)",
+                    fill: "forwards"
+                }
+            );
+
+        }
+
+
+        try {
+
+            await animacaoSplash.finished;
+
+        } catch {
+
+            /* Se a animação for interrompida,
+               a splash ainda precisa desaparecer */
+
+        }
+
+
+        splash.style.display = "none";
+
+        /* O CSS bloqueia o scroll enquanto
+           a splash está aberta */
+
+        document.body.style.overflow = "";
 
     }
 
-    setTimeout(carregar, 300);
 
-}
+    /* ======================================
+       CARREGAMENTO VISUAL
+    ====================================== */
 
-// ======================================
-// INICIALIZAÇÃO DO SISTEMA
-// ======================================
+    function carregarEtapa() {
 
-document.addEventListener("DOMContentLoaded", () => {
+        if (indice >= etapas.length) {
 
-    const primeiroBotao = document.querySelector(".menu-btn");
+            setTimeout(
+                finalizarSplash,
+                reduzirMovimento ? 80 : 260
+            );
 
-    abrirPagina("dashboard", primeiroBotao);
+            return;
+        }
 
-    atualizarTotalQLP();
 
-    atualizarHistograma();
+        const etapa = etapas[indice];
 
-    iniciarSplash();
+
+        /* Atualiza progresso */
+
+        barra.style.width =
+            `${etapa.progresso}%`;
+
+
+        /* Atualiza mensagem */
+
+        atualizarTexto(
+            etapa.texto
+        );
+
+
+        indice++;
+
+
+        setTimeout(
+            carregarEtapa,
+            tempoEntreEtapas
+        );
+
+    }
+
+
+    /* ======================================
+       INICIALIZAÇÃO
+    ====================================== */
+
+    barra.style.width = "0%";
+
+    texto.textContent =
+        etapas[0].texto;
+
+
+    setTimeout(
+        carregarEtapa,
+        reduzirMovimento ? 50 : 250
+    );
 
 });
