@@ -4,20 +4,7 @@
 ========================================== */
 
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
-}
-
-html,
-body {
-    width: 100%;
-    height: 100%;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    overflow: hidden;
 }
 
 /* ==========================================
@@ -41,6 +28,7 @@ body {
         );
 
     overflow: hidden;
+
     z-index: 9999;
 }
 
@@ -58,7 +46,7 @@ body {
 
     background:
 
-        /* Círculo técnico externo */
+        /* Círculo técnico interno */
         radial-gradient(
             circle at center,
             transparent 0 255px,
@@ -66,7 +54,7 @@ body {
             transparent 258px
         ),
 
-        /* Segundo círculo */
+        /* Círculo técnico externo */
         radial-gradient(
             circle at center,
             transparent 0 340px,
@@ -74,7 +62,7 @@ body {
             transparent 343px
         ),
 
-        /* Pequenos pontos técnicos */
+        /* Pontos técnicos */
         radial-gradient(
             circle at 18% 22%,
             rgba(103, 194, 255, .22) 0 1.5px,
@@ -118,9 +106,8 @@ body {
     z-index: 0;
 }
 
-
 /* ==========================================
-   VINHETA + LUZ CENTRAL
+   LUZ CENTRAL + VINHETA
 ========================================== */
 
 .splash-screen::after {
@@ -133,7 +120,6 @@ body {
 
     background:
 
-        /* Luz suave no centro */
         radial-gradient(
             circle at 50% 42%,
             rgba(70, 165, 255, .10) 0%,
@@ -141,7 +127,6 @@ body {
             rgba(70, 165, 255, 0) 58%
         ),
 
-        /* Vinheta */
         radial-gradient(
             ellipse at center,
             transparent 35%,
@@ -172,9 +157,13 @@ body {
     padding: 40px 24px;
 
     z-index: 1;
+
+    transition:
+        opacity .5s ease,
+        transform .5s cubic-bezier(.22, .61, .36, 1);
 }
 
-/* Halo central */
+/* Halo atrás da marca */
 
 .splash-container::before {
     content: "";
@@ -202,6 +191,7 @@ body {
     filter: blur(28px);
 
     pointer-events: none;
+
     z-index: 0;
 }
 
@@ -218,7 +208,7 @@ body {
     width: 330px;
     max-width: 78%;
 
-    margin-bottom: 52px;
+    margin-bottom: 44px;
 
     opacity: 0;
 
@@ -230,7 +220,7 @@ body {
         );
 
     animation:
-        logoFade .8s ease forwards;
+        splashLogoEntrada .8s ease forwards;
 }
 
 /* ==========================================
@@ -238,7 +228,11 @@ body {
 ========================================== */
 
 .splash-title {
+    margin: 0 0 20px;
+
     color: #FFFFFF;
+
+    font-family: 'Inter', sans-serif;
 
     font-size: clamp(1.9rem, 3vw, 2.8rem);
 
@@ -248,15 +242,13 @@ body {
 
     line-height: 1.15;
 
-    margin-bottom: 20px;
-
     text-shadow:
         0 2px 12px rgba(0, 0, 0, .25);
 
     opacity: 0;
 
     animation:
-        textFade .8s ease forwards;
+        splashTextoEntrada .8s ease forwards;
 
     animation-delay: .25s;
 }
@@ -266,7 +258,11 @@ body {
 ========================================== */
 
 .splash-contracts {
+    margin: 0 0 22px;
+
     color: #D9E3F0;
+
+    font-family: 'Inter', sans-serif;
 
     font-size: 1.05rem;
 
@@ -276,19 +272,16 @@ body {
 
     letter-spacing: .9px;
 
-    margin-bottom: 22px;
-
     opacity: 0;
 
     animation:
-        textFade .8s ease forwards;
+        splashTextoEntrada .8s ease forwards;
 
     animation-delay: .38s;
 }
 
 .splash-contracts span {
     color: #65C4FF;
-
     margin: 0 5px;
 }
 
@@ -297,7 +290,11 @@ body {
 ========================================== */
 
 .splash-subtitle {
+    margin: 0 0 58px;
+
     color: #D6DFEB;
+
+    font-family: 'Inter', sans-serif;
 
     font-size: 1rem;
 
@@ -305,12 +302,10 @@ body {
 
     letter-spacing: .7px;
 
-    margin-bottom: 58px;
-
     opacity: 0;
 
     animation:
-        textFade .8s ease forwards;
+        splashTextoEntrada .8s ease forwards;
 
     animation-delay: .5s;
 }
@@ -326,13 +321,13 @@ body {
     opacity: 0;
 
     animation:
-        textFade .8s ease forwards;
+        splashTextoEntrada .8s ease forwards;
 
     animation-delay: .7s;
 }
 
 /* ==========================================
-   BARRA
+   BARRA DE CARREGAMENTO
 ========================================== */
 
 .loading-bar {
@@ -385,6 +380,8 @@ body {
 
     color: #7FB3FF;
 
+    font-family: 'Inter', sans-serif;
+
     font-size: .98rem;
 
     font-weight: 500;
@@ -395,14 +392,35 @@ body {
         0 1px 5px rgba(0, 0, 0, .30);
 
     transition:
-        opacity .35s ease;
+        opacity .25s ease;
+}
+
+/* ==========================================
+   SAÍDA DA SPLASH
+========================================== */
+
+.splash-screen.splash-saindo {
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+        opacity .55s ease;
+}
+
+.splash-screen.splash-saindo .splash-container {
+    opacity: 0;
+
+    transform:
+        translateY(-6px)
+        scale(1.01);
 }
 
 /* ==========================================
    ANIMAÇÕES
 ========================================== */
 
-@keyframes logoFade {
+@keyframes splashLogoEntrada {
 
     from {
         opacity: 0;
@@ -416,7 +434,7 @@ body {
 
 }
 
-@keyframes textFade {
+@keyframes splashTextoEntrada {
 
     from {
         opacity: 0;
@@ -453,11 +471,11 @@ body {
     .splash-logo {
         width: 210px;
 
-        margin-bottom: 42px;
+        margin-bottom: 40px;
     }
 
     .splash-title {
-        font-size: 2rem;
+        font-size: 1.9rem;
 
         margin-bottom: 18px;
     }
@@ -485,6 +503,32 @@ body {
 }
 
 /* ==========================================
+   TELAS MUITO PEQUENAS
+========================================== */
+
+@media (max-width: 420px) {
+
+    .splash-logo {
+        width: 185px;
+    }
+
+    .splash-title {
+        font-size: 1.7rem;
+    }
+
+    .splash-contracts {
+        max-width: 300px;
+
+        font-size: .92rem;
+    }
+
+    .splash-subtitle {
+        font-size: .9rem;
+    }
+
+}
+
+/* ==========================================
    ACESSIBILIDADE
 ========================================== */
 
@@ -503,6 +547,10 @@ body {
     }
 
     .loading-fill {
+        transition: none;
+    }
+
+    .splash-container {
         transition: none;
     }
 
