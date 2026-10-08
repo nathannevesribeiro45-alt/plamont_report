@@ -484,3 +484,26 @@
     #historico .historico-equipe-info { grid-template-columns: 1fr; gap: 3px; }
     #historico .historico-voltar { margin: 13px 16px 0; }
 }
+
+/* ==========================================================
+   HISTÓRICO — LIMITE VERTICAL NO DESKTOP
+   ========================================================== */
+
+@media (min-width: 901px) {
+
+    #historico .historico-layout {
+        --historico-altura-desktop: 805px;
+    }
+
+    #historico .historico-detalhe-painel {
+        max-height: var(--historico-altura-desktop);
+        overflow: hidden;
+    }
+
+    #historico .historico-report {
+        max-height: var(--historico-altura-desktop);
+        overflow-y: auto;
+        scrollbar-gutter: stable;
+    }
+
+}
