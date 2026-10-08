@@ -1,7 +1,6 @@
 {
   "dadosDeTeste": false,
   "horasPorDiaUtil": 12,
-
   "paradas": [
     {
       "id": "ct-tr-353k-02",
@@ -9,27 +8,20 @@
       "tipo": "Grande Parada",
       "equipamento": "CT-TR-353K-02",
       "contrato": "os456",
-
       "status": {
-        "data": "07/10/2026",
+        "data": "08/10/2026",
         "hora": "07:00"
       },
-
       "periodo": {
         "inicio": "21/07/2026",
         "inicioHora": "08:00",
-
         "fim": "18/11/2026",
-
         "previstoFim": "18/11/2026",
         "previstoFimHora": "16:30",
-
-        "realizadoFim": "15/11/2026",
-        "realizadoFimHora": "16:30"
+        "realizadoFim": "16/11/2026",
+        "realizadoFimHora": "08:05"
       },
-
-      "dataStatus": "07/10/2026",
-
+      "dataStatus": "08/10/2026",
       "pontos": [
         {
           "data": "21/07/2026",
@@ -40,8 +32,8 @@
         },
         {
           "data": "26/07/2026",
-          "previsto": 2.70,
-          "realizado": 2.70,
+          "previsto": 2.7,
+          "realizado": 2.7,
           "previstoUnitario": 2.25,
           "realizadoUnitario": 2.25
         },
@@ -68,8 +60,8 @@
         },
         {
           "data": "23/08/2026",
-          "previsto": 15.20,
-          "realizado": 15.20,
+          "previsto": 15.2,
+          "realizado": 15.2,
           "previstoUnitario": 8.45,
           "realizadoUnitario": 8.45
         },
@@ -77,8 +69,8 @@
           "data": "30/08/2026",
           "previsto": 17.75,
           "realizado": 17.75,
-          "previstoUnitario": 9.30,
-          "realizadoUnitario": 9.30
+          "previstoUnitario": 9.3,
+          "realizadoUnitario": 9.3
         },
         {
           "data": "06/09/2026",
@@ -98,8 +90,8 @@
           "data": "20/09/2026",
           "previsto": 27.18,
           "realizado": 27.18,
-          "previstoUnitario": 14.70,
-          "realizadoUnitario": 14.70
+          "previstoUnitario": 14.7,
+          "realizadoUnitario": 14.7
         },
         {
           "data": "27/09/2026",
@@ -111,13 +103,13 @@
         {
           "data": "29/09/2026",
           "previsto": 30.35,
-          "realizado": 31.00,
+          "realizado": 31.0,
           "previstoUnitario": 15.26,
           "realizadoUnitario": 15.26
         },
         {
           "data": "05/10/2026",
-          "previsto": 42.90,
+          "previsto": 42.9,
           "realizado": 56.92,
           "previstoUnitario": null,
           "realizadoUnitario": null
@@ -131,16 +123,22 @@
         },
         {
           "data": "07/10/2026",
-          "previsto": 49.30,
+          "previsto": 49.3,
           "realizado": 72.15,
+          "previstoUnitario": null,
+          "realizadoUnitario": null
+        },
+        {
+          "data": "08/10/2026",
+          "previsto": 52.97,
+          "realizado": 76.51,
           "previstoUnitario": null,
           "realizadoUnitario": null
         }
       ],
-
       "marcos": [
         {
-          "data": "15/11/2026",
+          "data": "16/11/2026",
           "previsto": null,
           "descricao": "Término projetado atual"
         },
@@ -150,7 +148,6 @@
           "descricao": "Conclusão prevista"
         }
       ],
-
       "turno": {
         "realizado": {
           "inicio": "07:00",
@@ -161,181 +158,193 @@
           "fim": "19:00"
         }
       },
-
       "atividades": {
         "realizadas": [
           {
             "om": "--",
             "area": "MECÂNICA",
-            "descricao": "Executar desmontagem da cabine de operação existente",
-            "status": "Concluído"
-          },
-          {
-            "om": "--",
-            "area": "MECÂNICA",
-            "descricao": "Executar montagem das travessas superiores da estrutura de sustentação do amostrador",
-            "status": "Concluído"
-          },
-          {
-            "om": "--",
-            "area": "MECÂNICA",
-            "descricao": "Executar ajuste no andaime na região interna onde será instalada a primeira seção da tubulação de descida da amostra",
-            "status": "Concluído"
-          },
-          {
-            "om": "--",
-            "area": "MECÂNICA",
-            "descricao": "Executar içamento da primeira seção da tubulação com auxílio do dispositivo de içamento externo",
-            "status": "Concluído"
-          },
-          {
-            "om": "--",
-            "area": "MECÂNICA",
-            "descricao": "Executar retirada da chapa de piso na região onde a tubulação irá descer para o segundo pavimento",
-            "status": "Concluído"
-          },
-          {
-            "om": "--",
-            "area": "MECÂNICA",
-            "descricao": "Executar posicionamento da primeira seção da tubulação para avaliação dimensional",
-            "status": "Concluído"
-          },
-          {
-            "om": "--",
-            "area": "MECÂNICA",
-            "descricao": "Executar corte logo após o motovibrador da primeira seção da tubulação",
-            "status": "Concluído"
-          },
-          {
-            "om": "--",
-            "area": "MECÂNICA",
-            "descricao": "Executar posicionamento com os elementos de fixação do primeiro tubo no amostrador",
-            "status": "Concluído"
-          },
-          {
-            "om": "--",
-            "area": "MECÂNICA",
             "descricao": "Executar solda da seção de extensão da primeira tubulação",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA",
+            "descricao": "Executar acabamento geral na primeira seção da tubulação após a extensão",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA",
+            "descricao": "Executar reaplicação do revestimento interno na segião soldada",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA",
+            "descricao": "Executar montagem da chapa de piso já adequada para passagem da tubulação",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA",
+            "descricao": "Executar fabricação e instalação dos suportes de fixação da primeira seção da tubulação",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA",
+            "descricao": "Executar içamento da segunda seção da tubulação para o segundo pavimento da CT com o auxílio do dispositivo de içamento externo",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA",
+            "descricao": "Executar posicionamento da segunda seção da tubulação para avaliação dimensional",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA",
+            "descricao": "Executar corte da segunda seção da tubulação para redução de comprimento",
+            "status": "Concluído"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA",
+            "descricao": "Executar solda da segunda seção da tubulação",
             "status": "Em andamento"
           },
-
           {
             "om": "--",
             "area": "ELÉTRICA",
-            "descricao": "Executar recomposição e acabamento da laje nas áreas de intervenção",
+            "descricao": "Executar recomposição do pavimento asfáltico após instalação da infraestrutura",
             "status": "Concluído"
           },
           {
             "om": "--",
             "area": "ELÉTRICA",
-            "descricao": "Executar lançamento dos circuitos de força – Subestação → Painel do Amostrador",
-            "status": "Concluído"
+            "descricao": "Executar terminações e conexões dos circuitos de força – Subestação → Painel",
+            "status": "Em andamento"
           },
           {
             "om": "--",
             "area": "ELÉTRICA",
-            "descricao": "Executar lançamento dos circuitos de força – Painel → Motores do Amostrador",
-            "status": "Concluído"
+            "descricao": "Executar terminações e conexões dos circuitos de controle – Subestação → Painel",
+            "status": "Em andamento"
           }
         ],
-
         "proximas": [
           {
             "om": "--",
             "area": "MECÂNICA — TURNO 07:00 ÀS 19:00",
-            "descricao": "Concluir a primeira seção da tubulação, incluindo soldagem da extensão, acabamento, reaplicação do revestimento interno, montagem da chapa de piso e instalação dos suportes de fixação",
-            "status": "Programado"
-          },
-          {
-            "om": "--",
-            "area": "MECÂNICA — TURNO 07:00 ÀS 19:00",
-            "descricao": "Içar a segunda seção da tubulação para o segundo pavimento da CT, realizar o posicionamento para avaliação dimensional e executar o corte para ajuste de comprimento",
-            "status": "Programado"
-          },
-          {
-            "om": "--",
-            "area": "ELÉTRICA — TURNO 07:00 ÀS 19:00",
-            "descricao": "Executar recomposição do pavimento asfáltico após a instalação da infraestrutura",
-            "status": "Programado"
-          },
-          {
-            "om": "--",
-            "area": "ELÉTRICA — TURNO 07:00 ÀS 19:00",
-            "descricao": "Executar lançamento dos circuitos de controle entre Subestação, Painel e motores do Amostrador, seguido do teste de resistência de isolamento dos motores",
-            "status": "Programado"
-          },
-
-          {
-            "om": "--",
-            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
             "descricao": "Executar solda da segunda seção da tubulação",
             "status": "Programado"
           },
           {
             "om": "--",
-            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
+            "area": "MECÂNICA — TURNO 07:00 ÀS 19:00",
             "descricao": "Executar acabamento geral na segunda seção da tubulação após a redução de comprimento",
             "status": "Programado"
           },
           {
             "om": "--",
-            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
-            "descricao": "Executar reaplicação do revestimento interno na seção soldada",
+            "area": "MECÂNICA — TURNO 07:00 ÀS 19:00",
+            "descricao": "Executar reaplicação do revestimento interno na segião soldada",
             "status": "Programado"
           },
           {
             "om": "--",
-            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
+            "area": "MECÂNICA — TURNO 07:00 ÀS 19:00",
             "descricao": "Executar posicionamento com os elementos de fixação da segunda com a primeira seção da tubulação",
             "status": "Programado"
           },
           {
             "om": "--",
-            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
+            "area": "MECÂNICA — TURNO 07:00 ÀS 19:00",
             "descricao": "Executar fabricação e instalação dos suportes de fixação da segunda seção da tubulação",
             "status": "Programado"
           },
           {
             "om": "--",
-            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
+            "area": "MECÂNICA — TURNO 07:00 ÀS 19:00",
             "descricao": "Executar posicionamento da terceira seção da tubulação para avaliação dimensional",
             "status": "Programado"
           },
-
           {
             "om": "--",
-            "area": "ELÉTRICA — TURNO 19:00 ÀS 07:00",
-            "descricao": "Executar lançamento dos circuitos de força – Subestação → Painel do Amostrador",
+            "area": "MECÂNICA — TURNO 07:00 ÀS 19:00",
+            "descricao": "Realizar furação na laje do primeiro pavimento para descida da terceira seção da tubulação até o laboratório",
             "status": "Programado"
           },
           {
             "om": "--",
-            "area": "ELÉTRICA — TURNO 19:00 ÀS 07:00",
+            "area": "ELÉTRICA — TURNO 07:00 ÀS 19:00",
             "descricao": "Executar lançamento dos circuitos de controle – Subestação → Painel do Amostrador",
             "status": "Programado"
           },
           {
             "om": "--",
-            "area": "ELÉTRICA — TURNO 19:00 ÀS 07:00",
-            "descricao": "Executar lançamento dos circuitos de força – Painel → Motores do Amostrador",
+            "area": "ELÉTRICA — TURNO 07:00 ÀS 19:00",
+            "descricao": "Executar lançamento dos circuitos de controle – Painel → Motores do Amostrador",
             "status": "Programado"
           },
           {
             "om": "--",
-            "area": "ELÉTRICA — TURNO 19:00 ÀS 07:00",
+            "area": "ELÉTRICA — TURNO 07:00 ÀS 19:00",
             "descricao": "Executar terminações e conexões dos circuitos de força – Subestação → Painel",
             "status": "Programado"
           },
           {
             "om": "--",
-            "area": "ELÉTRICA — TURNO 19:00 ÀS 07:00",
+            "area": "ELÉTRICA — TURNO 07:00 ÀS 19:00",
             "descricao": "Executar terminações e conexões dos circuitos de controle – Subestação → Painel",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Executar corte da terceira seção da tubulação para extensão",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Executar solda da terceira seção da tubulação na região extendida",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Executar posicionamento e instalação das flagens de conexação da válvula guilhotina",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "MECÂNICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Executar solda das flagens de conexação da válvula guilhotina",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "ELÉTRICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Executar teste de resistência de isolamento dos motores do Amostrador",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "ELÉTRICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Executar terminações e conexões dos circuitos de força – Painel → Motores",
+            "status": "Programado"
+          },
+          {
+            "om": "--",
+            "area": "ELÉTRICA — TURNO 19:00 ÀS 07:00",
+            "descricao": "Execução terminações e conexões dos circuitos de controle – Painel → Motores",
             "status": "Programado"
           }
         ]
       },
-
-      "observacoes": "02/10/2026 às 16:00 — A Plamont Engenharia informa que a atividade de montagem de andaime na área interna da CT apresentou desvio em relação à programação inicialmente prevista, em decorrência da liberação tardia do ativo para realização do bloqueio e consequente início da atividade. Até o momento, o desvio identificado não impacta a tendência de término final do projeto em razão das ações de recuperação e medidas de controle implementadas pelo Planejamento em conjunto com a Execução. O monitoramento diário do cronograma, caminho crítico e avanço das atividades será mantido para preservar o marco de conclusão do projeto.\n\n05/10/2026 às 07:00 — Projeto Geral com avanço de 42,90% previsto contra 56,92% realizado, representando desvio positivo informado de 14,02%. O término previsto permanece em 18/11/2026 às 16:30, enquanto a projeção atual de término passou para 15/11/2026 às 16:30, correspondendo a avanço informado de 3 dias.\n\n06/10/2026 às 07:00 — Projeto Geral com avanço de 45,82% previsto contra 65,82% realizado, representando desvio positivo informado de 20,00%. A projeção de término permanece em 15/11/2026 às 16:30, mantendo avanço informado de 3 dias em relação ao término previsto de 18/11/2026 às 16:30. Conforme atualização do planejamento, a tendência para retirada do bloqueio está prevista para 09/10/2026 às 06:10. Após a retirada do bloqueio, as atividades remanescentes para conclusão dos serviços contemplados na Linha Macro 182 serão executadas em paralelo ao acompanhamento dos testes operacionais do novo Amostrador, com tendência de término informada para 12/10/2026 às 20:52.\n\n07/10/2026 às 07:00 — Projeto Geral com avanço de 49,30% previsto contra 72,15% realizado, com desvio informado de 22,85% e avanço informado de 3,00 dias. O término previsto permanece em 18/11/2026 às 16:30 e a projeção atual do projeto permanece em 15/11/2026 às 16:30."
+      "observacoes": "02/10/2026 às 16:00 — A Plamont Engenharia informa que a atividade de montagem de andaime na área interna da CT apresentou desvio em relação à programação inicialmente prevista, em decorrência da liberação tardia do ativo para realização do bloqueio e consequente início da atividade. Até o momento, o desvio identificado não impacta a tendência de término final do projeto em razão das ações de recuperação e medidas de controle implementadas pelo Planejamento em conjunto com a Execução. O monitoramento diário do cronograma, caminho crítico e avanço das atividades será mantido para preservar o marco de conclusão do projeto.\n\n05/10/2026 às 07:00 — Projeto Geral com avanço de 42,90% previsto contra 56,92% realizado, representando desvio positivo informado de 14,02%. O término previsto permanece em 18/11/2026 às 16:30, enquanto a projeção atual de término passou para 15/11/2026 às 16:30, correspondendo a avanço informado de 3 dias.\n\n06/10/2026 às 07:00 — Projeto Geral com avanço de 45,82% previsto contra 65,82% realizado, representando desvio positivo informado de 20,00%. A projeção de término permanece em 15/11/2026 às 16:30, mantendo avanço informado de 3 dias em relação ao término previsto de 18/11/2026 às 16:30. Conforme atualização do planejamento, a tendência para retirada do bloqueio está prevista para 09/10/2026 às 06:10. Após a retirada do bloqueio, as atividades remanescentes para conclusão dos serviços contemplados na Linha Macro 182 serão executadas em paralelo ao acompanhamento dos testes operacionais do novo Amostrador, com tendência de término informada para 12/10/2026 às 20:52.\n\n07/10/2026 às 07:00 — Projeto Geral com avanço de 49,30% previsto contra 72,15% realizado, com desvio informado de 22,85% e avanço informado de 3,00 dias. O término previsto permanece em 18/11/2026 às 16:30 e a projeção atual do projeto permanece em 15/11/2026 às 16:30.\n\n08/10/2026 às 07:00 — Projeto Geral com avanço de 52,97% previsto contra 76,51% realizado, com desvio informado de 23,55% e avanço informado de 2,93 dias. O término previsto permanece em 18/11/2026 às 16:30 e a projeção atual de término passou para 16/11/2026 às 08:05."
     }
   ]
 }
