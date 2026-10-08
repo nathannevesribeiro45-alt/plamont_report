@@ -284,11 +284,7 @@ ${lider.tecnicoSeguranca ? `
 
             </div>
 
-            <div class="om-descricao">
-
-                ${escaparHtml(om.descricao || "--")}
-
-            </div>
+            <div class="om-descricao">${escaparHtml(om.descricao || "--")}</div>
 
 
         `;
