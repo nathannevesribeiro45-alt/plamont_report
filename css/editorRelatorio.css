@@ -29,6 +29,9 @@
 .editor-relatorio input:focus, .editor-relatorio select:focus, .editor-relatorio textarea:focus { outline:2px solid #9bccf8; outline-offset:1px; }
 .editor-relatorio input[readonly] { background:#f1f5f9; color:#5e7389; }
 .editor-descricao { grid-column:1 / -1; }
+.editor-texto-om { grid-column:1 / -1; }
+.editor-relatorio .editor-texto-om textarea[readonly] { background:#f1f5f9; border-style:dashed; color:#52677d; cursor:default; }
+.editor-campo-ajuda { color:#60788e; font-size:.75rem; font-weight:400; line-height:1.4; }
 .editor-oms { display:grid; gap:16px; padding:16px; border-top:1px solid #e1eaf3; }
 .editor-om { min-width:0; border:1px solid #dbe5f1; border-radius:10px; overflow:hidden; }
 .editor-om-titulo { background:#f7faff; border-bottom:1px solid #e0eaf4; }

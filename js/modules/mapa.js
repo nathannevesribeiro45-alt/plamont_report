@@ -533,6 +533,8 @@ const Mapa = {
 
         painel.classList.add("aberto");
 
+        MapaPainel.prepararAnotacoes(conteudo, dado);
+
         // As fotos são persistidas no IndexedDB. A renderização do painel
         // continua síncrona, e a galeria é hidratada assim que os blobs
         // persistidos terminam de ser carregados.

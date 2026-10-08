@@ -20,6 +20,11 @@ const MapaPainel = {
     bancoFotos: null,
     LIMITE_FOTOS_POR_OM: 5,
 
+    // Rascunhos da tela, nunca um segundo armazenamento do resumo da OM.
+    anotacoes: new WeakMap(),
+    salvandoAnotacao: false,
+    anotacaoPendente: null,
+
     armazenamentoCompartilhadoAtivo() {
         return typeof FotosStorage !== "undefined" && FotosStorage.configurado();
     },
@@ -177,6 +182,8 @@ const MapaPainel = {
                                             <div class="mapa-painel-atividade-numero">OM ${om.numero || "—"}</div>
                                             <div class="mapa-painel-atividade-descricao">${om.descricao || ""}</div>
 
+                                            ${this.renderAnotacaoLider(om, contexto)}
+
                                             <div class="mapa-painel-foto-acoes">
                                                 <button type="button" class="mapa-painel-btn-foto camera-bloqueada" onclick="MapaPainel.abrirCamera(this)" title="Entre para utilizar a câmera">
                                                     <span aria-hidden="true">📷</span> <span class="camera-btn-texto">Entrar para tirar foto</span>
@@ -208,6 +215,218 @@ const MapaPainel = {
             </div>
         `;
 
+    },
+
+    renderAnotacaoLider(om, contexto) {
+        const grupos = contexto?.aba?.atividades || [];
+        const g = grupos.findIndex(grupo => grupo.oms?.includes(om));
+        const o = g < 0 ? -1 : grupos[g].oms.indexOf(om);
+        return `<div class="mapa-anotacao-lider" data-anotacao-grupo="${g}" data-anotacao-om="${o}">
+            <label><span>Anotações do líder</span>
+                <textarea rows="3" readonly aria-readonly="true" placeholder="Informe o resumo desta atividade">${escaparHtml(String(om.resumoAtividades ?? ""))}</textarea>
+            </label>
+            <small>Mesmo texto do Resumo da atividade em OM’s do Dia.</small>
+            <button type="button" data-salvar-anotacao hidden>Salvar anotações</button>
+            <p data-anotacao-feedback role="status" aria-live="polite"></p>
+        </div>`;
+    },
+
+    prepararAnotacoes(container, dado) {
+        const contrato = RelatoriosStorage.clonar(dado.contrato);
+        const identidade = RelatoriosStorage.identidade(contrato);
+        const abaId = String(dado.aba.id);
+        const edicao = {
+            contrato, contexto: RelatoriosStorage.contexto(), chave: identidade.chave, abaId,
+            versao: RelatoriosStorage.obterEstado(contrato)?.versoesAbas.get(abaId),
+            destino: { contratoId: identidade.contratoId, dataRelatorio: identidade.data, turno: identidade.turno, abaId }
+        };
+        container.querySelectorAll('.mapa-anotacao-lider').forEach(form => {
+            const g = Number(form.dataset.anotacaoGrupo), o = Number(form.dataset.anotacaoOm);
+            const base = contrato.abas.find(aba => aba.id === abaId);
+            let estado = { edicao, baseRef: dado.contrato, g, o, base, form };
+            const pendente = this.anotacaoPendente;
+            if (pendente && pendente.edicao.chave === edicao.chave && pendente.edicao.abaId === abaId && pendente.g === g && pendente.o === o) {
+                estado = pendente;
+                estado.form = form;
+                form.querySelector('textarea').value = pendente.valor;
+            }
+            this.anotacoes.set(form, estado);
+            form.querySelector('[data-salvar-anotacao]').addEventListener('click', () => this.salvarAnotacaoLider(form));
+            form.querySelector('textarea').addEventListener('input', () => {
+                this.feedbackAnotacao(estado, 'Alterações ainda não salvas.');
+            });
+        });
+        this.atualizarAcessoAnotacoes();
+    },
+
+    podeAnotar() {
+        return window.Auth?.pode?.('editarResumoAtividade') === true;
+    },
+
+    temAnotacaoPendente() {
+        if (this.anotacaoPendente) {
+            try { this.conferirSessaoAnotacao(this.anotacaoPendente); }
+            catch { this.anotacaoPendente = null; }
+        }
+        return Boolean(this.anotacaoPendente);
+    },
+
+    atualizarAcessoAnotacoes() {
+        this.temAnotacaoPendente();
+        document.querySelectorAll('.mapa-anotacao-lider').forEach(form => {
+            const estado = this.anotacoes.get(form);
+            const autorizado = this.podeAnotar() && Boolean(estado?.base?.atividades?.[estado.g]?.oms?.[estado.o]);
+            const pendente = this.anotacaoPendente;
+            const bloqueado = this.salvandoAnotacao || Boolean(pendente) || Boolean(window.EditorRelatorio?.ativo);
+            const textarea = form.querySelector('textarea');
+            const botao = form.querySelector('[data-salvar-anotacao]');
+            textarea.readOnly = !autorizado || bloqueado;
+            textarea.setAttribute('aria-readonly', String(textarea.readOnly));
+            botao.hidden = !autorizado;
+            botao.disabled = !autorizado || this.salvandoAnotacao || Boolean(window.EditorRelatorio?.ativo) || Boolean(pendente && pendente !== estado);
+            botao.textContent = pendente === estado ? 'Verificar salvamento' : 'Salvar anotações';
+            form.setAttribute('aria-busy', String(this.salvandoAnotacao));
+            if (!autorizado) this.feedbackAnotacao(estado, 'Somente leitura. Preenchimento pelo líder (perfil editor) ou admin.');
+            else if (window.EditorRelatorio?.ativo) this.feedbackAnotacao(estado, 'Conclua ou cancele a edição aberta antes de salvar pelo mapa.');
+        });
+    },
+
+    feedbackAnotacao(estado, mensagem, erro = false) {
+        const feedback = estado?.form?.querySelector('[data-anotacao-feedback]');
+        if (!feedback) return;
+        feedback.textContent = mensagem;
+        feedback.classList.toggle('erro', erro);
+    },
+
+    conferirSessaoAnotacao(estado) {
+        if (!this.podeAnotar()) throw new Error('Você não possui permissão para informar o resumo da atividade.');
+        RelatoriosStorage.conferirContexto(estado.edicao.contexto, { exigirLogin: true });
+    },
+
+    // JSONB pode devolver as mesmas propriedades em outra ordem.
+    anotacaoIgual(a, b) {
+        const ordenar = valor => Array.isArray(valor) ? valor.map(ordenar) :
+            valor && typeof valor === 'object' ? Object.fromEntries(Object.keys(valor).sort().map(chave => [chave, ordenar(valor[chave])])) : valor;
+        return JSON.stringify(ordenar(a)) === JSON.stringify(ordenar(b));
+    },
+
+    async salvarAnotacaoLider(form) {
+        const estado = this.anotacoes.get(form);
+        if (!estado || this.salvandoAnotacao) return false;
+        try {
+            this.conferirSessaoAnotacao(estado);
+            if (window.EditorRelatorio?.ativo || window.EditorRelatorio?.salvando || Dashboard.carregando) {
+                throw new Error('Conclua a edição ou o carregamento em andamento antes de salvar pelo mapa.');
+            }
+            if (this.anotacaoPendente && this.anotacaoPendente !== estado) {
+                throw new Error('Verifique o salvamento pendente antes de alterar outra OM.');
+            }
+            if (!this.anotacaoPendente) {
+                const atual = Dashboard.contratos[estado.edicao.contrato.id];
+                const aba = atual?.abas?.find(item => item.id === estado.edicao.abaId);
+                if (atual !== estado.baseRef || !this.anotacaoIgual(aba, estado.base)) {
+                    throw new Error('O relatório mudou. Copie seu texto e reabra o painel com os dados atualizados.');
+                }
+                estado.valor = form.querySelector('textarea').value;
+                const original = estado.base.atividades?.[estado.g]?.oms?.[estado.o];
+                if (!original) throw new Error('OM não encontrada no relatório carregado.');
+                if (estado.valor === String(original.resumoAtividades ?? '')) {
+                    this.feedbackAnotacao(estado, 'Nenhuma alteração para salvar.');
+                    return true;
+                }
+                estado.payload = RelatoriosStorage.clonar(estado.base);
+                estado.payload.atividades[estado.g].oms[estado.o].resumoAtividades = estado.valor;
+            }
+            this.salvandoAnotacao = true;
+            this.atualizarAcessoAnotacoes();
+            this.feedbackAnotacao(estado, this.anotacaoPendente ? 'Verificando o salvamento…' : 'Salvando anotações…');
+            if (this.anotacaoPendente) return await this.verificarAnotacao(estado);
+            try {
+                const resultado = await RelatoriosStorage.salvarAba({ contrato: estado.edicao.contrato, aba: estado.payload, edicao: estado.edicao });
+                this.conferirSessaoAnotacao(estado);
+                if (!this.comprovarAnotacao(estado, resultado)) throw new Error('Resposta sem confirmação da anotação.');
+                this.concluirAnotacao(estado, resultado);
+                return true;
+            } catch (erro) {
+                if (['nao_enviado', 'rejeitado'].includes(erro.resultadoSalvamento)) throw erro;
+                this.conferirSessaoAnotacao(estado);
+                this.anotacaoPendente = estado;
+                return await this.verificarAnotacao(estado);
+            }
+        } catch (erro) {
+            this.feedbackAnotacao(estado, `${erro.message} Seu texto foi preservado na tela.`, true);
+            return false;
+        } finally {
+            this.salvandoAnotacao = false;
+            this.temAnotacaoPendente();
+            this.atualizarAcessoAnotacoes();
+        }
+    },
+
+    comprovarAnotacao(estado, resultado) {
+        const aba = resultado.dados?.abas?.find(item => item.id === estado.edicao.abaId);
+        return resultado.registro?.versoes_abas?.[estado.edicao.abaId] > estado.edicao.versao && this.anotacaoIgual(aba, estado.payload);
+    },
+
+    async verificarAnotacao(estado) {
+        try {
+            this.conferirSessaoAnotacao(estado);
+            const resultado = await RelatoriosStorage.carregar(estado.edicao.contrato, { registrarEstado: false });
+            this.conferirSessaoAnotacao(estado);
+            if (resultado.persistido && this.comprovarAnotacao(estado, resultado)) {
+                this.concluirAnotacao(estado, resultado);
+                return true;
+            }
+        } catch { /* Resultado incerto: não reenviar nem substituir o texto. */ }
+        this.feedbackAnotacao(estado, 'Salvamento ainda não confirmado. Use Verificar salvamento para consultar sem reenviar. Se persistir, copie o texto, recarregue e confira a OM antes de editar.', true);
+        return false;
+    },
+
+    concluirAnotacao(estado, resultado) {
+        this.conferirSessaoAnotacao(estado);
+        RelatoriosStorage.validarRegistro(resultado.registro, estado.edicao.contrato);
+        RelatoriosStorage.registrarEstadoPersistido(resultado.dados, resultado.registro);
+        this.anotacaoPendente = null;
+        const id = estado.edicao.contrato.id;
+        // Uma resposta do turno anterior não pode substituir o turno aberto.
+        if (!Dashboard.carregando && Dashboard.contratos[id] === estado.baseRef) {
+            const dados = resultado.dados;
+            const conteudo = document.getElementById('mapa-painel-conteudo');
+            const aberto = document.getElementById('mapa-painel')?.classList.contains('aberto');
+            const marcador = Mapa.marcadorSelecionado;
+            const rascunhos = [...(conteudo?.querySelectorAll('.mapa-anotacao-lider') || [])].flatMap(form => {
+                const outro = this.anotacoes.get(form);
+                if (!outro || outro === estado || outro.edicao.chave !== estado.edicao.chave || outro.edicao.abaId !== estado.edicao.abaId) return [];
+                const valor = form.querySelector('textarea').value;
+                const anterior = String(outro.base.atividades[outro.g]?.oms[outro.o]?.resumoAtividades ?? '');
+                return valor === anterior ? [] : [{ g: outro.g, o: outro.o, valor }];
+            });
+            Dashboard.contratos[id] = dados;
+            if (Dashboard.contratoAtual?.id === id) {
+                Dashboard.contratoAtual = dados;
+                Dashboard.abaAtual = dados.abas.find(aba => aba.id === Dashboard.abaAtual?.id);
+                Render.atualizar();
+            }
+            window.DashboardResumo?.atualizar();
+            Busca.construirIndice();
+            if (Mapa.map && Mapa.markersLayer) {
+                Mapa.renderFrentes(false);
+                const frente = aberto && Mapa.montarMarcadores(Dashboard.contratos[Mapa.contratoAtivo]).find(item => item.id === marcador);
+                if (frente) {
+                    Mapa.abrirPainel(frente);
+                    conteudo.querySelectorAll('.mapa-anotacao-lider').forEach(form => {
+                        const atual = this.anotacoes.get(form);
+                        const rascunho = rascunhos.find(item => item.g === atual.g && item.o === atual.o);
+                        if (rascunho) {
+                            form.querySelector('textarea').value = rascunho.valor;
+                            this.feedbackAnotacao(atual, 'Alterações ainda não salvas.');
+                        } else if (atual.g === estado.g && atual.o === estado.o && atual.edicao.abaId === estado.edicao.abaId) {
+                            this.feedbackAnotacao(atual, 'Anotações salvas. Disponíveis também em OM’s do Dia.');
+                        }
+                    });
+                }
+            } else this.feedbackAnotacao(estado, 'Anotações salvas. Reabra o painel para continuar.');
+        } else this.feedbackAnotacao(estado, 'Anotações salvas no relatório original. Recarregue para conferir.');
     },
 
     // ======================================
@@ -242,7 +461,7 @@ const MapaPainel = {
                 ${observacoes.length ? `
                     <div class="mapa-painel-observacoes-lista">
                         ${observacoes.map(obs => `
-                            <p class="mapa-painel-obs">${obs}</p>
+                            <p class="mapa-painel-obs">${escaparHtml(obs)}</p>
                         `).join("")}
                     </div>
                 ` : `
@@ -964,3 +1183,7 @@ const MapaPainel = {
     }
 
 };
+
+document.addEventListener('plamont:auth-alterado', () => {
+    MapaPainel.atualizarAcessoAnotacoes();
+});

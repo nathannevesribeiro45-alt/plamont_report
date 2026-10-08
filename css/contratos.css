@@ -1619,6 +1619,11 @@ background-repeat:no-repeat;
    ÁREA DE DOCUMENTOS DA OM
 ========================================================== */
 
+.atividade-om .om-descricao { white-space:pre-wrap; overflow-wrap:anywhere; }
+.atividade-om .om-texto-operacional { margin-top:12px; padding:12px; border-left:3px solid #bfd5ed; border-radius:0 7px 7px 0; background:#f7faff; }
+.atividade-om .om-texto-operacional h4 { margin:0 0 6px; color:#0a376b; font-size:.8rem; }
+.atividade-om .om-texto-operacional p { margin:0; color:#2f3e4d; font-size:.9rem; line-height:1.5; white-space:pre-wrap; overflow-wrap:anywhere; }
+
 .om-documentos{
 
     display:flex;

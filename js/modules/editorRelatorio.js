@@ -50,6 +50,14 @@ window.EditorRelatorio = {
 
     podeAlterarRascunho() { return this.ativo && this.sessaoDaEdicao() && !this.salvando && !this.retomarAplicacao; },
 
+    podeEditarTextoOM(campo) {
+
+        const permissao = { resumoAtividades: "editarResumoAtividade", observacoes: "editarObservacoesPlanejamento" }[campo];
+
+        return Boolean(permissao) && this.sessaoDaEdicao() && window.Auth?.pode?.(permissao) === true;
+
+    },
+
     obterOriginal() { return this.original ? this.clonar(this.original) : null; },
 
     obterRascunho() { return this.rascunho ? this.clonar(this.rascunho) : null; },
@@ -69,6 +77,8 @@ window.EditorRelatorio = {
     iniciar(aba = Dashboard.abaAtual) {
 
         if (!this.podeEditar() || !aba || this.ativo || this.salvando || Dashboard.carregando || !Dashboard.contratoAtual) return false;
+
+        if (typeof MapaPainel !== "undefined" && (MapaPainel.salvandoAnotacao || MapaPainel.temAnotacaoPendente())) return false;
 
         AnexosOM.iniciarSessao();
 
@@ -796,6 +806,10 @@ window.EditorRelatorio = {
 
                 <label class="editor-descricao">Descrição${nova ? " *" : ""}<textarea rows="3" data-campo="descricao" data-grupo="${g}" data-om="${o}">${this.escapar(om.descricao)}</textarea></label>
 
+                ${this.campoTextoOM("Resumo da atividade", "resumoAtividades", om.resumoAtividades, g, o, "Líder da atividade")}
+
+                ${this.campoTextoOM("Observações do planejamento", "observacoes", om.observacoes, g, o, "Planejamento")}
+
             </div><div class="editor-localizacao">
 
                 <div class="editor-coordenadas">${this.campo("Latitude", "latitude", om.latitude, g, o)}${this.campo("Longitude", "longitude", om.longitude, g, o)}</div>
@@ -822,6 +836,14 @@ window.EditorRelatorio = {
 
     },
 
+    campoTextoOM(rotulo, nome, valor, grupo, om, responsavel) {
+
+        const readonly = !this.podeEditarTextoOM(nome);
+
+        return `<label class="editor-texto-om">${rotulo}<textarea rows="3" data-campo="${nome}" data-grupo="${grupo}" data-om="${om}" ${readonly ? 'readonly aria-readonly="true"' : ""}>${this.escapar(valor)}</textarea><small class="editor-campo-ajuda">${readonly ? "Somente leitura. " : ""}Preenchimento: ${responsavel}.</small></label>`;
+
+    },
+
     atualizarCampo(evento) {
 
         if (!this.podeAlterarRascunho()) return;
@@ -836,7 +858,11 @@ window.EditorRelatorio = {
 
         const nome = campo.dataset.campo;
 
-        const permitidos = om ? ["descricao", "status", "latitude", "longitude", ...(this.novasOms.has(om) ? ["numero", "frente"] : [])]
+        const textosOM = ["resumoAtividades", "observacoes"];
+
+        if (textosOM.includes(nome) && (!om || !this.podeEditarTextoOM(nome))) return;
+
+        const permitidos = om ? ["descricao", "status", "latitude", "longitude", ...textosOM.filter(nome => this.podeEditarTextoOM(nome)), ...(this.novasOms.has(om) ? ["numero", "frente"] : [])]
 
             : ["telefone", "equipe", "tecnicoSeguranca", ...(this.novosGrupos.has(grupo) ? ["lider"] : [])];
 
@@ -902,7 +928,7 @@ window.EditorRelatorio = {
 
         if (!grupo || !this.podeAlterarRascunho()) return;
 
-        const om = { numero: "", frente: "", descricao: "", status: "Em andamento", latitude: "", longitude: "" };
+        const om = { numero: "", frente: "", descricao: "", status: "Em andamento", latitude: "", longitude: "", resumoAtividades: "", observacoes: "" };
 
         if (!Array.isArray(grupo.oms)) grupo.oms = [];
 

@@ -778,8 +778,36 @@
 .mapa-painel-atividade-dot.status-planejada{ background:#3B82F6; }
 
 .mapa-painel-atividade-texto{
+    flex:1;
     min-width:0;
 }
+
+.mapa-anotacao-lider{
+    margin-top:12px;
+    padding:12px;
+    border:1px solid #dce7f3;
+    border-radius:10px;
+    background:#f5f9fd;
+}
+.mapa-anotacao-lider label{display:block;font-size:13px;font-weight:700;color:var(--text);}
+.mapa-anotacao-lider textarea{
+    display:block;box-sizing:border-box;width:100%;min-height:88px;margin-top:7px;
+    padding:10px;border:1px solid #c3d5e9;border-radius:7px;background:white;
+    color:var(--text);font:inherit;font-size:13px;font-weight:400;line-height:1.5;resize:vertical;
+}
+.mapa-anotacao-lider textarea:focus-visible{outline:2px solid #1672cb;outline-offset:2px;}
+.mapa-anotacao-lider textarea[readonly]{background:#edf2f7;border-style:dashed;color:#52677d;}
+.mapa-anotacao-lider small{display:block;margin-top:6px;font-size:11px;line-height:1.4;color:var(--text-light);}
+.mapa-anotacao-lider button{
+    margin-top:10px;min-height:40px;padding:8px 14px;border:0;border-radius:7px;
+    background:#1267b2;color:white;font:inherit;font-size:12px;font-weight:700;cursor:pointer;
+}
+.mapa-anotacao-lider button[hidden]{display:none;}
+.mapa-anotacao-lider button:disabled{opacity:.55;cursor:default;}
+.mapa-anotacao-lider [data-anotacao-feedback]{margin:7px 0 0;font-size:12px;line-height:1.5;color:#335579;overflow-wrap:anywhere;}
+.mapa-anotacao-lider [data-anotacao-feedback]:empty{display:none;}
+.mapa-anotacao-lider [data-anotacao-feedback].erro{color:#b42318;}
+.mapa-painel-obs{white-space:pre-wrap;overflow-wrap:anywhere;}
 
 .mapa-painel-atividade-numero{
     font-size:12.5px;

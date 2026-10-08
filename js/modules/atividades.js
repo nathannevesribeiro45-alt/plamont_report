@@ -272,13 +272,13 @@ ${lider.tecnicoSeguranca ? `
 
                 <div class="om-numero">
 
-                    📋 OM ${om.numero || "--"}
+                    📋 OM ${escaparHtml(om.numero || "--")}
 
                 </div>
 
                 ${om.status ? `
                     <div class="om-status ${this.classeStatus(om.status)}">
-                        ${om.status}
+                        ${escaparHtml(om.status)}
                     </div>
                 ` : ""}
 
@@ -286,12 +286,18 @@ ${lider.tecnicoSeguranca ? `
 
             <div class="om-descricao">
 
-                ${om.descricao || "--"}
+                ${escaparHtml(om.descricao || "--")}
 
             </div>
 
 
         `;
+
+        for (const [campo, rotulo] of [["resumoAtividades", "Resumo da atividade"], ["observacoes", "Observações do planejamento"]]) {
+            const texto = String(om[campo] ?? "").trim();
+            if (!texto) continue;
+            card.insertAdjacentHTML("beforeend", `<section class="om-texto-operacional" data-texto-om="${campo}"><h4>${rotulo}</h4><p>${escaparHtml(texto)}</p></section>`);
+        }
 
         card.insertAdjacentHTML("beforeend", AnexosOM.render(om, { compacto: true }));
         return card;

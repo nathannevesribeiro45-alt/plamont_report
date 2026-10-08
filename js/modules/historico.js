@@ -206,10 +206,12 @@ window.Historico = (() => {
                 campo(frente, "Frente", om.frente);
                 bloco.append(frente);
                 if (textoLinhas(om.descricao)) bloco.append(el("p", "historico-texto", textoLinhas(om.descricao)));
-                const resumo = texto(om.resumoAtividades);
-                if (resumo) {
+                for (const [nome, rotulo] of [["resumoAtividades", "Resumo da atividade"], ["observacoes", "Observações do planejamento"]]) {
+                    const conteudo = textoLinhas(om[nome]);
+                    if (!conteudo) continue;
                     const box = el("section", "historico-resumo");
-                    box.append(el("h5", "", "Resumo de atividades"), el("p", "historico-texto", resumo));
+                    box.dataset.textoOm = nome;
+                    box.append(el("h5", "", rotulo), el("p", "historico-texto", conteudo));
                     bloco.append(box);
                 }
                 card.append(bloco);
@@ -312,7 +314,9 @@ window.Historico = (() => {
                 const status = statusAtividade(om.status);
                 if (texto(om.status)) grupoLinhas.push(`${status[0]} ${status[1]}`);
                 const resumo = textoLinhas(om.resumoAtividades);
-                if (resumo) grupoLinhas.push("Resumo de atividades:", resumo);
+                if (resumo) grupoLinhas.push("Resumo da atividade:", resumo);
+                const observacoes = textoLinhas(om.observacoes);
+                if (observacoes) grupoLinhas.push("Observações do planejamento:", observacoes);
             }
             if (!grupoLinhas.filter(Boolean).length) continue;
             if (linhas.length) linhas.push("");
