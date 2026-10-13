@@ -1298,6 +1298,47 @@ OS 456
 
 <!-- ====================================================== -->
 
+<section class="pagina" id="produtividade" aria-labelledby="produtividade-titulo">
+    <header class="prod-cabecalho">
+        <div class="prod-identidade"><span class="prod-marca" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 27h24M7 23v-7h4v7M15 23V12h4v11M23 23V6h4v17M5 11l8-7 6 3 8-5M22 2h5v5"/></svg></span><div><h1 id="produtividade-titulo">Produtividade <span class="prod-badge">Consulta pública</span></h1><p>Acompanhamento da aderência e produtividade das OS</p></div></div>
+        <div id="produtividade-periodo" class="prod-periodo" aria-label="Período operacional atual"></div>
+    </header>
+    <p class="prod-aviso">Consulta pública de lançamentos semanais. Edição disponível para editor, planejamento e admin. Os totais são informados manualmente, sem integração automática com os reports.</p>
+    <div class="tabs-wrapper"><div id="produtividade-contratos" class="tabs" aria-label="Contratos de produtividade"></div></div>
+    <details id="produtividade-filtros" class="prod-filtros" open>
+        <summary><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2" fill="white"/><circle cx="16" cy="12" r="2" fill="white"/><circle cx="10" cy="18" r="2" fill="white"/></svg>Filtros</span><svg class="prod-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+        <div class="prod-filtros-grid">
+            <label>Ano<input id="produtividade-ano" type="number" min="2000" max="2100" step="1" required></label>
+            <label>Semana<select id="produtividade-semana"></select></label>
+            <label>Comparar com<select id="produtividade-comparacao"></select></label>
+        </div>
+        <p class="prod-ajuda">Totais consolidados por semana ISO, de segunda a domingo. As comparações são feitas dentro do ano selecionado.</p>
+    </details>
+    <p id="produtividade-contexto" class="prod-contexto" aria-live="polite"></p>
+    <div class="prod-acoes"><button id="produtividade-atualizar" type="button">Atualizar dados</button><button id="produtividade-editar" type="button" class="prod-botao-primario" hidden>Editar semana</button></div>
+    <p id="produtividade-mensagem" class="prod-mensagem" role="status" aria-live="polite"></p>
+    <form id="produtividade-formulario" class="prod-card prod-editor" hidden>
+        <h2 id="produtividade-editor-titulo">Editar lançamento semanal</h2>
+        <p>Informe os totais desta OS e semana. Extras são OM’s executadas fora da programação.</p>
+        <fieldset id="produtividade-editor-campos">
+            <label>OM’s programadas<input name="programadas" type="number" min="0" max="1000000" step="1" required></label>
+            <label>Programadas executadas<input name="programadas_executadas" type="number" min="0" max="1000000" step="1" required></label>
+            <label>OM’s extras executadas<input name="extras_executadas" type="number" min="0" max="1000000" step="1" required></label>
+            <label>Peso executado (kg)<input name="peso_kg" type="number" min="0" max="999999999.999" step="0.001" required></label>
+            <label>Parafusos trocados (un)<input name="parafusos" type="number" min="0" max="1000000" step="1" required></label>
+        </fieldset>
+        <div class="prod-acoes"><button type="submit" id="produtividade-salvar" class="prod-botao-primario">Salvar no servidor</button><button type="button" id="produtividade-cancelar">Cancelar</button></div>
+        <p class="prod-ajuda">Aderência, executadas e não executadas serão calculadas. Um lançamento com zero é diferente de uma semana ainda não informada.</p>
+    </form>
+    <div id="produtividade-kpis" class="prod-kpis"></div>
+    <div class="prod-graficos">
+        <section class="prod-card"><h2>Evolução da aderência semanal</h2><p>Aderência de cada semana e da semana imediatamente anterior.</p><div id="produtividade-evolucao"></div></section>
+        <section class="prod-card"><h2 id="produtividade-composicao-titulo">Composição das OM’s</h2><p>Programadas executadas, extras e não executadas.</p><div id="produtividade-composicao"></div></section>
+    </div>
+    <section class="prod-card prod-secao"><h2 id="produtividade-fisica-titulo">Produção física</h2><p id="produtividade-fisica-base"></p><div id="produtividade-fisica" class="prod-fisica"></div></section>
+    <section class="prod-card prod-secao"><h2>Comparativo semanal</h2><p id="produtividade-comparativo-base"></p><div id="produtividade-comparativo" class="prod-comparativo"></div></section>
+</section>
+
 <section class="pagina historico-page" id="historico" aria-labelledby="historico-titulo" data-visualizacao="consulta">
 
     <header class="historico-cabecalho">
@@ -1750,7 +1791,7 @@ OS 456
 
 </main>
 
-<script src="js/core/navegacao.js?v=editor-localizacao-1"></script>
+<script src="js/core/navegacao.js?v=produtividade-real-1"></script>
 
 <script src="js/core/utills.js?v=periodo-dashboard-1"></script>
 
@@ -1760,7 +1801,7 @@ OS 456
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script src="js/core/permissoes.js?v=om-textos-mapa-1"></script>
+<script src="js/core/permissoes.js?v=produtividade-real-1"></script>
 
 <script src="js/core/auth.js"></script>
 
@@ -1779,6 +1820,8 @@ OS 456
 <link href="css/banner.css" rel="stylesheet"/>
 
 <link rel="stylesheet" href="css/mobile.css">
+
+<link rel="stylesheet" href="css/produtividade.css?v=produtividade-real-1">
 
 <link rel="stylesheet" href="css/editorRelatorio.css?v=om-textos-mapa-1">
 
@@ -1818,11 +1861,15 @@ OS 456
 
 <script src="js/modules/usuarios.js"></script>
 
-<script src="js/modules/sidebar.js?v=historico-1"></script>
+<script src="js/modules/sidebar.js?v=produtividade-real-1"></script>
 
 <script src="js/modules/busca.js?v=editor-localizacao-1"></script>
 
-<script src="js/modules/abas.js"></script>
+<script src="js/modules/abas.js?v=produtividade-1"></script>
+
+<script src="js/modules/produtividadeData.js?v=produtividade-real-1"></script>
+<script src="js/modules/produtividadeStorage.js?v=produtividade-real-1"></script>
+<script src="js/modules/produtividade.js?v=produtividade-real-1"></script>
 
 <script src="js/core/render.js?v=periodo-dashboard-1"></script>
 

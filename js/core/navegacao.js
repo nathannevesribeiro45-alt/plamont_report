@@ -8,6 +8,12 @@ async function abrirPagina(idPagina, botao, idAba = null) {
 
     console.log("Clique:", idPagina);
 
+    // Consulta pública; edição e backend possuem verificações próprias.
+    if (idPagina === "produtividade" && !window.Produtividade?.podeVisualizar()) {
+        idPagina = "dashboard";
+        botao = document.querySelector('.menu-btn[data-pagina="dashboard"]');
+    }
+
     // A página administrativa não pode ser aberta apenas por conhecer sua URL
     // ou por uma chamada manual no console. A Edge Function mantém a mesma
     // validação no servidor para todas as operações.
@@ -18,6 +24,9 @@ async function abrirPagina(idPagina, botao, idAba = null) {
         idPagina = "dashboard";
         botao = document.querySelector('.menu-btn[data-pagina="dashboard"]');
     }
+
+    if (document.getElementById('produtividade')?.classList.contains('ativa')
+        && window.Produtividade && !await window.Produtividade.confirmarSaida(idPagina)) return false;
 
     if (window.EditorRelatorio?.deveConfirmarNavegacao(idPagina, idAba)) {
         if (!await window.EditorRelatorio.confirmarSaida()) return false;
@@ -62,6 +71,8 @@ async function abrirPagina(idPagina, botao, idAba = null) {
 
         console.log("Render executado.");
     }
+
+    if (idPagina === "produtividade") window.Produtividade?.render();
 
     // Volta ao topo da página
     window.scrollTo({

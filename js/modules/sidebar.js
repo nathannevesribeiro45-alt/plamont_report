@@ -145,6 +145,8 @@ if (this.mobileToggle) {
 
         this.renderCurvaS();
 
+        this.renderProdutividade();
+
         this.renderHistorico();
 
         this.renderUsuarios();
@@ -272,6 +274,20 @@ if (this.mobileToggle) {
     // ==========================
     // Histórico — consulta independente do contrato atual
     // ==========================
+
+    renderProdutividade() {
+        if (!window.Produtividade?.podeVisualizar()) return;
+        const item = document.createElement("button");
+        item.type = "button";
+        item.className = "menu-btn";
+        item.dataset.pagina = "produtividade";
+        item.innerHTML = `<span class="icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 18v-5h3v5M11 18V9h3v9M17 18V5h3v13M4 9l6-5 4 2 6-4"/></svg></span><span class="menu-texto"><strong>Produtividade</strong><small>Indicadores Gerenciais</small></span>`;
+        item.addEventListener("click", async () => {
+            if (await abrirPagina("produtividade", item) === false) return;
+            this.fecharSidebar();
+        });
+        this.menu.appendChild(item);
+    },
 
     renderHistorico() {
         const item = document.createElement("button");

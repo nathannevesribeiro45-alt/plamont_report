@@ -5,6 +5,42 @@
 
 const Abas = {
 
+    // Mesma estrutura visual das abas existentes, sem alterar seu fluxo.
+    renderContratos(container, contratos, aoSelecionar) {
+        container.replaceChildren();
+        const slider = document.createElement("div");
+        slider.className = "tab-slider";
+        slider.setAttribute("aria-hidden", "true");
+        container.appendChild(slider);
+        contratos.forEach(contrato => {
+            const botao = document.createElement("button");
+            botao.type = "button";
+            botao.className = "tab-btn";
+            botao.dataset.id = contrato.id;
+            const texto = document.createElement("span");
+            texto.className = "tab-text";
+            texto.textContent = contrato.nome;
+            botao.appendChild(texto);
+            botao.addEventListener("click", () => aoSelecionar(contrato.id));
+            container.appendChild(botao);
+        });
+    },
+
+    atualizarContratoAtivo(container, id) {
+        const slider = container.querySelector(".tab-slider");
+        container.querySelectorAll(".tab-btn").forEach(botao => {
+            const ativa = botao.dataset.id === id;
+            botao.classList.toggle("ativa", ativa);
+            botao.setAttribute("aria-pressed", String(ativa));
+            if (ativa && slider) {
+                slider.style.width = `${botao.offsetWidth}px`;
+                slider.style.height = `${botao.offsetHeight}px`;
+                slider.style.left = `${botao.offsetLeft}px`;
+                slider.style.top = `${botao.offsetTop}px`;
+            }
+        });
+    },
+
     // ======================================
     // Renderiza todas as abas
     // ======================================

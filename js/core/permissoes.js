@@ -6,6 +6,8 @@
 
 window.PlamontPermissoes = Object.freeze({
     visualizador: Object.freeze({
+        visualizarProdutividade: true,
+        editarProdutividade: false,
         visualizar: true,
         editar: false,
         editarResumoAtividade: false,
@@ -14,6 +16,8 @@ window.PlamontPermissoes = Object.freeze({
         administrarUsuarios: false
     }),
     editor: Object.freeze({
+        visualizarProdutividade: true,
+        editarProdutividade: true,
         visualizar: true,
         editar: true,
         editarResumoAtividade: true,
@@ -22,6 +26,8 @@ window.PlamontPermissoes = Object.freeze({
         administrarUsuarios: false
     }),
     planejamento: Object.freeze({
+        visualizarProdutividade: true,
+        editarProdutividade: true,
         visualizar: true,
         editar: true,
         editarResumoAtividade: false,
@@ -30,6 +36,8 @@ window.PlamontPermissoes = Object.freeze({
         administrarUsuarios: false
     }),
     admin: Object.freeze({
+        visualizarProdutividade: true,
+        editarProdutividade: true,
         visualizar: true,
         editar: true,
         editarResumoAtividade: true,

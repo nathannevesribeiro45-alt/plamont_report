@@ -1,0 +1,183 @@
+/* Todas as regras são exclusivas da página. Sidebar e demais módulos intactos. */
+#produtividade { color:#082449; min-width:0; max-width:1320px; margin:0 auto; padding-bottom:28px; --prod-borda:#dde8f4; --prod-azul:#087cf2; }
+#produtividade * { box-sizing:border-box; }
+#produtividade [hidden] { display:none!important; }
+#produtividade .prod-acoes { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; margin:12px 0; }
+#produtividade .prod-acoes button { border:1px solid #dbe7f4; border-radius:8px; background:white; color:#0b4f8a; padding:9px 13px; font:inherit; font-size:12px; font-weight:600; cursor:pointer; }
+#produtividade .prod-acoes .prod-botao-primario { background:#087cf2; color:white; border-color:#087cf2; }
+#produtividade button:disabled { opacity:.55; cursor:wait; }
+#produtividade .prod-mensagem { padding:10px 12px; margin:10px 0 14px; border-radius:8px; background:#edf5fd; color:#3c6085; font-size:12px; }
+#produtividade .prod-mensagem[data-tipo="erro"] { background:#fff1f2; color:#a52235; border:1px solid #ffd1d8; }
+#produtividade .prod-mensagem[data-tipo="sucesso"] { background:#eaf8ef; color:#087a38; border:1px solid #c4e9d1; }
+#produtividade .prod-editor { margin:12px 0 16px; border-color:#acd3ff; }
+#produtividade .prod-sem-dados { padding:45px 20px; text-align:center; background:#f8fbff; border:1px dashed #dce8f6; border-radius:10px; margin-top:15px; }
+#produtividade .prod-editor fieldset { border:0; padding:0; margin:16px 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; }
+#produtividade input { width:100%; min-width:0; height:38px; padding:8px 9px; border:1px solid #dbe7f4; border-radius:8px; font:inherit; font-size:13px; color:#082449; background:white; }
+#produtividade input:focus-visible { outline:3px solid #087cf2; outline-offset:2px; }
+#produtividade .prod-editor input { font-size:16px; height:44px; }
+#produtividade .prod-cabecalho { display:flex; justify-content:space-between; align-items:center; gap:20px; margin-bottom:14px; }
+#produtividade .prod-identidade { display:flex; align-items:center; gap:14px; min-width:0; }
+#produtividade .prod-marca { width:46px; color:#0067d6; flex-shrink:0; }
+#produtividade h1 { font-size:clamp(23px,2.3vw,32px); margin:0 0 5px; letter-spacing:-.8px; line-height:1.2; }
+#produtividade h2 { font-size:18px; margin:0 0 6px; }
+#produtividade h3 { font-size:13px; margin:0 0 10px; font-weight:600; }
+#produtividade p { color:#536b8b; font-size:13px; line-height:1.5; margin:0; }
+#produtividade .prod-badge { font-size:10px; display:inline-flex; align-items:center; gap:4px; vertical-align:middle; background:#e1efff; color:#0656a0; padding:6px 8px; border-radius:7px; letter-spacing:0; white-space:nowrap; }
+#produtividade .prod-badge svg { width:13px; height:13px; }
+#produtividade .prod-periodo { padding:11px 16px; background:#fff; border:1px solid var(--prod-borda); border-radius:13px; flex-shrink:0; min-width:205px; display:grid; gap:6px; font-size:12px; box-shadow:0 4px 18px rgba(17,51,86,.035); }
+#produtividade .prod-periodo span { display:flex; align-items:center; gap:9px; }
+#produtividade .prod-periodo svg { width:15px; height:15px; flex-shrink:0; }
+#produtividade .prod-aviso { padding:7px 11px; background:#eef5fd; border:1px solid #e1edfa; border-radius:8px; color:#4b6b8d; font-size:11px; }
+#produtividade .tabs-wrapper { min-width:0; width:100%; }
+#produtividade .tabs { width:100%; max-width:100%; margin:12px 0; flex-wrap:nowrap; padding:5px; gap:6px; border-color:var(--prod-borda); box-shadow:0 4px 18px rgba(17,51,86,.035); scrollbar-width:thin; }
+#produtividade .tab-btn { flex:1 0 95px; min-width:95px; min-height:43px; padding:10px 18px; font-size:13px; }
+#produtividade .tab-slider { background:linear-gradient(120deg,#0758b7,#0086ff); box-shadow:0 5px 12px rgba(0,111,227,.18); }
+#produtividade .tab-btn.ativa { background:linear-gradient(120deg,#0758b7,#0086ff); box-shadow:0 5px 12px rgba(0,111,227,.18); }
+#produtividade .tab-btn:hover { transform:none; }
+#produtividade .prod-filtros { background:#f8fbfe; border:1px solid var(--prod-borda); border-radius:12px; padding:12px 14px; }
+#produtividade .prod-filtros summary { display:flex; align-items:center; justify-content:space-between; font-size:12px; font-weight:600; cursor:pointer; list-style:none; }
+#produtividade .prod-filtros summary::-webkit-details-marker { display:none; }
+#produtividade .prod-filtros summary span { display:flex; align-items:center; gap:8px; }
+#produtividade .prod-filtros summary svg { width:17px; height:17px; }
+#produtividade .prod-filtros[open] summary { margin-bottom:12px; }
+#produtividade .prod-chevron { transition:transform .18s ease; }
+#produtividade .prod-filtros[open] .prod-chevron { transform:rotate(180deg); }
+#produtividade .prod-filtros-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+#produtividade .prod-filtros-grid label + label { padding-left:14px; border-left:1px solid #e2ebf5; }
+#produtividade label { font-size:12px; min-width:0; display:grid; gap:7px; color:#334f73; }
+#produtividade select { width:100%; min-width:0; height:38px; padding:8px 9px; border:1px solid #dbe7f4; border-radius:8px; background:#fff; color:#082449; font:inherit; font-size:12px; box-shadow:0 2px 6px rgba(19,64,109,.025); }
+#produtividade .prod-ajuda { font-size:11px; margin-top:9px; }
+#produtividade .prod-contexto { margin:11px 2px; font-size:11px; font-weight:500; }
+#produtividade .prod-kpis { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-bottom:14px; }
+#produtividade .prod-card { background:#fff; border:1px solid var(--prod-borda); border-radius:14px; box-shadow:0 5px 18px rgba(17,51,86,.045); padding:18px; min-width:0; }
+#produtividade .prod-kpi { display:flex; align-items:center; gap:13px; padding:17px 14px; min-height:116px; }
+#produtividade .prod-kpi-conteudo { min-width:0; }
+#produtividade .prod-kpi h2 { font-size:12px; font-weight:500; color:#3b5579; margin-bottom:7px; }
+#produtividade .prod-kpi p { font-size:10px; margin-top:6px; line-height:1.45; }
+#produtividade .prod-valor { font-size:clamp(26px,2.3vw,32px); line-height:1.05; letter-spacing:-.7px; font-variant-numeric:tabular-nums; }
+#produtividade .prod-icone { flex-shrink:0; width:50px; height:50px; display:grid; place-items:center; border-radius:50%; background:linear-gradient(135deg,#eef6ff,#e3f0ff); color:#0679ed; }
+#produtividade .prod-icone svg { width:29px; height:29px; }
+#produtividade .prod-verde { background:#dff6e8; color:#0ba84e; }
+#produtividade .prod-positivo { color:#079645; font-weight:600; }
+#produtividade .prod-negativo { color:#d43a47; font-weight:600; }
+#produtividade .prod-neutro { color:#627793; }
+#produtividade .prod-graficos { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:14px; align-items:stretch; }
+#produtividade .prod-graficos > .prod-card { display:flex; flex-direction:column; }
+#produtividade .prod-graficos > .prod-card > p { font-size:12px; }
+#produtividade #produtividade-evolucao { margin:auto 0 0; padding-top:5px; }
+#produtividade #produtividade-evolucao > svg { max-height:248px; margin:0 auto 7px; }
+#produtividade #produtividade-composicao { margin:auto 0; }
+#produtividade svg { display:block; width:100%; height:auto; }
+#produtividade svg text { font-family:inherit; font-size:12px; fill:#536b8b; }
+#produtividade svg .prod-svg-valor { fill:#082449; font-size:12px; font-weight:700; }
+#produtividade .prod-legenda { display:flex; flex-wrap:wrap; justify-content:center; gap:18px; font-size:10px; color:#536b8b; padding:4px 0 2px; }
+#produtividade .prod-legenda span { display:flex; align-items:center; gap:6px; }
+#produtividade i { display:inline-block; width:10px; height:10px; border-radius:4px; flex-shrink:0; }
+#produtividade .prod-azul { background:#087cf2; }
+#produtividade .prod-cinza { background:#9cacbf; }
+#produtividade .prod-donut { display:grid; grid-template-columns:minmax(130px,1fr) minmax(0,1.1fr); gap:14px; align-items:center; margin-top:12px; }
+#produtividade .prod-donut svg { max-width:232px; margin:auto; }
+#produtividade .prod-donut-total { fill:#082449; font-size:30px; font-weight:700; }
+#produtividade .prod-donut-legenda p { display:flex; justify-content:space-between; gap:10px; font-size:11px; margin:17px 0; line-height:1.4; }
+#produtividade .prod-donut-legenda p span { display:flex; gap:7px; align-items:center; }
+#produtividade .prod-donut-legenda strong { color:#082449; }
+#produtividade .prod-donut-base { border-top:1px solid #e1eaf4; padding-top:12px; }
+#produtividade .prod-secao { margin-top:14px; }
+#produtividade .prod-fisica { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; margin-top:14px; }
+#produtividade .prod-indicador { display:flex; align-items:flex-start; gap:14px; border:1px solid #e1eaf4; border-radius:11px; padding:16px; background:linear-gradient(125deg,#fbfdff,#fff); }
+#produtividade .prod-indicador-conteudo { min-width:0; flex:1; }
+#produtividade .prod-indicador h3 { min-height:30px; margin:0 0 5px; line-height:1.4; }
+#produtividade .prod-fisica-valor { font-size:27px; letter-spacing:-.5px; font-variant-numeric:tabular-nums; }
+#produtividade .prod-fisica-valor small { font-size:13px; }
+#produtividade .prod-indicador p { font-size:11px; margin-top:7px; }
+#produtividade .prod-indicador-rodape { display:flex; flex-wrap:wrap; gap:0 18px; padding-top:8px; margin-top:7px; border-top:1px solid #e7eef7; }
+#produtividade .prod-comparativo { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:0; margin-top:18px; }
+#produtividade .prod-comparativo article { display:flex; align-items:flex-start; gap:10px; padding:6px 13px; border-left:1px solid #e4edf7; min-width:0; }
+#produtividade .prod-comparativo article:first-child { border-left:0; padding-left:0; }
+#produtividade .prod-comparativo .prod-icone { width:37px; height:37px; }
+#produtividade .prod-comparativo .prod-icone svg { width:23px; height:23px; }
+#produtividade .prod-comparativo-conteudo { min-width:0; }
+#produtividade .prod-comparativo h3 { min-height:33px; margin-bottom:6px; font-size:11px; line-height:1.5; }
+#produtividade .prod-comparativo strong { font-size:22px; font-variant-numeric:tabular-nums; letter-spacing:-.4px; }
+#produtividade .prod-comparativo p { font-size:11px; margin-top:5px; }
+#produtividade button:focus-visible, #produtividade select:focus-visible, #produtividade summary:focus-visible { outline:3px solid #087cf2; outline-offset:2px; }
+#produtividade svg circle:focus { outline:none; stroke:#082449; stroke-width:3px; }
+@media(max-width:1150px) {
+    #produtividade .prod-kpi { gap:9px; }
+    #produtividade .prod-icone { width:38px; height:38px; }
+    #produtividade .prod-icone svg { width:25px; height:25px; }
+    #produtividade .prod-donut svg { max-width:210px; margin:auto; }
+    #produtividade .prod-donut { gap:8px; }
+    #produtividade .prod-donut-legenda p { font-size:10px; }
+    #produtividade .prod-comparativo { grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px 0; }
+}
+@media(max-width:900px) {
+    #produtividade .prod-cabecalho { flex-direction:column; align-items:stretch; gap:12px; }
+    #produtividade .prod-identidade { gap:10px; }
+    #produtividade .prod-marca { width:32px; }
+    #produtividade h1 { font-size:23px; letter-spacing:-.5px; }
+    #produtividade .prod-identidade p { font-size:11px; }
+    #produtividade .prod-badge { font-size:9px; padding:4px 5px; }
+    #produtividade .prod-badge svg { width:11px; height:11px; }
+    #produtividade .prod-periodo { min-width:0; font-size:12px; padding:10px 13px; gap:5px; border-radius:11px; background:#f9fcff; }
+    #produtividade .prod-aviso { font-size:10px; padding:6px 9px; }
+    #produtividade .tabs { padding:5px; margin:10px 0; }
+    #produtividade .tab-btn { flex-basis:70px; min-width:70px; min-height:40px; padding:8px 10px; font-size:11px; }
+    #produtividade .prod-graficos { grid-template-columns:minmax(0,1fr); }
+    #produtividade .prod-donut { grid-template-columns:minmax(120px,1fr) minmax(0,1fr); }
+    #produtividade .prod-filtros { padding:11px 12px; background:#fff; }
+    #produtividade .prod-filtros-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    #produtividade .prod-filtros-grid label:last-child { grid-column:1/-1; }
+    #produtividade .prod-editor fieldset { grid-template-columns:minmax(0,1fr); }
+    #produtividade .prod-editor .prod-acoes { justify-content:stretch; }
+    #produtividade .prod-editor .prod-acoes button { flex:1; }
+    #produtividade .prod-filtros-grid label + label { padding-left:0; border-left:0; }
+    #produtividade .prod-filtros summary { font-size:12px; }
+    #produtividade .prod-kpis { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+    #produtividade .prod-card { padding:14px; border-radius:12px; }
+    #produtividade .prod-kpi { padding:13px 9px; align-items:center; gap:8px; min-height:110px; }
+    #produtividade .prod-kpi .prod-icone { width:34px; height:34px; }
+    #produtividade .prod-kpi .prod-icone svg { width:22px; height:22px; }
+    #produtividade .prod-kpi h2 { font-size:10px; min-height:25px; margin-bottom:4px; line-height:1.25; }
+    #produtividade .prod-kpi p { font-size:9px; min-height:27px; }
+    #produtividade .prod-valor { font-size:24px; }
+    #produtividade .prod-contexto { font-size:10px; }
+    #produtividade .prod-graficos h2, #produtividade .prod-secao h2 { font-size:16px; letter-spacing:-.25px; }
+    #produtividade .prod-graficos > .prod-card > p, #produtividade .prod-secao > p { font-size:10px; }
+    #produtividade .prod-legenda { font-size:9px; gap:10px; }
+    #produtividade #produtividade-evolucao svg text { font-size:18px; }
+    #produtividade #produtividade-evolucao svg .prod-svg-valor { font-size:17px; }
+    #produtividade .prod-donut-legenda p { font-size:10px; margin:14px 0; }
+    #produtividade .prod-fisica { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+    #produtividade .prod-indicador { padding:12px 10px; display:block; }
+    #produtividade .prod-fisica-icone { width:36px; height:36px; margin-bottom:10px; }
+    #produtividade .prod-indicador h3 { font-size:11px; min-height:46px; }
+    #produtividade .prod-fisica-valor { font-size:22px; }
+    #produtividade .prod-fisica-valor small { font-size:11px; }
+    #produtividade .prod-indicador p { font-size:10px; }
+    #produtividade .prod-indicador-rodape { display:block; }
+    #produtividade .prod-comparativo { grid-template-columns:minmax(0,1fr); }
+    #produtividade .prod-comparativo article, #produtividade .prod-comparativo article:first-child { align-items:center; padding:11px 0; border-left:0; border-bottom:1px solid #edf3fa; }
+    #produtividade .prod-comparativo article:last-child { border-bottom:0; }
+    #produtividade .prod-comparativo-conteudo { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:3px 10px; flex:1; }
+    #produtividade .prod-comparativo h3 { min-height:0; margin:0; }
+    #produtividade .prod-comparativo strong { font-size:19px; text-align:right; }
+    #produtividade .prod-comparativo p { font-size:10px; }
+    #produtividade .prod-comparativo p:last-child { text-align:right; }
+}
+@media(max-width:360px) {
+    #produtividade .prod-kpi { gap:6px; padding:12px 8px; }
+    #produtividade .prod-kpi .prod-icone { width:26px; height:26px; }
+    #produtividade .prod-kpi .prod-icone svg { width:18px; height:18px; }
+    #produtividade .prod-valor { font-size:21px; }
+    #produtividade .prod-donut { grid-template-columns:minmax(0,1fr); }
+    #produtividade .prod-donut svg { max-width:175px; }
+    #produtividade .prod-fisica { grid-template-columns:minmax(0,1fr); }
+    #produtividade .prod-indicador { display:flex; }
+    #produtividade .prod-indicador h3 { min-height:0; }
+    #produtividade h1 { font-size:22px; }
+    #produtividade .prod-badge { font-size:8px; }
+}
+@media(prefers-reduced-motion:reduce) {
+    #produtividade .tab-slider, #produtividade .prod-chevron { transition:none; }
+}
