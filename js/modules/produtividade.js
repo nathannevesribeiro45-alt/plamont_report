@@ -13,7 +13,8 @@ window.Produtividade = (() => {
     const podeEditar=()=>window.Auth?.pode?.('editarProdutividade')===true;
     const assinaturaSessao=()=>JSON.stringify([window.Auth?.sessao?.user?.id||null,window.Auth?.usuario?.perfil||null,window.Auth?.usuario?.ativo===true]);
     let ultimaSessao=assinaturaSessao();
-    const campos=['programadas','programadas_executadas','extras_executadas','peso_kg','parafusos'];
+    const configuracao=()=>window.ProdutividadeData.configuracao[estado.contratoId];
+    const campos=()=>window.ProdutividadeData.camposFormulario(estado.contratoId);
     const vazio={programadas:null,programadasExecutadas:null,extrasExecutadas:null,programadasNaoExecutadas:null,executadas:null,aderencia:null};
     const html = texto => String(texto ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
     const numero = (valor, casas = 0) => Number.isFinite(valor)
@@ -43,6 +44,7 @@ window.Produtividade = (() => {
     // O limite visual não altera os volumes brutos nem a aderência bruta.
     function calcularMetricas(dados) {
         if (!dados) return null;
+        if(dados.modo==='somente_executadas')return {...vazio,...dados};
         const executadas = dados.programadasExecutadas + dados.extrasExecutadas;
         const aderenciaBruta = dados.programadas > 0 ? executadas / dados.programadas * 100 : null;
         return { ...dados, executadas, aderenciaBruta,
@@ -72,7 +74,7 @@ window.Produtividade = (() => {
             :'Nenhum lançamento salvo para esta OS e semana. Os traços indicam dados ainda não informados.');
     }
     function assinaturaFormulario() {
-        return JSON.stringify(campos.map(c=>el('formulario').elements.namedItem(c).value));
+        return JSON.stringify(campos().map(c=>el('formulario').elements.namedItem(c.chave).value));
     }
     function sujo() {return !!estado.editor&&assinaturaFormulario()!==estado.editor.inicial;}
     function fecharEditor() {estado.editor=null;el('formulario').hidden=true;el('formulario').reset();}
@@ -88,13 +90,17 @@ window.Produtividade = (() => {
     function abrirEditor() {
         if(!podeEditar()||!estado.carregado||estado.erro||estado.carregando||estado.salvando)return false;
         const r=registroAtual(),form=el('formulario');
-        campos.forEach(c=>{form.elements.namedItem(c).value=r?r[c]:'';});
+        el('editor-campos').innerHTML=campos().map(c=>`<label>${html(c.titulo)}${c.unidade?` (${html(c.unidade)})`:''}<input name="${html(c.chave)}" type="number" min="0" max="${c.max}" step="${c.tipo==='decimal'?'0.001':'1'}" ${c.obrigatorio?'required':''}></label>`).join('');
+        campos().forEach(c=>{form.elements.namedItem(c.chave).value=(c.unidade?r?.medicoes?.[c.chave]:r?.[c.chave])??'';});
         estado.editor={contratoId:estado.contratoId,ano:estado.ano,semana:estado.semana,
             versao:r?.versao||0,usuario:window.Auth?.sessao?.user?.id,inicial:assinaturaFormulario()};
         el('editor-titulo').textContent=`Editar ${estado.contratoId.replace('os','OS ')} — Semana ${estado.semana}/${estado.ano}`;
         form.hidden=false;el('editor-campos').disabled=false;
         mensagem('Informe os totais e clique em Salvar no servidor. Os indicadores mostram os últimos valores salvos.');
-        form.elements.namedItem('programadas').focus();return true;
+        const simples=configuracao().modo==='somente_executadas';
+        el('editor-descricao').textContent=simples?'Informe somente o total semanal de OMs executadas. Sem base de programação e sem indicadores físicos cadastrados.':'Informe os totais desta OS e semana. Extras são OM’s executadas fora da programação.';
+        el('editor-ajuda').textContent=simples?'Zero representa um total explicitamente informado. Sem lançamento não significa zero.':configuracao().fisicosObrigatorios?'Aderência, executadas e não executadas serão calculadas. Um lançamento com zero é diferente de uma semana ainda não informada.':'OMs são obrigatórias. Medições físicas não informadas podem ficar em branco: serão exibidas como —, nunca como zero. Aderência e totais de OMs serão calculados.';
+        form.elements.namedItem(campos()[0].chave).focus();return true;
     }
     function cancelarEditor() {if(!confirmarMudanca())return false;atualizarMensagem();return true;}
     function atualizarControles() {
@@ -111,13 +117,17 @@ window.Produtividade = (() => {
         if(estado.editor.usuario!==window.Auth?.sessao?.user?.id)return false;
         const contexto={...estado.editor},token=estado.requisicao;
         try {
-            const valores={};
-            campos.forEach(c=>{
-                const input=el('formulario').elements.namedItem(c);
-                if(input.value.trim()==='')throw new Error('Informe todos os valores. Use zero quando não houver produção.');
-                valores[c]=Number(input.value);
+            const valores={medicoes:{}};
+            campos().forEach(c=>{
+                const input=el('formulario').elements.namedItem(c.chave);
+                if(input.value.trim()===''){
+                    if(c.obrigatorio)throw new Error('Informe todos os valores obrigatórios. Use zero quando não houver produção.');
+                    return;
+                }
+                if(c.unidade)valores.medicoes[c.chave]=Number(input.value);
+                else valores[c.chave]=Number(input.value);
             });
-            window.ProdutividadeStorage.validarValores(valores);
+            window.ProdutividadeStorage.validarValores(valores,contexto.contratoId);
             if(!el('formulario').reportValidity())return false;
             estado.salvando=true;atualizarControles();mensagem('Salvando no servidor…');
             const r=await window.ProdutividadeStorage.salvar(contexto,valores);
@@ -207,15 +217,27 @@ window.Produtividade = (() => {
     }
     function renderKpis(atual, anterior) {
         const semDados=!atual;atual=atual||vazio;
-        const itens = [
+        const config=configuracao();
+        const itens = config.modo==='somente_executadas'
+            ? [['OMs executadas',numero(atual.executadas),semDados?'Sem dados informados':'Total informado na semana selecionada','concluido']]
+            : config.detalharOM ? [
+                ['Programadas',numero(atual.programadas),semDados?'Semana sem lançamento':'OM’s na semana selecionada','agenda'],
+                ['Executadas',numero(atual.executadas),semDados?'Semana sem lançamento':`${numero(atual.programadasExecutadas)} programadas + ${numero(atual.extrasExecutadas)} extras`,'concluido'],
+                ['Extras executadas',numero(atual.extrasExecutadas),'Fora da programação','barras'],
+                ['Não executadas',numero(atual.programadasNaoExecutadas),'Programadas ainda não executadas','relogio'],
+                ['Aderência',percentual(atual.aderencia),diferenca(pontosPercentuais(atual.aderencia,anterior?.aderencia),'p.p.'),'alvo']
+            ] : [
             ['Programadas', numero(atual.programadas), semDados?'Semana sem lançamento':'OM’s na semana selecionada', 'agenda'],
             ['Executadas', numero(atual.executadas), semDados?'Semana sem lançamento':`${numero(atual.programadasExecutadas)} programadas + ${numero(atual.extrasExecutadas)} extras`, 'concluido'],
             ['Aderência', percentual(atual.aderencia), estado.semana>1?`${diferenca(pontosPercentuais(atual.aderencia, anterior?.aderencia), 'p.p.')} vs. semana ${estado.semana - 1}`:'Sem semana anterior neste ano', 'alvo'],
             ['Semana anterior', percentual(anterior?.aderencia), anterior ? `Aderência da semana ${estado.semana - 1}` : 'Semana anterior sem dados', 'barras']
         ];
+        el('kpis').classList.toggle('prod-kpis-flexiveis',config.modo==='somente_executadas'||config.detalharOM);
+        el('kpis').classList.toggle('prod-kpis-simples',config.modo==='somente_executadas');
         el('kpis').innerHTML = itens.map(([titulo, valor, detalhe, nomeIcone]) => `<article class="prod-card prod-kpi"><span class="prod-icone ${nomeIcone === 'concluido' ? 'prod-verde' : ''}" aria-hidden="true">${icone(nomeIcone)}</span><div class="prod-kpi-conteudo"><h2>${titulo}</h2><strong class="prod-valor">${valor}</strong><p>${detalhe}</p></div></article>`).join('');
     }
     function renderEvolucao(contrato) {
+        if(contrato.modo==='somente_executadas')return renderEvolucaoExecutadas(contrato);
         const semanas = window.ProdutividadeData.semanas(estado.ano).filter(s => s <= estado.semana).slice(-5);
         const x = i => semanas.length === 1 ? 287 : 74 + i * 426 / (semanas.length - 1);
         const y = valor => 196 - valor * 1.5;
@@ -233,6 +255,21 @@ window.Produtividade = (() => {
             return `<path d="${caminho}" fill="none" stroke="${cor}" stroke-width="2.5" ${tracejada ? 'stroke-dasharray="7 5"' : ''}/>` + valores.map((m, i) => Number.isFinite(m?.aderencia) ? `<circle cx="${x(i)}" cy="${y(m.aderencia)}" r="4" fill="${cor}" tabindex="0"><title>${tracejada ? 'Semana anterior' : 'Aderência'}: semana ${semanas[i] - (tracejada ? 1 : 0)}, ${percentual(m.aderencia)}</title></circle>${!tracejada ? `<text x="${x(i)}" y="${y(m.aderencia) - 12}" text-anchor="middle" class="prod-svg-valor">${percentual(m.aderencia)}</text>` : ''}` : '').join('');
         }
         el('evolucao').innerHTML = `<svg viewBox="0 0 550 246" role="img" aria-labelledby="prod-evolucao-title prod-evolucao-desc"><title id="prod-evolucao-title">Evolução da aderência — ${html(contrato.nome)}</title><desc id="prod-evolucao-desc">${semanas.map((s,i) => `Semana ${s}: ${percentual(dados[i].aderencia)}; semana anterior: ${percentual(anteriores[i]?.aderencia)}.`).join(' ')}</desc>${[0,25,50,75,100].map(v => `<line x1="74" x2="500" y1="${y(v)}" y2="${y(v)}" stroke="#e1eaf4"/><text x="51" y="${y(v)+4}" text-anchor="end">${v}%</text>`).join('')}${semanas.map((s,i) => `<line x1="${x(i)}" x2="${x(i)}" y1="46" y2="196" stroke="#e1eaf4"/><text x="${x(i)}" y="219" text-anchor="middle">S${s}</text>`).join('')}${serie(anteriores, '#9cacbf', true)}${serie(dados, '#087cf2', false)}</svg><div class="prod-legenda"><span><i class="prod-azul"></i>Aderência da semana</span><span><i class="prod-cinza"></i>Semana anterior</span></div>`;
+    }
+    function renderEvolucaoExecutadas(contrato) {
+        const semanas=window.ProdutividadeData.semanas(estado.ano).filter(s=>s<=estado.semana).slice(-5);
+        const valores=semanas.map(s=>contrato.semanas[s]?.executadas);
+        if(!valores.some(Number.isFinite)){
+            el('evolucao').innerHTML='<p class="prod-sem-dados">Sem dados informados nas semanas exibidas.</p>';return;
+        }
+        const maximo=Math.max(4,...valores.filter(Number.isFinite)),passo=Math.ceil(maximo/4),limite=passo*4;
+        const x=i=>semanas.length===1?287:74+i*426/(semanas.length-1),y=v=>196-v/limite*150;
+        let inicio=true;
+        const caminho=valores.map((v,i)=>{
+            if(!Number.isFinite(v)){inicio=true;return '';}
+            const ponto=`${inicio?'M':'L'}${x(i)} ${y(v)}`;inicio=false;return ponto;
+        }).join(' ');
+        el('evolucao').innerHTML=`<svg viewBox="0 0 550 246" role="img" aria-labelledby="prod-executadas-title prod-executadas-desc"><title id="prod-executadas-title">OMs executadas por semana — ${html(contrato.nome)}</title><desc id="prod-executadas-desc">${semanas.map((s,i)=>`Semana ${s}: ${Number.isFinite(valores[i])?numero(valores[i]):'Sem dados informados'}.`).join(' ')}</desc>${[0,1,2,3,4].map(i=>`<line x1="74" x2="500" y1="${y(i*passo)}" y2="${y(i*passo)}" stroke="#e1eaf4"/><text x="51" y="${y(i*passo)+4}" text-anchor="end">${numero(i*passo)}</text>`).join('')}${semanas.map((s,i)=>`<text x="${x(i)}" y="219" text-anchor="middle">S${s}</text>`).join('')}<path d="${caminho}" fill="none" stroke="#087cf2" stroke-width="2.5"/>${valores.map((v,i)=>Number.isFinite(v)?`<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="#087cf2" tabindex="0"><title>Semana ${semanas[i]}: ${numero(v)} OMs executadas</title></circle><text x="${x(i)}" y="${y(v)-12}" text-anchor="middle" class="prod-svg-valor">${numero(v)}</text>`:'').join('')}</svg><div class="prod-legenda"><span><i class="prod-azul"></i>OMs executadas</span></div>`;
     }
     function renderComposicao(atual) {
         if(!atual){
@@ -265,7 +302,9 @@ window.Produtividade = (() => {
         atual=atual||vazio;
         const base = estado.comparacao, anterior = calcularMetricas(contrato.semanas[base]);
         el('comparativo-base').textContent = base === null ? 'Selecione uma semana anterior em “Comparar com”.' : `Semana ${estado.semana} em relação à semana ${base}. Variação de volume em %; aderência em pontos percentuais.`;
-        const itens = [
+        const itens = contrato.modo==='somente_executadas'
+            ? [['OMs executadas',numero(atual.executadas),numero(anterior?.executadas),variacao(atual.executadas,anterior?.executadas),'%']]
+            : [
             ['Programadas', numero(atual.programadas), anterior ? numero(anterior.programadas) : '—', variacao(atual.programadas, anterior?.programadas), '%'],
             ['Executadas (programadas + extras)', numero(atual.executadas), anterior ? numero(anterior.executadas) : '—', variacao(atual.executadas, anterior?.executadas), '%'],
             ['Aderência', percentual(atual.aderencia), percentual(anterior?.aderencia), pontosPercentuais(atual.aderencia, anterior?.aderencia), 'p.p.'],
@@ -287,11 +326,19 @@ window.Produtividade = (() => {
         Abas.atualizarContratoAtivo(el('contratos'), contrato.id);
         renderPeriodo();
         el('contexto').textContent = `${contrato.nome} — ${contrato.descricao} · Semana ${estado.semana}/${estado.ano}`;
+        const simples=contrato.modo==='somente_executadas';
+        el('modo-aviso').hidden=!simples;
+        el('evolucao-titulo').textContent=simples?'Evolução semanal de OMs executadas':'Evolução da aderência semanal';
+        el('evolucao-base').textContent=simples?'Totais semanais informados. Sem lançamento não significa zero.':'Aderência de cada semana e da semana imediatamente anterior.';
+        el('composicao-secao').hidden=simples;
+        el('fisica-secao').hidden=!contrato.indicadores.length;
+        el('graficos').classList.toggle('prod-graficos-simples',simples);
         renderKpis(atual, anterior);
         renderEvolucao(contrato);
-        renderComposicao(atual);
-        renderProducao(contrato);
+        if(!simples)renderComposicao(atual);else el('composicao').replaceChildren();
+        if(contrato.indicadores.length)renderProducao(contrato);else el('fisica').replaceChildren();
         renderComparativo(contrato, atual);
+        if(simples)el('comparativo-base').textContent=estado.comparacao===null?'Sem semana anterior selecionada neste ano.':`OMs executadas na semana ${estado.semana} em relação à semana ${estado.comparacao}.`;
         atualizarControles();
         return true;
     }
