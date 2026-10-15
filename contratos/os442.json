@@ -53,25 +53,7 @@
 
       "recursos": [],
 
-      "atividades": [ {
-          "lider": "Josias",
-          "telefone": "98 8161-3655",
-          "tecnicoSeguranca": "",
-          "equipe": "05 Eletricistas + 01 Soldador + 1 caldereiro",
-          "oms": [
-            {
-            "numero": "202602170950",
-            "frente": "VV-08",
-            "latitude":"-2,5693776",
-            "longitude":"-44,3443681",
-            "descricao": "INSP_TORRE/BASE DA ANT TOMBAMENT AVARIADO",
-            "status": "Em andamento"
-            }
-
-            
-          ]
-        }
-      ]
+      "atividades": []
     },
 
     {
@@ -124,78 +106,9 @@
         "Eletricista": 0
       },
 
-      "recursos": [
-        {
-          "tipo": "Munck",
-          "placa": "RBB-3I45 ",
-          "operador": "",
-          "contato":"",
-          "status": "manutencao"
-        },
-          {
-          "tipo": "pick-up",
-          "placa": "SFT-9H25",
-          "operador": "Rafael",
-          "contato":"(98) 98168-1612",
-          "status": "disponivel"
-        }
-      ],
+      "recursos": [],
 
-      "atividades": [
-        {
-          "lider": "Sueliton",
-          "telefone": "98 98888-4303",
-          "tecnicoSeguranca": "",
-          "equipe": "5 Mecânicos + 6 Eletricistas + 1 caldeireiro + 1 soldador + 3 Montadores",
-          "oms": [
-            {
-              "numero": "202302074829",
-              "frente": "PÓRTICO 01",
-              "descricao": "SUBST TRAVA TRILHOS AVARIADOS PÓRTICO 01",
-              "status": "Em andamento",
-              "latitude": "-2,5680863",
-              "longitude": "-44,3455293",
-              "arquivoPdf": ""
-            },
-            {
-              "numero": "202603579339",
-              "frente": "TR 311K- 14",
-              "descricao": "EX-311K14 REDUTOR COM AVARIA ",
-              "status": "Em andamento",
-              "latitude": "-2,5715538",
-              "longitude": "-44,3446362",
-              "arquivoPdf": ""
-            },
-            {
-              "numero": "202603945722",
-              "frente": "TR 311K- 14",
-              "descricao": "MCM-MPV ELE 16S EXTRATOR EX-311K-220 ",
-              "status": "Em andamento",
-              "latitude": "-2,5715538",
-              "longitude": "-44,3446362",
-              "arquivoPdf": ""
-            },
-            {
-              "numero": "202603945724",
-              "frente": "TR 311K- 14",
-              "descricao": "MCM-MPV MEC 16S EXTRATOR EX-311K-220",
-              "status": "Em andamento",
-              "latitude": "-2,5715538",
-              "longitude": "-44,3446362",
-              "arquivoPdf": ""
-            },
-             {
-              "numero": "202603947631",
-              "frente": "TR 311K- 14",
-              "descricao": "MONTAR/DESMONTAR ANDAIME PLAMONT NO EX31",
-              "status": "Em andamento",
-              "latitude": "-2,5715538",
-              "longitude": "-44,3446362",
-              "arquivoPdf": ""
-            }
-]
-}
-      ]
+      "atividades": []
     }
   ]
 }
