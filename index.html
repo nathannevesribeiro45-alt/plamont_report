@@ -25,6 +25,7 @@
 <link href="css/mapa.css?v=om-textos-mapa-1" rel="stylesheet"/>
 
 <link href="css/curvaS.css" rel="stylesheet"/>
+<link href="css/grandesParadasEditor.css?v=1" rel="stylesheet"/>
 
 <link href="css/usuarios.css" rel="stylesheet"/>
 
@@ -1141,6 +1142,11 @@ OS 456
     <!-- Navegação por contrato (mesmo padrão de abas usado dentro dos contratos) -->
 
     <nav class="tabs" id="curvaS-contratos-tabs"></nav>
+    <div class="gp-acoes gp-toolbar">
+        <button type="button" id="gp-gerenciar" hidden>Gerenciar Grandes Paradas</button>
+        <button type="button" id="gp-historico-publico" hidden>Histórico de publicações</button>
+    </div>
+    <p id="gp-leitura-aviso" class="gp-aviso" role="status"></p>
 
 
 
@@ -1295,6 +1301,46 @@ OS 456
 <!--              GESTÃO DE USUÁRIOS (ADMIN)               -->
 
 <!-- ====================================================== -->
+
+<dialog id="gp-dialogo" class="gp-dialogo" aria-labelledby="gp-titulo">
+    <header class="gp-dialogo-topo">
+        <h2 id="gp-titulo">Gerenciar Grandes Paradas</h2>
+        <button type="button" id="gp-fechar">Fechar</button>
+    </header>
+    <p id="gp-mensagem" role="status" aria-live="polite"></p>
+    <section id="gp-lista" hidden>
+        <div class="gp-acoes">
+            <label>Contrato <select id="gp-filtro"></select></label>
+            <button type="button" id="gp-nova" class="gp-primario">Nova parada</button>
+        </div>
+        <div id="gp-itens"></div>
+    </section>
+    <section id="gp-edicao" hidden>
+        <p id="gp-edicao-meta"></p>
+        <p id="gp-edicao-status" aria-live="polite"></p>
+        <fieldset id="gp-campos" aria-label="Dados da parada"></fieldset>
+        <section class="gp-grupo">
+            <h3>8. Pré-visualização e publicação</h3>
+            <div class="gp-acoes">
+                <button type="button" id="gp-voltar">Voltar</button>
+                <button type="button" id="gp-ver-previa">Conferir prévia</button>
+                <button type="button" id="gp-rascunho">Salvar rascunho</button>
+                <button type="button" id="gp-publicar" class="gp-primario">Publicar</button>
+                <button type="button" id="gp-arquivar">Arquivar</button>
+                <button type="button" id="gp-importar">Importar JSON legado</button>
+            </div>
+            <section id="gp-previa" hidden aria-label="Prévia da parada">
+                <p id="gp-previa-resumo"></p>
+                <div id="gp-previa-grafico"></div>
+            </section>
+        </section>
+    </section>
+    <section id="gp-historico" hidden>
+        <button type="button" id="gp-voltar-historico">Voltar</button>
+        <div id="gp-versoes"></div>
+        <button type="button" id="gp-mais">Carregar versões anteriores</button>
+    </section>
+</dialog>
 
 <section class="pagina" id="produtividade" aria-labelledby="produtividade-titulo">
     <header class="prod-cabecalho">
@@ -1870,7 +1916,9 @@ OS 456
 
 <script src="js/modules/mapaSelecao.js?v=editor-localizacao-1"></script>
 
-<script src="js/modules/curvaS.js"></script>
+<script src="js/modules/grandesParadasStorage.js?v=1"></script>
+<script src="js/modules/curvaS.js?v=editor-v1"></script>
+<script src="js/modules/grandesParadasEditor.js?v=1"></script>
 
 <script src="js/modules/usuarios.js"></script>
 
