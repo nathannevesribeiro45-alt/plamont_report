@@ -186,3 +186,28 @@
 @media(prefers-reduced-motion:reduce) {
     #produtividade .tab-slider, #produtividade .prod-chevron { transition:none; }
 }
+
+/* V3: grupos reutilizáveis, com colunas que não excedem o espaço disponível. */
+#produtividade .prod-editor fieldset { min-inline-size:0; }
+#produtividade .prod-editor fieldset.prod-editor-agrupado { grid-template-columns:minmax(0,1fr); gap:16px; }
+#produtividade .prod-editor-grade { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,165px),1fr)); gap:12px; }
+#produtividade .prod-editor-grade label { align-content:space-between; }
+#produtividade .prod-editor-fisicos h3 small { color:#536b8b; font-weight:400; }
+#produtividade .prod-fisica.prod-fisica-agrupada { display:grid; grid-template-columns:minmax(0,1fr); gap:8px; }
+#produtividade .prod-grupo { min-width:0; padding:0 12px; border:1px solid var(--prod-borda); border-radius:10px; background:#f8fbfe; }
+#produtividade .prod-grupo + .prod-grupo { margin-top:7px; }
+#produtividade .prod-fisica-agrupada .prod-grupo + .prod-grupo { margin-top:0; }
+#produtividade .prod-grupo > summary { padding:12px 2px; cursor:pointer; font-weight:600; font-size:13px; overflow-wrap:anywhere; }
+#produtividade .prod-grupo > summary small { display:inline-block; margin-left:5px; font-size:11px; color:#536b8b; font-weight:500; }
+#produtividade .prod-grupo > .prod-editor-grade,
+#produtividade .prod-grupo > .prod-fisica { margin:0 0 12px; }
+#produtividade .prod-fisica-extra { margin-top:14px; }
+#produtividade .prod-fisica-extra > label { max-width:360px; }
+#produtividade #produtividade-fisica-historico-valores { margin-top:10px; }
+#produtividade #produtividade-fisica-grafico > svg { max-height:248px; margin:8px auto 0; }
+#produtividade .prod-valor, #produtividade .prod-fisica-valor,
+#produtividade .prod-comparativo strong { overflow-wrap:anywhere; }
+@media(max-width:600px) {
+    #produtividade #produtividade-fisica-grafico svg text { font-size:18px; }
+    #produtividade .prod-comparativo-conteudo { grid-template-columns:minmax(0,1fr) minmax(0,auto); }
+}

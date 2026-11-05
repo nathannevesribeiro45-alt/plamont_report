@@ -41,14 +41,12 @@ window.Produtividade = (() => {
         modoCompacto = compacto;
     }
 
-    // O limite visual não altera os volumes brutos nem a aderência bruta.
     function calcularMetricas(dados) {
         if (!dados) return null;
         if(dados.modo==='somente_executadas')return {...vazio,...dados};
         const executadas = dados.programadasExecutadas + dados.extrasExecutadas;
         const aderenciaBruta = dados.programadas > 0 ? executadas / dados.programadas * 100 : null;
-        return { ...dados, executadas, aderenciaBruta,
-            aderencia: aderenciaBruta === null ? null : Math.min(100, aderenciaBruta) };
+        return { ...dados, executadas, aderenciaBruta, aderencia: aderenciaBruta };
     }
     function variacao(atual, base) {
         if (!Number.isFinite(atual) || !Number.isFinite(base)) return null;
@@ -74,7 +72,10 @@ window.Produtividade = (() => {
             :'Nenhum lançamento salvo para esta OS e semana. Os traços indicam dados ainda não informados.');
     }
     function assinaturaFormulario() {
-        return JSON.stringify(campos().map(c=>el('formulario').elements.namedItem(c.chave).value));
+        return JSON.stringify(campos().map(c=>{
+            const input=el('formulario').elements.namedItem(c.chave);
+            return [input.value,input.validity.badInput];
+        }));
     }
     function sujo() {return !!estado.editor&&assinaturaFormulario()!==estado.editor.inicial;}
     function fecharEditor() {estado.editor=null;el('formulario').hidden=true;el('formulario').reset();}
@@ -88,26 +89,34 @@ window.Produtividade = (() => {
         return destino==='produtividade'||confirmarMudanca();
     }
     function abrirEditor() {
-        if(!podeEditar()||!estado.carregado||estado.erro||estado.carregando||estado.salvando)return false;
+        if(!podeEditar()||!estado.carregado||estado.erro||estado.carregando||estado.salvando||estado.editor)return false;
         const r=registroAtual(),form=el('formulario');
-        el('editor-campos').innerHTML=campos().map(c=>`<label>${html(c.titulo)}${c.unidade?` (${html(c.unidade)})`:''}<input name="${html(c.chave)}" type="number" min="0" max="${c.max}" step="${c.tipo==='decimal'?'0.001':'1'}" ${c.obrigatorio?'required':''}></label>`).join('');
+        const config=configuracao(),camposAtuais=campos();
+        const input=c=>`<label>${html(c.titulo)}${c.unidade?` (${html(c.unidade)})`:''}<input name="${html(c.chave)}" type="number" min="${c.min??0}" max="${c.max}" step="${10**-(c.precisao??0)}" inputmode="${c.precisao?'decimal':'numeric'}" ${c.obrigatorio?'required':''}></label>`;
+        el('editor-campos').classList.toggle('prod-editor-agrupado',!config.fisicosObrigatorios);
+        el('editor-campos').innerHTML=config.fisicosObrigatorios?camposAtuais.map(input).join(''):`
+            <section class="prod-editor-oms"><h3>Ordens de manutenção</h3><div class="prod-editor-grade">${camposAtuais.filter(c=>!c.unidade).map(input).join('')}</div></section>
+            <section class="prod-editor-fisicos"><h3>Produção física <small>opcional</small></h3>
+            ${config.grupos.map(g=>`<details class="prod-grupo" data-grupo="${g.id}"><summary>${html(g.titulo)} <small>${html([...new Set(g.campos.map(c=>c.unidade))].join(' / '))}</small></summary>
+                <div class="prod-editor-grade">${g.campos.map(input).join('')}</div></details>`).join('')}</section>`;
         campos().forEach(c=>{form.elements.namedItem(c.chave).value=(c.unidade?r?.medicoes?.[c.chave]:r?.[c.chave])??'';});
         estado.editor={contratoId:estado.contratoId,ano:estado.ano,semana:estado.semana,
             versao:r?.versao||0,usuario:window.Auth?.sessao?.user?.id,inicial:assinaturaFormulario()};
         el('editor-titulo').textContent=`Editar ${estado.contratoId.replace('os','OS ')} — Semana ${estado.semana}/${estado.ano}`;
         form.hidden=false;el('editor-campos').disabled=false;
         mensagem('Informe os totais e clique em Salvar no servidor. Os indicadores mostram os últimos valores salvos.');
-        const simples=configuracao().modo==='somente_executadas';
-        el('editor-descricao').textContent=simples?'Informe somente o total semanal de OMs executadas. Sem base de programação e sem indicadores físicos cadastrados.':'Informe os totais desta OS e semana. Extras são OM’s executadas fora da programação.';
-        el('editor-ajuda').textContent=simples?'Zero representa um total explicitamente informado. Sem lançamento não significa zero.':configuracao().fisicosObrigatorios?'Aderência, executadas e não executadas serão calculadas. Um lançamento com zero é diferente de uma semana ainda não informada.':'OMs são obrigatórias. Medições físicas não informadas podem ficar em branco: serão exibidas como —, nunca como zero. Aderência e totais de OMs serão calculados.';
+        const simples=config.modo==='somente_executadas';
+        el('editor-descricao').textContent=simples?'Informe o total semanal de OMs executadas e, se disponíveis, as medições de componentes. Esta OS não tem programação de OMs.':'Informe os totais desta OS e semana. Extras são OM’s executadas fora da programação.';
+        el('editor-ajuda').textContent=config.fisicosObrigatorios?'Aderência, executadas e não executadas serão calculadas. Um lançamento com zero é diferente de uma semana ainda não informada.':'Abra os grupos para informar medições. Campos físicos em branco ficam sem valor; preencha 0 apenas para registrar zero.';
+        atualizarControles();
         form.elements.namedItem(campos()[0].chave).focus();return true;
     }
-    function cancelarEditor() {if(!confirmarMudanca())return false;atualizarMensagem();return true;}
+    function cancelarEditor() {if(!confirmarMudanca())return false;atualizarControles();atualizarMensagem();return true;}
     function atualizarControles() {
         const bloqueado=estado.carregando||estado.salvando;
         ['ano','semana','comparacao','atualizar'].forEach(id=>{el(id).disabled=bloqueado;});
         el('contratos').querySelectorAll('button').forEach(b=>{b.disabled=bloqueado;});
-        el('editar').hidden=!podeEditar();el('editar').disabled=bloqueado||!estado.carregado||!!estado.erro;
+        el('editar').hidden=!podeEditar();el('editar').disabled=bloqueado||!estado.carregado||!!estado.erro||!!estado.editor;
         el('editor-campos').disabled=estado.salvando||!podeEditar();
         el('salvar').disabled=estado.salvando||!podeEditar();el('cancelar').disabled=estado.salvando;
         el('salvar').textContent=estado.salvando?'Salvando…':'Salvar no servidor';
@@ -116,7 +125,9 @@ window.Produtividade = (() => {
         if(!podeEditar()||!estado.editor||estado.salvando||estado.carregando)return false;
         if(estado.editor.usuario!==window.Auth?.sessao?.user?.id)return false;
         const contexto={...estado.editor},token=estado.requisicao;
+        const storage=window.ProdutividadeStorage;
         try {
+            if(!el('formulario').reportValidity())return false;
             const valores={medicoes:{}};
             campos().forEach(c=>{
                 const input=el('formulario').elements.namedItem(c.chave);
@@ -127,14 +138,21 @@ window.Produtividade = (() => {
                 if(c.unidade)valores.medicoes[c.chave]=Number(input.value);
                 else valores[c.chave]=Number(input.value);
             });
-            window.ProdutividadeStorage.validarValores(valores,contexto.contratoId);
-            if(!el('formulario').reportValidity())return false;
+            storage.validarValores(valores,contexto.contratoId);
             estado.salvando=true;atualizarControles();mensagem('Salvando no servidor…');
-            const r=await window.ProdutividadeStorage.salvar(contexto,valores);
+            let r,reconciliado=false;
+            try{r=await storage.salvar(contexto,valores);}
+            catch(erro){
+                if(token!==estado.requisicao||!storage.respostaIncerta(erro))throw erro;
+                mensagem('Resposta incerta. Conferindo os valores no servidor…');
+                r=await storage.reconciliar(contexto,valores);
+                if(!r)throw new Error('Salvamento não confirmado. O rascunho foi mantido; confira a conexão e tente novamente.');
+                reconciliado=true;
+            }
             if(token!==estado.requisicao)return false;
             estado.registros=estado.registros.filter(item=>!(item.contrato_id===r.contrato_id&&item.semana===r.semana));
             estado.registros.push(r);fecharEditor();renderDados();
-            mensagem('Alterações salvas no servidor. Indicadores atualizados.','sucesso');return true;
+            mensagem(reconciliado?'Valores confirmados na consulta ao servidor. Indicadores atualizados.':'Alterações salvas no servidor. Indicadores atualizados.','sucesso');return true;
         } catch(erro) {
             if(token===estado.requisicao)mensagem(window.ProdutividadeStorage.mensagemErro(erro),'erro');
             return false;
@@ -164,6 +182,15 @@ window.Produtividade = (() => {
         el('cancelar').addEventListener('click',cancelarEditor);
         el('atualizar').addEventListener('click',()=>carregar());
         el('formulario').addEventListener('submit',evento=>{evento.preventDefault();void salvar();});
+        el('formulario').addEventListener('invalid',evento=>{
+            const grupo=evento.target.closest('details');
+            if(grupo)grupo.open=true;
+            mensagem('Confira o campo destacado. Quantidades em UND devem ser inteiras; decimais aceitam até três casas.','erro');
+        },true);
+        el('fisica-grafico-campo').addEventListener('change',evento=>{
+            const contrato=contratos.find(c=>c.id===estado.contratoId);
+            renderGraficoFisico(contrato.indicadores.find(i=>i.chave===evento.target.value));
+        });
         window.addEventListener('beforeunload',evento=>{if(sujo()||estado.salvando){evento.preventDefault();evento.returnValue='';}});
         el('comparacao').addEventListener('change', evento => {
             if (!autorizado()||estado.carregando||estado.salvando) return;
@@ -236,13 +263,21 @@ window.Produtividade = (() => {
         el('kpis').classList.toggle('prod-kpis-simples',config.modo==='somente_executadas');
         el('kpis').innerHTML = itens.map(([titulo, valor, detalhe, nomeIcone]) => `<article class="prod-card prod-kpi"><span class="prod-icone ${nomeIcone === 'concluido' ? 'prod-verde' : ''}" aria-hidden="true">${icone(nomeIcone)}</span><div class="prod-kpi-conteudo"><h2>${titulo}</h2><strong class="prod-valor">${valor}</strong><p>${detalhe}</p></div></article>`).join('');
     }
+    const rotuloEixo=(v,casas=1)=>v>=10000
+        ? new Intl.NumberFormat('pt-BR',{notation:'compact',maximumFractionDigits:1}).format(v)
+        : numero(v,casas);
     function renderEvolucao(contrato) {
         if(contrato.modo==='somente_executadas')return renderEvolucaoExecutadas(contrato);
         const semanas = window.ProdutividadeData.semanas(estado.ano).filter(s => s <= estado.semana).slice(-5);
         const x = i => semanas.length === 1 ? 287 : 74 + i * 426 / (semanas.length - 1);
-        const y = valor => 196 - valor * 1.5;
         const dados = semanas.map(s => calcularMetricas(contrato.semanas[s])||vazio);
         const anteriores = semanas.map(s => calcularMetricas(contrato.semanas[s - 1]));
+        const valores=[...dados,...anteriores].map(m=>m?.aderencia).filter(Number.isFinite);
+        if(!valores.length){
+            el('evolucao').innerHTML='<p class="prod-sem-dados">Sem base de programação nas semanas exibidas.</p>';return;
+        }
+        const passo=Math.max(25,Math.ceil(Math.max(...valores)/100)*25),limite=passo*4;
+        const y=valor=>196-valor/limite*150;
         function serie(valores, cor, tracejada) {
             // Uma semana sem base interrompe a linha; não é convertida em zero.
             let inicio = true;
@@ -252,9 +287,9 @@ window.Produtividade = (() => {
                 inicio = false;
                 return comando;
             }).join(' ');
-            return `<path d="${caminho}" fill="none" stroke="${cor}" stroke-width="2.5" ${tracejada ? 'stroke-dasharray="7 5"' : ''}/>` + valores.map((m, i) => Number.isFinite(m?.aderencia) ? `<circle cx="${x(i)}" cy="${y(m.aderencia)}" r="4" fill="${cor}" tabindex="0"><title>${tracejada ? 'Semana anterior' : 'Aderência'}: semana ${semanas[i] - (tracejada ? 1 : 0)}, ${percentual(m.aderencia)}</title></circle>${!tracejada ? `<text x="${x(i)}" y="${y(m.aderencia) - 12}" text-anchor="middle" class="prod-svg-valor">${percentual(m.aderencia)}</text>` : ''}` : '').join('');
+            return `<path d="${caminho}" fill="none" stroke="${cor}" stroke-width="2.5" ${tracejada ? 'stroke-dasharray="7 5"' : ''}/>` + valores.map((m, i) => Number.isFinite(m?.aderencia) ? `<circle cx="${x(i)}" cy="${y(m.aderencia)}" r="4" fill="${cor}" tabindex="0"><title>${tracejada ? 'Semana anterior' : 'Aderência'}: semana ${semanas[i] - (tracejada ? 1 : 0)}, ${percentual(m.aderencia)}</title></circle>${!tracejada ? `<text x="${x(i)}" y="${y(m.aderencia) - 12}" text-anchor="middle" class="prod-svg-valor">${rotuloEixo(m.aderencia)}%</text>` : ''}` : '').join('');
         }
-        el('evolucao').innerHTML = `<svg viewBox="0 0 550 246" role="img" aria-labelledby="prod-evolucao-title prod-evolucao-desc"><title id="prod-evolucao-title">Evolução da aderência — ${html(contrato.nome)}</title><desc id="prod-evolucao-desc">${semanas.map((s,i) => `Semana ${s}: ${percentual(dados[i].aderencia)}; semana anterior: ${percentual(anteriores[i]?.aderencia)}.`).join(' ')}</desc>${[0,25,50,75,100].map(v => `<line x1="74" x2="500" y1="${y(v)}" y2="${y(v)}" stroke="#e1eaf4"/><text x="51" y="${y(v)+4}" text-anchor="end">${v}%</text>`).join('')}${semanas.map((s,i) => `<line x1="${x(i)}" x2="${x(i)}" y1="46" y2="196" stroke="#e1eaf4"/><text x="${x(i)}" y="219" text-anchor="middle">S${s}</text>`).join('')}${serie(anteriores, '#9cacbf', true)}${serie(dados, '#087cf2', false)}</svg><div class="prod-legenda"><span><i class="prod-azul"></i>Aderência da semana</span><span><i class="prod-cinza"></i>Semana anterior</span></div>`;
+        el('evolucao').innerHTML = `<svg viewBox="0 0 550 246" role="img" aria-labelledby="prod-evolucao-title prod-evolucao-desc"><title id="prod-evolucao-title">Evolução da aderência — ${html(contrato.nome)}</title><desc id="prod-evolucao-desc">${semanas.map((s,i) => `Semana ${s}: ${percentual(dados[i].aderencia)}; semana anterior: ${percentual(anteriores[i]?.aderencia)}.`).join(' ')}</desc>${[0,1,2,3,4].map(i=>i*passo).map(v => `<line x1="74" x2="500" y1="${y(v)}" y2="${y(v)}" stroke="#e1eaf4"/><text x="51" y="${y(v)+4}" text-anchor="end">${rotuloEixo(v)}%</text>`).join('')}${semanas.map((s,i) => `<line x1="${x(i)}" x2="${x(i)}" y1="46" y2="196" stroke="#e1eaf4"/><text x="${x(i)}" y="219" text-anchor="middle">S${s}</text>`).join('')}${serie(anteriores, '#9cacbf', true)}${serie(dados, '#087cf2', false)}</svg><div class="prod-legenda"><span><i class="prod-azul"></i>Aderência da semana</span><span><i class="prod-cinza"></i>Semana anterior</span></div>`;
     }
     function renderEvolucaoExecutadas(contrato) {
         const semanas=window.ProdutividadeData.semanas(estado.ano).filter(s=>s<=estado.semana).slice(-5);
@@ -293,10 +328,58 @@ window.Produtividade = (() => {
         const base = estado.comparacao;
         el('fisica-titulo').textContent = `Produção física — Semana ${estado.semana}`;
         el('fisica-base').textContent = `Totais informados para ${contrato.descricao}. ${base === null ? 'Sem comparação selecionada.' : `Base de comparação: semana ${base}.`}`;
-        el('fisica').innerHTML = contrato.indicadores.map(indicador => {
+        const card=indicador=>{
             const atual = indicador.valores[estado.semana], anterior = base === null ? null : indicador.valores[base];
-            return `<article class="prod-indicador" data-indicador="${html(indicador.id)}"><span class="prod-icone prod-fisica-icone">${icone(indicador.id)}</span><div class="prod-indicador-conteudo"><h3>${html(indicador.titulo)}</h3><strong class="prod-fisica-valor">${numero(atual, 3)} <small>${html(indicador.unidade)}</small></strong><div class="prod-indicador-rodape"><p>${base === null ? 'Sem comparação' : `Semana ${base}: ${numero(anterior, 3)} ${html(indicador.unidade)}`}</p><p>Variação: ${diferenca(variacao(atual, anterior))}</p></div></div></article>`;
-        }).join('');
+            return `<article class="prod-indicador" data-indicador="${html(indicador.id)}"><span class="prod-icone prod-fisica-icone">${icone(indicador.id)}</span><div class="prod-indicador-conteudo"><h3>${html(indicador.titulo)}</h3><strong class="prod-fisica-valor">${numero(atual, indicador.precisao)} <small>${html(indicador.unidade)}</small></strong>${indicador.comparacao?`<div class="prod-indicador-rodape"><p>${base === null ? 'Sem comparação' : `Semana ${base}: ${numero(anterior, indicador.precisao)} ${html(indicador.unidade)}`}</p><p>Variação: ${diferenca(variacao(atual, anterior))}</p></div>`:''}</div></article>`;
+        };
+        const painel=el('fisica'),agrupado=!contrato.fisicosObrigatorios;
+        const abertos=new Set(painel.dataset.contrato===contrato.id
+            ?[...painel.querySelectorAll('details[open]')].map(g=>g.dataset.grupo):[]);
+        painel.dataset.contrato=contrato.id;
+        painel.classList.toggle('prod-fisica-agrupada',agrupado);
+        painel.innerHTML=agrupado?contrato.grupos.map(g=>{
+            const itens=g.campos.map(c=>contrato.indicadores.find(i=>i.chave===c.chave));
+            const informados=itens.filter(i=>Number.isFinite(i.valores[estado.semana])).length;
+            return `<details class="prod-grupo" data-grupo="${g.id}" ${abertos.has(g.id)?'open':''}>
+                <summary>${html(g.titulo)} <small>${informados}/${itens.length} informados</small></summary>
+                <div class="prod-fisica">${itens.map(card).join('')}</div></details>`;
+        }).join(''):contrato.indicadores.map(card).join('');
+        const historicos=contrato.indicadoresHistoricos.filter(i=>Object.values(i.valores).some(Number.isFinite));
+        el('fisica-historico').hidden=!historicos.length;
+        el('fisica-historico-valores').innerHTML=historicos.map(card).join('');
+        const semanas=semanasFisicas();
+        const elegiveis=agrupado?contrato.indicadores.filter(i=>i.grafico&&semanas.some(s=>Number.isFinite(i.valores[s]))):[];
+        const seletor=el('fisica-grafico-campo'), anterior=seletor.value;
+        seletor.innerHTML=elegiveis.map(i=>`<option value="${html(i.chave)}">${html(i.titulo)} (${html(i.unidade)})</option>`).join('');
+        const indicador=elegiveis.find(i=>i.chave===anterior)??elegiveis[0];
+        if(indicador)seletor.value=indicador.chave;
+        el('fisica-grafico-secao').hidden=!indicador;
+        renderGraficoFisico(indicador);
+    }
+    const semanasFisicas=()=>window.ProdutividadeData.semanas(estado.ano).filter(s=>s<=estado.semana).slice(-5);
+    function renderGraficoFisico(indicador) {
+        if(!indicador){el('fisica-grafico').replaceChildren();return;}
+        const semanas=semanasFisicas(),valores=semanas.map(s=>indicador.valores[s]);
+        const conhecidos=valores.filter(Number.isFinite);
+        if(!conhecidos.length){el('fisica-grafico').replaceChildren();return;}
+        const unidade=html(indicador.unidade),casas=indicador.precisao,menor=10**-casas;
+        const bruto=Math.max(menor,Math.max(...conhecidos)/4);
+        const ordem=10**Math.floor(Math.log10(bruto));
+        const passo=Math.ceil(bruto/ordem)*ordem,limite=passo*4;
+        const x=i=>semanas.length===1?287:85+i*410/(semanas.length-1);
+        const y=v=>196-v/limite*150;
+        let ligado=false;
+        const caminho=valores.map((v,i)=>{
+            if(!Number.isFinite(v)){ligado=false;return '';}
+            const ponto=`${ligado?'L':'M'}${x(i)} ${y(v)}`;ligado=true;return ponto;
+        }).join(' ');
+        el('fisica-grafico').innerHTML=`<svg viewBox="0 0 550 246" role="img" aria-labelledby="prod-fisico-svg-titulo prod-fisico-svg-desc">
+            <title id="prod-fisico-svg-titulo">${html(indicador.titulo)} (${unidade})</title>
+            <desc id="prod-fisico-svg-desc">${semanas.map((s,i)=>`Semana ${s}: ${Number.isFinite(valores[i])?`${numero(valores[i],casas)} ${unidade}`:'sem dados'}.`).join(' ')}</desc>
+            ${[0,1,2,3,4].map(i=>i*passo).map(v=>`<line x1="85" x2="495" y1="${y(v)}" y2="${y(v)}" stroke="#e1eaf4"/><text x="73" y="${y(v)+4}" text-anchor="end">${rotuloEixo(v,casas)}</text>`).join('')}
+            ${semanas.map((s,i)=>`<text x="${x(i)}" y="219" text-anchor="middle">S${s}</text>`).join('')}
+            <path d="${caminho}" fill="none" stroke="#087cf2" stroke-width="2.5"/>
+            ${valores.map((v,i)=>Number.isFinite(v)?`<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="#087cf2" tabindex="0"><title>Semana ${semanas[i]}: ${numero(v,casas)} ${unidade}</title></circle><text class="prod-svg-valor" x="${x(i)}" y="${y(v)-12}" text-anchor="middle">${rotuloEixo(v,casas)}</text>`:'').join('')}</svg>`;
     }
     function renderComparativo(contrato, atual) {
         atual=atual||vazio;
@@ -308,7 +391,7 @@ window.Produtividade = (() => {
             ['Programadas', numero(atual.programadas), anterior ? numero(anterior.programadas) : '—', variacao(atual.programadas, anterior?.programadas), '%'],
             ['Executadas (programadas + extras)', numero(atual.executadas), anterior ? numero(anterior.executadas) : '—', variacao(atual.executadas, anterior?.executadas), '%'],
             ['Aderência', percentual(atual.aderencia), percentual(anterior?.aderencia), pontosPercentuais(atual.aderencia, anterior?.aderencia), 'p.p.'],
-            ...contrato.indicadores.map(i => [i.titulo, `${numero(i.valores[estado.semana], 3)} ${html(i.unidade)}`, base === null ? '—' : `${numero(i.valores[base], 3)} ${html(i.unidade)}`, variacao(i.valores[estado.semana], base === null ? null : i.valores[base]), '%'])
+            ...(contrato.fisicosObrigatorios?contrato.indicadores:[]).filter(i=>i.comparacao).map(i => [i.titulo, `${numero(i.valores[estado.semana], 3)} ${html(i.unidade)}`, base === null ? '—' : `${numero(i.valores[base], 3)} ${html(i.unidade)}`, variacao(i.valores[estado.semana], base === null ? null : i.valores[base]), '%'])
         ];
         el('comparativo').innerHTML = itens.map(([titulo,valor,valorBase,delta,unidade], i) => `<article><span class="prod-icone ${i === 1 ? 'prod-verde' : ''}">${icone(['agenda','concluido','alvo'][i] || contrato.indicadores[i-3]?.id)}</span><div class="prod-comparativo-conteudo"><h3>${html(titulo)}</h3><strong>${valor}</strong><p>${diferenca(delta, unidade)}</p><p>${base === null ? 'Sem base selecionada' : `Semana ${base}: ${valorBase}`}</p></div></article>`).join('');
     }

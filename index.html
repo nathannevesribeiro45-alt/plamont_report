@@ -1329,12 +1329,26 @@ OS 456
         <p class="prod-ajuda" id="produtividade-editor-ajuda">Aderência, executadas e não executadas serão calculadas. Um lançamento com zero é diferente de uma semana ainda não informada.</p>
     </form>
     <div id="produtividade-kpis" class="prod-kpis"></div>
-    <p id="produtividade-modo-aviso" class="prod-aviso" hidden>Sem base de programação. Sem indicadores físicos cadastrados.</p>
+    <p id="produtividade-modo-aviso" class="prod-aviso" hidden>Este contrato registra OMs executadas e medições de componentes, sem programação de OMs.</p>
     <div id="produtividade-graficos" class="prod-graficos">
         <section class="prod-card"><h2 id="produtividade-evolucao-titulo">Evolução da aderência semanal</h2><p id="produtividade-evolucao-base">Aderência de cada semana e da semana imediatamente anterior.</p><div id="produtividade-evolucao"></div></section>
         <section id="produtividade-composicao-secao" class="prod-card"><h2 id="produtividade-composicao-titulo">Composição das OM’s</h2><p>Programadas executadas, extras e não executadas.</p><div id="produtividade-composicao"></div></section>
     </div>
-    <section id="produtividade-fisica-secao" class="prod-card prod-secao"><h2 id="produtividade-fisica-titulo">Produção física</h2><p id="produtividade-fisica-base"></p><div id="produtividade-fisica" class="prod-fisica"></div></section>
+    <section id="produtividade-fisica-secao" class="prod-card prod-secao">
+        <h2 id="produtividade-fisica-titulo">Produção física</h2>
+        <p id="produtividade-fisica-base"></p>
+        <div id="produtividade-fisica" class="prod-fisica"></div>
+        <section id="produtividade-fisica-grafico-secao" class="prod-fisica-extra" hidden>
+            <h3>Evolução das medições</h3>
+            <label>Indicador nas últimas cinco semanas<select id="produtividade-fisica-grafico-campo"></select></label>
+            <div id="produtividade-fisica-grafico"></div>
+        </section>
+        <details id="produtividade-fisica-historico" class="prod-grupo prod-fisica-extra" hidden>
+            <summary>Indicadores históricos não detalhados</summary>
+            <p>Somente consulta. Os valores agregados antigos não são somados nem repartidos entre os novos indicadores.</p>
+            <div id="produtividade-fisica-historico-valores" class="prod-fisica"></div>
+        </details>
+    </section>
     <section class="prod-card prod-secao"><h2>Comparativo semanal</h2><p id="produtividade-comparativo-base"></p><div id="produtividade-comparativo" class="prod-comparativo"></div></section>
 </section>
 
@@ -1820,7 +1834,7 @@ OS 456
 
 <link rel="stylesheet" href="css/mobile.css">
 
-<link rel="stylesheet" href="css/produtividade.css?v=produtividade-contratos-2">
+<link rel="stylesheet" href="css/produtividade.css?v=produtividade-3">
 
 <link rel="stylesheet" href="css/editorRelatorio.css?v=om-textos-mapa-1">
 
@@ -1866,9 +1880,9 @@ OS 456
 
 <script src="js/modules/abas.js?v=produtividade-1"></script>
 
-<script src="js/modules/produtividadeData.js?v=produtividade-contratos-2"></script>
-<script src="js/modules/produtividadeStorage.js?v=produtividade-contratos-2"></script>
-<script src="js/modules/produtividade.js?v=produtividade-contratos-2"></script>
+<script src="js/modules/produtividadeData.js?v=produtividade-3"></script>
+<script src="js/modules/produtividadeStorage.js?v=produtividade-3"></script>
+<script src="js/modules/produtividade.js?v=produtividade-3"></script>
 
 <script src="js/core/render.js?v=periodo-dashboard-1"></script>
 
