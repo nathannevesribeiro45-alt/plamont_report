@@ -323,6 +323,9 @@ const Mapa = {
     // ======================================
     renderFrentes(recentralizar = true) {
 
+        if(window.MapaSemanal?.ativo&&!this.selecaoLocalizacao){
+            void MapaSemanal.renderizar();return;
+        }
         const contrato = Dashboard.contratos[this.contratoAtivo];
 
         this.markersLayer.clearLayers();
@@ -556,6 +559,7 @@ const Mapa = {
     fecharPainel() {
 
         document.getElementById("mapa-painel")?.classList.remove("aberto");
+        document.getElementById("mapa")?.classList.remove("mps-detalhe-aberto");
         this.marcadorSelecionado = null;
 
     },
