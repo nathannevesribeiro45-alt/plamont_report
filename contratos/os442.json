@@ -103,9 +103,9 @@
       "icone": "assets/icons/ambiental.svg",
       "qlp": {
         "direto": {
-          "Caldeireiro": 0,
+          "Caldeireiro": 1,
           "Mecanico": 0,
-          "Soldador": 0,
+          "Soldador": 1,
           "Montador": 0,
           "Eletricista": 0,
           "Pintor": 0
@@ -120,9 +120,9 @@
       },
       "histograma": {
         "direto": {
-          "Caldeireiro": 0,
+          "Caldeireiro": 1,
           "Mecanico": 0,
-          "Soldador": 0,
+          "Soldador": 1,
           "Montador": 0,
           "Eletricista": 0,
           "Pintor": 0
