@@ -100,7 +100,7 @@
     {
       "id": "infraeletrica",
       "nome": "Ambiental",
-      "icone": "assets/icons/utilidades.svg",
+      "icone": "assets/icons/ambiental.svg",
       "qlp": {
         "direto": {
           "Caldeireiro": 0,
