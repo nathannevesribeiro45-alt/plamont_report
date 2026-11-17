@@ -14,6 +14,18 @@ const RelatoriosStorage = {
 
     geracao: 0,
 
+    completarAmbiental(contrato) {
+        const dados = this.clonar(contrato);
+        // Os IDs antigos são preservados: "ambiental" pertence à Infraelétrica.
+        if (dados?.id !== "os442" || !Array.isArray(dados.abas) || dados.abas.some(a => a.id === "infraeletrica")) return dados;
+        const direto = { Caldeireiro:0, Mecanico:0, Soldador:0, Montador:0, Eletricista:0, Pintor:0 };
+        const indireto = { "Supervisor Montagem":0, "Encarregado Montagem":0, "Mestre Montagem":0, "Mestre Andaime":0, "Mestre Eletrica":0 };
+        dados.abas.push({ id:"infraeletrica", nome:"Ambiental", icone:"assets/icons/utilidades.svg",
+            qlp:{direto:{...direto},indireto:{...indireto}}, histograma:{direto:{...direto},indireto:{...indireto}},
+            ausencias:{justificadas:0,naoJustificadas:0}, mobilizacao:{}, recursos:[], atividades:[] });
+        return dados;
+    },
+
     limparEstados() {
         this.geracao++;
         this.estados.clear();
@@ -439,6 +451,7 @@ const RelatoriosStorage = {
         contrato,
         registro
     ) {
+        contrato = this.completarAmbiental(contrato);
 
         const identidade =
             this.identidade(
@@ -536,6 +549,7 @@ const RelatoriosStorage = {
         contratoBase,
         { registrarEstado = true } = {}
     ) {
+        contratoBase = this.completarAmbiental(contratoBase);
 
         // Garante que o cliente Supabase já foi criado.
         //
@@ -720,7 +734,7 @@ const RelatoriosStorage = {
 
             dados:
                 this.clonar(
-                    data.dados
+                    this.completarAmbiental(data.dados)
                 ),
 
             versao:
@@ -958,7 +972,8 @@ const RelatoriosStorage = {
             resposta =
                 await executarRpc.call(
                     cliente,
-                    this.rpcSalvar,
+                    identidade.contratoId === "os442" && abaId === "infraeletrica"
+                        ? "salvar_aba_ambiental_os442" : this.rpcSalvar,
                     parametros
                 );
 
@@ -1069,7 +1084,7 @@ const RelatoriosStorage = {
 
             dados:
                 this.clonar(
-                    registro.dados
+                    this.completarAmbiental(registro.dados)
                 ),
 
             versao:
@@ -1092,6 +1107,11 @@ const RelatoriosStorage = {
             String(
                 error?.code ?? ""
             );
+        if (codigo === "PGRST202" && String(error?.message || "").includes("salvar_aba_ambiental_os442")) {
+            const erro = new Error("A aba Ambiental está disponível para consulta. Para salvar, aplique os442_ambiental.sql no Supabase e tente novamente.");
+            erro.codigo = codigo; erro.tipo = "estrutura_ausente"; erro.causa = error;
+            return erro;
+        }
 
 
         const mensagem =

@@ -23,10 +23,8 @@
 <link href="css/contratos.css?v=om-textos-mapa-1" rel="stylesheet"/>
 
 <link href="css/mapa.css?v=om-textos-mapa-1" rel="stylesheet"/>
-<link href="css/mapaSemanal.css?v=1" rel="stylesheet"/>
 
 <link href="css/curvaS.css" rel="stylesheet"/>
-<link href="css/grandesParadasEditor.css?v=1" rel="stylesheet"/>
 
 <link href="css/usuarios.css" rel="stylesheet"/>
 
@@ -958,32 +956,37 @@ OS 456
 
 <!-- Navegação por contrato -->
 
-<div class="mps-toolbar">
-    <nav class="tabs" id="mapa-tabs"></nav>
-    <div class="mps-acoes">
-        <button type="button" id="mps-proxima" aria-pressed="false"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 2v6M17 2v6M3 11h18M7 15h3M14 15h3"/></svg> Próxima semana</button>
-        <button type="button" id="mps-diario" hidden>Mapa diário</button>
-        <button type="button" id="mps-gerenciar" hidden>Cadastrar programação</button>
-    </div>
-</div>
-<div id="mps-filtros" class="mps-filtros" hidden>
-    <strong>Prévia semanal</strong>
-    <label>Semana <input id="mps-semana" type="week" required min="2000-W01" max="2100-W52"></label>
-    <span id="mps-periodo"></span>
-    <button type="button" id="mps-atual">Semana atual</button>
-    <button type="button" id="mps-atualizar">Atualizar programação</button>
-</div>
-<p id="mps-aviso" class="mps-aviso" role="status" aria-live="polite"></p>
+<nav class="tabs" id="mapa-tabs"></nav>
 
 <!-- Área do mapa (visão aérea) -->
 
-<div class="mps-map-wrapper">
 <div class="mapa-area" id="mapa-area">
 
 <!-- Mapa em si -->
 
 <div class="mapa-canvas" id="mapa-canvas"></div>
 
+<!-- Controles customizados (zoom / localizar / camadas) -->
+
+<div class="mapa-controles" id="mapa-controles">
+
+<button class="mapa-controle-btn" data-acao="zoom-in" title="Aproximar" type="button">+</button>
+
+<button class="mapa-controle-btn" data-acao="zoom-out" title="Afastar" type="button">−</button>
+
+<button class="mapa-controle-btn" data-acao="localizar" title="Centralizar" type="button">
+
+<svg fill="none" height="18" viewbox="0 0 24 24" width="18"><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path><circle cx="12" cy="12" r="6" stroke="currentColor" stroke-width="2"></circle><circle cx="12" cy="12" fill="currentColor" r="2"></circle></svg>
+
+</button>
+
+<button class="mapa-controle-btn" data-acao="camadas" title="Camadas do mapa" type="button">
+
+<svg fill="none" height="18" viewbox="0 0 24 24" width="18"><path d="M12 2 2 7l10 5 10-5-10-5Z" stroke="currentColor" stroke-linejoin="round" stroke-width="2"></path><path d="m2 17 10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+
+</button>
+
+</div>
 
 <!-- Legenda de status (rodapé do mapa) -->
 
@@ -1018,64 +1021,8 @@ OS 456
 </div>
 
 </div>
-<aside id="mps-resumo" class="mps-resumo" hidden aria-label="Ativos programados">
-    <details open>
-        <summary><strong>Ativos programados</strong> <span id="mps-resumo-subtitulo">Próxima semana</span></summary>
-        <p id="mps-contagem"></p>
-        <div id="mps-resumo-itens"></div>
-    </details>
-</aside>
-</div>
 
 </section>
-
-<dialog id="mpse-dialogo" class="mps-dialogo" aria-labelledby="mpse-titulo">
-    <header class="mps-dialogo-topo">
-        <h2 id="mpse-titulo">Programação semanal — Planejamento</h2>
-        <button type="button" id="mpse-fechar">Fechar</button>
-    </header>
-    <p id="mpse-aviso" class="mps-aviso" role="status" aria-live="polite"></p>
-    <section id="mpse-lista">
-        <div class="mps-editor-grade">
-            <label>Contrato <select id="mpse-contrato"></select></label>
-            <label>Semana de consulta <input id="mpse-semana" type="week" min="2000-W01" max="2100-W52" required></label>
-            <label class="mps-checkbox"><input type="checkbox" id="mpse-excluidas"> Lixeira — janelas excluídas</label>
-        </div>
-        <button type="button" id="mpse-nova">Nova janela</button>
-        <div id="mpse-itens"></div>
-    </section>
-    <form id="mpse-formulario" hidden>
-        <p id="mpse-identidade"></p>
-        <p id="mpse-status" role="status"></p>
-        <fieldset id="mpse-dados">
-            <legend>Janela de parada</legend>
-            <div class="mps-editor-grade">
-                <label>Ativo <select id="mpse-ativo" required></select></label>
-                <label>Semana de referência <input id="mpse-referencia" type="week" min="2000-W01" max="2100-W52" required></label>
-                <label>Data de início previsto <input id="mpse-inicio_data" type="date"></label>
-                <label>Hora de início previsto <input id="mpse-inicio_hora" type="time"></label>
-                <label>Data de término previsto <input id="mpse-fim_data" type="date"></label>
-                <label>Hora de término previsto <input id="mpse-fim_hora" type="time"></label>
-            </div>
-            <p>Duração da parada: <strong id="mpse-duracao">A definir</strong></p>
-            <p class="mps-ajuda">Horários em America/Fortaleza. A duração não é multiplicada pelas OMs. Datas incompletas ficam “A definir”.</p>
-            <label>Informações complementares <textarea id="mpse-observacoes"></textarea></label>
-            <h3>Atividades da janela (OMs)</h3>
-            <div id="mpse-atividades"></div>
-            <button type="button" id="mpse-adicionar">Adicionar atividade</button>
-        </fieldset>
-        <div class="mps-acoes">
-            <button type="button" id="mpse-voltar">Voltar / cancelar edição</button>
-            <button type="submit" id="mpse-salvar">Salvar rascunho</button>
-            <button type="button" id="mpse-publicar">Publicar janela</button>
-        </div>
-    </form>
-    <section id="mpse-historico" hidden>
-        <button type="button" id="mpse-voltar-historico">Voltar à gestão</button>
-        <div id="mpse-revisoes"></div>
-        <button type="button" id="mpse-mais">Carregar revisões anteriores</button>
-    </section>
-</dialog>
 
 <!-- ====================================================== -->
 
@@ -1194,11 +1141,6 @@ OS 456
     <!-- Navegação por contrato (mesmo padrão de abas usado dentro dos contratos) -->
 
     <nav class="tabs" id="curvaS-contratos-tabs"></nav>
-    <div class="gp-acoes gp-toolbar">
-        <button type="button" id="gp-gerenciar" hidden>Gerenciar Grandes Paradas</button>
-        <button type="button" id="gp-historico-publico" hidden>Histórico de publicações</button>
-    </div>
-    <p id="gp-leitura-aviso" class="gp-aviso" role="status"></p>
 
 
 
@@ -1353,46 +1295,6 @@ OS 456
 <!--              GESTÃO DE USUÁRIOS (ADMIN)               -->
 
 <!-- ====================================================== -->
-
-<dialog id="gp-dialogo" class="gp-dialogo" aria-labelledby="gp-titulo">
-    <header class="gp-dialogo-topo">
-        <h2 id="gp-titulo">Gerenciar Grandes Paradas</h2>
-        <button type="button" id="gp-fechar">Fechar</button>
-    </header>
-    <p id="gp-mensagem" role="status" aria-live="polite"></p>
-    <section id="gp-lista" hidden>
-        <div class="gp-acoes">
-            <label>Contrato <select id="gp-filtro"></select></label>
-            <button type="button" id="gp-nova" class="gp-primario">Nova parada</button>
-        </div>
-        <div id="gp-itens"></div>
-    </section>
-    <section id="gp-edicao" hidden>
-        <p id="gp-edicao-meta"></p>
-        <p id="gp-edicao-status" aria-live="polite"></p>
-        <fieldset id="gp-campos" aria-label="Dados da parada"></fieldset>
-        <section class="gp-grupo">
-            <h3>8. Pré-visualização e publicação</h3>
-            <div class="gp-acoes">
-                <button type="button" id="gp-voltar">Voltar</button>
-                <button type="button" id="gp-ver-previa">Conferir prévia</button>
-                <button type="button" id="gp-rascunho">Salvar rascunho</button>
-                <button type="button" id="gp-publicar" class="gp-primario">Publicar</button>
-                <button type="button" id="gp-arquivar">Arquivar</button>
-                <button type="button" id="gp-importar">Importar JSON legado</button>
-            </div>
-            <section id="gp-previa" hidden aria-label="Prévia da parada">
-                <p id="gp-previa-resumo"></p>
-                <div id="gp-previa-grafico"></div>
-            </section>
-        </section>
-    </section>
-    <section id="gp-historico" hidden>
-        <button type="button" id="gp-voltar-historico">Voltar</button>
-        <div id="gp-versoes"></div>
-        <button type="button" id="gp-mais">Carregar versões anteriores</button>
-    </section>
-</dialog>
 
 <section class="pagina" id="produtividade" aria-labelledby="produtividade-titulo">
     <header class="prod-cabecalho">
@@ -1920,7 +1822,7 @@ OS 456
 
 <script src="js/modules/historico.js?v=om-textos-mapa-1"></script>
 
-<script src="js/modules/relatoriosStorage.js?v=anexos-patch2-abcd-1"></script>
+<script src="js/modules/relatoriosStorage.js?v=os442-ambiental-1"></script>
 
 <script src="js/core/fotosStorage.js?v=anexos-infra-1"></script>
 
@@ -1964,16 +1866,11 @@ OS 456
 
 <script src="js/modules/mapaPainel.js?v=om-textos-mapa-1"></script>
 
-<script src="js/modules/mapa.js?v=previa-semanal-1"></script>
+<script src="js/modules/mapa.js?v=om-textos-mapa-1"></script>
 
 <script src="js/modules/mapaSelecao.js?v=editor-localizacao-1"></script>
-<script src="js/modules/mapaSemanalStorage.js?v=1"></script>
-<script src="js/modules/mapaSemanal.js?v=1"></script>
-<script src="js/modules/mapaSemanalEditor.js?v=1"></script>
 
-<script src="js/modules/grandesParadasStorage.js?v=1"></script>
-<script src="js/modules/curvaS.js?v=editor-v1"></script>
-<script src="js/modules/grandesParadasEditor.js?v=1"></script>
+<script src="js/modules/curvaS.js"></script>
 
 <script src="js/modules/usuarios.js"></script>
 

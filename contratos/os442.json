@@ -9,7 +9,6 @@
       "id": "ambiental",
       "nome": "Infraelétrica",
       "icone": "assets/icons/raio.svg",
-
       "qlp": {
         "direto": {
           "Caldeireiro": 1,
@@ -26,7 +25,6 @@
           "Mestre Andaime": 0
         }
       },
-
       "histograma": {
         "direto": {
           "Caldeireiro": 1,
@@ -43,24 +41,18 @@
           "Mestre Andaime": 0
         }
       },
-
       "ausencias": {
-        "justificadas":0,
-        "naoJustificadas":0
+        "justificadas": 0,
+        "naoJustificadas": 0
       },
-
       "mobilizacao": {},
-
       "recursos": [],
-
       "atividades": []
     },
-
     {
       "id": "utilidades",
       "nome": "Utilidades",
       "icone": "assets/icons/utilidades.svg",
-
       "qlp": {
         "direto": {
           "Caldeireiro": 1,
@@ -78,7 +70,6 @@
           "Mestre Eletrica": 0
         }
       },
-
       "histograma": {
         "direto": {
           "Caldeireiro": 1,
@@ -95,19 +86,60 @@
           "Mestre Andaime": 0
         }
       },
-
       "ausencias": {
-        "justificadas":0,
-        "naoJustificadas":0
+        "justificadas": 0,
+        "naoJustificadas": 0
       },
-
       "mobilizacao": {
         "Mecanico": 0,
         "Eletricista": 0
       },
-
       "recursos": [],
-
+      "atividades": []
+    },
+    {
+      "id": "infraeletrica",
+      "nome": "Ambiental",
+      "icone": "assets/icons/utilidades.svg",
+      "qlp": {
+        "direto": {
+          "Caldeireiro": 0,
+          "Mecanico": 0,
+          "Soldador": 0,
+          "Montador": 0,
+          "Eletricista": 0,
+          "Pintor": 0
+        },
+        "indireto": {
+          "Supervisor Montagem": 0,
+          "Encarregado Montagem": 0,
+          "Mestre Montagem": 0,
+          "Mestre Andaime": 0,
+          "Mestre Eletrica": 0
+        }
+      },
+      "histograma": {
+        "direto": {
+          "Caldeireiro": 0,
+          "Mecanico": 0,
+          "Soldador": 0,
+          "Montador": 0,
+          "Eletricista": 0,
+          "Pintor": 0
+        },
+        "indireto": {
+          "Supervisor Montagem": 0,
+          "Encarregado Montagem": 0,
+          "Mestre Montagem": 0,
+          "Mestre Andaime": 0
+        }
+      },
+      "ausencias": {
+        "justificadas": 0,
+        "naoJustificadas": 0
+      },
+      "mobilizacao": {},
+      "recursos": [],
       "atividades": []
     }
   ]

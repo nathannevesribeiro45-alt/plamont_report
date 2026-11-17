@@ -20,17 +20,17 @@ const CurvaS = {
     abasContratoMontadas: false,
 
     paradaAtual: null,
-    requisicao: 0,
-    publicados: [],
     modalAberto: null,
     aoTeclaEscModal: null,
 
     // ======================================
     // Carregamento dos dados de um contrato
     // ======================================
-    // Fonte estática, sem edição. Publicações de mesmo ID têm prioridade.
+    // Ponto único de acesso aos dados da Curva S de um contrato.
+    // Futuramente, basta trocar o corpo desta função por uma consulta
+    // ao Supabase mantendo o mesmo formato de retorno.
     // ======================================
-    async carregarLegado(contratoId) {
+    async carregarDados(contratoId) {
 
         if (this.dadosPorContrato[contratoId]) {
             return this.dadosPorContrato[contratoId];
@@ -50,15 +50,13 @@ const CurvaS = {
                     throw new Error(`Erro ao carregar grandes-paradas/${contratoId}.json`);
                 }
 
-                const texto=await resposta.text();
-                const bruto=texto.trim()?JSON.parse(texto):{};
-                this.dadosPorContrato[contratoId]={
-                    ...bruto,paradas:Array.isArray(bruto.paradas)?bruto.paradas:bruto.id?[bruto]:[]
-                };
+                this.dadosPorContrato[contratoId] = await resposta.json();
 
             } catch (erro) {
 
-                this.dadosPorContrato[contratoId] = { erroLegado:true, paradas: [] };
+                console.error("CurvaS: falha ao carregar dados do contrato.", contratoId, erro);
+
+                this.dadosPorContrato[contratoId] = { dadosDeTeste: true, horasPorDiaUtil: 12, paradas: [] };
 
             }
 
@@ -91,9 +89,6 @@ const CurvaS = {
         // selecionada para não exibir dados do contrato anterior.
         if (novoContrato !== this.contratoAtual) {
             this.paradaAtual = null;
-            this.publicados = [];
-            this.fecharModalAtividades();
-            window.GrandesParadasEditor?.atualizarAcesso();
         }
 
         this.contratoAtual = novoContrato;
@@ -108,22 +103,13 @@ const CurvaS = {
             return;
         }
 
-        const token=++this.requisicao;
-        const contrato=this.contratoAtual;
-        const dados=await this.carregarLegado(contrato);
-        let publicados=[], aviso=dados.erroLegado?"Arquivo legado indisponível.":"";
-        try{publicados=await GrandesParadasStorage.listar(contrato);}
-        catch(erro){
-            if(!GrandesParadasStorage.semEstrutura(erro))aviso="Supabase indisponível. Exibindo apenas o JSON legado, que pode estar desatualizado.";
+        const dados = await this.carregarDados(this.contratoAtual);
+
+        const paradas = dados.paradas || [];
+
+        if (!this.paradaAtual && paradas.length) {
+            this.paradaAtual = paradas[0];
         }
-        if(token!==this.requisicao)return;
-        this.publicados=publicados;
-        document.getElementById("gp-leitura-aviso").textContent=aviso;
-        const porId=new Map(dados.paradas.map(p=>[p.id,p]));
-        publicados.forEach(p=>porId.set(p.id,p.dados));
-        const paradas=[...porId.values()];
-        this.paradaAtual=porId.get(this.paradaAtual?.id)??paradas[0]??null;
-        window.GrandesParadasEditor?.atualizarAcesso();
 
         this.renderSeletor(paradas);
 
@@ -136,7 +122,7 @@ const CurvaS = {
 
         const parada = this.paradaAtual;
 
-        const metrics = this.calcularMetricas(parada, dados.horasPorDiaUtil);
+        const metrics = this.calcularMetricas(parada, dados.horasPorDiaUtil || 12);
 
         this.renderCabecalho(parada, metrics);
 
@@ -228,7 +214,7 @@ const CurvaS = {
 
             const rotulo = (contrato.nome || id).replace("Contrato ", "");
 
-            botao.innerHTML = `<span class="tab-text">${this.escapar(rotulo)}</span>`;
+            botao.innerHTML = `<span class="tab-text">${rotulo}</span>`;
 
             // A troca de contrato usa o próprio id do contrato para montar
             // o caminho do JSON (grandes-paradas/<id>.json), sem qualquer
@@ -310,7 +296,7 @@ const CurvaS = {
             const opcao = document.createElement("option");
 
             opcao.value = parada.id;
-            opcao.textContent = parada.nome + (this.publicados.some(p=>p.id===parada.id&&p.arquivado_em)?" (arquivada)":"");
+            opcao.textContent = parada.nome;
 
             if (this.paradaAtual && this.paradaAtual.id === parada.id) {
                 opcao.selected = true;
@@ -358,9 +344,7 @@ renderCabecalho(parada, metrics) {
     }
 
     if (nome) {
-        const estado=GrandesParadasStorage.estados[parada.estadoOperacional]??"Estado não informado";
-        const pub=this.publicados.find(p=>p.id===parada.id);
-        nome.textContent = (parada.nome || "—") + " · " + estado + (pub?.arquivado_em?" · Arquivada":"");
+        nome.textContent = parada.nome || "—";
     }
 
     if (data) {
@@ -370,9 +354,8 @@ renderCabecalho(parada, metrics) {
     }
 
     if (periodo) {
-        const ultimo=this.pontosOrdenados(parada).filter(p=>Number.isFinite(p.realizado)).at(-1);
         periodo.textContent =
-            `Previsto: ${this.dataHora(parada.periodo?.inicio,parada.periodo?.inicioHora)} → ${this.dataHora(parada.periodo?.previstoFim??parada.periodo?.fim,parada.periodo?.previstoFim?parada.periodo?.previstoFimHora:parada.periodo?.fimHora)} · Último realizado: ${this.dataHora(ultimo?.data,ultimo?.hora)} · Término real: ${this.dataHora(parada.periodo?.realizadoFim,parada.periodo?.realizadoFimHora)}`;
+            `${parada.periodo?.inicio || "—"} → ${parada.periodo?.fim || "—"}`;
     }
 
 },
@@ -385,10 +368,6 @@ renderVazio() {
     const chart = document.getElementById("curvaS-chart");
     const card = document.getElementById("curvaS-parada-card");
 
-    for(const id of ["curvaS-marcos","curvaS-resumo-turno","curvaS-legenda"])
-        document.getElementById(id)?.replaceChildren();
-    const observacoes=document.getElementById("curvaS-observacoes");
-    if(observacoes)observacoes.style.display="none";
     // Limpa os KPIs
     if (kpis) {
         kpis.innerHTML = "";
@@ -425,6 +404,12 @@ renderVazio() {
 
         const periodo = parada.periodo || {};
 
+        // Desvio: exibido sempre como valor absoluto (nunca com sinal de
+        // menos) — a cor do card e o texto de apoio já comunicam se o
+        // realizado está acima ou abaixo do planejado. A lógica matemática
+        // (metrics.desvio) permanece com sinal internamente.
+        const desvioAbsoluto = metrics.desvio === null ? null : Math.abs(metrics.desvio);
+
         const kpis = [
             {
                 titulo: "PREVISTO",
@@ -444,12 +429,12 @@ renderVazio() {
             {
                 titulo: "DESVIO",
                 icone: Icons.alvo,
-                valor: this.formatarPercentual(metrics.desvio, true),
-                sub: metrics.desvio === null ? "Sem valores no mesmo corte" : metrics.desvio === 0 ? "Conforme planejado" : metrics.desvio > 0 ? "Acima do planejado" : "Abaixo do planejado",
+                valor: this.formatarPercentual(desvioAbsoluto, metrics.desvio > 0),
+                sub: metrics.desvio >= 0 ? "Acima do planejado" : "Abaixo do planejado",
                 classe: metrics.desvio >= 0 ? "curvaS-kpi-positivo" : "curvaS-kpi-negativo"
             },
             {
-                titulo: metrics.atrasoHoras === null ? "PRAZO" : metrics.atrasoHoras >= 0 ? "ATRASADO" : "AVANÇO",
+                titulo: metrics.atrasoHoras >= 0 ? "ATRASADO" : "AVANÇO",
                 icone: Icons.relogio,
                 valor: metrics.atrasoHoras === null
                     ? "—"
@@ -487,7 +472,7 @@ renderVazio() {
                     <span class="curvaS-kpi-tendencia-icone" aria-hidden="true">${kpi.icone || ""}</span>
                     <div class="curvaS-kpi-rodape">
                         <span class="curvaS-kpi-tendencia-legenda">${kpi.valor}</span>
-                        <span class="curvaS-kpi-sub">${this.escapar(kpi.sub)}</span>
+                        <span class="curvaS-kpi-sub">${kpi.sub}</span>
                     </div>
                 `;
 
@@ -503,8 +488,8 @@ renderVazio() {
                 </div>
                 <strong class="curvaS-kpi-valor">${kpi.valor}</strong>
                 <div class="curvaS-kpi-rodape">
-                    <span class="curvaS-kpi-sub">${this.escapar(kpi.sub)}</span>
-                    ${kpi.subExtra ? `<span class="curvaS-kpi-sub">${this.escapar(kpi.subExtra)}</span>` : ""}
+                    <span class="curvaS-kpi-sub">${kpi.sub}</span>
+                    ${kpi.subExtra ? `<span class="curvaS-kpi-sub">${kpi.subExtra}</span>` : ""}
                     ${kpi.clicavel ? `<span class="curvaS-kpi-link">Ver atividades do turno →</span>` : ""}
                 </div>
             `;
@@ -564,8 +549,8 @@ renderVazio() {
         if (!container) return;
 
         const marcos = (parada.marcos || [])
-            .map(marco => ({ ...marco, dataObj: this.parseData(marco.data,marco.hora) }))
-            .filter(marco => marco.dataObj && (!metrics.dataStatusObj || marco.dataObj >= metrics.dataStatusObj || (!marco.hora && marco.data===metrics.dataStatusFormatada)))
+            .map(marco => ({ ...marco, dataObj: this.parseData(marco.data) }))
+            .filter(marco => marco.dataObj && marco.dataObj >= metrics.dataStatusObj)
             .sort((a, b) => a.dataObj - b.dataObj);
 
         if (!marcos.length) {
@@ -584,16 +569,17 @@ renderVazio() {
 
             const item = document.createElement("li");
 
-            const descricao = marco.descricao || "—";
+            const ehConclusao = Number(marco.previsto) >= 100;
+            const descricao = marco.descricao || (ehConclusao ? "Conclusão prevista" : "Previsto");
 
             item.innerHTML = `
                 <span class="curvaS-marco-icone" aria-hidden="true">${Icons.calendario}</span>
                 <span class="curvaS-marco-corpo">
                     <span class="curvaS-marco-linha1">
-                        <span class="curvaS-marco-data">${this.escapar(this.dataHora(marco.data,marco.hora))}</span>
+                        <span class="curvaS-marco-data">${marco.data}</span>
                         <span class="curvaS-marco-valor">${this.formatarPercentual(marco.previsto)}</span>
                     </span>
-                    <span class="curvaS-marco-desc">${this.escapar(descricao)}</span>
+                    <span class="curvaS-marco-desc">${descricao}</span>
                 </span>
             `;
 
@@ -619,7 +605,6 @@ renderVazio() {
         const preview = document.getElementById("curvaS-observacoes-preview");
 
         if (!botao) return;
-        botao.style.display="";
 
         if (icone && !icone.innerHTML) {
             icone.innerHTML = Icons.info;
@@ -662,13 +647,17 @@ renderVazio() {
             {
                 grupo: "realizadas",
                 titulo: "Principais atividades realizadas",
-                horario: this.periodoAtividades(turno.realizado),
+                horario: turno.realizado
+                    ? `${turno.realizado.inicio}h às ${turno.realizado.fim}h`
+                    : "—",
                 contagem: realizadas.length
             },
             {
                 grupo: "proximas",
                 titulo: "Principais atividades a serem realizadas",
-                horario: this.periodoAtividades(turno.proximo),
+                horario: turno.proximo
+                    ? `${turno.proximo.inicio}h às ${turno.proximo.fim}h`
+                    : "—",
                 contagem: proximas.length
             }
         ];
@@ -685,10 +674,10 @@ renderVazio() {
             card.innerHTML = `
                 <span class="curvaS-resumo-corpo">
                     <strong>${info.titulo}</strong>
-                    <span class="curvaS-resumo-horario">${this.escapar(info.horario)}</span>
+                    <span class="curvaS-resumo-horario">${info.horario}</span>
                     <span class="curvaS-resumo-contagem">${info.contagem} ${info.contagem === 1 ? "item" : "itens"}</span>
                 </span>
-                <span class="curvaS-resumo-seta" aria-hidden="true">${Icons.chevron || ""}</span>
+                <span class="curvaS-resumo-seta" aria-hidden="true">${Icons.chevron}</span>
             `;
 
             card.addEventListener("click", () => this.abrirModalAtividades(parada, info.grupo));
@@ -731,13 +720,13 @@ renderVazio() {
             realizadas: {
                 titulo: "Atividades realizadas",
                 tituloCurto: "Realizadas",
-                horario: this.periodoAtividades(turno.realizado),
+                horario: turno.realizado ? `${turno.realizado.inicio}h às ${turno.realizado.fim}h` : "—",
                 itens: realizadas
             },
             proximas: {
                 titulo: "Atividades do próximo turno",
                 tituloCurto: "Próximo turno",
-                horario: this.periodoAtividades(turno.proximo),
+                horario: turno.proximo ? `${turno.proximo.inicio}h às ${turno.proximo.fim}h` : "—",
                 itens: proximas
             }
         };
@@ -758,7 +747,7 @@ renderVazio() {
                         <span class="curvaS-modal-dot" aria-hidden="true"></span>
                         <div class="curvaS-modal-secao-titulos">
                             <strong>${dadosGrupo.tituloCurto}</strong>
-                            <span class="curvaS-modal-turno-horario">${this.escapar(dadosGrupo.horario)}</span>
+                            <span class="curvaS-modal-turno-horario">${dadosGrupo.horario}</span>
                         </div>
                         <span class="curvaS-modal-contagem">${textoContagem}</span>
                     </div>
@@ -779,9 +768,9 @@ renderVazio() {
         overlay.className = "curvaS-modal-overlay";
 
         overlay.innerHTML = `
-            <div class="curvaS-modal curvaS-modal--atividades ${mobile ? `curvaS-modal--contextual curvaS-modal--${grupoSelecionado}` : "curvaS-modal--comparativo"}" role="dialog" aria-modal="true" aria-label="${this.escapar(tituloModal)}">
+            <div class="curvaS-modal curvaS-modal--atividades ${mobile ? `curvaS-modal--contextual curvaS-modal--${grupoSelecionado}` : "curvaS-modal--comparativo"}" role="dialog" aria-modal="true" aria-label="${tituloModal}">
                 <div class="curvaS-modal-header">
-                    <h3>${this.escapar(tituloModal)}</h3>
+                    <h3>${tituloModal}</h3>
                     <button type="button" class="curvaS-modal-fechar" aria-label="Fechar">✕</button>
                 </div>
                 <div class="curvaS-modal-body">
@@ -839,12 +828,12 @@ renderVazio() {
         overlay.innerHTML = `
             <div class="curvaS-modal curvaS-modal-observacoes" role="dialog" aria-modal="true" aria-label="Observações da grande parada">
                 <div class="curvaS-modal-header">
-                    <h3>Observações — ${this.escapar(parada.nome || "—")}</h3>
+                    <h3>Observações — ${parada.nome || "—"}</h3>
                     <button type="button" class="curvaS-modal-fechar" aria-label="Fechar">✕</button>
                 </div>
                 <div class="curvaS-modal-body">
                     <p class="curvaS-modal-observacoes-texto">
-                        ${this.escapar(texto || "Nenhuma observação registrada para esta grande parada.")}
+                        ${texto || "Nenhuma observação registrada para esta grande parada."}
                     </p>
                 </div>
             </div>
@@ -906,7 +895,7 @@ renderVazio() {
                 <li class="curvaS-modal-grupo-om ${grupoOM.om ? "curvaS-modal-grupo-om--com-om" : "curvaS-modal-grupo-om--sem-om"}">
                     ${grupoOM.om ? `
                         <div class="curvaS-modal-grupo-om-cabecalho">
-                            <strong>OM ${this.escapar(grupoOM.om)}</strong>
+                            <strong>OM ${grupoOM.om}</strong>
                             <span>${quantidade} ${quantidade === 1 ? "atividade" : "atividades"}</span>
                         </div>
                     ` : ""}
@@ -914,10 +903,10 @@ renderVazio() {
                         ${grupoOM.atividades.map(item => `
                             <li class="curvaS-modal-item curvaS-modal-item--${grupo}">
                                 <div class="curvaS-modal-item-topo">
-                                    ${item.area ? `<span class="curvaS-modal-item-area">${this.escapar(item.area)}</span>` : ""}
+                                    ${item.area ? `<span class="curvaS-modal-item-area">${item.area}</span>` : ""}
                                 </div>
-                                <p class="curvaS-modal-item-desc">${this.escapar(item.descricao || "—")}</p>
-                                ${item.status ? `<span class="curvaS-modal-item-status curvaS-modal-item-status--${grupo}">${this.escapar(item.status)}</span>` : ""}
+                                <p class="curvaS-modal-item-desc">${item.descricao || "—"}</p>
+                                ${item.status ? `<span class="curvaS-modal-item-status curvaS-modal-item-status--${grupo}">${item.status}</span>` : ""}
                             </li>
                         `).join("")}
                     </ul>
@@ -930,23 +919,19 @@ renderVazio() {
     // ======================================
     // Gráfico — Curva S real (SVG gerado a partir dos dados)
     // ======================================
-    renderGrafico(parada, metrics, container=document.getElementById("curvaS-chart")) {
+    renderGrafico(parada, metrics) {
+
+        const container = document.getElementById("curvaS-chart");
 
         if (!container) return;
 
-        const pontos=this.pontosOrdenados(parada);
-        const periodo=parada.periodo??{};
-        const datas=[...pontos.map(p=>p.dataObj),metrics.dataStatusObj,
-            this.parseData(periodo.inicio,periodo.inicioHora),
-            this.parseData(periodo.fim,periodo.fimHora),
-            this.parseData(periodo.previstoFim,periodo.previstoFimHora),
-            this.parseData(periodo.realizadoFim,periodo.realizadoFimHora)].filter(Boolean);
-        if(!pontos.some(p=>Number.isFinite(p.previsto)||Number.isFinite(p.realizado))){
-            container.textContent="Nenhum percentual informado para o gráfico.";return;
+        const inicio = this.parseData(parada.periodo?.inicio);
+        const fim = this.parseData(parada.periodo?.fim);
+
+        if (!inicio || !fim || fim <= inicio) {
+            container.innerHTML = `<p class="curvaS-marcos-vazio">Período da grande parada inválido.</p>`;
+            return;
         }
-        const limites=datas.reduce(([a,b],d)=>[Math.min(a,+d),Math.max(b,+d)],[Infinity,-Infinity]);
-        const inicio=new Date(limites[0]),fim=new Date(limites[1]);
-        const formatarEixo=d=>new Intl.DateTimeFormat("pt-BR",{timeZone:"UTC"}).format(d);
 
         // No celular, o SVG deixa de reproduzir a proporção horizontal do
         // desktop. A área quase quadrada privilegia a leitura das datas,
@@ -970,7 +955,7 @@ renderVazio() {
         const escalaX = (data) => {
             const total = fim - inicio;
             const decorrido = data - inicio;
-            const fracao = total === 0 ? 0.5 : decorrido / total;
+            const fracao = total === 0 ? 0 : decorrido / total;
             return margem.esquerda + Math.min(Math.max(fracao, 0), 1) * areaLargura;
         };
 
@@ -979,21 +964,34 @@ renderVazio() {
             return margem.topo + (1 - v / 100) * areaAltura;
         };
 
+        const pontos = (parada.pontos || [])
+            .map(p => ({ ...p, dataObj: this.parseData(p.data) }))
+            .filter(p => p.dataObj)
+            .sort((a, b) => a.dataObj - b.dataObj);
+
+        // Regra obrigatória: o REALIZADO nunca é desenhado além da data de
+        // status, mesmo que o JSON já contenha valores futuros lançados
+        // com antecedência. O PREVISTO não sofre esse filtro — continua
+        // sendo desenhado até o fim do cronograma.
+        const dentroDoStatus = (p) =>
+            p.dataObj.getTime() <= metrics.dataStatusObj.getTime();
+
         const caminho = (campo) => {
 
-            let d = "", ligado=false;
+            let d = "";
 
             pontos.forEach(p => {
 
                 const valor = p[campo];
 
-                if (!Number.isFinite(valor)) {ligado=false;return;}
+                if (valor === null || valor === undefined) return;
+
+                if (campo === "realizado" && !dentroDoStatus(p)) return;
 
                 const x = escalaX(p.dataObj);
                 const y = escalaY(valor);
 
-                d += (ligado ? "L" : "M") + x.toFixed(2) + " " + y.toFixed(2) + " ";
-                ligado=true;
+                d += (d === "" ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1) + " ";
 
             });
 
@@ -1004,14 +1002,15 @@ renderVazio() {
         const circulos = (campo, classe) => {
 
             return pontos
-                .filter(p => Number.isFinite(p[campo]))
+                .filter(p => p[campo] !== null && p[campo] !== undefined)
+                .filter(p => campo !== "realizado" || dentroDoStatus(p))
                 .map(p => {
 
                     const x = escalaX(p.dataObj).toFixed(1);
                     const y = escalaY(p[campo]).toFixed(1);
 
                     return `<circle class="${classe}" cx="${x}" cy="${y}" r="4.5">` +
-                        `<title>${this.escapar(this.dataHora(p.data,p.hora))} — ${this.formatarPercentual(p[campo])}</title>` +
+                        `<title>${p.data} — ${this.formatarPercentual(p[campo])}</title>` +
                         `</circle>`;
 
                 })
@@ -1081,21 +1080,21 @@ renderVazio() {
         const rotulosX = [
             {
                 data: inicio,
-                texto: formatarEixo(inicio),
-                descricao: "Início do gráfico",
+                texto: parada.periodo.inicio,
+                descricao: "Início",
                 ancora: visualizacaoMobile ? "start" : "middle"
             },
             {
                 data: metrics.dataStatusObj,
-                texto: this.dataHora(metrics.dataStatusFormatada,parada.status?.hora),
+                texto: metrics.dataStatusFormatada,
                 descricao: "Data do status",
                 status: true,
                 ancora: "middle"
             },
             {
                 data: fim,
-                texto: formatarEixo(fim),
-                descricao: "Fim do gráfico",
+                texto: parada.periodo.fim,
+                descricao: "Término",
                 ancora: visualizacaoMobile ? "end" : "middle"
             }
         ];
@@ -1117,7 +1116,7 @@ renderVazio() {
                 eixoX += `
                     <text class="curvaS-eixo-texto ${r.status ? "curvaS-eixo-status" : ""}"
                           x="${xTexto}" y="${altura - margem.baixo + 22}" text-anchor="${r.ancora}">
-                        <tspan x="${xTexto}" dy="0">${this.escapar(r.texto)}</tspan>
+                        <tspan x="${xTexto}" dy="0">${r.texto}</tspan>
                         <tspan class="curvaS-eixo-descricao" x="${xTexto}" dy="16">${r.descricao}</tspan>
                     </text>
                 `;
@@ -1127,7 +1126,7 @@ renderVazio() {
                 eixoX += `
                     <text class="curvaS-eixo-texto ${r.status ? "curvaS-eixo-status" : ""}"
                           x="${x}" y="${altura - margem.baixo + 22}" text-anchor="middle">
-                        ${this.escapar(r.texto)}
+                        ${r.texto}
                     </text>
                 `;
 
@@ -1146,9 +1145,9 @@ renderVazio() {
         `;
 
         // Linha vertical da data de status
-        const xStatus = metrics.dataStatusObj ? escalaX(metrics.dataStatusObj) : null;
+        const xStatus = escalaX(metrics.dataStatusObj);
 
-        const linhaStatus = xStatus===null ? "" : `
+        const linhaStatus = `
             <line class="curvaS-linha-status" x1="${xStatus.toFixed(1)}" y1="${margem.topo}"
                   x2="${xStatus.toFixed(1)}" y2="${altura - margem.baixo}" />
         `;
@@ -1213,13 +1212,15 @@ renderVazio() {
     // ======================================
     calcularMetricas(parada, horasPorDiaUtil) {
 
-        const pontos=this.pontosOrdenados(parada);
-        const dataStatus=parada.status?.data??parada.dataStatus??null;
-        const horaStatus=parada.status?.hora??null;
-        const dataStatusObj=this.parseData(dataStatus,horaStatus);
-        const exato=dataStatusObj?pontos.find(p=>+p.dataObj===+dataStatusObj&&(p.hora??null)===horaStatus):null;
-        const previstoAtual=Number.isFinite(exato?.previsto)?exato.previsto:null;
-        const realizadoAtual=Number.isFinite(exato?.realizado)?exato.realizado:null;
+        const pontos = (parada.pontos || [])
+            .map(p => ({ ...p, dataObj: this.parseData(p.data) }))
+            .filter(p => p.dataObj)
+            .sort((a, b) => a.dataObj - b.dataObj);
+
+        const dataStatusObj = this.parseData(parada.dataStatus) || new Date();
+
+        const previstoAtual = this.interpolarValor(pontos, "previsto", dataStatusObj);
+        const realizadoAtual = this.interpolarValor(pontos, "realizado", dataStatusObj);
 
         const desvio =
             (previstoAtual !== null && realizadoAtual !== null)
@@ -1234,17 +1235,61 @@ renderVazio() {
             horasPorDiaUtil
         );
 
-        const tendencia = previstoAtual!==null&&realizadoAtual!==null ? this.calcularTendencia(pontos, dataStatusObj) : "—";
+        const tendencia = this.calcularTendencia(pontos, dataStatusObj);
 
         return {
             dataStatusObj,
-            dataStatusFormatada: dataStatus || "—",
+            dataStatusFormatada: parada.dataStatus,
             previstoAtual,
             realizadoAtual,
             desvio,
             atrasoHoras,
             tendencia
         };
+
+    },
+
+    // Interpola (ou usa exatamente) o valor acumulado de um campo
+    // ("previsto" ou "realizado") em uma data específica.
+    interpolarValor(pontos, campo, data) {
+
+        const validos = pontos.filter(p => p[campo] !== null && p[campo] !== undefined);
+
+        if (!validos.length) return null;
+
+        // Ponto exato
+        const exato = validos.find(p => p.dataObj.getTime() === data.getTime());
+
+        if (exato) return Number(exato[campo]);
+
+        // Antes do primeiro ponto conhecido
+        if (data <= validos[0].dataObj) return Number(validos[0][campo]);
+
+        // Depois do último ponto conhecido (não extrapola — mantém o último valor)
+        if (data >= validos[validos.length - 1].dataObj) {
+            return Number(validos[validos.length - 1][campo]);
+        }
+
+        // Interpolação linear entre os dois pontos vizinhos
+        for (let i = 0; i < validos.length - 1; i++) {
+
+            const a = validos[i];
+            const b = validos[i + 1];
+
+            if (data >= a.dataObj && data <= b.dataObj) {
+
+                const totalDias = (b.dataObj - a.dataObj) / 86400000;
+                const decorridoDias = (data - a.dataObj) / 86400000;
+
+                const fracao = totalDias === 0 ? 0 : decorridoDias / totalDias;
+
+                return Number(a[campo]) + (Number(b[campo]) - Number(a[campo])) * fracao;
+
+            }
+
+        }
+
+        return null;
 
     },
 
@@ -1256,8 +1301,11 @@ renderVazio() {
 
         if (!previstos.length) return null;
 
-        const exato=previstos.find(p=>p.previsto===valor);
-        if(exato)return exato.dataObj;
+        if (valor <= previstos[0].previsto) return previstos[0].dataObj;
+
+        if (valor >= previstos[previstos.length - 1].previsto) {
+            return previstos[previstos.length - 1].dataObj;
+        }
 
         for (let i = 0; i < previstos.length - 1; i++) {
 
@@ -1284,7 +1332,7 @@ renderVazio() {
     // convertida em horas usando a jornada útil do contrato.
     calcularAtrasoHoras(pontos, previstoAtual, realizadoAtual, dataStatus, horasPorDiaUtil) {
 
-        if (realizadoAtual === null || previstoAtual === null || !Number.isFinite(horasPorDiaUtil) || horasPorDiaUtil<=0) return null;
+        if (realizadoAtual === null || previstoAtual === null) return null;
 
         const dataProjetada = this.dataParaValorPrevisto(pontos, realizadoAtual);
 
@@ -1292,7 +1340,7 @@ renderVazio() {
 
         const diasDiferenca = (dataStatus - dataProjetada) / 86400000;
 
-        return diasDiferenca * horasPorDiaUtil;
+        return diasDiferenca * (horasPorDiaUtil || 12);
 
     },
 
@@ -1304,20 +1352,26 @@ renderVazio() {
             p => p.realizado !== null && p.realizado !== undefined && p.dataObj <= dataStatus
         );
 
-        if (comDados.length < 2) return "—";
+        if (comDados.length < 2) return "Estável";
 
         const atual = comDados[comDados.length - 1];
         const anterior = comDados[comDados.length - 2];
 
         const dias = (atual.dataObj - anterior.dataObj) / 86400000;
 
-        if (dias <= 0) return "—";
+        if (dias <= 0) return "Estável";
 
         const ritmoRealizado = (atual.realizado - anterior.realizado) / dias;
 
-        if(!Number.isFinite(atual.previsto)||!Number.isFinite(anterior.previsto))return "—";
-        const ritmoPrevisto=(atual.previsto-anterior.previsto)/dias;
-        if(ritmoPrevisto<=0)return "—";
+        const previstoAtualPeriodo = this.interpolarValor(pontos, "previsto", atual.dataObj);
+        const previstoAnteriorPeriodo = this.interpolarValor(pontos, "previsto", anterior.dataObj);
+
+        const ritmoPrevisto =
+            (previstoAtualPeriodo !== null && previstoAnteriorPeriodo !== null)
+                ? (previstoAtualPeriodo - previstoAnteriorPeriodo) / dias
+                : ritmoRealizado;
+
+        if (ritmoPrevisto <= 0) return "Estável";
 
         const razao = ritmoRealizado / ritmoPrevisto;
 
@@ -1332,29 +1386,32 @@ renderVazio() {
     // ======================================
     // Utilitários
     // ======================================
-    pontosOrdenados(parada) {
-        return (parada.pontos??[]).map(p=>({...p,dataObj:this.parseData(p.data,p.hora)}))
-            .filter(p=>p.dataObj).sort((a,b)=>a.dataObj-b.dataObj);
+    parseData(str) {
+
+        if (!str || typeof str !== "string") return null;
+
+        const partes = str.split("/");
+
+        if (partes.length !== 3) return null;
+
+        const [dia, mes, ano] = partes.map(Number);
+
+        if (!dia || !mes || !ano) return null;
+
+        return new Date(ano, mes - 1, dia);
+
     },
 
-    parseData(str,hora=null) {
-        return GrandesParadasStorage.instante(str,hora);
-    },
+    formatarPercentual(valor, comSinal = false) {
 
-    escapar(valor) {
-        return String(valor??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-    },
+        if (valor === null || valor === undefined || Number.isNaN(valor)) return "—";
 
-    dataHora(data,hora) {
-        return [data,hora].filter(Boolean).join(" ")||"—";
-    },
+        const numero = Math.round(valor * 100) / 100;
 
-    periodoAtividades(t) {
-        return t ? `${this.dataHora(t.dataInicio,t.inicio)} → ${this.dataHora(t.dataFim,t.fim)}` : "—";
-    },
+        const sinal = comSinal && numero > 0 ? "+" : "";
 
-    formatarPercentual(valor, comSinal=false) {
-        if(!Number.isFinite(valor))return "—";
-        return (comSinal&&valor>0?"+":"")+valor.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:20})+"%";
+        return `${sinal}${numero.toFixed(2).replace(".", ",")}%`;
+
     }
+
 };
