@@ -68,7 +68,7 @@
       "qlp": {
         "direto": {
           "Caldeireiro": 4,
-          "Mecanico": 2,
+          "Mecanico": 3,
           "Soldador": 4,
           "Montador": 2,
           "Pintor": 1
@@ -96,8 +96,7 @@
         }
       },
       "ausencias": {
-        "Mecânicos":1,
-        "justificadas": 1,
+     "justificadas": 0,
      "naoJustificadas":0
       },
       "mobilizacao": {},

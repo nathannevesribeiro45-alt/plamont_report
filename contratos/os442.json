@@ -56,10 +56,10 @@
       "qlp": {
         "direto": {
           "Caldeireiro": 1,
-          "Mecanico": 6,
+          "Mecanico": 4,
           "Soldador": 1,
           "Montador": 3,
-          "Eletricista": 6,
+          "Eletricista": 4,
           "Pintor": 0
         },
         "indireto": {
@@ -73,10 +73,10 @@
       "histograma": {
         "direto": {
           "Caldeireiro": 1,
-          "Mecanico": 6,
+          "Mecanico": 4,
           "Soldador": 1,
           "Montador": 3,
-          "Eletricista": 6,
+          "Eletricista": 4,
           "Pintor": 0
         },
         "indireto": {
